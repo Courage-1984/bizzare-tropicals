@@ -136,6 +136,14 @@
 -%}
 
 <article class="product-card{% unless use_live_product %} product-card--mock{% endunless %}">
+  {%- if use_live_product -%}
+    {%- render 'product-card-badges', product_item: product_item -%}
+  {%- else -%}
+    {%- render 'product-card-badges',
+      mock_slot: card_index | default: 0,
+      mock_difficulty: difficulty
+    -%}
+  {%- endif -%}
   <a class="product-card__link" href="{{ card_url }}">
     <span class="product-card__media">
       {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}

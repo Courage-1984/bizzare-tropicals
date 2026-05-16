@@ -5,25 +5,53 @@
 
 <section
   class="genus-shortcuts"
+  data-genus-carousel
   aria-labelledby="genus-shortcuts-heading-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
-  {%- if section_heading != blank -%}
+  {%- if section_heading != blank or section.blocks.size > 0 -%}
     <header class="genus-shortcuts__header">
-      <h2 id="genus-shortcuts-heading-{{ section.id }}" class="genus-shortcuts__section-title">
-        {{ section_heading | escape }}
-      </h2>
+      {%- if section_heading != blank -%}
+        <h2 id="genus-shortcuts-heading-{{ section.id }}" class="genus-shortcuts__section-title">
+          {{ section_heading | escape }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="genus-shortcuts__nav" data-carousel-nav hidden>
+          <button
+            type="button"
+            class="genus-shortcuts__arrow"
+            data-carousel-prev
+            aria-controls="genus-carousel-track-{{ section.id }}"
+            aria-label="{{ 'sections.genus_shortcuts.prev' | t }}"
+          >
+            <span aria-hidden="true">&larr;</span>
+          </button>
+          <button
+            type="button"
+            class="genus-shortcuts__arrow"
+            data-carousel-next
+            aria-controls="genus-carousel-track-{{ section.id }}"
+            aria-label="{{ 'sections.genus_shortcuts.next' | t }}"
+          >
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      {%- endif -%}
     </header>
   {%- endif -%}
 
   {%- if section.blocks.size > 0 -%}
-    <div
-      class="genus-shortcuts__viewport"
-      tabindex="0"
-      role="region"
-      aria-label="{{ 'sections.genus_shortcuts.strip_label' | t }}"
-    >
-      <ul class="genus-shortcuts__strip" role="list">
+    <div class="genus-shortcuts__viewport" data-carousel-viewport>
+      <ul
+        id="genus-carousel-track-{{ section.id }}"
+        class="genus-shortcuts__strip"
+        data-carousel-track
+        role="list"
+        tabindex="0"
+        aria-label="{{ 'sections.genus_shortcuts.strip_label' | t }}"
+      >
         {%- for block in section.blocks -%}
           {%- if block.type == 'genus' -%}
             {%- liquid
@@ -82,7 +110,7 @@
 
             {%- if card_title != blank -%}
               {%- if card_link != blank -%}
-                <li class="genus-shortcuts__item" {{ block.shopify_attributes }} role="listitem">
+                <li class="genus-shortcuts__item" data-carousel-item {{ block.shopify_attributes }} role="listitem">
                   {% render 'genus-arch-card',
                     card_title: card_title,
                     card_link: card_link,
@@ -108,6 +136,11 @@
   }
 
   .genus-shortcuts__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
     margin-block-end: var(--space-xl);
     text-align: center;
   }
@@ -120,6 +153,47 @@
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--color-text-muted);
+  }
+
+  .genus-shortcuts__nav {
+    display: none;
+    gap: var(--space-xs);
+  }
+
+  .genus-shortcuts__nav.is-visible {
+    display: inline-flex;
+  }
+
+  .genus-shortcuts__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-parchment);
+    background-color: var(--color-forest-green-dark);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: var(--radius-full);
+    transition:
+      background-color var(--transition-fast),
+      transform var(--transition-fast),
+      opacity var(--transition-fast);
+  }
+
+  .genus-shortcuts__arrow:hover:not(:disabled) {
+    background-color: var(--color-forest-green);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .genus-shortcuts__arrow:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .genus-shortcuts__arrow:focus-visible {
+    outline-color: var(--color-focus);
   }
 
   .genus-shortcuts__empty {
@@ -135,7 +209,7 @@
     overflow: hidden;
   }
 
-  .genus-shortcuts__viewport:focus-visible {
+  .genus-shortcuts__strip:focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 4px;
   }
@@ -166,6 +240,11 @@
   }
 
   @media (min-width: 990px) {
+    .genus-shortcuts__header {
+      justify-content: space-between;
+      text-align: start;
+    }
+
     .genus-shortcuts__viewport {
       margin-inline: 0;
       padding-inline: 0;
@@ -184,8 +263,170 @@
     .genus-shortcuts__strip {
       scroll-behavior: auto;
     }
+
+    .genus-shortcuts__arrow:hover:not(:disabled) {
+      transition: none;
+      transform: none;
+    }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    var SECTION_SELECTOR = '[data-genus-carousel]';
+
+    function prefersReducedMotion() {
+      try {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function destroyCarousel(root) {
+      if (!root || !root._genusCarouselState) {
+        return;
+      }
+
+      try {
+        var state = root._genusCarouselState;
+        state.listeners.forEach(function (entry) {
+          entry.target.removeEventListener(entry.type, entry.handler);
+        });
+      } catch (error) {
+        console.error('Genus shortcuts: teardown failed.', error);
+      }
+
+      delete root._genusCarouselState;
+      root.dataset.genusCarouselInitialized = 'false';
+    }
+
+    function updateNavState(track, prevButton, nextButton) {
+      if (!track || !prevButton || !nextButton) {
+        return;
+      }
+
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      var scrollLeft = track.scrollLeft;
+      var atStart = scrollLeft <= 2;
+      var atEnd = scrollLeft >= maxScroll - 2;
+
+      prevButton.disabled = atStart;
+      nextButton.disabled = atEnd;
+    }
+
+    function getScrollStep(track) {
+      var firstItem = track.querySelector('[data-carousel-item]');
+      if (!firstItem) {
+        return track.clientWidth * 0.85;
+      }
+
+      var trackStyles = window.getComputedStyle(track);
+      var gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '0') || 0;
+      return firstItem.offsetWidth + gap;
+    }
+
+    function initCarousel(root) {
+      if (!root) {
+        return;
+      }
+
+      destroyCarousel(root);
+
+      var track = root.querySelector('[data-carousel-track]');
+      var nav = root.querySelector('[data-carousel-nav]');
+      var prevButton = root.querySelector('[data-carousel-prev]');
+      var nextButton = root.querySelector('[data-carousel-next]');
+
+      if (!track || !prevButton || !nextButton || !nav) {
+        return;
+      }
+
+      var desktopQuery = window.matchMedia('(min-width: 990px)');
+      var state = { listeners: [] };
+
+      function trackListener(target, type, handler, options) {
+        target.addEventListener(type, handler, options);
+        state.listeners.push({ target: target, type: type, handler: handler });
+      }
+
+      function scrollByStep(direction) {
+        var step = getScrollStep(track) * direction;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+        track.scrollBy({ left: step, behavior: behavior });
+      }
+
+      function syncNavVisibility() {
+        var isDesktop = desktopQuery.matches;
+        var overflow = track.scrollWidth > track.clientWidth + 2;
+        nav.hidden = !isDesktop;
+        nav.classList.toggle('is-visible', isDesktop && overflow);
+        updateNavState(track, prevButton, nextButton);
+      }
+
+      trackListener(prevButton, 'click', function () {
+        scrollByStep(-1);
+      });
+
+      trackListener(nextButton, 'click', function () {
+        scrollByStep(1);
+      });
+
+      trackListener(track, 'scroll', function () {
+        updateNavState(track, prevButton, nextButton);
+      }, { passive: true });
+
+      trackListener(window, 'resize', function () {
+        syncNavVisibility();
+      });
+
+      if (typeof desktopQuery.addEventListener === 'function') {
+        trackListener(desktopQuery, 'change', function () {
+          syncNavVisibility();
+        });
+      } else if (typeof desktopQuery.addListener === 'function') {
+        desktopQuery.addListener(syncNavVisibility);
+      }
+
+      syncNavVisibility();
+      root._genusCarouselState = state;
+      root.dataset.genusCarouselInitialized = 'true';
+    }
+
+    function initAllCarousels(scope) {
+      var context = scope || document;
+      var sections = context.querySelectorAll(SECTION_SELECTOR);
+
+      sections.forEach(function (section) {
+        if (section.dataset.genusCarouselInitialized === 'true') {
+          return;
+        }
+        initCarousel(section);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        initAllCarousels();
+      });
+    } else {
+      initAllCarousels();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      initAllCarousels(event.target);
+    });
+
+    document.addEventListener('shopify:section:unload', function (event) {
+      var section = event.target.querySelector(SECTION_SELECTOR);
+      if (section) {
+        destroyCarousel(section);
+      }
+    });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {

@@ -328,12 +328,16 @@
       var openTrigger = event.target.closest('[data-cart-drawer-open]');
       if (openTrigger) {
         event.preventDefault();
+
+        if (isOpen) {
+          closeDrawer();
+          return;
+        }
+
         lastTrigger = openTrigger;
         refreshDrawer()
           .then(function () {
-            if (!isOpen) {
-              openDrawer(openTrigger);
-            }
+            openDrawer(openTrigger);
           })
           .catch(function () {
             window.location.href = config.cartUrl;

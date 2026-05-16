@@ -38,7 +38,7 @@
 
     <div class="featured-collection__actions">
       {%- if show_real_products and view_all_label != blank -%}
-        <a class="featured-collection__view-all" href="{{ featured_collection.url }}">
+        <a class="featured-collection__view-all link-underline-grow" href="{{ featured_collection.url }}">
           {{ view_all_label | escape }}
         </a>
       {%- endif -%}
@@ -181,12 +181,11 @@
     font-weight: 600;
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
     color: var(--featured-collection-ink);
   }
 
-  .featured-collection__view-all:hover {
+  .featured-collection__view-all.link-underline-grow:hover,
+  .featured-collection__view-all.link-underline-grow:focus-visible {
     color: #fdfbf7;
   }
 
@@ -256,7 +255,7 @@
     display: flex;
     gap: var(--space-lg);
     margin: 0;
-    padding: var(--space-xs) var(--page-margin) var(--space-md);
+    padding: var(--space-sm) var(--page-margin) var(--space-md);
     padding-inline: var(--page-margin);
     list-style: none;
     overflow-x: auto;
@@ -278,6 +277,7 @@
 
   .featured-collection__item {
     flex: 0 0 min(78vw, 18rem);
+    overflow: visible;
     scroll-snap-align: start;
     min-width: 0;
   }

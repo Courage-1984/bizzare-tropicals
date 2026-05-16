@@ -51,7 +51,7 @@
                 {%- if footer_facebook_url != blank -%}
                   <li>
                     <a
-                      class="site-footer__link site-footer__social-link"
+                      class="site-footer__link link-underline-grow site-footer__social-link"
                       href="{{ footer_facebook_url }}"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -64,7 +64,7 @@
                 {%- if footer_instagram_url != blank -%}
                   <li>
                     <a
-                      class="site-footer__link site-footer__social-link"
+                      class="site-footer__link link-underline-grow site-footer__social-link"
                       href="{{ footer_instagram_url }}"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -84,20 +84,20 @@
         <h2 class="site-footer__heading">{{ 'footer.quick_links' | t }}</h2>
         {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
           <nav aria-label="{{ 'footer.quick_links' | t }}">
-            <ul class="site-footer__link-list" role="list">
+            <ul class="site-footer__link link-underline-grow-list" role="list">
               {%- for link in section.settings.menu.links -%}
                 <li>
-                  <a class="site-footer__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                  <a class="site-footer__link link-underline-grow" href="{{ link.url }}">{{ link.title | escape }}</a>
                 </li>
               {%- endfor -%}
             </ul>
           </nav>
         {%- else -%}
-          <ul class="site-footer__link-list" role="list">
-            <li><a class="site-footer__link" href="{{ routes.all_products_collection_url }}">{{ 'footer.link_shop' | t }}</a></li>
-            <li><a class="site-footer__link" href="/pages/about">{{ 'footer.link_about' | t }}</a></li>
-            <li><a class="site-footer__link" href="/pages/care-overview">{{ 'footer.link_care' | t }}</a></li>
-            <li><a class="site-footer__link" href="/pages/contact">{{ 'footer.link_contact' | t }}</a></li>
+          <ul class="site-footer__link link-underline-grow-list" role="list">
+            <li><a class="site-footer__link link-underline-grow" href="{{ routes.all_products_collection_url }}">{{ 'footer.link_shop' | t }}</a></li>
+            <li><a class="site-footer__link link-underline-grow" href="/pages/about">{{ 'footer.link_about' | t }}</a></li>
+            <li><a class="site-footer__link link-underline-grow" href="/pages/care-overview">{{ 'footer.link_care' | t }}</a></li>
+            <li><a class="site-footer__link link-underline-grow" href="/pages/contact">{{ 'footer.link_contact' | t }}</a></li>
           </ul>
         {%- endif -%}
       </div>
@@ -155,7 +155,7 @@
         <address class="site-footer__contact">
           <p class="site-footer__contact-line">{{ footer_address | newline_to_br }}</p>
           <p class="site-footer__contact-line">
-            <a class="site-footer__link" href="mailto:{{ footer_email | strip }}">
+            <a class="site-footer__link link-underline-grow" href="mailto:{{ footer_email | strip }}">
               {{ footer_email | escape }}
             </a>
           </p>
@@ -175,7 +175,12 @@
             {%- if section.settings.copyright_text != blank -%}
               {{ ' ' }}
             {%- endif -%}
-            <a href="{{ section.settings.designer_link_url }}" target="_blank" rel="noopener noreferrer">
+            <a
+              class="link-underline-grow"
+              href="{{ section.settings.designer_link_url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {{- section.settings.designer_link_label | escape -}}
             </a>
           {%- endif -%}
@@ -432,13 +437,12 @@
     color: rgb(245 243 238 / 0.78);
   }
 
-  .site-footer__copyright a {
+  .site-footer__copyright a.link-underline-grow {
     color: var(--color-footer-text);
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
   }
 
-  .site-footer__copyright a:hover {
+  .site-footer__copyright a.link-underline-grow:hover,
+  .site-footer__copyright a.link-underline-grow:focus-visible {
     color: #ffffff;
   }
 

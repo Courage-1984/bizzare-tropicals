@@ -11,12 +11,89 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message-1": {
+          "type": "message",
+          "settings": {
+            "text": "New Nepenthes arrivals — explore the collection",
+            "link": "/collections/nepenthes"
+          }
+        },
+        "message-2": {
+          "type": "message",
+          "settings": {
+            "text": "Distilled water only — browse growing supplies",
+            "link": "/collections/growing-supplies"
+          }
+        }
+      },
+      "block_order": ["message-1", "message-2"],
+      "settings": {
+        "rotate_interval": 5
+      }
+    },
     "header": {
       "type": "header",
       "settings": {}
+    },
+    "search-overlay": {
+      "type": "search-overlay",
+      "blocks": {
+        "drosera": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Drosera",
+            "url": "/collections/drosera"
+          }
+        },
+        "nepenthes": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Nepenthes",
+            "url": "/collections/nepenthes"
+          }
+        },
+        "dionaea": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Dionaea",
+            "url": "/collections/dionaea"
+          }
+        },
+        "sarracenia": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Sarracenia",
+            "url": "/collections/sarracenia"
+          }
+        },
+        "pinguicula": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Pinguicula",
+            "url": "/collections/pinguicula"
+          }
+        },
+        "heliamphora": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Heliamphora",
+            "url": "/collections/heliamphora"
+          }
+        }
+      },
+      "block_order": [
+        "drosera",
+        "nepenthes",
+        "dionaea",
+        "sarracenia",
+        "pinguicula",
+        "heliamphora"
+      ],
+      "settings": {}
     }
   },
-  "order": [
-    "header"
-  ],
+  "order": ["announcement-bar", "header", "search-overlay"]
 }

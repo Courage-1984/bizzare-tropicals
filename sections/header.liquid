@@ -45,15 +45,18 @@
     {%- endif -%}
 
     <div class="site-header__actions">
-      <a
+      <button
+        type="button"
         class="site-header__icon-link"
-        href="{{ routes.search_url }}"
+        data-search-overlay-open
         aria-label="{{ 'header.search' | t }}"
+        aria-expanded="false"
+        aria-controls="search-overlay-dialog"
       >
         <span class="site-header__icon" aria-hidden="true">
           {{- 'icon-search.svg' | inline_asset_content -}}
         </span>
-      </a>
+      </button>
 
       {%- if shop.customer_accounts_enabled -%}
         <a
@@ -152,7 +155,7 @@
 
   .header-wrapper {
     position: fixed;
-    top: 0;
+    top: var(--announcement-bar-height, 0px);
     left: 0;
     right: 0;
     z-index: 1000;
@@ -484,7 +487,7 @@
     background-color: currentcolor;
     transform: scaleX(0);
     transform-origin: center;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform var(--transition-link-grow);
   }
 
   .site-nav__list--desktop .site-nav__link:hover::after,

@@ -1,0 +1,554 @@
+<div
+  class="search-overlay"
+  data-search-overlay
+  data-predictive-search-url="{{ routes.predictive_search_url }}"
+  data-empty-label="{{ 'sections.search_overlay.no_results' | t | escape }}"
+  hidden
+  aria-hidden="true"
+  {{ section.shopify_attributes }}
+>
+  <button
+    type="button"
+    class="search-overlay__backdrop"
+    data-search-overlay-close
+    tabindex="-1"
+    aria-hidden="true"
+  ></button>
+
+  <div
+    class="search-overlay__dialog"
+    id="search-overlay-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="search-overlay-title-{{ section.id }}"
+  >
+    <button
+      type="button"
+      class="search-overlay__close"
+      data-search-overlay-close
+      aria-label="{{ 'sections.search_overlay.close' | t }}"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h2 id="search-overlay-title-{{ section.id }}" class="visually-hidden">
+      {{ 'sections.search_overlay.title' | t }}
+    </h2>
+
+    <form
+      class="search-overlay__form"
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      data-search-form
+    >
+      <label class="visually-hidden" for="search-overlay-input-{{ section.id }}">
+        {{ 'sections.search_overlay.input_label' | t }}
+      </label>
+      <input
+        id="search-overlay-input-{{ section.id }}"
+        class="search-overlay__input"
+        type="search"
+        name="q"
+        value=""
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="{{ 'sections.search_overlay.placeholder' | t }}"
+        data-search-input
+      >
+    </form>
+
+    <div
+      class="search-overlay__results"
+      data-search-results
+      hidden
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    {%- if section.blocks.size > 0 -%}
+      <nav class="search-overlay__quick-links" aria-label="{{ 'sections.search_overlay.quick_links' | t }}">
+        <p class="search-overlay__quick-heading">{{ 'sections.search_overlay.quick_links' | t }}</p>
+        <ul class="search-overlay__quick-list" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'genus_link' -%}
+              {%- liquid
+                assign link_label = block.settings.label
+                assign link_url = block.settings.url
+                assign link_collection = block.settings.collection
+
+                if link_collection != blank
+                  if link_url == blank
+                    assign link_url = link_collection.url
+                  endif
+                  if link_label == blank
+                    assign link_label = link_collection.title
+                  endif
+                endif
+              -%}
+              {%- if link_label != blank and link_url != blank -%}
+                <li {{ block.shopify_attributes }}>
+                  <a class="search-overlay__quick-link link-underline-grow" href="{{ link_url }}">
+                    {{- link_label | escape -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .search-overlay-section.shopify-section {
+    display: block;
+    height: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 20);
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: var(--space-xl) var(--page-margin);
+    padding-block-start: calc(var(--header-height) + var(--announcement-bar-height, 0px) + var(--space-2xl));
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.45s var(--ease-link-grow),
+      visibility 0.45s var(--ease-link-grow);
+  }
+
+  .search-overlay:not([hidden]) {
+    visibility: visible;
+  }
+
+  .search-overlay.is-open {
+    opacity: 1;
+  }
+
+  .search-overlay__backdrop {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgb(247 244 237 / 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 0;
+    opacity: 1;
+  }
+
+  .search-overlay__dialog {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(42rem, 100%);
+    margin-inline: auto;
+    pointer-events: auto;
+  }
+
+  .search-overlay__close {
+    position: absolute;
+    top: 0;
+    inset-inline-end: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 0;
+    opacity: 0.65;
+    transition: opacity var(--transition-link-grow);
+  }
+
+  .search-overlay__close:hover {
+    opacity: 1;
+  }
+
+  .search-overlay__form {
+    width: 100%;
+    margin-block-start: clamp(2rem, 12vh, 6rem);
+  }
+
+  .search-overlay__input {
+    width: 100%;
+    padding: var(--space-md) 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    text-align: center;
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 0;
+    border-block-end: 1px solid var(--color-border-strong);
+    border-radius: 0;
+    outline: none;
+    transition: border-color var(--transition-link-grow);
+  }
+
+  .search-overlay__input::placeholder {
+    color: rgb(10 24 18 / 0.42);
+    opacity: 1;
+  }
+
+  .search-overlay__input:focus {
+    border-block-end-color: var(--color-forest-green-dark);
+    box-shadow: inset 0 -1px 0 var(--color-forest-green-dark);
+  }
+
+  .search-overlay__results {
+    width: 100%;
+    margin-block-start: var(--space-lg);
+  }
+
+  .search-overlay__results-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .search-overlay__results-item + .search-overlay__results-item {
+    margin-block-start: var(--space-xs);
+  }
+
+  .search-overlay__result-link {
+    display: block;
+    padding: var(--space-sm) 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    text-decoration: none;
+    color: var(--color-forest-green-dark);
+    transition: color var(--transition-link-grow);
+  }
+
+  .search-overlay__result-link:hover {
+    color: var(--color-accent);
+  }
+
+  .search-overlay__results-empty {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .search-overlay__quick-links {
+    width: 100%;
+    margin-block-start: var(--space-3xl);
+    text-align: center;
+  }
+
+  .search-overlay__quick-heading {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(10 24 18 / 0.55);
+  }
+
+  .search-overlay__quick-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm) var(--space-xl);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .search-overlay__quick-link {
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.125rem, 2vw + 0.25rem, 1.5rem);
+    font-style: italic;
+    color: var(--color-forest-green-dark);
+  }
+
+  @media (max-width: 749px) {
+    .search-overlay {
+      padding-block-start: calc(var(--header-height) + var(--announcement-bar-height, 0px) + var(--space-lg));
+    }
+
+    .search-overlay__quick-list {
+      gap: var(--space-sm) var(--space-md);
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    var overlay = document.querySelector('[data-search-overlay]');
+    if (!overlay) {
+      return;
+    }
+
+    var form = overlay.querySelector('[data-search-form]');
+    var input = overlay.querySelector('[data-search-input]');
+    var results = overlay.querySelector('[data-search-results]');
+    var predictiveUrl = overlay.getAttribute('data-predictive-search-url');
+    var openTriggers = document.querySelectorAll('[data-search-overlay-open]');
+    var closeTriggers = overlay.querySelectorAll('[data-search-overlay-close]');
+    var debounceTimer = null;
+    var lastController = null;
+
+    function setOpen(isOpen) {
+      try {
+        overlay.classList.toggle('is-open', isOpen);
+        overlay.hidden = !isOpen;
+        overlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        document.documentElement.classList.toggle('is-scroll-locked', isOpen);
+
+        openTriggers.forEach(function (trigger) {
+          trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        if (isOpen && input) {
+          window.setTimeout(function () {
+            input.focus();
+          }, 60);
+        }
+
+        if (!isOpen) {
+          clearResults();
+          if (input) {
+            input.value = '';
+          }
+        }
+      } catch (error) {
+        console.error('Search overlay: failed to toggle open state.', error);
+      }
+    }
+
+    function clearResults() {
+      if (!results) {
+        return;
+      }
+
+      results.hidden = true;
+      results.innerHTML = '';
+    }
+
+    function renderResults(items) {
+      if (!results) {
+        return;
+      }
+
+      if (!items.length) {
+        results.hidden = false;
+        results.innerHTML =
+          '<p class="search-overlay__results-empty">' +
+          (overlay.getAttribute('data-empty-label') || 'No results') +
+          '</p>';
+        return;
+      }
+
+      var list = document.createElement('ul');
+      list.className = 'search-overlay__results-list';
+      list.setAttribute('role', 'list');
+
+      items.forEach(function (item) {
+        var listItem = document.createElement('li');
+        listItem.className = 'search-overlay__results-item';
+        var link = document.createElement('a');
+        link.className = 'search-overlay__result-link link-underline-grow';
+        link.href = item.url;
+        link.textContent = item.title;
+        listItem.appendChild(link);
+        list.appendChild(listItem);
+      });
+
+      results.hidden = false;
+      results.replaceChildren(list);
+    }
+
+    function fetchPredictive(query) {
+      if (!predictiveUrl || query.length < 2) {
+        clearResults();
+        return;
+      }
+
+      if (lastController) {
+        lastController.abort();
+      }
+
+      lastController = new AbortController();
+
+      var url =
+        predictiveUrl +
+        '?q=' +
+        encodeURIComponent(query) +
+        '&resources[type]=product,collection,page&resources[limit]=6&resources[options][unavailable_products]=hide';
+
+      fetch(url, {
+        signal: lastController.signal,
+        headers: {
+          Accept: 'application/json',
+        },
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Predictive search request failed.');
+          }
+          return response.json();
+        })
+        .then(function (payload) {
+          var items = [];
+          var resources = payload.resources && payload.resources.results;
+
+          if (!resources) {
+            renderResults([]);
+            return;
+          }
+
+          ['products', 'collections', 'pages'].forEach(function (type) {
+            var group = resources[type];
+            if (!group || !group.length) {
+              return;
+            }
+
+            group.forEach(function (entry) {
+              items.push({
+                title: entry.title,
+                url: entry.url,
+              });
+            });
+          });
+
+          renderResults(items.slice(0, 6));
+        })
+        .catch(function (error) {
+          if (error.name === 'AbortError') {
+            return;
+          }
+          clearResults();
+        });
+    }
+
+    function handleInput() {
+      if (!input) {
+        return;
+      }
+
+      var query = input.value.trim();
+
+      if (debounceTimer) {
+        window.clearTimeout(debounceTimer);
+      }
+
+      debounceTimer = window.setTimeout(function () {
+        fetchPredictive(query);
+      }, 220);
+    }
+
+    try {
+      openTriggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function (event) {
+          event.preventDefault();
+          setOpen(true);
+        });
+      });
+
+      closeTriggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          setOpen(false);
+        });
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && overlay.classList.contains('is-open')) {
+          setOpen(false);
+          var firstTrigger = openTriggers[0];
+          if (firstTrigger) {
+            firstTrigger.focus();
+          }
+        }
+      });
+
+      if (form) {
+        form.addEventListener('submit', function (event) {
+          if (!input || !input.value.trim()) {
+            event.preventDefault();
+          }
+        });
+      }
+
+      if (input) {
+        input.addEventListener('input', handleInput);
+      }
+    } catch (error) {
+      console.error('Search overlay: failed to initialize.', error);
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.search_overlay.name",
+  "class": "search-overlay-section",
+  "max_blocks": 16,
+  "blocks": [
+    {
+      "type": "genus_link",
+      "name": "t:sections.search_overlay.blocks.genus_link.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.search_overlay.blocks.genus_link.settings.label",
+          "default": "Drosera"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:sections.search_overlay.blocks.genus_link.settings.url"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.search_overlay.blocks.genus_link.settings.collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.search_overlay.name",
+      "blocks": [
+        { "type": "genus_link", "settings": { "label": "Drosera", "url": "/collections/drosera" } },
+        { "type": "genus_link", "settings": { "label": "Nepenthes", "url": "/collections/nepenthes" } },
+        { "type": "genus_link", "settings": { "label": "Dionaea", "url": "/collections/dionaea" } },
+        { "type": "genus_link", "settings": { "label": "Sarracenia", "url": "/collections/sarracenia" } },
+        { "type": "genus_link", "settings": { "label": "Pinguicula", "url": "/collections/pinguicula" } },
+        { "type": "genus_link", "settings": { "label": "Heliamphora", "url": "/collections/heliamphora" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

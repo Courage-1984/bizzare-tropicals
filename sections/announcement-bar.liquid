@@ -1,0 +1,427 @@
+{%- if section.blocks.size > 0 -%}
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('bt-announcement-{{ section.id }}') === '1') {
+          document.documentElement.setAttribute('data-announcement-dismissed', '{{ section.id }}');
+        }
+      } catch (error) {
+        /* localStorage unavailable */
+      }
+    })();
+  </script>
+
+  <div
+    class="announcement-bar"
+    data-announcement-bar
+    data-announcement-id="{{ section.id }}"
+    data-rotate-interval="{{ section.settings.rotate_interval | times: 1000 }}"
+    role="region"
+    aria-label="{{ 'sections.announcement_bar.label' | t }}"
+    {{ section.shopify_attributes }}
+  >
+    <div class="announcement-bar__viewport">
+      <div class="announcement-bar__track" data-announcement-track>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'message' -%}
+            <div
+              class="announcement-bar__slide{% if forloop.first %} is-active{% endif %}"
+              data-announcement-slide
+              {{ block.shopify_attributes }}
+              {% unless forloop.first %}
+                hidden
+              {% endunless %}
+            >
+              {%- if block.settings.link != blank -%}
+                <a class="announcement-bar__message" href="{{ block.settings.link }}">
+                  {{- block.settings.text | escape -}}
+                </a>
+              {%- else -%}
+                <p class="announcement-bar__message">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="announcement-bar__close"
+      data-announcement-close
+      aria-label="{{ 'sections.announcement_bar.close' | t }}"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .announcement-bar-section.shopify-section {
+    display: block;
+    height: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .announcement-bar {
+    position: fixed;
+    top: 0;
+    inset-inline: 0;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    min-height: 2.125rem;
+    padding-inline: var(--space-2xl) var(--space-md);
+    color: var(--color-parchment);
+    background-color: var(--color-forest-green-dark);
+    border-block-end: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .announcement-bar__viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: var(--page-width);
+    overflow: hidden;
+  }
+
+  .announcement-bar__track {
+    position: relative;
+    min-height: 1.25rem;
+  }
+
+  .announcement-bar__slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    opacity: 0;
+    transform: translate3d(0, 0.35rem, 0);
+    transition:
+      opacity 0.55s var(--ease-link-grow),
+      transform 0.55s var(--ease-link-grow);
+    pointer-events: none;
+    will-change: opacity, transform;
+  }
+
+  .announcement-bar__slide.is-active {
+    position: relative;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    pointer-events: auto;
+  }
+
+  .announcement-bar__slide.is-exiting {
+    opacity: 0;
+    transform: translate3d(0, -0.35rem, 0);
+  }
+
+  .announcement-bar__message {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--transition-link-grow);
+  }
+
+  a.announcement-bar__message:hover {
+    opacity: 0.82;
+  }
+
+  .announcement-bar__close {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    font-size: 1.125rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-parchment);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    opacity: 0.72;
+    transition: opacity var(--transition-link-grow);
+  }
+
+  .announcement-bar__close:hover {
+    opacity: 1;
+  }
+
+  .announcement-bar__close:focus-visible {
+    outline-color: var(--color-parchment);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .announcement-bar__slide {
+      transition: opacity var(--duration-fast) var(--ease-out);
+      transform: none;
+    }
+
+    .announcement-bar__slide.is-exiting {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    var dismissedAttr = 'data-announcement-dismissed';
+
+    function initAnnouncementBar() {
+      var bar = document.querySelector('[data-announcement-bar]');
+      if (!bar || bar.dataset.announcementInitialized === 'true') {
+        return;
+      }
+
+      bar.dataset.announcementInitialized = 'true';
+
+      var sectionId = bar.getAttribute('data-announcement-id');
+      var storageKey = 'bt-announcement-' + sectionId;
+      var timerId = null;
+
+      function isDismissed() {
+        try {
+          return (
+            document.documentElement.getAttribute(dismissedAttr) === sectionId ||
+            bar.classList.contains('is-dismissed') ||
+            bar.hasAttribute('hidden')
+          );
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function setAnnouncementHeight() {
+        try {
+          if (isDismissed()) {
+            document.documentElement.style.setProperty('--announcement-bar-height', '0px');
+            return;
+          }
+
+          var height = bar.offsetHeight || bar.getBoundingClientRect().height;
+          document.documentElement.style.setProperty(
+            '--announcement-bar-height',
+            Math.ceil(height) + 'px'
+          );
+        } catch (error) {
+          console.error('Announcement bar: failed to measure height.', error);
+        }
+      }
+
+      function hideBarElement() {
+        bar.classList.add('is-dismissed');
+        bar.setAttribute('hidden', '');
+        bar.setAttribute('aria-hidden', 'true');
+        bar.style.setProperty('display', 'none', 'important');
+        bar.style.setProperty('visibility', 'hidden', 'important');
+        bar.style.setProperty('pointer-events', 'none', 'important');
+      }
+
+      function dismissBar() {
+        try {
+          if (timerId) {
+            window.clearInterval(timerId);
+            timerId = null;
+          }
+
+          localStorage.setItem(storageKey, '1');
+          document.documentElement.setAttribute(dismissedAttr, sectionId);
+          hideBarElement();
+          setAnnouncementHeight();
+        } catch (error) {
+          console.error('Announcement bar: failed to dismiss.', error);
+        }
+      }
+
+      bar.addEventListener('click', function (event) {
+        if (event.target.closest('[data-announcement-close]')) {
+          event.preventDefault();
+          event.stopPropagation();
+          dismissBar();
+        }
+      });
+
+      if (isDismissed()) {
+        hideBarElement();
+        setAnnouncementHeight();
+        return;
+      }
+
+      setAnnouncementHeight();
+      window.addEventListener('resize', setAnnouncementHeight);
+
+      var slides = bar.querySelectorAll('[data-announcement-slide]');
+      if (slides.length < 2) {
+        return;
+      }
+
+      var intervalMs = parseInt(bar.getAttribute('data-rotate-interval'), 10) || 5000;
+      var currentIndex = 0;
+      var isAnimating = false;
+
+      function showSlide(nextIndex) {
+        if (isAnimating) {
+          return;
+        }
+
+        var currentSlide = slides[currentIndex];
+        var nextSlide = slides[nextIndex];
+
+        if (!currentSlide || !nextSlide || currentIndex === nextIndex) {
+          return;
+        }
+
+        isAnimating = true;
+
+        currentSlide.classList.add('is-exiting');
+        currentSlide.classList.remove('is-active');
+
+        window.setTimeout(function () {
+          currentSlide.hidden = true;
+          currentSlide.classList.remove('is-exiting');
+
+          nextSlide.hidden = false;
+          nextSlide.classList.add('is-active');
+
+          currentIndex = nextIndex;
+          isAnimating = false;
+        }, prefersReducedMotion() ? 0 : 280);
+      }
+
+      function prefersReducedMotion() {
+        try {
+          return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function advanceSlide() {
+        var nextIndex = (currentIndex + 1) % slides.length;
+        showSlide(nextIndex);
+      }
+
+      function startRotation() {
+        if (prefersReducedMotion()) {
+          return;
+        }
+
+        stopRotation();
+        timerId = window.setInterval(advanceSlide, intervalMs);
+      }
+
+      function stopRotation() {
+        if (timerId) {
+          window.clearInterval(timerId);
+          timerId = null;
+        }
+      }
+
+      bar.addEventListener('mouseenter', stopRotation);
+      bar.addEventListener('mouseleave', startRotation);
+      bar.addEventListener('focusin', stopRotation);
+      bar.addEventListener('focusout', function (event) {
+        if (!bar.contains(event.relatedTarget)) {
+          startRotation();
+        }
+      });
+
+      startRotation();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnnouncementBar);
+    } else {
+      initAnnouncementBar();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.target && event.target.querySelector('[data-announcement-bar]')) {
+        var bar = event.target.querySelector('[data-announcement-bar]');
+        if (bar) {
+          bar.dataset.announcementInitialized = 'false';
+        }
+        initAnnouncementBar();
+      }
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.announcement_bar.name",
+  "class": "announcement-bar-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "range",
+      "id": "rotate_interval",
+      "label": "t:sections.announcement_bar.settings.rotate_interval",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "t:sections.announcement_bar.blocks.message.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.announcement_bar.blocks.message.settings.text",
+          "default": "Free shipping on orders over R 1 500 within Gauteng"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement_bar.blocks.message.settings.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement_bar.name",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "text": "New Nepenthes arrivals — explore the collection"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "Distilled water only — browse growing supplies"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

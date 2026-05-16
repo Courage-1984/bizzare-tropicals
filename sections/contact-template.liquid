@@ -225,7 +225,7 @@
                 <div class="contact-page__details-row">
                   <dt>{{ 'sections.contact_template.detail_email' | t }}</dt>
                   <dd>
-                    <a class="contact-page__details-link" href="mailto:{{ contact_email }}">{{ contact_email | escape }}</a>
+                    <a class="contact-page__details-link link-underline-grow" href="mailto:{{ contact_email }}">{{ contact_email | escape }}</a>
                   </dd>
                 </div>
               {%- endif -%}
@@ -472,11 +472,10 @@
 
   .contact-page__details-link {
     color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
   }
 
-  .contact-page__details-link:hover {
+  .contact-page__details-link.link-underline-grow:hover,
+  .contact-page__details-link.link-underline-grow:focus-visible {
     color: var(--color-accent);
   }
 

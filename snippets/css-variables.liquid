@@ -74,6 +74,9 @@
     --page-width: {{ settings.max_page_width | default: '90rem' }};
     --page-margin: {{ settings.min_page_margin | default: 20 }}px;
     --header-height: 4.5rem;
+    --announcement-bar-height: 0px;
+    --ease-link-grow: cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-link-grow: 0.5s var(--ease-link-grow);
     --content-max-width: var(--page-width);
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;

@@ -1,0 +1,649 @@
+{%- unless section.settings.enable_modal == false -%}
+  <div
+    class="newsletter-modal"
+    data-newsletter-modal
+    data-cookie-name="bt-field-notes-modal"
+    data-cookie-days="{{ section.settings.cookie_days }}"
+    data-delay-ms="{{ section.settings.delay_seconds | times: 1000 }}"
+    data-trigger="{{ section.settings.trigger_mode }}"
+    data-design-mode="{% if request.design_mode %}true{% else %}false{% endif %}"
+    hidden
+    aria-hidden="true"
+    {{ section.shopify_attributes }}
+  >
+    <button
+      type="button"
+      class="newsletter-modal__backdrop"
+      data-newsletter-modal-close
+      tabindex="-1"
+      aria-hidden="true"
+    ></button>
+
+    <div
+      class="newsletter-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="newsletter-modal-title-{{ section.id }}"
+      tabindex="-1"
+      data-newsletter-modal-panel
+    >
+      <button
+        type="button"
+        class="newsletter-modal__close"
+        data-newsletter-modal-close
+        aria-label="{{ 'sections.newsletter_modal.close' | t }}"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <div class="newsletter-modal__layout">
+        <div class="newsletter-modal__art" aria-hidden="true">
+          {%- if section.settings.illustration != blank -%}
+            {{
+              section.settings.illustration
+              | image_url: width: 600
+              | image_tag:
+                class: 'newsletter-modal__art-image',
+                widths: '300, 400, 600',
+                sizes: '(max-width: 749px) 40vw, 220px',
+                loading: 'lazy',
+                alt: ''
+            }}
+          {%- else -%}
+            <span class="newsletter-modal__art-svg">
+              {{- 'icon-sundew-lineart.svg' | inline_asset_content -}}
+            </span>
+          {%- endif -%}
+        </div>
+
+        <div class="newsletter-modal__content">
+          <h2 id="newsletter-modal-title-{{ section.id }}" class="newsletter-modal__heading">
+            {{ section.settings.heading | escape }}
+          </h2>
+
+          {%- if section.settings.subtext != blank -%}
+            <p class="newsletter-modal__subtext">{{ section.settings.subtext | escape }}</p>
+          {%- endif -%}
+
+          {%- form 'customer', class: 'newsletter-modal__form', id: 'newsletter-modal-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter, field-notes">
+
+            <div class="newsletter-modal__field">
+              <label class="visually-hidden" for="newsletter-modal-email-{{ section.id }}">
+                {{ 'sections.newsletter_modal.email_label' | t }}
+              </label>
+              <input
+                id="newsletter-modal-email-{{ section.id }}"
+                class="newsletter-modal__input"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email }}"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                placeholder="{{ 'sections.newsletter_modal.email_placeholder' | t }}"
+                required
+                {% if form.errors %}
+                  aria-invalid="true"
+                  aria-describedby="newsletter-modal-errors-{{ section.id }}"
+                {% endif %}
+              >
+              <button class="newsletter-modal__submit" type="submit" name="commit">
+                {{ section.settings.button_label | escape }}
+              </button>
+            </div>
+
+            {%- if form.errors -%}
+              <p
+                id="newsletter-modal-errors-{{ section.id }}"
+                class="newsletter-modal__message newsletter-modal__message--error"
+                role="alert"
+              >
+                {{ form.errors | default_errors }}
+              </p>
+            {%- endif -%}
+
+            {%- if form.posted_successfully? -%}
+              <p class="newsletter-modal__message newsletter-modal__message--success" role="status">
+                {{ 'sections.newsletter_modal.success' | t }}
+              </p>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endunless -%}
+
+{% stylesheet %}
+  .newsletter-modal-section.shopify-section {
+    display: block;
+    height: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .newsletter-modal {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg) var(--page-margin);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.5s var(--ease-link-grow),
+      visibility 0.5s var(--ease-link-grow);
+  }
+
+  .newsletter-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .newsletter-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgb(10 24 18 / 0.45);
+    border: 0;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-link-grow);
+  }
+
+  .newsletter-modal.is-open .newsletter-modal__backdrop {
+    opacity: 1;
+  }
+
+  .newsletter-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(52rem, 100%);
+    max-height: min(90vh, 36rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: scale3d(0.95, 0.95, 1);
+    transition:
+      opacity 0.5s var(--ease-link-grow),
+      transform 0.5s var(--ease-link-grow);
+    will-change: transform, opacity;
+  }
+
+  .newsletter-modal.is-open .newsletter-modal__dialog {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+
+  .newsletter-modal__close {
+    position: absolute;
+    top: var(--space-sm);
+    inset-inline-end: var(--space-sm);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: rgb(10 24 18 / 0.45);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-link-grow);
+  }
+
+  .newsletter-modal__close:hover,
+  .newsletter-modal__close:focus-visible {
+    color: var(--color-forest-green-dark);
+  }
+
+  .newsletter-modal__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+  }
+
+  .newsletter-modal__art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-forest-green-dark);
+    opacity: 0.72;
+  }
+
+  .newsletter-modal__art-svg,
+  .newsletter-modal__art-svg svg {
+    width: min(12rem, 100%);
+    height: auto;
+  }
+
+  .newsletter-modal__art-image {
+    width: min(12rem, 100%);
+    height: auto;
+    object-fit: contain;
+  }
+
+  .newsletter-modal__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    text-align: center;
+  }
+
+  .newsletter-modal__heading {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+  }
+
+  .newsletter-modal__subtext {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(10 24 18 / 0.72);
+  }
+
+  .newsletter-modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-block-start: var(--space-sm);
+  }
+
+  .newsletter-modal__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .newsletter-modal__input {
+    width: 100%;
+    padding: var(--space-sm) 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-base);
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 0;
+    border-block-end: 1px solid var(--color-border-strong);
+    border-radius: 0;
+    outline: none;
+    transition: border-color var(--transition-link-grow);
+  }
+
+  .newsletter-modal__input::placeholder {
+    color: rgb(10 24 18 / 0.42);
+  }
+
+  .newsletter-modal__input:focus {
+    border-block-end-color: var(--color-forest-green-dark);
+    box-shadow: inset 0 -1px 0 var(--color-forest-green-dark);
+  }
+
+  .newsletter-modal__submit {
+    align-self: center;
+    min-width: 10rem;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-2xl);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-parchment);
+    background-color: var(--color-forest-green-dark);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-link-grow),
+      transform var(--transition-link-grow);
+  }
+
+  .newsletter-modal__submit:hover {
+    background-color: var(--color-primary-hover);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .newsletter-modal__message {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .newsletter-modal__message--error {
+    color: #8b3a3a;
+  }
+
+  .newsletter-modal__message--success {
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 750px) {
+    .newsletter-modal__layout {
+      grid-template-columns: minmax(10rem, 14rem) 1fr;
+      align-items: center;
+      gap: var(--space-2xl);
+      padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
+    }
+
+    .newsletter-modal__content {
+      text-align: start;
+    }
+
+    .newsletter-modal__field {
+      flex-direction: row;
+      align-items: flex-end;
+      gap: var(--space-md);
+    }
+
+    .newsletter-modal__input {
+      flex: 1 1 auto;
+    }
+
+    .newsletter-modal__submit {
+      flex-shrink: 0;
+      align-self: flex-end;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .newsletter-modal,
+    .newsletter-modal__backdrop,
+    .newsletter-modal__dialog {
+      transition-duration: var(--duration-fast);
+    }
+
+    .newsletter-modal__dialog {
+      transform: none;
+    }
+
+    .newsletter-modal.is-open .newsletter-modal__dialog {
+      transform: none;
+    }
+
+    .newsletter-modal__submit:hover {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    var modal = document.querySelector('[data-newsletter-modal]');
+    if (!modal) {
+      return;
+    }
+
+    if (modal.getAttribute('data-design-mode') === 'true') {
+      return;
+    }
+
+    var panel = modal.querySelector('[data-newsletter-modal-panel]');
+    var closeTriggers = modal.querySelectorAll('[data-newsletter-modal-close]');
+    var cookieName = modal.getAttribute('data-cookie-name') || 'bt-field-notes-modal';
+    var cookieDays = parseInt(modal.getAttribute('data-cookie-days'), 10) || 7;
+    var delayMs = parseInt(modal.getAttribute('data-delay-ms'), 10) || 5000;
+    var triggerMode = modal.getAttribute('data-trigger') || 'either';
+    var hasOpened = false;
+    var delayTimer = null;
+    var exitIntentBound = false;
+    var previousFocus = null;
+
+    function getCookie(name) {
+      try {
+        var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[1]) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function setCookie(name, days) {
+      try {
+        var expires = new Date();
+        expires.setDate(expires.getDate() + days);
+        document.cookie =
+          name + '=1; expires=' + expires.toUTCString() + '; path=/; SameSite=Lax';
+      } catch (error) {
+        /* cookie blocked */
+      }
+    }
+
+    function isSuppressed() {
+      return Boolean(getCookie(cookieName));
+    }
+
+    function getFocusableElements() {
+      if (!panel) {
+        return [];
+      }
+
+      return Array.prototype.slice.call(
+        panel.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    }
+
+    function trapFocus(event) {
+      if (event.key !== 'Tab' || !panel) {
+        return;
+      }
+
+      var focusable = getFocusableElements();
+      if (!focusable.length) {
+        return;
+      }
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openModal() {
+      if (hasOpened || isSuppressed()) {
+        return;
+      }
+
+      if (delayTimer) {
+        window.clearTimeout(delayTimer);
+        delayTimer = null;
+      }
+
+      hasOpened = true;
+      previousFocus = document.activeElement;
+
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.classList.add('is-scroll-locked');
+
+      window.requestAnimationFrame(function () {
+        modal.classList.add('is-open');
+      });
+
+      window.setTimeout(function () {
+        var focusable = getFocusableElements();
+        if (focusable.length) {
+          focusable[0].focus();
+        } else if (panel) {
+          panel.focus();
+        }
+      }, 80);
+
+      document.addEventListener('keydown', trapFocus);
+    }
+
+    function closeModal(persistCookie) {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('is-scroll-locked');
+      document.removeEventListener('keydown', trapFocus);
+
+      if (persistCookie) {
+        setCookie(cookieName, cookieDays);
+      }
+
+      window.setTimeout(function () {
+        modal.hidden = true;
+        if (previousFocus && typeof previousFocus.focus === 'function') {
+          previousFocus.focus();
+        }
+      }, 520);
+    }
+
+    function scheduleDelay() {
+      if (triggerMode !== 'delay' && triggerMode !== 'either') {
+        return;
+      }
+
+      delayTimer = window.setTimeout(openModal, delayMs);
+    }
+
+    function bindExitIntent() {
+      if (exitIntentBound || (triggerMode !== 'exit_intent' && triggerMode !== 'either')) {
+        return;
+      }
+
+      exitIntentBound = true;
+
+      document.documentElement.addEventListener('mouseleave', function (event) {
+        if (event.clientY <= 0) {
+          openModal();
+        }
+      });
+    }
+
+    try {
+      if (isSuppressed()) {
+        return;
+      }
+
+      closeTriggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          closeModal(true);
+        });
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal(true);
+        }
+      });
+
+      scheduleDelay();
+      bindExitIntent();
+
+      if (modal.querySelector('.newsletter-modal__message--success')) {
+        setCookie(cookieName, cookieDays);
+        modal.hidden = false;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+    } catch (error) {
+      console.error('Newsletter modal: failed to initialize.', error);
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.newsletter_modal.name",
+  "class": "newsletter-modal-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_modal",
+      "label": "t:sections.newsletter_modal.settings.enable_modal",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "trigger_mode",
+      "label": "t:sections.newsletter_modal.settings.trigger_mode",
+      "default": "either",
+      "options": [
+        { "value": "delay", "label": "t:sections.newsletter_modal.settings.trigger_delay" },
+        { "value": "exit_intent", "label": "t:sections.newsletter_modal.settings.trigger_exit" },
+        { "value": "either", "label": "t:sections.newsletter_modal.settings.trigger_either" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "label": "t:sections.newsletter_modal.settings.delay_seconds",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "cookie_days",
+      "label": "t:sections.newsletter_modal.settings.cookie_days",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "unit": "d",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.newsletter_modal.settings.heading",
+      "default": "Join the Field Notes"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "t:sections.newsletter_modal.settings.subtext",
+      "default": "Receive exclusive updates on rare species drops and cultivation secrets from our conservatory."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.newsletter_modal.settings.button_label",
+      "default": "Join"
+    },
+    {
+      "type": "image_picker",
+      "id": "illustration",
+      "label": "t:sections.newsletter_modal.settings.illustration",
+      "info": "t:sections.newsletter_modal.settings.illustration_info"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.newsletter_modal.name"
+    }
+  ]
+}
+{% endschema %}

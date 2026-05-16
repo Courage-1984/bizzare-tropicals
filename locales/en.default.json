@@ -8,10 +8,24 @@
       "go_to_slide": "Go to slide {{ index }}",
       "empty": "Add slides to build the homepage hero."
     },
+    "announcement_bar": {
+      "label": "Store announcements",
+      "close": "Close announcement"
+    },
+    "search_overlay": {
+      "title": "Search the collection",
+      "input_label": "Search query",
+      "placeholder": "Search the collection...",
+      "close": "Close search",
+      "quick_links": "Quick links",
+      "no_results": "No matching plants or pages"
+    },
     "genus_shortcuts": {
       "shop_collection": "Shop collection",
       "card_label": "{{ genus }} collection",
       "strip_label": "Shop by genus",
+      "prev": "Previous genera",
+      "next": "Next genera",
       "empty": "Add genus cards in the theme editor."
     },
     "collection_hero": {
@@ -62,10 +76,21 @@
     "about_template": {
       "hero_overline": "Our story",
       "lab_overline": "The laboratory"
+    },
+    "newsletter_modal": {
+      "close": "Close newsletter signup",
+      "title": "Field Notes newsletter",
+      "email_label": "Email address",
+      "email_placeholder": "you@example.com",
+      "success": "Welcome to the Field Notes. Watch your inbox for conservatory updates."
     }
   },
   "products": {
     "card": {
+      "badges_label": "Product highlights",
+      "badge_rare": "Rare specimen",
+      "badge_easy": "Easy care",
+      "badge_lab": "Lab propagated",
       "mock_title": "Drosera capensis 'Alba'",
       "mock_latin": "Drosera capensis",
       "mock_price": "R 150,00",

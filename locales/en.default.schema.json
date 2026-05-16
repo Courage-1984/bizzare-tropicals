@@ -58,6 +58,51 @@
         }
       }
     },
+    "announcement_bar": {
+      "name": "Announcement bar",
+      "settings": {
+        "rotate_interval": "Rotation interval"
+      },
+      "blocks": {
+        "message": {
+          "name": "Message",
+          "settings": {
+            "text": "Message",
+            "link": "Link"
+          }
+        }
+      }
+    },
+    "search_overlay": {
+      "name": "Search overlay",
+      "blocks": {
+        "genus_link": {
+          "name": "Genus quick link",
+          "settings": {
+            "label": "Label",
+            "url": "Link",
+            "collection": "Collection"
+          }
+        }
+      }
+    },
+    "newsletter_modal": {
+      "name": "Field Notes newsletter modal",
+      "settings": {
+        "enable_modal": "Enable modal",
+        "trigger_mode": "Trigger",
+        "trigger_delay": "Time delay only",
+        "trigger_exit": "Exit intent only",
+        "trigger_either": "Whichever comes first",
+        "delay_seconds": "Delay before showing",
+        "cookie_days": "Days before showing again",
+        "heading": "Heading",
+        "subtext": "Subtext",
+        "button_label": "Button label",
+        "illustration": "Illustration image",
+        "illustration_info": "Optional. Replaces the default sundew line art."
+      }
+    },
     "genus_shortcuts": {
       "name": "Genus shortcuts",
       "settings": {
