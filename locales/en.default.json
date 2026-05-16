@@ -28,6 +28,13 @@
       "next": "Next genera",
       "empty": "Add genus cards in the theme editor."
     },
+    "collection_banner": {
+      "collection_label": "Collection",
+      "placeholder_upload": "Upload transparent PNG",
+      "callout_rim": "Nectar-rich rim to lure prey.",
+      "callout_wax": "Slippery waxy zone for capture.",
+      "callout_pool": "Digestive enzyme pool at base."
+    },
     "collection_hero": {
       "dossier_overline": "Cultivation dossier",
       "care_empty": "Add care instructions to this collection's description in the Shopify admin.",

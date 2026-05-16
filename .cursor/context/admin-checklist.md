@@ -34,12 +34,13 @@ Social URLs and contact details are configured in the **Footer** section (not gl
 - [ ] **Conservatory standards:** **Theme Editor → Home page → Conservatory standards** — see **§6.3**.
 - [ ] **Genus shortcuts:** Confirm each **Shop by genus** card points to the correct collection handle.
 
-### Collection banner (catalog header)
+### Catalog hero — Anatomy of a predator
 
-The **Collection banner** (`main-collection-banner.liquid`) renders the collection **Title** and **Description** as centered hero copy (max-width 600px). It does **not** use the Cultivation Dossier bullet-grid layout — use plain paragraphs or short prose in the collection **Description** for the header.
+The **Collection banner** (`main-collection-banner.liquid`) renders the **Anatomy of a Predator** hero: dark `#121614` backdrop, centered collection title, fixed-size illustration frame, and anchored scientific callouts (desktop only).
 
-- [ ] Upload a **collection image** in **Products → Collections** for a textured hero backdrop (optional).
-- [ ] Enter a concise collection **Description** for the banner (plain text or paragraphs; not required to be a bullet list).
+- [ ] **Catalog hero:** Merchants can upload an **Illustration image** per collection in **Theme Editor → Collection template → Collection banner** (`illustration_image` image picker). Use a transparent PNG anatomy drawing for best results; a default pitcher photo is used until an image is uploaded.
+- [ ] Enter an optional collection **Description** below the illustration (plain prose; not the dossier bullet grid).
+- [ ] Collection **Title** comes from **Products → Collections**; it appears as the visible heading and as the large background serif watermark.
 
 ### The “Dossier” rule (in-page care content)
 
@@ -272,7 +273,7 @@ Modular sections — add, hide, or reorder without code:
 - [ ] **Homepage hero** — slides, placeholders, overlay opacity.
 - [ ] **Genus shortcuts** — collection per card, placeholders.
 - [ ] **Featured collection** — collection, copy, count, gradient colors.
-- [ ] **Collection banner** (`main-collection-banner.liquid`) — collection **Title**, **Description** (centered hero copy), and optional **Collection image** for the backdrop.
+- [ ] **Collection banner** (`main-collection-banner.liquid`) — **Illustration image** upload (`illustration_image`), collection **Title**, optional **Description**.
 - [ ] **Contact template** — FAQ blocks, social URLs.
 - [ ] **About template** — curator, laboratory, scientific plates (see **§6.4**).
 - [ ] **Footer** — brand story, contact fields, social URLs, menu, newsletter, payment icons.
@@ -281,4 +282,4 @@ Modular sections — add, hide, or reorder without code:
 
 ---
 
-*Last aligned with theme files: `assets/theme.js`, `assets/base.css`, `layout/theme.liquid`, `sections/main-collection-banner.liquid`, `sections/main-product.liquid`, `sections/main-collection-product-grid.liquid`, `snippets/product-card-badges.liquid`, `templates/collection.json`, `locales/en.default.json`, `locales/en.default.schema.json`, plus `sections/about-template.liquid`, `sections/genus-shortcuts.liquid`, `sections/footer.liquid`, `sections/featured-collection.liquid`, `sections/featured-specimen.liquid`, `sections/conservatory-standards.liquid`, `.cursor/context/admin-checklist.md`.*
+*Last aligned with theme files: `assets/theme.js`, `assets/nepenthes-anatomy.svg`, `sections/main-collection-banner.liquid`, `sections/main-product.liquid`, `snippets/wax-seal-badge.liquid`, `locales/en.default.json`, `locales/en.default.schema.json`, `.cursor/context/admin-checklist.md`.*

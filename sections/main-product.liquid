@@ -2,6 +2,11 @@
   comment
     Theme Editor / zero-product onboarding fallbacks (see placeholder-images.md).
   endcomment
+  assign force_mock = false
+  if request.design_mode
+    assign force_mock = true
+  endif
+
   assign mock_title = 'Nepenthes edwardsiana'
   assign mock_price = 450000
   assign mock_latin_name = 'N. edwardsiana (Highland)'
@@ -17,17 +22,42 @@
   assign mock_gallery_url_2 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Large_lower_pitcher_of_wild_Nepenthes_rajah_plant.jpg?width=1600'
   assign mock_gallery_url_3 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa_036.jpg?width=1600'
 
+  unless force_mock
+    if product != blank
+      if product.handle contains 'preview'
+        assign force_mock = true
+      endif
+    endif
+  endunless
+
   assign use_live_product = false
   if product
     if product.id != blank
-      assign use_live_product = true
+      unless force_mock
+        assign use_live_product = true
+      endunless
     endif
   endif
 
   assign has_gallery = false
   assign show_mock_gallery = true
 
-  if use_live_product
+  if force_mock
+    assign use_live_product = false
+    assign show_mock_gallery = true
+    assign display_title = mock_title
+    assign latin_name = mock_latin_name
+    assign difficulty = mock_difficulty
+    assign temperature_group = mock_temperature_group
+    assign trap_type = mock_trap_type
+    assign dormancy_required = mock_dormancy_required
+    assign price_cents = mock_price
+    assign compare_at_cents = 0
+    assign product_description = mock_description
+    assign has_gallery = false
+    assign status_inventory = mock_inventory
+    assign status_mode = 'limited'
+  elsif use_live_product
     assign display_title = product.title | default: mock_title
     assign latin_name = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name | default: mock_latin_name
     assign difficulty_raw = product.metafields.custom.difficulty.value | default: product.metafields.custom.difficulty
@@ -138,7 +168,8 @@
 -%}
 
 <article
-  class="main-product reveal-up{% unless use_live_product %} main-product--preview{% endunless %}"
+  class="main-product reveal-up{% if force_mock or use_live_product == false %} main-product--preview{% endif %}"
+  data-force-mock="{% if force_mock %}true{% else %}false{% endif %}"
   data-main-product
   data-status-limited-template="{{ 'products.main.status_limited' | t: count: '__COUNT__' | escape }}"
   data-status-cultivating="{{ 'products.main.status_cultivating' | t | escape }}"
@@ -147,14 +178,13 @@
   {{ section.shopify_attributes }}
 >
   <div class="main-product__layout">
-    <div class="main-product__gallery" data-product-gallery>
+    <div class="main-product__gallery product__media" data-product-gallery>
       {%- if use_live_product and has_gallery -%}
-        <div class="main-product__gallery-primary">
-          {%- for media in gallery_media -%}
+        {%- for media in gallery_media -%}
+          <div class="product__media-item main-product__gallery-frame">
             {%- if forloop.first -%}
-              {% render 'product-card-badges', product_item: product, mock_tags: mock_tags %}
+              {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
             {%- endif -%}
-            <figure class="main-product__gallery-frame">
               {%- liquid
                 assign gallery_loading = 'lazy'
                 assign gallery_priority = 'auto'
@@ -174,48 +204,45 @@
                   fetchpriority: gallery_priority,
                   alt: media.alt | default: display_title
               }}
-            </figure>
-          {%- endfor -%}
-        </div>
+          </div>
+        {%- endfor -%}
       {%- elsif show_mock_gallery -%}
         {%- comment -%} TODO: replace placeholders — nepenthes-highland-product-01 (placeholder-images.md) {%- endcomment -%}
-        <div class="main-product__gallery-primary">
-          {% render 'product-card-badges', product_item: product, mock_tags: mock_tags %}
-          <figure class="main-product__gallery-frame">
-            <img
-              class="main-product__gallery-image main-product__gallery-image--fallback"
-              src="{{ mock_gallery_url_1 }}"
-            alt="{{ display_title }}"
+        <div class="product__media-item main-product__gallery-frame">
+          {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
+          <img
+            class="main-product__gallery-image main-product__gallery-image--fallback"
+            src="{{ mock_gallery_url_1 }}"
+            alt="{{ display_title | escape }}"
             width="1600"
             height="2000"
             loading="eager"
             fetchpriority="high"
-              decoding="async"
-            >
-          </figure>
+            decoding="async"
+          >
         </div>
-        <figure class="main-product__gallery-frame">
+        <div class="product__media-item main-product__gallery-frame">
           <img
             class="main-product__gallery-image main-product__gallery-image--fallback"
             src="{{ mock_gallery_url_2 }}"
-            alt="{{ latin_name }}"
+            alt="{{ latin_name | escape }}"
             width="1600"
             height="2000"
             loading="lazy"
             decoding="async"
           >
-        </figure>
-        <figure class="main-product__gallery-frame">
+        </div>
+        <div class="product__media-item main-product__gallery-frame">
           <img
             class="main-product__gallery-image main-product__gallery-image--fallback"
             src="{{ mock_gallery_url_3 }}"
-            alt="{{ display_title }}"
+            alt="{{ display_title | escape }}"
             width="1600"
             height="2000"
             loading="lazy"
             decoding="async"
           >
-        </figure>
+        </div>
       {%- endif -%}
     </div>
 
@@ -490,10 +517,10 @@
   }
 
   .main-product__layout {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-2xl);
-    align-items: start;
     width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
     margin-inline: auto;
   }
@@ -502,29 +529,18 @@
     overflow: visible;
   }
 
-  .main-product__gallery {
+  .main-product__gallery.product__media {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     width: 100%;
     min-width: 0;
+    height: auto;
+    overflow: visible;
   }
 
-  .main-product__gallery-primary {
+  .product__media-item.main-product__gallery-frame {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .main-product__gallery-primary .product-card__badges {
-    position: absolute;
-    top: var(--space-md);
-    inset-inline-end: var(--space-md);
-    z-index: 4;
-  }
-
-  .main-product__gallery-frame {
     margin: 0;
     width: 100%;
     overflow: hidden;
@@ -865,15 +881,23 @@
 
   @media (min-width: 990px) {
     .main-product__layout {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      flex-direction: row;
+      align-items: flex-start;
       gap: var(--space-3xl);
     }
 
-    .main-product__gallery {
+    .main-product__gallery.product__media {
+      flex: 3 1 0;
       position: sticky;
-      top: 2rem;
-      align-self: start;
-      height: max-content;
+      top: 20px;
+      align-self: flex-start;
+      height: auto;
+      overflow: visible;
+    }
+
+    .main-product__dossier {
+      flex: 2 1 0;
+      min-width: 0;
     }
   }
 

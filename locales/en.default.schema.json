@@ -188,7 +188,12 @@
       }
     },
     "collection_banner": {
-      "name": "Collection banner"
+      "name": "Collection banner",
+      "settings": {
+        "anatomy_header": "Anatomy illustration",
+        "illustration_image": "Illustration image",
+        "illustration_image_info": "Transparent PNG of a plant anatomy drawing. Recommended size 800×1000px or larger."
+      }
     },
     "collection_hero": {
       "name": "Collection hero",

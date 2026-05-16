@@ -115,4 +115,6 @@
     resetStaggerCounters(event.target);
     initRevealUp(event.target);
   });
+
+  console.log('Botanical Animations Loaded');
 })();
