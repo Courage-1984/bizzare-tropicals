@@ -1,0 +1,23 @@
+# Git
+.git/
+.gitignore
+
+# Node (If you ever use npm for linting/formatting)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Shopify CLI & Local environment
+.shopify/
+.env
+
+# MacOS/Windows System Files
+.DS_Store
+Thumbs.db
+
+# Do not ignore:
+# !/layout/
+# !/templates/
+# !/sections/
+# !/snippets/
+# !/assets/

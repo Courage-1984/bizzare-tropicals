@@ -1,0 +1,36 @@
+# Custom Shopify OS 2.0 Theme - Governance & Standards
+
+## 1. Core Architecture & Tech Stack
+- **Framework:** Shopify Online Store 2.0.
+- **Templating:** Liquid.
+- **Styling:** Pure Vanilla CSS (No Tailwind, Sass, or external frameworks). Use native CSS variables (`:root`) for global theming.
+- **Scripting:** Pure Vanilla JavaScript (ES6+). No jQuery, React, or build steps like Vite.
+- **Localization:** South African market. Default currency is ZAR (Rand).
+
+## 2. Store Structure & Taxonomy Rules
+When generating schemas, sections, or logic, assume the following store architecture:
+- **Products:** ~80+ items.
+- **Collections (Genera):** Drosera, Nepenthes (with Highland, Intermediate, Lowland sub-filtering), Pinguicula, Heliamphora, Cephalotus, Utricularia, Darlingtonia, Byblis, Drossophyllum, Sarracenia, Dionaea, Other, and Growing Supplies.
+- **Content Strategy:** Care instructions must be integrated directly into the specific Genus/Collection pages (not isolated on separate generic care pages).
+- **Core Pages:** Home (featuring News, New Stock, Specials), About Us, Contact Us.
+
+## 3. JavaScript & Performance Standards
+- Write modular, event-driven Vanilla JS. Scope scripts to their specific sections to avoid global namespace pollution.
+- **Error Handling:** Ensure absolute syntax precision. All `try...catch` blocks must be structurally complete to prevent `Uncaught SyntaxError: catch without try` exceptions. 
+- **DOM Manipulation:** Keep the DOM lightweight. Use efficient querying (`querySelector`, `getElementById`).
+- **Performance:** Prioritize Core Web Vitals. Implement native lazy loading (`loading="lazy"`) for all off-screen imagery, especially high-fidelity macro plant photography.
+
+## 4. Styling & Aesthetics
+- Maintain a clean, high-performance visual aesthetic.
+- **Animations:** Hardware-accelerate all animations. Isolate complex visual effects (e.g., parallax layers, subtle CRT/glitch transitions) to GPU-accelerated properties (`transform`, `opacity`) so they do not block the main rendering thread.
+- Ensure strict vertical alignment and responsive scaling to prevent text clipping or critical information falling below the fold across viewports.
+
+## 5. SEO & Metadata
+- Integrate technical SEO best practices natively.
+- Generate accurate JSON-LD schema markup dynamically via Liquid for Products, Collections, and Breadcrumbs.
+- Ensure highly semantic HTML5 structure (`<header>`, `<main>`, `<article>`, `<section>`, `<footer>`).
+
+## 6. Code Output & Output Neutrality
+- **White-Label Code:** Maintain strictly neutral code comments and outputs. Do not inject, reference, or include any specific agency branding, names, or localized color palettes (e.g., Logi-Ink branding).
+- When providing data structural examples (like CSV or Excel formatting for product imports), utilize standard, unstyled, and robust formatting to ensure cross-platform integrity.
+- Never delete existing code unless explicitly instructed to perform a refactor. Additions should be modular and non-destructive.
