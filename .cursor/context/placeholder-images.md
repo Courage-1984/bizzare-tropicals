@@ -19,7 +19,7 @@ Public-domain and Creative-Commons-licensed images sourced from **Wikimedia Comm
 
 | Plant Genus / Component | Semantic Filename | Live URL |
 |---|---|---|
-| **Site — Home Hero** | `home-hero-banner.jpg` | https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_var_rubricorpora_2.jpg?width=2400 |
+| **Site — Home Hero** | `home-hero-banner.jpg` | https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=2400 |
 | **Drosera — Hero** | `drosera-hero-banner.jpg` | https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2000 |
 | **Drosera — Macro** | `drosera-macro-01.jpg` | https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1600 |
 | **Drosera — Product** | `drosera-product-01.jpg` | https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_aliciae2_ies.jpg?width=1200 |

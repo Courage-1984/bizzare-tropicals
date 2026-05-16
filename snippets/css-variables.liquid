@@ -1,18 +1,101 @@
+{% doc %}
+  Outputs global design tokens as CSS custom properties on :root.
+  Integrates theme editor font and color settings with static botanical fallbacks.
+{% enddoc %}
+
 {% style %}
-  {% # Loads all font variantions with display: swap %}
-  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {% liquid
+    assign font_primary = settings.type_primary_font
+  %}
+
+  {{ font_primary | font_face: font_display: 'swap' }}
+  {{ font_primary | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ font_primary | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ font_primary | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
 
   :root {
-    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
-    --font-primary--style: {{ settings.type_primary_font.style }};
-    --font-primary--weight: {{ settings.type_primary_font.weight }};
-    --page-width: {{ settings.max_page_width }};
-    --page-margin: {{ settings.min_page_margin }}px;
-    --color-background: {{ settings.background_color }};
-    --color-foreground: {{ settings.foreground_color }};
-    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+    /* Color — botanical neutrals with theme editor overrides */
+    --color-background: {{ settings.background_color | default: '#faf9f6' }};
+    --color-surface: #f3f1eb;
+    --color-surface-elevated: #ffffff;
+    --color-text: {{ settings.foreground_color | default: '#1a1f1c' }};
+    --color-text-muted: #4a524c;
+    --color-text-inverse: #ffffff;
+    --color-primary: #1b3d2f;
+    --color-primary-hover: #142e24;
+    --color-accent: #2d5a45;
+    --color-border: #d8e0da;
+    --color-border-strong: #b8c4bc;
+    --color-focus: #2d5a45;
+    --color-overlay: rgb(26 31 28 / 0.48);
+
+    /* Legacy aliases consumed by existing sections */
+    --color-foreground: var(--color-text);
+    --style-border-radius-inputs: {{ settings.input_corner_radius | default: 4 }}px;
+
+    /* Typography */
+    --font-family-base: {{ font_primary.family }}, {{ font_primary.fallback_families }};
+    --font-family-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --font-family-heading: var(--font-family-base);
+    --font-primary--family: var(--font-family-base);
+    --font-primary--style: {{ font_primary.style }};
+    --font-primary--weight: {{ font_primary.weight }};
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-md: 1.125rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+    --font-size-3xl: 2.5rem;
+    --line-height-tight: 1.2;
+    --line-height-base: 1.5;
+    --line-height-relaxed: 1.65;
+    --letter-spacing-tight: -0.02em;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.04em;
+
+    /* Spacing scale */
+    --space-2xs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    --space-4xl: 6rem;
+
+    /* Layout */
+    --page-width: {{ settings.max_page_width | default: '90rem' }};
+    --page-margin: {{ settings.min_page_margin | default: 20 }}px;
+    --header-height: 4.5rem;
+    --content-max-width: var(--page-width);
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-input: var(--style-border-radius-inputs);
+    --radius-full: 9999px;
+    --shadow-sm: 0 1px 2px rgb(26 31 28 / 0.06);
+    --shadow-md: 0 4px 12px rgb(26 31 28 / 0.08);
+    --shadow-lg: 0 12px 32px rgb(26 31 28 / 0.12);
+    --z-header: 100;
+    --z-dropdown: 110;
+    --z-overlay: 120;
+    --z-drawer: 130;
+
+    /* Motion — GPU-friendly defaults */
+    --duration-instant: 100ms;
+    --duration-fast: 150ms;
+    --duration-base: 250ms;
+    --duration-slow: 400ms;
+    --duration-ambient: 24s;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-base: var(--duration-base) var(--ease-out);
+    --transition-fast: var(--duration-fast) var(--ease-out);
+    --transition-transform: transform var(--duration-base) var(--ease-emphasis);
+    --transition-opacity: opacity var(--duration-fast) var(--ease-out);
   }
 {% endstyle %}

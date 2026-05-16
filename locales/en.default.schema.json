@@ -33,6 +33,35 @@
     "theme": "Theme",
     "typography": "Typography"
   },
+  "sections": {
+    "homepage_hero": {
+      "name": "Homepage hero",
+      "settings": {
+        "overlay_opacity": "Overlay opacity"
+      },
+      "blocks": {
+        "slide": {
+          "name": "Slide",
+          "settings": {
+            "image": "Image",
+            "heading": "Heading",
+            "subheading": "Subheading",
+            "button_label": "Button label",
+            "button_link": "Button link"
+          }
+        }
+      }
+    }
+  },
+  "header": {
+    "settings": {
+      "logo": "Logo image",
+      "navigation": "Navigation",
+      "menu_desktop": "Desktop menu",
+      "menu_mobile": "Mobile menu",
+      "menu_mobile_info": "Optional. Uses the desktop menu when empty."
+    }
+  },
   "labels": {
     "alignment": "Alignment",
     "background": "Background",
@@ -72,6 +101,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

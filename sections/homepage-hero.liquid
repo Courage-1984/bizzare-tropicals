@@ -1,0 +1,726 @@
+{%- liquid
+  assign overlay_opacity = section.settings.overlay_opacity | default: 50 | times: 1.0 | divided_by: 100.0
+  assign slide_count = section.blocks.size
+-%}
+
+<section
+  class="homepage-hero full-width"
+  data-hero-slider
+  data-section-id="{{ section.id }}"
+  style="--hero-overlay-opacity: {{ overlay_opacity }};"
+  {% if slide_count > 0 %}
+    aria-roledescription="carousel"
+    aria-label="{{ 'sections.homepage_hero.carousel_label' | t }}"
+  {% endif %}
+  {{ section.shopify_attributes }}
+>
+  {%- if slide_count > 0 -%}
+    <div class="homepage-hero__viewport">
+      <div class="homepage-hero__slides" data-hero-slides>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign slide_image = block.settings.image
+            assign use_shopify_image = false
+
+            if slide_image != blank and slide_image.width > 0
+              assign use_shopify_image = true
+            endif
+
+            if forloop.index == 1
+              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400'
+            elsif forloop.index == 2
+              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400'
+            elsif forloop.index == 3
+              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400'
+            else
+              assign placeholder_modulo = forloop.index | modulo: 3
+              if placeholder_modulo == 1
+                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400'
+              elsif placeholder_modulo == 2
+                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400'
+              else
+                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400'
+              endif
+            endif
+
+            assign slide_heading = block.settings.heading
+            assign slide_subheading = block.settings.subheading
+            assign slide_button_label = block.settings.button_label
+            assign slide_button_link = block.settings.button_link
+            assign is_first_slide = false
+            if forloop.first
+              assign is_first_slide = true
+            endif
+
+            assign slide_alt = slide_heading
+            if slide_alt == blank
+              assign slide_alt = shop.name
+            endif
+          -%}
+
+          <article
+            id="hero-slide-{{ block.id }}"
+            class="homepage-hero__slide{% if forloop.first %} is-active{% endif %}"
+            data-hero-slide
+            data-block-id="{{ block.id }}"
+            data-slide-index="{{ forloop.index0 }}"
+            aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <div
+              class="homepage-hero__media{% unless use_shopify_image %} homepage-hero__media--fallback{% endunless %}"
+              aria-hidden="true"
+              {% unless use_shopify_image %}
+                style="background-image: url('{{ placeholder_url }}');"
+              {% endunless %}
+            >
+              {%- if use_shopify_image -%}
+                {%- if is_first_slide -%}
+                  {{
+                    slide_image
+                    | image_url: width: 2400
+                    | image_tag:
+                      class: 'homepage-hero__image organic-zoom',
+                      widths: '750, 1100, 1500, 1800, 2400',
+                      sizes: '100vw',
+                      alt: slide_alt,
+                      loading: 'eager',
+                      fetchpriority: 'high'
+                  }}
+                {%- else -%}
+                  {{
+                    slide_image
+                    | image_url: width: 2400
+                    | image_tag:
+                      class: 'homepage-hero__image organic-zoom',
+                      widths: '750, 1100, 1500, 1800, 2400',
+                      sizes: '100vw',
+                      alt: slide_alt,
+                      loading: 'lazy'
+                  }}
+                {%- endif -%}
+              {%- else -%}
+                {%- comment -%} TODO: replace placeholder before launch — .cursor/context/placeholder-images.md {%- endcomment -%}
+                <img
+                  class="homepage-hero__image homepage-hero__image--fallback organic-zoom"
+                  src="{{ placeholder_url }}"
+                  alt="{% if slide_heading != blank %}{{ slide_heading | escape }}{% else %}{{ shop.name | escape }}{% endif %}"
+                  width="2400"
+                  height="1600"
+                  {% if is_first_slide %}
+                    loading="eager"
+                    fetchpriority="high"
+                  {% else %}
+                    loading="lazy"
+                  {% endif %}
+                  decoding="async"
+                >
+              {%- endif -%}
+              <div class="homepage-hero__overlay"></div>
+            </div>
+
+            <div class="homepage-hero__content">
+              {%- if slide_heading != blank -%}
+                {%- if is_first_slide -%}
+                  <h1 class="homepage-hero__heading font-serif">{{ slide_heading | escape }}</h1>
+                {%- else -%}
+                  <h2 class="homepage-hero__heading font-serif">{{ slide_heading | escape }}</h2>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if slide_subheading != blank -%}
+                <p class="homepage-hero__subheading">{{ slide_subheading | escape }}</p>
+              {%- endif -%}
+
+              {%- if slide_button_label != blank and slide_button_link != blank -%}
+                <a class="homepage-hero__button" href="{{ slide_button_link }}">
+                  {{- slide_button_label | escape -}}
+                </a>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if slide_count > 1 -%}
+      <div class="homepage-hero__controls">
+        <button
+          type="button"
+          class="homepage-hero__arrow homepage-hero__arrow--prev"
+          data-hero-prev
+          aria-label="{{ 'sections.homepage_hero.prev_slide' | t }}"
+        >
+          <span aria-hidden="true">&larr;</span>
+        </button>
+
+        <div class="homepage-hero__dots" data-hero-dots role="tablist" aria-label="{{ 'sections.homepage_hero.slide_dots' | t }}">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="homepage-hero__dot{% if forloop.first %} is-active{% endif %}"
+              data-hero-dot
+              data-slide-index="{{ forloop.index0 }}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="hero-slide-{{ block.id }}"
+              aria-label="{{ 'sections.homepage_hero.go_to_slide' | t: index: forloop.index }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+
+        <button
+          type="button"
+          class="homepage-hero__arrow homepage-hero__arrow--next"
+          data-hero-next
+          aria-label="{{ 'sections.homepage_hero.next_slide' | t }}"
+        >
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    {%- endif -%}
+  {%- else -%}
+    <div class="homepage-hero__empty">
+      <p>{{ 'sections.homepage_hero.empty' | t }}</p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .homepage-hero {
+    position: relative;
+    width: 100%;
+    min-height: clamp(22rem, 72svh, 42rem);
+    overflow: hidden;
+    color: var(--color-text-inverse);
+  }
+
+  .homepage-hero__viewport {
+    position: absolute;
+    inset: 0;
+  }
+
+  .homepage-hero__slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+  }
+
+  .homepage-hero__slide {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.7s var(--ease-out),
+      visibility 0.7s var(--ease-out);
+  }
+
+  .homepage-hero__slide.is-active {
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .homepage-hero__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-color: var(--color-primary-hover);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .homepage-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale3d(1, 1, 1);
+    will-change: transform;
+  }
+
+  .homepage-hero__slide.is-active .homepage-hero__image.organic-zoom {
+    animation: organicZoom 20s var(--ease-in-out) infinite alternate;
+  }
+
+  .homepage-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 85% 70% at 50% 45%,
+        rgb(12 18 14 / calc(var(--hero-overlay-opacity) * 0.15)) 0%,
+        rgb(12 18 14 / calc(var(--hero-overlay-opacity) * 0.65)) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(12 18 14 / calc(var(--hero-overlay-opacity) * 0.45)) 0%,
+        rgb(12 18 14 / calc(var(--hero-overlay-opacity) * 0.35)) 40%,
+        rgb(12 18 14 / var(--hero-overlay-opacity)) 100%
+      );
+  }
+
+  .homepage-hero__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    width: 100%;
+    max-width: 42rem;
+    margin-inline: auto;
+    padding: var(--space-3xl) var(--page-margin);
+    text-align: center;
+  }
+
+  .homepage-hero__heading {
+    margin: 0;
+    font-size: clamp(1.875rem, 4.5vw + 0.75rem, 3.25rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    text-shadow: 0 2px 28px rgb(0 0 0 / 0.45);
+  }
+
+  .homepage-hero__heading.font-serif {
+    font-style: normal;
+  }
+
+  .homepage-hero__subheading {
+    margin: 0;
+    max-width: 36ch;
+    font-family: var(--font-family-base);
+    font-size: clamp(1rem, 1.25vw + 0.75rem, 1.1875rem);
+    font-weight: 400;
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.9);
+    text-wrap: pretty;
+    text-shadow: 0 1px 18px rgb(0 0 0 / 0.35);
+  }
+
+  .homepage-hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.875rem;
+    padding: var(--space-sm) var(--space-2xl);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-primary-hover);
+    background-color: var(--color-background);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .homepage-hero__button:hover {
+    color: var(--color-text-inverse);
+    background-color: var(--color-accent);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .homepage-hero__controls {
+    position: absolute;
+    inset-inline: 0;
+    bottom: var(--space-lg);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    padding-inline: var(--page-margin);
+    pointer-events: none;
+  }
+
+  .homepage-hero__arrow,
+  .homepage-hero__dot {
+    pointer-events: auto;
+  }
+
+  .homepage-hero__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-text-inverse);
+    background: rgb(12 18 14 / 0.35);
+    border: 1px solid rgb(255 255 255 / 0.25);
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(6px);
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .homepage-hero__arrow:hover {
+    background: rgb(12 18 14 / 0.55);
+    border-color: rgb(255 255 255 / 0.45);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .homepage-hero__dots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+  }
+
+  .homepage-hero__dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    padding: 0;
+    cursor: pointer;
+    background: rgb(255 255 255 / 0.35);
+    border: 1px solid rgb(255 255 255 / 0.5);
+    border-radius: var(--radius-full);
+    transition:
+      transform var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+
+  .homepage-hero__dot.is-active {
+    background: var(--color-background);
+    transform: scale(1.2);
+  }
+
+  .homepage-hero__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: inherit;
+    padding: var(--space-2xl);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 749px) {
+    .homepage-hero {
+      min-height: clamp(20rem, 65svh, 34rem);
+    }
+
+    .homepage-hero__content {
+      gap: var(--space-md);
+      padding-block: var(--space-2xl);
+    }
+
+    .homepage-hero__subheading {
+      max-width: none;
+    }
+
+    .homepage-hero__controls {
+      bottom: var(--space-md);
+    }
+
+    .homepage-hero__arrow {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .homepage-hero__slide {
+      transition: none;
+    }
+
+    .homepage-hero__slide.is-active .homepage-hero__image.organic-zoom {
+      animation: none;
+      transform: scale3d(1, 1, 1);
+    }
+
+    .homepage-hero__button:hover,
+    .homepage-hero__arrow:hover {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    var SECTION_SELECTOR = '[data-hero-slider]';
+
+    function initHeroSlider(root) {
+      if (!root || root.dataset.heroSliderInitialized === 'true') {
+        return;
+      }
+
+      var slides = Array.prototype.slice.call(root.querySelectorAll('[data-hero-slide]'));
+      if (slides.length === 0) {
+        return;
+      }
+
+      var prevButton = root.querySelector('[data-hero-prev]');
+      var nextButton = root.querySelector('[data-hero-next]');
+      var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-dot]'));
+      var currentIndex = 0;
+      var slidesLength = slides.length;
+
+      slides.forEach(function (slide, index) {
+        if (slide.classList.contains('is-active')) {
+          currentIndex = index;
+        }
+      });
+
+      function setActiveSlide(index, options) {
+        var opts = options || {};
+        var nextIndex = index;
+
+        if (nextIndex < 0) {
+          nextIndex = slidesLength - 1;
+        }
+
+        if (nextIndex >= slidesLength) {
+          nextIndex = 0;
+        }
+
+        if (nextIndex === currentIndex && !opts.force) {
+          return;
+        }
+
+        try {
+          slides.forEach(function (slide, slideIndex) {
+            var isActive = slideIndex === nextIndex;
+            slide.classList.toggle('is-active', isActive);
+            slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+          });
+
+          dots.forEach(function (dot, dotIndex) {
+            var isActive = dotIndex === nextIndex;
+            dot.classList.toggle('is-active', isActive);
+            dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+
+          currentIndex = nextIndex;
+        } catch (error) {
+          console.error('Homepage hero: failed to change slide.', error);
+        }
+      }
+
+      function goToNext() {
+        setActiveSlide(currentIndex + 1);
+      }
+
+      function goToPrev() {
+        setActiveSlide(currentIndex - 1);
+      }
+
+      function bindControl(element, handler) {
+        if (!element) {
+          return;
+        }
+
+        element.addEventListener('click', function (event) {
+          try {
+            event.preventDefault();
+            handler();
+          } catch (error) {
+            console.error('Homepage hero: control handler failed.', error);
+          }
+        });
+      }
+
+      bindControl(prevButton, goToPrev);
+      bindControl(nextButton, goToNext);
+
+      dots.forEach(function (dot) {
+        dot.addEventListener('click', function (event) {
+          try {
+            event.preventDefault();
+            var index = parseInt(dot.getAttribute('data-slide-index'), 10);
+            if (!isNaN(index)) {
+              setActiveSlide(index, { force: true });
+            }
+          } catch (error) {
+            console.error('Homepage hero: dot navigation failed.', error);
+          }
+        });
+      });
+
+      root.goToHeroSlide = function (index) {
+        setActiveSlide(index, { force: true });
+      };
+
+      root.goToHeroSlideByBlockId = function (blockId) {
+        var targetIndex = slides.findIndex(function (slide) {
+          return slide.getAttribute('data-block-id') === blockId;
+        });
+
+        if (targetIndex >= 0) {
+          setActiveSlide(targetIndex, { force: true });
+        }
+      };
+
+      root.dataset.heroSliderInitialized = 'true';
+    }
+
+    function initAllHeroSliders(scope) {
+      var context = scope || document;
+      var sliders = context.querySelectorAll(SECTION_SELECTOR);
+
+      sliders.forEach(function (slider) {
+        slider.dataset.heroSliderInitialized = 'false';
+        initHeroSlider(slider);
+      });
+    }
+
+    try {
+      initAllHeroSliders(document);
+
+      document.addEventListener('shopify:section:load', function (event) {
+        try {
+          if (!event.target) {
+            return;
+          }
+
+          initAllHeroSliders(event.target);
+        } catch (error) {
+          console.error('Homepage hero: section load handler failed.', error);
+        }
+      });
+
+      document.addEventListener('shopify:block:select', function (event) {
+        try {
+          if (!event.target || !event.detail || !event.detail.blockId) {
+            return;
+          }
+
+          var slider = event.target.querySelector(SECTION_SELECTOR);
+          if (!slider) {
+            return;
+          }
+
+          if (typeof slider.goToHeroSlideByBlockId === 'function') {
+            slider.goToHeroSlideByBlockId(event.detail.blockId);
+          } else {
+            initHeroSlider(slider);
+            if (typeof slider.goToHeroSlideByBlockId === 'function') {
+              slider.goToHeroSlideByBlockId(event.detail.blockId);
+            }
+          }
+        } catch (error) {
+          console.error('Homepage hero: block select handler failed.', error);
+        }
+      });
+    } catch (error) {
+      console.error('Homepage hero: slider failed to initialize.', error);
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.homepage_hero.name",
+  "tag": "section",
+  "class": "homepage-hero-section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "t:sections.homepage_hero.settings.overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "t:sections.homepage_hero.blocks.slide.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.homepage_hero.blocks.slide.settings.image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.homepage_hero.blocks.slide.settings.heading",
+          "default": "Slide heading"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "t:sections.homepage_hero.blocks.slide.settings.subheading",
+          "default": "Supporting line for this slide."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.homepage_hero.blocks.slide.settings.button_label",
+          "default": "Explore"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.homepage_hero.blocks.slide.settings.button_link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.homepage_hero.name",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Sundews in macro detail",
+            "subheading": "Flypaper traps, dew-lined leaves, and species curated for South African growers.",
+            "button_label": "Shop Drosera",
+            "button_link": "/collections/drosera"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Nepenthes pitchers up close",
+            "subheading": "Highland, intermediate, and lowland groups for every collection level.",
+            "button_label": "Shop Nepenthes",
+            "button_link": "/collections/nepenthes"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Pinguicula in living colour",
+            "subheading": "Butterworts with luminous foliage and approachable windowsill culture.",
+            "button_label": "Shop Pinguicula",
+            "button_link": "/collections/pinguicula"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

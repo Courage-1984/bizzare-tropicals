@@ -1,0 +1,80 @@
+{% doc %}
+  Renders a single navigation item, recursing for nested child links.
+
+  @param {link} link - The navigation link
+  @param {string} nav_id - Unique id prefix for aria controls
+  @param {string} [variant] - `desktop` or `mobile`
+  @param {number} [depth] - Nesting depth (default: 0)
+  @param {number} index - Sibling index for unique ids
+{% enddoc %}
+
+{%- liquid
+  assign nav_variant = variant | default: 'desktop'
+  assign nav_depth = depth | default: 0
+  assign has_children = false
+
+  if link.links != blank
+    assign has_children = true
+  endif
+
+  assign item_id = nav_id | append: '-item-' | append: index
+-%}
+
+<li
+  class="site-nav__item{% if has_children %} site-nav__item--has-children{% endif %}{% if link.active %} site-nav__item--active{% endif %}{% if link.child_active %} site-nav__item--child-active{% endif %}"
+  {% if has_children %}
+    data-nav-has-children
+  {% endif %}
+>
+  {%- if has_children -%}
+    <div class="site-nav__parent">
+      <a
+        class="site-nav__link site-nav__link--parent"
+        href="{{ link.url }}"
+        {% if link.active %}
+          aria-current="page"
+        {% endif %}
+      >
+        {{- link.title | escape -}}
+      </a>
+      <button
+        type="button"
+        class="site-nav__toggle"
+        aria-expanded="false"
+        aria-controls="{{ item_id }}-submenu"
+        data-nav-submenu-toggle
+      >
+        <span class="visually-hidden">
+          {{- 'header.submenu_toggle' | t: title: link.title -}}
+        </span>
+        <span class="site-nav__toggle-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+    <ul
+      id="{{ item_id }}-submenu"
+      class="site-nav__submenu site-nav__submenu--depth-{{ nav_depth | plus: 1 }}{% if nav_variant == 'mobile' %} site-nav__submenu--mobile{% endif %}"
+      role="list"
+      data-nav-submenu
+    >
+      {%- for child_link in link.links -%}
+        {%- render 'site-nav-item',
+          link: child_link,
+          nav_id: item_id,
+          variant: nav_variant,
+          depth: nav_depth | plus: 1,
+          index: forloop.index
+        -%}
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    <a
+      class="site-nav__link"
+      href="{{ link.url }}"
+      {% if link.active %}
+        aria-current="page"
+      {% endif %}
+    >
+      {{- link.title | escape -}}
+    </a>
+  {%- endif -%}
+</li>

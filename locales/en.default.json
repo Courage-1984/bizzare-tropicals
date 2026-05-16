@@ -1,4 +1,24 @@
 {
+  "sections": {
+    "homepage_hero": {
+      "carousel_label": "Homepage hero slideshow",
+      "prev_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "slide_dots": "Choose slide",
+      "go_to_slide": "Go to slide {{ index }}",
+      "empty": "Add slides to build the homepage hero."
+    }
+  },
+  "header": {
+    "account": "Account",
+    "cart": "View cart",
+    "cart_with_count": "Cart, {{ count }} items",
+    "menu_close": "Close menu",
+    "menu_open": "Open menu",
+    "nav_desktop": "Main navigation",
+    "nav_mobile": "Mobile navigation",
+    "submenu_toggle": "Toggle {{ title }} submenu"
+  },
   "404": {
     "title": "404",
     "not_found": "Page not found.",

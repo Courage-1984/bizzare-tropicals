@@ -1,0 +1,32 @@
+{% doc %}
+  Renders a nested navigation list from a Shopify link list.
+
+  @param {linklist} menu - The navigation link list
+  @param {string} nav_id - Unique id prefix for aria controls
+  @param {string} [variant] - `desktop` or `mobile` (default: desktop)
+
+  @example
+  {% render 'site-nav', menu: section.settings.menu_desktop, nav_id: 'primary', variant: 'desktop' %}
+{% enddoc %}
+
+{%- liquid
+  assign nav_variant = variant | default: 'desktop'
+  assign nav_links = menu.links
+-%}
+
+{%- if nav_links != blank -%}
+  <ul
+    class="site-nav__list site-nav__list--depth-0 site-nav__list--{{ nav_variant }}"
+    role="list"
+  >
+    {%- for link in nav_links -%}
+      {%- render 'site-nav-item',
+        link: link,
+        nav_id: nav_id,
+        variant: nav_variant,
+        depth: 0,
+        index: forloop.index
+      -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

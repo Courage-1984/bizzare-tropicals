@@ -21,8 +21,8 @@ When generating schemas, sections, or logic, assume the following store architec
 - **Performance:** Prioritize Core Web Vitals. Implement native lazy loading (`loading="lazy"`) for all off-screen imagery, especially high-fidelity macro plant photography.
 
 ## 4. Styling & Aesthetics
-- Maintain a clean, high-performance visual aesthetic.
-- **Animations:** Hardware-accelerate all animations. Isolate complex visual effects (e.g., parallax layers, subtle CRT/glitch transitions) to GPU-accelerated properties (`transform`, `opacity`) so they do not block the main rendering thread.
+- **Aesthetic:** High-End Botanical Field Guide. Colors should be organic (deep greens, earthy tones, stark off-whites for contrast). Animations must be smooth, natural, and subtle (e.g., slow image scaling on hover or scroll to emphasize plant textures). Typography should mix elegant serifs for Latin taxonomy with highly legible sans-serifs for UI/ecommerce elements.
+- **Animations:** Hardware-accelerate all motion. Restrict effects to GPU-friendly properties (`transform`, `opacity`) so they do not block the main rendering thread.
 - Ensure strict vertical alignment and responsive scaling to prevent text clipping or critical information falling below the fold across viewports.
 
 ## 5. SEO & Metadata
