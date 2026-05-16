@@ -31,10 +31,15 @@
               assign card_title = block.settings.title
               assign card_link = block.settings.link
               assign card_image = block.settings.image
-              assign placeholder_url = block.settings.placeholder_image | default: default_placeholder
+              assign placeholder_url = block.settings.placeholder_image
+              if placeholder_url contains 'Venus_Flytrap_(Dionaea_muscipula)'
+                assign placeholder_url = blank
+              endif
+              assign genus_handle = card_title | handleize
               assign use_shopify_image = false
 
               if card_collection != blank
+                assign genus_handle = card_collection.handle
                 if card_title == blank
                   assign card_title = card_collection.title
                 endif
@@ -50,11 +55,29 @@
                 endif
               endif
 
+              if card_link == blank
+                if card_title != blank
+                  assign card_link = card_title | handleize | prepend: '/collections/'
+                endif
+              endif
+
               if card_image != blank
                 if card_image.width > 0
                   assign use_shopify_image = true
                 endif
               endif
+
+              unless use_shopify_image
+                if placeholder_url == blank
+                  capture genus_placeholder
+                    render 'genus-placeholder-url', genus_handle: genus_handle
+                  endcapture
+                  assign placeholder_url = genus_placeholder | strip
+                endif
+                if placeholder_url == blank
+                  assign placeholder_url = default_placeholder
+                endif
+              endunless
             -%}
 
             {%- if card_title != blank -%}

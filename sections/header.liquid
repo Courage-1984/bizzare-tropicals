@@ -3,12 +3,12 @@
   assign menu_mobile = section.settings.menu_mobile | default: menu_desktop
 -%}
 
+<div class="header-wrapper" {{ section.shopify_attributes }}>
 <header
   class="site-header"
   data-site-header
   data-label-menu-open="{{ 'header.menu_open' | t | escape }}"
   data-label-menu-close="{{ 'header.menu_close' | t | escape }}"
-  {{ section.shopify_attributes }}
 >
   <div class="site-header__inner">
     <div class="site-header__brand">
@@ -26,7 +26,7 @@
               fetchpriority: 'high'
           }}
         {%- else -%}
-          <span class="site-header__logo-text">{{ 'header.logo_text' | t }}</span>
+          <span class="h2 logo-text">Bizarre Tropicals</span>
         {%- endif -%}
       </a>
     </div>
@@ -135,6 +135,7 @@
     </div>
   {%- endif -%}
 </header>
+</div>
 
 {% stylesheet %}
   .visually-hidden {
@@ -149,11 +150,16 @@
     border: 0;
   }
 
-  .site-header {
-    position: sticky;
+  .header-wrapper {
+    position: fixed;
     top: 0;
-    z-index: 100;
-    isolation: isolate;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+  }
+
+  .site-header {
     color: var(--color-forest-green-dark);
     background-color: rgba(245, 243, 238, 0.9);
     border-bottom: 1px solid rgb(0 0 0 / 0.05);
@@ -185,13 +191,17 @@
     color: var(--color-forest-green-dark);
   }
 
-  .site-header__logo-text {
+  .site-header__logo .logo-text {
+    display: block;
+    margin: 0;
     font-family: var(--font-family-serif);
     font-size: 1.5rem;
+    font-style: normal;
     font-weight: 400;
     letter-spacing: 0.05em;
     line-height: var(--line-height-tight);
-    color: inherit;
+    text-transform: none;
+    color: var(--color-forest-green-dark);
   }
 
   .site-header__logo-image {
@@ -607,9 +617,28 @@
     'use strict';
 
     var header = document.querySelector('[data-site-header]');
+    var headerWrapper = document.querySelector('.header-wrapper');
     if (!header) {
       return;
     }
+
+    function setHeaderOffset() {
+      try {
+        var measured = headerWrapper || header;
+        if (!measured) {
+          return;
+        }
+        document.documentElement.style.setProperty(
+          '--header-height',
+          measured.offsetHeight + 'px'
+        );
+      } catch (error) {
+        console.error('Site header: failed to measure header height.', error);
+      }
+    }
+
+    setHeaderOffset();
+    window.addEventListener('resize', setHeaderOffset);
 
     var menuToggle = header.querySelector('[data-menu-toggle]');
     var mobileLayer = header.querySelector('[data-mobile-layer]');

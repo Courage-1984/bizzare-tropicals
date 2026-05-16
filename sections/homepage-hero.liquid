@@ -27,12 +27,31 @@
               assign use_shopify_image = true
             endif
 
-            assign placeholder_url = block.settings.placeholder_image | default: default_placeholder
-
+            assign placeholder_url = block.settings.placeholder_image
+            assign slide_handle = ''
             assign slide_heading = block.settings.heading
             assign slide_subheading = block.settings.subheading
             assign slide_button_label = block.settings.button_label
             assign slide_button_link = block.settings.button_link
+
+            if slide_button_link != blank
+              if slide_button_link contains '/collections/'
+                assign slide_handle = slide_button_link | split: '/collections/' | last | split: '?' | first | split: '/' | first
+              endif
+            endif
+
+            unless use_shopify_image
+              if placeholder_url == blank
+                capture hero_placeholder
+                  render 'hero-slide-placeholder-url', genus_handle: slide_handle
+                endcapture
+                assign placeholder_url = hero_placeholder | strip
+              endif
+              if placeholder_url == blank
+                assign placeholder_url = default_placeholder
+              endif
+            endunless
+
             assign is_first_slide = false
             if forloop.first
               assign is_first_slide = true
@@ -57,7 +76,7 @@
               class="homepage-hero__media{% if use_shopify_image == false and placeholder_url != blank %} homepage-hero__media--fallback{% endif %}"
               aria-hidden="true"
               {% if use_shopify_image == false and placeholder_url != blank %}
-                style="background-image: url('{{ placeholder_url }}');"
+                style="background-image: url('{{ placeholder_url | escape }}');"
               {% endif %}
             >
               {%- if use_shopify_image -%}
@@ -89,7 +108,7 @@
                 {%- comment -%} TODO: replace placeholder before launch — .cursor/context/placeholder-images.md {%- endcomment -%}
                 <img
                   class="homepage-hero__image homepage-hero__image--fallback organic-zoom"
-                  src="{{ placeholder_url }}"
+                  src="{{ placeholder_url | escape }}"
                   alt="{% if slide_heading != blank %}{{ slide_heading | escape }}{% else %}{{ shop.name | escape }}{% endif %}"
                   width="2400"
                   height="1600"
@@ -786,7 +805,7 @@
       "id": "default_placeholder_image",
       "label": "t:sections.homepage_hero.settings.default_placeholder_image",
       "info": "t:sections.homepage_hero.settings.default_placeholder_image_info",
-      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400"
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=2400"
     }
   ],
   "blocks": [
@@ -841,7 +860,8 @@
             "heading": "Sundews in macro detail",
             "subheading": "Flypaper traps, dew-lined leaves, and species curated for South African growers.",
             "button_label": "Shop Drosera",
-            "button_link": "/collections/drosera"
+            "button_link": "/collections/drosera",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400"
           }
         },
         {
@@ -850,7 +870,8 @@
             "heading": "Nepenthes pitchers up close",
             "subheading": "Highland, intermediate, and lowland groups for every collection level.",
             "button_label": "Shop Nepenthes",
-            "button_link": "/collections/nepenthes"
+            "button_link": "/collections/nepenthes",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400"
           }
         },
         {
@@ -859,7 +880,8 @@
             "heading": "Pinguicula in living colour",
             "subheading": "Butterworts with luminous foliage and approachable windowsill culture.",
             "button_label": "Shop Pinguicula",
-            "button_link": "/collections/pinguicula"
+            "button_link": "/collections/pinguicula",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400"
           }
         },
         {
@@ -868,7 +890,8 @@
             "heading": "Cephalotus follicularis",
             "subheading": "The Albany pitcher plant — toothed traps and sculptural form from Western Australia.",
             "button_label": "Shop Cephalotus",
-            "button_link": "/collections/cephalotus"
+            "button_link": "/collections/cephalotus",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=2400"
           }
         },
         {
@@ -877,7 +900,8 @@
             "heading": "Heliamphora sun pitchers",
             "subheading": "Elegant tepui architecture for collectors who love structural, highland pitfall traps.",
             "button_label": "Shop Heliamphora",
-            "button_link": "/collections/heliamphora"
+            "button_link": "/collections/heliamphora",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=2400"
           }
         }
       ]

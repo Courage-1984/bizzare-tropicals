@@ -235,6 +235,7 @@
     "alignment": "Alignment",
     "background": "Background",
     "favicon": "Favicon image",
+    "favicon_info": "Square PNG recommended (32×32 or larger). Shown in browser tabs.",
     "foreground": "Foreground",
     "grid_gap": "Grid spacing",
     "grid_item_width": "Grid item width",

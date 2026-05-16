@@ -2,6 +2,7 @@
 <html lang="{{ request.locale.iso_code }}" class="no-js">
   <head>
     <meta charset="utf-8">
+    {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{%- endif -%}
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
     {%- render 'css-variables' -%}
@@ -14,14 +15,6 @@
     {{ 'base.css' | asset_url | stylesheet_tag }}
 
     {%- render 'meta-tags' -%}
-
-    {%- if settings.favicon != blank -%}
-      <link
-        rel="icon"
-        type="image/png"
-        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
-      >
-    {%- endif -%}
 
     {{ content_for_header }}
   </head>

@@ -11,6 +11,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scroll-padding-top: var(--header-height);
 }
 
 body {
@@ -19,6 +20,8 @@ body {
   margin: 0;
   min-height: 100svh;
   min-height: 100dvh;
+  overflow-x: clip;
+  overflow-y: visible;
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
@@ -325,9 +328,44 @@ a {
   color: inherit;
 }
 
-main {
+main,
+#main-content {
   flex: 1 0 auto;
   width: 100%;
+  padding-top: var(--header-height);
+  overflow: visible;
+}
+
+/* Header shell — pinned via .header-wrapper (theme markup), not section-group selectors */
+.shopify-section-group-header-group,
+[id='shopify-section-group-header-group'],
+.site-header-section.shopify-section {
+  display: block;
+  height: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  grid-template-columns: none;
+  overflow: visible;
+}
+
+.site-header-section.shopify-section > * {
+  grid-column: auto;
+}
+
+.header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.site-header__logo .logo-text {
+  margin: 0;
+  color: var(--color-forest-green-dark);
 }
 
 /* Sticky footer — main grows, footer stays at bottom on short pages */

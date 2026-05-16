@@ -1,0 +1,43 @@
+{% doc %}
+  Outputs a Wikimedia Commons hero banner URL for a genus collection handle.
+
+  @param {string} genus_handle - Collection handle from slide button link (e.g. drosera)
+
+  @example
+  {% capture url %}{% render 'hero-slide-placeholder-url', genus_handle: 'nepenthes' %}{% endcapture %}
+{% enddoc %}
+
+{%- liquid
+  assign handle = genus_handle | handleize
+-%}
+
+{%- case handle -%}
+  {%- when 'drosera' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400
+  {%- when 'nepenthes' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400
+  {%- when 'pinguicula' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400
+  {%- when 'cephalotus' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=2400
+  {%- when 'heliamphora' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=2400
+  {%- when 'dionaea' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=2400
+  {%- when 'sarracenia' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=2400
+  {%- when 'utricularia' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Greater_Bladderwort_Utricularia_vulgaris_(6171429381).jpg?width=2400
+  {%- when 'darlingtonia' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonias.JPG?width=2400
+  {%- when 'byblis' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/ByblisLinifloraHabitus.JPG?width=2400
+  {%- when 'drossophyllum' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_RBGK.JPG?width=2400
+  {%- when 'other' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Aldrovanda_vesiculosa.jpg?width=2400
+  {%- when 'growing-supplies' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Sphagnum_centrale.jpeg?width=2400
+  {%- else -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=2400
+{%- endcase -%}
