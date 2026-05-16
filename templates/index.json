@@ -32,12 +32,32 @@
             "button_label": "Shop Pinguicula",
             "button_link": "/collections/pinguicula"
           }
+        },
+        "slide_cephalotus": {
+          "type": "slide",
+          "settings": {
+            "heading": "Cephalotus follicularis",
+            "subheading": "The Albany pitcher plant — toothed traps and sculptural form from Western Australia.",
+            "button_label": "Shop Cephalotus",
+            "button_link": "/collections/cephalotus"
+          }
+        },
+        "slide_heliamphora": {
+          "type": "slide",
+          "settings": {
+            "heading": "Heliamphora sun pitchers",
+            "subheading": "Elegant tepui architecture for collectors who love structural, highland pitfall traps.",
+            "button_label": "Shop Heliamphora",
+            "button_link": "/collections/heliamphora"
+          }
         }
       },
       "block_order": [
         "slide_drosera",
         "slide_nepenthes",
-        "slide_pinguicula"
+        "slide_pinguicula",
+        "slide_cephalotus",
+        "slide_heliamphora"
       ]
     },
     "main": {

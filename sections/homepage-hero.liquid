@@ -32,14 +32,22 @@
               assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400'
             elsif forloop.index == 3
               assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400'
+            elsif forloop.index == 4
+              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=2400'
+            elsif forloop.index == 5
+              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=2400'
             else
-              assign placeholder_modulo = forloop.index | modulo: 3
+              assign placeholder_modulo = forloop.index | modulo: 5
               if placeholder_modulo == 1
                 assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400'
               elsif placeholder_modulo == 2
                 assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400'
-              else
+              elsif placeholder_modulo == 3
                 assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400'
+              elsif placeholder_modulo == 4
+                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=2400'
+              else
+                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=2400'
               endif
             endif
 
@@ -144,7 +152,7 @@
     </div>
 
     {%- if slide_count > 1 -%}
-      <div class="homepage-hero__controls">
+      <div class="homepage-hero__controls" data-hero-controls>
         <button
           type="button"
           class="homepage-hero__arrow homepage-hero__arrow--prev"
@@ -211,15 +219,12 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition:
-      opacity 0.7s var(--ease-out),
-      visibility 0.7s var(--ease-out);
+      opacity var(--hero-crossfade) var(--ease-out),
+      visibility var(--hero-crossfade) var(--ease-out);
   }
 
   .homepage-hero__slide.is-active {
@@ -233,8 +238,10 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
+    isolation: isolate;
+    transform: translateZ(0);
     background-color: var(--color-primary-hover);
-    background-position: center;
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
   }
@@ -243,13 +250,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center center;
     transform: scale3d(1, 1, 1);
-    will-change: transform;
+    transform-origin: center center;
+    backface-visibility: hidden;
   }
 
   .homepage-hero__slide.is-active .homepage-hero__image.organic-zoom {
-    animation: organicZoom 20s var(--ease-in-out) infinite alternate;
+    animation: organicZoom var(--duration-ambient) var(--ease-in-out) infinite alternate;
   }
 
   .homepage-hero__overlay {
@@ -272,7 +280,8 @@
   }
 
   .homepage-hero__content {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -284,6 +293,18 @@
     margin-inline: auto;
     padding: var(--space-3xl) var(--page-margin);
     text-align: center;
+    pointer-events: none;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    transition: opacity var(--hero-crossfade) var(--ease-out);
+  }
+
+  .homepage-hero__slide.is-active .homepage-hero__content {
+    pointer-events: auto;
+  }
+
+  .homepage-hero__content .homepage-hero__button {
+    pointer-events: auto;
   }
 
   .homepage-hero__heading {
@@ -465,11 +486,50 @@
     'use strict';
 
     var SECTION_SELECTOR = '[data-hero-slider]';
+    var AUTOPLAY_MS = 7000;
+    var RESUME_DELAY_MS = 8000;
 
-    function initHeroSlider(root) {
-      if (!root || root.dataset.heroSliderInitialized === 'true') {
+    function prefersReducedMotion() {
+      try {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function destroyHeroSlider(root) {
+      if (!root || !root._heroSliderState) {
         return;
       }
+
+      try {
+        var state = root._heroSliderState;
+
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+        }
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
+        state.listeners.forEach(function (entry) {
+          entry.target.removeEventListener(entry.type, entry.handler);
+        });
+      } catch (error) {
+        console.error('Homepage hero: teardown failed.', error);
+      }
+
+      delete root._heroSliderState;
+      root.dataset.heroSliderInitialized = 'false';
+    }
+
+    function initHeroSlider(root) {
+      if (!root) {
+        return;
+      }
+
+      destroyHeroSlider(root);
 
       var slides = Array.prototype.slice.call(root.querySelectorAll('[data-hero-slide]'));
       if (slides.length === 0) {
@@ -478,15 +538,75 @@
 
       var prevButton = root.querySelector('[data-hero-prev]');
       var nextButton = root.querySelector('[data-hero-next]');
+      var controls = root.querySelector('[data-hero-controls]');
       var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-dot]'));
       var currentIndex = 0;
       var slidesLength = slides.length;
+      var autoplayPaused = false;
+      var state = {
+        autoplayTimer: null,
+        resumeTimer: null,
+        listeners: []
+      };
+
+      function trackListener(target, type, handler) {
+        target.addEventListener(type, handler);
+        state.listeners.push({ target: target, type: type, handler: handler });
+      }
 
       slides.forEach(function (slide, index) {
         if (slide.classList.contains('is-active')) {
           currentIndex = index;
         }
       });
+
+      function stopAutoplay() {
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+          state.autoplayTimer = null;
+        }
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+
+        if (slidesLength <= 1 || autoplayPaused || prefersReducedMotion()) {
+          return;
+        }
+
+        state.autoplayTimer = setInterval(function () {
+          try {
+            setActiveSlide(currentIndex + 1, { fromAutoplay: true });
+          } catch (error) {
+            console.error('Homepage hero: autoplay tick failed.', error);
+          }
+        }, AUTOPLAY_MS);
+      }
+
+      function pauseAutoplay() {
+        autoplayPaused = true;
+        stopAutoplay();
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+          state.resumeTimer = null;
+        }
+      }
+
+      function scheduleAutoplayResume() {
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
+        state.resumeTimer = setTimeout(function () {
+          try {
+            autoplayPaused = false;
+            startAutoplay();
+          } catch (error) {
+            console.error('Homepage hero: autoplay resume failed.', error);
+          }
+        }, RESUME_DELAY_MS);
+      }
 
       function setActiveSlide(index, options) {
         var opts = options || {};
@@ -502,6 +622,11 @@
 
         if (nextIndex === currentIndex && !opts.force) {
           return;
+        }
+
+        if (!opts.fromAutoplay) {
+          pauseAutoplay();
+          scheduleAutoplayResume();
         }
 
         try {
@@ -524,11 +649,11 @@
       }
 
       function goToNext() {
-        setActiveSlide(currentIndex + 1);
+        setActiveSlide(currentIndex + 1, { force: true });
       }
 
       function goToPrev() {
-        setActiveSlide(currentIndex - 1);
+        setActiveSlide(currentIndex - 1, { force: true });
       }
 
       function bindControl(element, handler) {
@@ -536,7 +661,7 @@
           return;
         }
 
-        element.addEventListener('click', function (event) {
+        trackListener(element, 'click', function (event) {
           try {
             event.preventDefault();
             handler();
@@ -550,7 +675,7 @@
       bindControl(nextButton, goToNext);
 
       dots.forEach(function (dot) {
-        dot.addEventListener('click', function (event) {
+        trackListener(dot, 'click', function (event) {
           try {
             event.preventDefault();
             var index = parseInt(dot.getAttribute('data-slide-index'), 10);
@@ -563,11 +688,22 @@
         });
       });
 
+      if (controls) {
+        trackListener(controls, 'pointerdown', pauseAutoplay);
+        trackListener(controls, 'pointerenter', pauseAutoplay);
+        trackListener(controls, 'focusin', pauseAutoplay);
+        trackListener(controls, 'pointerup', scheduleAutoplayResume);
+        trackListener(controls, 'pointerleave', scheduleAutoplayResume);
+        trackListener(controls, 'focusout', scheduleAutoplayResume);
+      }
+
       root.goToHeroSlide = function (index) {
         setActiveSlide(index, { force: true });
       };
 
       root.goToHeroSlideByBlockId = function (blockId) {
+        pauseAutoplay();
+
         var targetIndex = slides.findIndex(function (slide) {
           return slide.getAttribute('data-block-id') === blockId;
         });
@@ -577,7 +713,9 @@
         }
       };
 
+      root._heroSliderState = state;
       root.dataset.heroSliderInitialized = 'true';
+      startAutoplay();
     }
 
     function initAllHeroSliders(scope) {
@@ -585,7 +723,6 @@
       var sliders = context.querySelectorAll(SECTION_SELECTOR);
 
       sliders.forEach(function (slider) {
-        slider.dataset.heroSliderInitialized = 'false';
         initHeroSlider(slider);
       });
     }
@@ -602,6 +739,21 @@
           initAllHeroSliders(event.target);
         } catch (error) {
           console.error('Homepage hero: section load handler failed.', error);
+        }
+      });
+
+      document.addEventListener('shopify:section:unload', function (event) {
+        try {
+          if (!event.target) {
+            return;
+          }
+
+          var slider = event.target.querySelector(SECTION_SELECTOR);
+          if (slider) {
+            destroyHeroSlider(slider);
+          }
+        } catch (error) {
+          console.error('Homepage hero: section unload handler failed.', error);
         }
       });
 
@@ -717,6 +869,24 @@
             "subheading": "Butterworts with luminous foliage and approachable windowsill culture.",
             "button_label": "Shop Pinguicula",
             "button_link": "/collections/pinguicula"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Cephalotus follicularis",
+            "subheading": "The Albany pitcher plant — toothed traps and sculptural form from Western Australia.",
+            "button_label": "Shop Cephalotus",
+            "button_link": "/collections/cephalotus"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Heliamphora sun pitchers",
+            "subheading": "Elegant tepui architecture for collectors who love structural, highland pitfall traps.",
+            "button_label": "Shop Heliamphora",
+            "button_link": "/collections/heliamphora"
           }
         }
       ]
