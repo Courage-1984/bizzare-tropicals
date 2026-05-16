@@ -34,3 +34,32 @@ When generating schemas, sections, or logic, assume the following store architec
 - **White-Label Code:** Maintain strictly neutral code comments and outputs. Do not inject, reference, or include any specific agency branding, names, or localized color palettes (e.g., Logi-Ink branding).
 - When providing data structural examples (like CSV or Excel formatting for product imports), utilize standard, unstyled, and robust formatting to ensure cross-platform integrity.
 - Never delete existing code unless explicitly instructed to perform a refactor. Additions should be modular and non-destructive.
+
+## 7. Admin Checklist Governance
+The file `.cursor/context/admin-checklist.md` is the **single source of truth** for manual Shopify Admin and Theme Editor steps. Keep it accurate whenever theme work affects merchant configuration.
+
+### When you MUST update `admin-checklist.md`
+Update the checklist in the **same change** (same PR or commit batch) when you:
+- Add, rename, or remove **product/collection metafields** referenced in Liquid (`metafields.custom.*`).
+- Add or change **section/block schema settings** that merchants must configure (Theme Editor paths, defaults, limits such as `max_blocks`).
+- Introduce new **templates**, **page handles**, **collection handles**, or **navigation** expectations.
+- Change **footer**, **homepage**, or **global theme settings** that require admin input (contact fields, social URLs, payments, featured collection, hero slides).
+- Add **payment gateways**, **apps**, or **checkout** behaviour documented for merchants.
+- Change **content formatting rules** merchants must follow (e.g., collection description structure for the Cultivation Dossier).
+- Remove or replace **placeholder** assets/content with production requirements.
+
+### How to update it
+- Mirror **exact** namespace keys, setting IDs, handles, and admin menu paths used in code—no approximations.
+- Split entries into **required by theme** vs **recommended / future** when only part of the spec is implemented in Liquid.
+- Use checkbox lists (`- [ ]`) for actionable merchant steps; keep prose concise and professional.
+- Refresh the footer line *Last aligned with theme files:* listing the Liquid files you touched.
+- Cross-check against `.cursor/context/client-brief.md` for taxonomy and metafield intent; resolve conflicts in favour of **what the code actually reads**.
+
+### When you may skip a checklist update
+- Pure CSS/visual tweaks with no new merchant configuration.
+- Internal refactors that do not change schemas, metafields, templates, or admin-facing behaviour.
+- Comment-only or copy changes inside locale files that do not introduce new setup steps.
+
+### Agent workflow
+- Before marking theme work complete, ask: *Does a merchant need to do something in Shopify Admin for this to work?* If yes, document it in `admin-checklist.md`.
+- If the user requests admin/setup documentation elsewhere, prefer updating `admin-checklist.md` rather than duplicating steps in chat or new markdown files.

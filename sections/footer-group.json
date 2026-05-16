@@ -14,7 +14,13 @@
         "contact_email": "info@bizarretropicals.co.za",
         "contact_phone": "+27 (WhatsApp Preferred)",
         "currency_note": "All prices in South African Rand (ZAR · R)",
-        "show_payment_icons": true
+        "show_payment_icons": true,
+        "show_social": true,
+        "facebook_url": "https://www.facebook.com/bizarretropicals/",
+        "instagram_url": "https://www.instagram.com/bizarretropicals/",
+        "copyright_text": "© 2026 Bizarre Tropicals | Designed and hosted by",
+        "designer_link_url": "https://logi-ink.co.za/",
+        "designer_link_label": "Logi-Ink"
       }
     }
   },

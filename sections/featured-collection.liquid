@@ -11,15 +11,20 @@
   assign section_heading = section.settings.heading
   assign section_subheading = section.settings.subheading
   assign view_all_label = section.settings.view_all_label
+  assign background_color_start = section.settings.background_color_start | default: '#1e3320'
+  assign background_color_end = section.settings.background_color_end | default: '#0a140b'
 -%}
 
 <section
-  class="featured-collection"
+  class="featured-collection full-width"
   data-featured-carousel
   aria-labelledby="featured-collection-heading-{{ section.id }}"
+  style="--featured-collection-bg-start: {{ background_color_start }}; --featured-collection-bg-end: {{ background_color_end }};"
   {{ section.shopify_attributes }}
 >
-  <header class="featured-collection__header">
+  <div class="featured-collection__environment">
+          <div class="featured-collection__environment-inner">
+      <header class="featured-collection__header">
     <div class="featured-collection__intro">
       {%- if section_heading != blank -%}
         <h2 id="featured-collection-heading-{{ section.id }}" class="featured-collection__title">
@@ -99,17 +104,43 @@
       >
         {%- for i in (1..8) -%}
           <li class="featured-collection__item" data-carousel-item role="listitem">
-            {% render 'product-card', sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw' %}
+            {% render 'product-card',
+              card_index: forloop.index0,
+              sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
+            %}
           </li>
         {%- endfor -%}
       </ul>
     </div>
-  {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
 </section>
 
 {% stylesheet %}
   .featured-collection {
-    padding-block: var(--space-3xl);
+    --featured-collection-ink: var(--color-parchment);
+    --featured-collection-ink-muted: rgb(247 244 237 / 0.78);
+    display: grid;
+    grid-template-columns: var(--content-grid);
+    padding-block: 0;
+    color: var(--featured-collection-ink);
+  }
+
+  .featured-collection__environment {
+    grid-column: 1 / -1;
+    padding-block: 5rem;
+    background: linear-gradient(145deg, var(--featured-collection-bg-start) 0%, var(--featured-collection-bg-end) 100%);
+  }
+
+  .featured-collection__environment-inner {
+    display: grid;
+    grid-template-columns: var(--content-grid);
+    min-width: 0;
+  }
+
+  .featured-collection__environment-inner > * {
+    grid-column: 2;
   }
 
   .featured-collection__header {
@@ -127,6 +158,7 @@
     font-weight: 600;
     line-height: var(--line-height-tight);
     letter-spacing: var(--letter-spacing-tight);
+    color: var(--featured-collection-ink);
   }
 
   .featured-collection__subtitle {
@@ -134,7 +166,7 @@
     max-width: 42ch;
     font-size: var(--font-size-md);
     line-height: var(--line-height-relaxed);
-    color: var(--color-text-muted);
+    color: var(--featured-collection-ink-muted);
   }
 
   .featured-collection__actions {
@@ -151,10 +183,11 @@
     text-transform: uppercase;
     text-decoration: underline;
     text-underline-offset: 0.2em;
+    color: var(--featured-collection-ink);
   }
 
   .featured-collection__view-all:hover {
-    color: var(--color-accent);
+    color: #fdfbf7;
   }
 
   .featured-collection__nav {
@@ -166,6 +199,25 @@
     display: inline-flex;
   }
 
+  .featured-collection .product-card__link {
+    border-color: rgb(247 244 237 / 0.12);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
+  }
+
+  .featured-collection .product-card__title,
+  .featured-collection .product-card__price,
+  .featured-collection .product-card__price-regular {
+    color: var(--color-text);
+  }
+
+  .featured-collection .product-card__latin {
+    color: var(--color-text-muted);
+  }
+
+  .featured-collection .product-card__link:hover .product-card__title {
+    color: var(--color-primary);
+  }
+
   .featured-collection__arrow {
     display: inline-flex;
     align-items: center;
@@ -174,9 +226,9 @@
     height: 2.75rem;
     padding: 0;
     cursor: pointer;
-    color: var(--color-text-inverse);
-    background-color: var(--color-primary);
-    border: 1px solid transparent;
+    color: #0a140b;
+    background-color: var(--featured-collection-ink);
+    border: 1px solid rgb(247 244 237 / 0.35);
     border-radius: var(--radius-full);
     transition:
       background-color var(--transition-fast),
@@ -185,7 +237,7 @@
   }
 
   .featured-collection__arrow:hover:not(:disabled) {
-    background-color: var(--color-primary-hover);
+    background-color: #fdfbf7;
     transform: translate3d(0, -1px, 0);
   }
 
@@ -220,7 +272,7 @@
   }
 
   .featured-collection__track:focus-visible {
-    outline: 2px solid var(--color-focus);
+    outline: 2px solid var(--featured-collection-ink);
     outline-offset: 4px;
   }
 
@@ -237,6 +289,12 @@
     color: var(--color-text-muted);
     background-color: var(--color-surface);
     border-radius: var(--radius-md);
+  }
+
+  @media (max-width: 749px) {
+    .featured-collection__environment {
+      padding-block: var(--space-3xl);
+    }
   }
 
   @media (min-width: 750px) {
@@ -466,6 +524,18 @@
       "id": "view_all_label",
       "label": "t:sections.featured_collection.settings.view_all_label",
       "default": "View all"
+    },
+    {
+      "type": "color",
+      "id": "background_color_start",
+      "label": "t:sections.featured_collection.settings.background_color_start",
+      "default": "#1e3320"
+    },
+    {
+      "type": "color",
+      "id": "background_color_end",
+      "label": "t:sections.featured_collection.settings.background_color_end",
+      "default": "#0a140b"
     }
   ],
   "presets": [

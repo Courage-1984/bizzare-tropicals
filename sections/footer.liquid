@@ -29,45 +29,55 @@
         {%- if section.settings.brand_heading != blank -%}
           <h2 class="site-footer__heading site-footer__heading--brand">{{ section.settings.brand_heading | escape }}</h2>
         {%- endif -%}
-        {%- liquid
-          if section.settings.brand_story != blank
+        {%- if section.settings.brand_story != blank -%}
+          {%- liquid
             assign brand_story_html = section.settings.brand_story
             if brand_story_html contains '&lt;'
               assign brand_story_html = brand_story_html | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&'
             endif
-          else
-            assign brand_story_html = '<p>Bizarre Tropicals is a South African carnivorous plant nursery run by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p>'
-          endif
-        -%}
-        <div class="site-footer__richtext rte">{{ brand_story_html }}</div>
+          -%}
+          <div class="site-footer__richtext rte">{{ brand_story_html }}</div>
+        {%- endif -%}
 
-        <div class="site-footer__social">
-          <h3 class="visually-hidden">{{ 'footer.social_heading' | t }}</h3>
-          <ul class="site-footer__social-list" role="list">
-            <li>
-              <a
-                class="site-footer__link site-footer__social-link"
-                href="https://www.facebook.com/bizarretropicals/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{ 'footer.social_facebook' | t }}
-                <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="site-footer__link site-footer__social-link"
-                href="https://www.instagram.com/bizarretropicals/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{ 'footer.social_instagram' | t }}
-                <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+        {%- if section.settings.show_social -%}
+          {%- liquid
+            assign footer_facebook_url = section.settings.facebook_url
+            assign footer_instagram_url = section.settings.instagram_url
+          -%}
+          {%- if footer_facebook_url != blank or footer_instagram_url != blank -%}
+            <div class="site-footer__social">
+              <h3 class="visually-hidden">{{ 'footer.social_heading' | t }}</h3>
+              <ul class="site-footer__social-list" role="list">
+                {%- if footer_facebook_url != blank -%}
+                  <li>
+                    <a
+                      class="site-footer__link site-footer__social-link"
+                      href="{{ footer_facebook_url }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {{ 'footer.social_facebook' | t }}
+                      <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if footer_instagram_url != blank -%}
+                  <li>
+                    <a
+                      class="site-footer__link site-footer__social-link"
+                      href="{{ footer_instagram_url }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {{ 'footer.social_instagram' | t }}
+                      <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
       </div>
 
       <div class="site-footer__column">
@@ -158,8 +168,17 @@
       <div class="site-footer__bar-start">
         <p class="site-footer__currency">{{ section.settings.currency_note | escape }}</p>
         <p class="site-footer__copyright">
-          © 2026 Bizarre Tropicals | Designed and hosted by
-          <a href="https://logi-ink.co.za/" target="_blank" rel="noopener noreferrer">Logi-Ink</a>
+          {%- if section.settings.copyright_text != blank -%}
+            {{ section.settings.copyright_text | escape }}
+          {%- endif -%}
+          {%- if section.settings.designer_link_url != blank and section.settings.designer_link_label != blank -%}
+            {%- if section.settings.copyright_text != blank -%}
+              {{ ' ' }}
+            {%- endif -%}
+            <a href="{{ section.settings.designer_link_url }}" target="_blank" rel="noopener noreferrer">
+              {{- section.settings.designer_link_label | escape -}}
+            </a>
+          {%- endif -%}
         </p>
       </div>
 
@@ -522,6 +541,22 @@
       "default": "<p>Bizarre Tropicals is a South African carnivorous plant nursery run by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p>"
     },
     {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "t:sections.footer.settings.show_social",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "t:sections.footer.settings.facebook_url"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "t:sections.footer.settings.instagram_url"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu"
@@ -567,6 +602,23 @@
       "id": "currency_note",
       "label": "t:sections.footer.settings.currency_note",
       "default": "All prices in South African Rand (ZAR · R)"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "t:sections.footer.settings.copyright_text",
+      "default": "© 2026 Bizarre Tropicals | Designed and hosted by"
+    },
+    {
+      "type": "url",
+      "id": "designer_link_url",
+      "label": "t:sections.footer.settings.designer_link_url"
+    },
+    {
+      "type": "text",
+      "id": "designer_link_label",
+      "label": "t:sections.footer.settings.designer_link_label",
+      "default": "Logi-Ink"
     },
     {
       "type": "checkbox",

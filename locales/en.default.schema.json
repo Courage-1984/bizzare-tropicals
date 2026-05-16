@@ -4,6 +4,8 @@
     "article": "Article",
     "block": "Block",
     "blog": "Blog",
+    "brand": "Brand",
+    "favicon": "Favicon",
     "cart": "Cart",
     "collection": "Collection",
     "collections": "Collections",
@@ -37,13 +39,17 @@
     "homepage_hero": {
       "name": "Homepage hero",
       "settings": {
-        "overlay_opacity": "Overlay opacity"
+        "overlay_opacity": "Overlay opacity",
+        "default_placeholder_image": "Default placeholder image URL",
+        "default_placeholder_image_info": "Used when a slide has no image. Wikimedia Commons URLs are fine for development."
       },
       "blocks": {
         "slide": {
           "name": "Slide",
           "settings": {
             "image": "Image",
+            "placeholder_image": "Placeholder image URL",
+            "placeholder_image_info": "Overrides the section default for this slide only.",
             "heading": "Heading",
             "subheading": "Subheading",
             "button_label": "Button label",
@@ -55,14 +61,19 @@
     "genus_shortcuts": {
       "name": "Genus shortcuts",
       "settings": {
-        "heading": "Section heading"
+        "heading": "Section heading",
+        "default_placeholder_image": "Default placeholder image URL",
+        "default_placeholder_image_info": "Fallback when a card has no image and no per-block placeholder."
       },
       "blocks": {
         "genus": {
           "name": "Genus card",
           "settings": {
-            "genus_key": "Genus",
-            "collection_link": "Collection link"
+            "title_info": "Optional. Uses the collection title when empty.",
+            "link": "Custom link",
+            "link_info": "Optional. Uses the collection URL when empty.",
+            "placeholder_image": "Placeholder image URL",
+            "placeholder_image_info": "Overrides the section default for this card only."
           }
         }
       }
@@ -73,7 +84,9 @@
         "heading": "Heading",
         "subheading": "Subheading",
         "products_to_show": "Products to show",
-        "view_all_label": "View all link label"
+        "view_all_label": "View all link label",
+        "background_color_start": "Background gradient start",
+        "background_color_end": "Background gradient end"
       }
     },
     "footer": {
@@ -81,26 +94,36 @@
       "settings": {
         "brand_heading": "Brand heading",
         "brand_story": "Brand story",
+        "show_social": "Show social links",
         "facebook_url": "Facebook URL",
         "instagram_url": "Instagram URL",
-        "social_url_info": "Leave blank to use the default Bizarre Tropicals profile links.",
+        "social_url_info": "Leave blank to hide that network.",
         "newsletter_heading": "Newsletter heading",
         "newsletter_text": "Newsletter description",
         "newsletter_button_label": "Newsletter button label",
         "contact_address": "Address",
         "contact_email": "Email",
         "contact_phone": "Phone",
-        "currency_note": "Currency note"
+        "currency_note": "Currency note",
+        "copyright_text": "Copyright text",
+        "designer_link_url": "Designer link URL",
+        "designer_link_label": "Designer link label"
       }
     },
     "collection_hero": {
       "name": "Collection hero",
       "settings": {
-        "care_heading": "Care guide heading"
+        "care_heading": "Care guide heading",
+        "placeholder_image": "Placeholder image URL",
+        "placeholder_image_info": "Shown when the collection has no image.",
+        "enable_sticky_dossier": "Sticky care dossier on desktop"
       }
     },
     "main_product": {
       "name": "Product information"
+    },
+    "cart_drawer": {
+      "name": "Cart drawer"
     },
     "main_collection_product_grid": {
       "name": "Collection product grid",
@@ -109,22 +132,92 @@
         "heading_info": "Leave blank to use the collection title."
       }
     },
+    "contact_template": {
+      "name": "Contact page",
+      "settings": {
+        "display_header": "Display options",
+        "show_faq": "Show FAQ",
+        "show_social_links": "Show social links",
+        "enable_sticky_sidebar": "Sticky sidebar on desktop",
+        "form_header": "Contact form",
+        "form_heading": "Page heading",
+        "form_intro": "Introduction",
+        "form_subheading": "Form heading",
+        "panel_header": "Conservatory panel",
+        "panel_heading": "Panel heading",
+        "panel_intro": "Panel introduction",
+        "panel_image": "Panel image",
+        "placeholder_panel_image": "Placeholder panel image URL",
+        "placeholder_panel_image_info": "Used when no panel image is uploaded.",
+        "image_position": "Image position",
+        "image_position_top": "Above text",
+        "image_position_bottom": "Below text",
+        "contact_address": "Address",
+        "contact_email": "Email",
+        "contact_phone": "Phone",
+        "faq_header": "FAQ",
+        "faq_heading": "FAQ heading",
+        "social_header": "Social",
+        "social_heading": "Social heading",
+        "facebook_url": "Facebook URL",
+        "facebook_handle": "Facebook handle label",
+        "instagram_url": "Instagram URL",
+        "instagram_handle": "Instagram handle label"
+      },
+      "blocks": {
+        "faq": {
+          "name": "Question",
+          "settings": {
+            "question": "Question",
+            "answer": "Answer"
+          }
+        }
+      }
+    },
     "about_template": {
       "name": "About page",
       "settings": {
         "hero_header": "Hero",
+        "hero_overline": "Hero overline",
         "hero_heading": "Hero heading",
         "hero_subheading": "Hero subheading",
-        "split_header": "Story section",
+        "split_header": "Science vs nature (story)",
+        "split_image": "Story image",
+        "split_overline": "Story overline",
         "image_position": "Image position",
         "split_heading": "Story heading",
+        "split_heading_info": "Science and history — the \"why\" behind the nursery.",
         "split_text": "Story text",
+        "split_text_info": "Science vs nature narrative for the split section.",
+        "split_placeholder_image": "Story placeholder image URL",
+        "lab_header": "Science vs nature (laboratory)",
+        "lab_overline": "Laboratory overline",
+        "lab_heading": "Laboratory heading",
+        "lab_heading_info": "Tissue culture and propagation — the science pillar.",
+        "lab_text": "Laboratory text",
+        "lab_text_info": "Laboratory and ethics narrative.",
+        "lab_image": "Laboratory image",
+        "lab_placeholder_image": "Laboratory placeholder image URL",
+        "lab_image_position": "Laboratory image position",
+        "curator_header": "The curator",
+        "curator_heading": "Curator heading",
+        "curator_text": "Curator bio",
+        "curator_image": "Curator portrait",
+        "curator_placeholder_image": "Curator placeholder image URL",
+        "curator_signature": "Curator signature",
+        "placeholder_image_info": "Wikimedia Commons URLs are fine for development.",
+        "default_pillar_placeholder": "Default pillar placeholder URL",
         "conservatory_header": "Conservatory",
         "conservatory_heading": "Conservatory heading"
       },
       "blocks": {
         "pillar": {
-          "name": "Pillar"
+          "name": "Pillar",
+          "settings": {
+            "icon": "Icon image",
+            "heading": "Heading",
+            "placeholder_image": "Placeholder image URL"
+          }
         }
       }
     }
@@ -141,6 +234,7 @@
   "labels": {
     "alignment": "Alignment",
     "background": "Background",
+    "favicon": "Favicon image",
     "foreground": "Foreground",
     "grid_gap": "Grid spacing",
     "grid_item_width": "Grid item width",

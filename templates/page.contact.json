@@ -1,0 +1,67 @@
+{
+  "sections": {
+    "contact": {
+      "type": "contact-template",
+      "settings": {
+        "show_faq": true,
+        "show_social_links": true,
+        "enable_sticky_sidebar": true,
+        "form_heading": "Contact",
+        "form_intro": "Questions about availability, shipping live plants, or custom tissue culture — we read every message.",
+        "form_subheading": "Send a message",
+        "panel_heading": "Visit the conservatory",
+        "panel_intro": "Visits are by appointment so we can give your collection the attention it deserves. Reach out to plan a bench tour or discuss a custom order.",
+        "image_position": "top",
+        "contact_address": "Gauteng, South Africa (By Appointment Only)",
+        "contact_email": "info@bizarretropicals.co.za",
+        "contact_phone": "+27 (WhatsApp Preferred)",
+        "faq_heading": "Frequently asked questions",
+        "social_heading": "Follow the growth",
+        "facebook_url": "https://www.facebook.com/bizarretropicals/",
+        "facebook_handle": "@bizarretropicals",
+        "instagram_url": "https://www.instagram.com/bizarretropicals/",
+        "instagram_handle": "@bizarretropicals"
+      },
+      "blocks": {
+        "faq_shipping": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you ship nationwide?",
+            "answer": "<p>Yes. We ship living plants across South Africa using specialized botanical couriers who understand temperature-sensitive freight. Shipping is calculated at checkout based on your destination and order size.</p>"
+          }
+        },
+        "faq_pets": {
+          "type": "faq",
+          "settings": {
+            "question": "Are these plants safe for pets?",
+            "answer": "<p>Carnivorous plants are generally not toxic to cats and dogs, but the traps are delicate. Curious paws can damage pitchers and snap-traps permanently. We recommend placing plants out of reach if your pets like to investigate greenery.</p>"
+          }
+        },
+        "faq_feeding": {
+          "type": "faq",
+          "settings": {
+            "question": "Do I need to feed them?",
+            "answer": "<p>Never use fertilizer — it will burn the roots. Insects caught naturally are ideal. On a windowsill without wild prey, you may occasionally offer a small live or freeze-dried insect, but most plants thrive without hand-feeding if light and water are correct.</p>"
+          }
+        },
+        "faq_water": {
+          "type": "faq",
+          "settings": {
+            "question": "What water should I use?",
+            "answer": "<p>Always use distilled water, reverse-osmosis (RO) water, or clean rainwater. Tap water minerals accumulate in the substrate and will eventually kill carnivorous plants. The tray method works well for most genera we stock.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_shipping",
+        "faq_pets",
+        "faq_feeding",
+        "faq_water"
+      ]
+    }
+  },
+  "order": [
+    "contact"
+  ]
+}
+

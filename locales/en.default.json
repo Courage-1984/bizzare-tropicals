@@ -10,17 +10,26 @@
     },
     "genus_shortcuts": {
       "shop_collection": "Shop collection",
-      "card_label": "{{ genus }} collection"
+      "card_label": "{{ genus }} collection",
+      "strip_label": "Shop by genus",
+      "empty": "Add genus cards in the theme editor."
     },
     "collection_hero": {
+      "dossier_overline": "Cultivation dossier",
       "care_empty": "Add care instructions to this collection's description in the Shopify admin.",
       "care_fallback": {
-        "light_label": "Light:",
-        "light": "Bright indirect sunlight.",
-        "water_label": " Water:",
-        "water": "Distilled or rainwater only (Tray method).",
-        "soil_label": " Soil:",
-        "soil": "Carnivorous plant peat/perlite mix."
+        "light_heading": "Light",
+        "light": "Bright, direct sunlight for 6+ hours.",
+        "water_heading": "Water",
+        "water": "Keep in trays of distilled or RO water.",
+        "substrate_heading": "Substrate",
+        "substrate": "50% Peat Moss / 50% Perlite mix.",
+        "humidity_heading": "Humidity",
+        "humidity": "40% - 60% ambient is sufficient.",
+        "dormancy_heading": "Dormancy",
+        "dormancy": "Requires a cold winter rest period.",
+        "feeding_heading": "Feeding",
+        "feeding": "Do not fertilize. Catches own prey."
       }
     },
     "main_collection_product_grid": {
@@ -35,6 +44,24 @@
       "next": "Next products",
       "empty": "No products in this collection yet.",
       "preview_label": "Preview featured products"
+    },
+    "contact_template": {
+      "form_success": "Thank you for your message. We will respond as soon as possible.",
+      "form_error_heading": "Please correct the following:",
+      "field_name": "Name",
+      "field_email": "Email",
+      "field_phone": "Phone",
+      "field_message": "Message",
+      "submit": "Send message",
+      "detail_address": "Address",
+      "detail_email": "Email",
+      "detail_phone": "Phone / WhatsApp",
+      "social_facebook": "Facebook",
+      "social_instagram": "Instagram"
+    },
+    "about_template": {
+      "hero_overline": "Our story",
+      "lab_overline": "The laboratory"
     }
   },
   "products": {
@@ -86,6 +113,8 @@
   },
   "header": {
     "account": "Account",
+    "logo_text": "Bizarre Tropicals",
+    "search": "Search",
     "cart": "View cart",
     "cart_with_count": "Cart, {{ count }} items",
     "menu_close": "Close menu",
@@ -112,7 +141,20 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "drawer": {
+      "title": "Your collection",
+      "close": "Close cart",
+      "subtotal": "Subtotal",
+      "shipping_note": "Shipping calculated at checkout. Shipped via specialized botanical couriers.",
+      "checkout": "Checkout",
+      "empty_title": "Your collection is currently empty",
+      "continue_exploring": "Continue exploring",
+      "quantity_decrease": "Decrease quantity for {{ product }}",
+      "quantity_increase": "Increase quantity for {{ product }}",
+      "price_sale": "Sale price",
+      "price_regular": "Regular price"
+    }
   },
   "customers": {
     "login": {

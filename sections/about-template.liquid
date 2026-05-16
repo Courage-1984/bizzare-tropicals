@@ -6,8 +6,41 @@
   assign split_text = section.settings.split_text
   assign image_position = section.settings.image_position
   assign conservatory_heading = section.settings.conservatory_heading
-  assign placeholder_split = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1600'
+  assign lab_heading = section.settings.lab_heading
+  assign lab_text = section.settings.lab_text
+  assign lab_image = section.settings.lab_image
+  assign lab_image_position = section.settings.lab_image_position | default: 'right'
+  assign curator_heading = section.settings.curator_heading
+  assign curator_text = section.settings.curator_text
+  assign curator_image = section.settings.curator_image
+  assign hero_overline = section.settings.hero_overline
+  assign split_overline = section.settings.split_overline
+  assign lab_overline = section.settings.lab_overline
+  assign curator_signature = section.settings.curator_signature
+  assign placeholder_split = section.settings.split_placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600'
+  assign placeholder_lab = section.settings.lab_placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1600'
+  assign placeholder_curator = section.settings.curator_placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200'
+  if placeholder_curator contains 'Luther_Burbank'
+    assign placeholder_curator = 'https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200'
+  endif
+  assign default_pillar_placeholder = section.settings.default_pillar_placeholder | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200'
   assign use_split_image = false
+  assign use_lab_image = false
+  assign use_curator_image = false
+
+  if lab_image != blank
+    if lab_image.width > 0
+      assign use_lab_image = true
+    endif
+  endif
+
+  if curator_image != blank
+    if curator_image.width > 0
+      if curator_image.height > 0
+        assign use_curator_image = true
+      endif
+    endif
+  endif
 
   if split_image != blank and split_image.width > 0
     assign use_split_image = true
@@ -18,8 +51,11 @@
   endif
 -%}
 
-<article class="about-page" {{ section.shopify_attributes }}>
+<article class="about-page full-width" {{ section.shopify_attributes }}>
   <header class="about-page__hero">
+    {%- if hero_overline != blank -%}
+      <p class="about-page__hero-overline">{{ hero_overline | escape }}</p>
+    {%- endif -%}
     {%- if hero_heading != blank -%}
       <h1 class="about-page__hero-title">{{ hero_heading | escape }}</h1>
     {%- endif -%}
@@ -29,7 +65,7 @@
   </header>
 
   <section class="about-page__split about-page__split--{{ image_position }}" aria-labelledby="about-split-heading-{{ section.id }}">
-    <div class="about-page__split-media">
+    <div class="about-page__split-media about-page__arch-frame">
       {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
       {%- if use_split_image -%}
         {{
@@ -42,7 +78,7 @@
             loading: 'lazy',
             alt: split_heading
         }}
-      {%- else -%}
+      {%- elsif placeholder_split != blank -%}
         <img
           class="about-page__split-image about-page__split-image--fallback"
           src="{{ placeholder_split }}"
@@ -56,12 +92,108 @@
     </div>
 
     <div class="about-page__split-content">
+      {%- if split_overline != blank -%}
+        <p class="about-page__section-overline">{{ split_overline | escape }}</p>
+      {%- endif -%}
       {%- if split_heading != blank -%}
         <h2 id="about-split-heading-{{ section.id }}" class="about-page__split-heading">{{ split_heading | escape }}</h2>
       {%- endif -%}
       {%- if split_text != blank -%}
         <div class="about-page__split-text rte">{{ split_text }}</div>
       {%- endif -%}
+    </div>
+  </section>
+
+  <section
+    class="about-page__laboratory full-width"
+    aria-labelledby="about-laboratory-heading-{{ section.id }}"
+  >
+    <div class="about-page__laboratory-inner">
+      <div class="about-page__laboratory-grid about-page__laboratory-grid--image-{{ lab_image_position }}">
+        <div class="about-page__laboratory-content">
+          {%- if lab_overline != blank -%}
+            <p class="about-page__section-overline">{{ lab_overline | escape }}</p>
+          {%- endif -%}
+          {%- if lab_heading != blank -%}
+            <h2 id="about-laboratory-heading-{{ section.id }}" class="about-page__laboratory-title">
+              {{ lab_heading | escape }}
+            </h2>
+          {%- endif -%}
+          {%- if lab_text != blank -%}
+            <div class="about-page__laboratory-text rte">{{ lab_text }}</div>
+          {%- endif -%}
+        </div>
+
+        <div class="about-page__laboratory-media about-page__arch-frame">
+          {%- comment -%} TODO: replace placeholder — tissue culture lab flask (placeholder-images.md) {%- endcomment -%}
+          {%- if use_lab_image -%}
+            {{
+              lab_image
+              | image_url: width: 1400, height: 1050, crop: 'center'
+              | image_tag:
+                class: 'about-page__laboratory-image',
+                widths: '600, 900, 1200, 1400',
+                sizes: '(min-width: 990px) 44vw, 100vw',
+                loading: 'lazy',
+                alt: lab_heading
+            }}
+          {%- elsif placeholder_lab != blank -%}
+            <img
+              class="about-page__laboratory-image about-page__laboratory-image--fallback"
+              src="{{ placeholder_lab }}"
+              alt="{{ lab_heading | escape }}"
+              width="1400"
+              height="1050"
+              loading="lazy"
+              decoding="async"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-page__curator" aria-labelledby="about-curator-heading-{{ section.id }}">
+    <div class="about-page__curator-layout">
+      <div class="about-page__curator-portrait about-page__arch-frame about-page__arch-frame--portrait">
+        {%- comment -%} TODO: replace placeholder — curator portrait before launch {%- endcomment -%}
+        {%- if use_curator_image -%}
+          {{
+            curator_image
+            | image_url: width: 800, height: 1000, crop: 'center'
+            | image_tag:
+              class: 'about-page__curator-image',
+              widths: '400, 600, 800',
+              sizes: '(min-width: 750px) 16rem, 40vw',
+              loading: 'lazy',
+              alt: curator_heading
+          }}
+        {%- elsif placeholder_curator != blank -%}
+          <img
+            class="about-page__curator-image about-page__curator-image--fallback"
+            src="{{ placeholder_curator }}"
+            alt="{{ curator_heading | escape }}"
+            width="800"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- endif -%}
+      </div>
+
+      <div class="about-page__curator-copy">
+        {%- if curator_heading != blank -%}
+          <h2 id="about-curator-heading-{{ section.id }}" class="about-page__curator-title">
+            {{ curator_heading | escape }}
+          </h2>
+        {%- endif -%}
+        {%- if curator_text != blank -%}
+          <div class="about-page__curator-text rte">{{ curator_text }}</div>
+        {%- endif -%}
+        {%- if curator_signature != blank -%}
+          <p class="about-page__curator-signature" aria-hidden="true">{{ curator_signature | escape }}</p>
+        {%- endif -%}
+      </div>
     </div>
   </section>
 
@@ -76,7 +208,28 @@
       <ul class="about-page__pillars" role="list">
         {%- for block in section.blocks -%}
           {%- liquid
-            assign pillar_image = block.settings.image
+            assign pillar_image = block.settings.icon
+            if pillar_image == blank
+              assign pillar_image = block.settings.image
+            endif
+            assign pillar_heading = block.settings.heading
+            if pillar_heading == blank
+              assign pillar_heading = block.settings.title
+            endif
+            assign pillar_placeholder = block.settings.placeholder_image
+            if pillar_placeholder == blank
+              case forloop.index
+                when 1
+                  assign pillar_placeholder = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=1200'
+                when 2
+                  assign pillar_placeholder = 'https://commons.wikimedia.org/wiki/Special:FilePath/PerliteUSGOV.jpg?width=1200'
+                else
+                  assign pillar_placeholder = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200'
+              endcase
+            endif
+            if pillar_placeholder == blank
+              assign pillar_placeholder = default_pillar_placeholder
+            endif
             assign use_pillar_image = false
             if pillar_image != blank and pillar_image.width > 0
               assign use_pillar_image = true
@@ -84,23 +237,34 @@
           -%}
 
           <li class="about-page__pillar" {{ block.shopify_attributes }} role="listitem">
-            {%- if use_pillar_image -%}
-              <div class="about-page__pillar-media">
+            <div class="about-page__pillar-media about-page__arch-frame about-page__arch-frame--compact">
+              {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
+              {%- if use_pillar_image -%}
                 {{
                   pillar_image
-                  | image_url: width: 600, height: 450, crop: 'center'
+                  | image_url: width: 600, height: 750, crop: 'center'
                   | image_tag:
                     class: 'about-page__pillar-image',
                     widths: '300, 450, 600',
                     sizes: '(min-width: 750px) 28vw, 88vw',
                     loading: 'lazy',
-                    alt: block.settings.title
+                    alt: pillar_heading
                 }}
-              </div>
-            {%- endif -%}
+              {%- elsif pillar_placeholder != blank -%}
+                <img
+                  class="about-page__pillar-image about-page__pillar-image--fallback"
+                  src="{{ pillar_placeholder }}"
+                  alt="{{ pillar_heading | escape }}"
+                  width="600"
+                  height="750"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {%- endif -%}
+            </div>
 
-            {%- if block.settings.title != blank -%}
-              <h3 class="about-page__pillar-title">{{ block.settings.title | escape }}</h3>
+            {%- if pillar_heading != blank -%}
+              <h3 class="about-page__pillar-title">{{ pillar_heading | escape }}</h3>
             {%- endif -%}
 
             {%- if block.settings.text != blank -%}
@@ -115,27 +279,36 @@
 
 {% stylesheet %}
   .about-page {
-    --about-pad-block: calc(var(--space-3xl) * 0.6);
-    --about-pad-end: calc(var(--space-4xl) * 0.6);
-    --about-section-gap: calc(var(--space-3xl) * 0.6);
-    --about-section-gap-lg: calc(var(--space-4xl) * 0.6);
-    padding-block: var(--about-pad-block) var(--about-pad-end);
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+    padding-block: var(--space-3xl) var(--space-4xl);
   }
 
   .about-page__hero {
-    max-width: 42rem;
-    margin: 0 auto var(--about-section-gap);
+    max-width: 44rem;
+    margin: 0 auto var(--space-3xl);
     text-align: center;
+  }
+
+  .about-page__hero-overline {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
   }
 
   .about-page__hero-title {
     margin: 0 0 var(--space-md);
     font-family: var(--font-family-serif);
-    font-size: clamp(2rem, 4vw + 0.75rem, 3.25rem);
-    font-style: normal;
+    font-size: clamp(2.25rem, 5vw + 0.5rem, 3.5rem);
+    font-style: italic;
     font-weight: 400;
     line-height: var(--line-height-tight);
     letter-spacing: 0.01em;
+    color: var(--color-forest-green-dark);
     text-wrap: balance;
   }
 
@@ -150,23 +323,45 @@
   .about-page__split {
     display: grid;
     grid-template-columns: 1fr;
-    gap: calc(var(--space-2xl) * 0.6);
+    gap: var(--space-2xl);
     align-items: center;
-    margin-block-end: var(--about-section-gap-lg);
+    margin-block-end: var(--space-4xl);
   }
 
-  .about-page__split-media {
+  .about-page__arch-frame {
     overflow: hidden;
-    border-radius: var(--radius-lg);
-    background-color: var(--color-surface);
+    padding: var(--space-sm);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
     box-shadow: var(--shadow-md);
   }
 
-  .about-page__split-image {
+  .about-page__arch-frame--compact {
+    max-width: 14rem;
+    margin-block-end: var(--space-lg);
+    border-radius: 999px 999px var(--radius-md) var(--radius-md);
+  }
+
+  .about-page__split-media {
+    margin-inline: auto;
+    max-width: 28rem;
+  }
+
+  .about-page__split-image,
+  .about-page__pillar-image {
     width: 100%;
-    aspect-ratio: 4 / 3;
     object-fit: cover;
-    object-position: center center;
+    object-position: center 35%;
+    border-radius: 999px 999px var(--radius-md) var(--radius-md);
+  }
+
+  .about-page__split-image {
+    aspect-ratio: 4 / 5;
+  }
+
+  .about-page__pillar-image {
+    aspect-ratio: 3 / 4;
   }
 
   .about-page__split-heading {
@@ -189,76 +384,215 @@
     margin: 0 0 var(--space-md);
   }
 
+  .about-page__section-overline {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .about-page__laboratory {
+    margin-block: var(--space-4xl);
+    padding-block: var(--space-4xl);
+    background-color: var(--color-parchment);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .about-page__laboratory-inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .about-page__laboratory-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+
+  .about-page__laboratory-title {
+    margin: 0 0 var(--space-lg);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+    text-wrap: balance;
+  }
+
+  .about-page__laboratory-text {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .about-page__laboratory-text p {
+    margin: 0 0 var(--space-md);
+  }
+
+  .about-page__laboratory-media {
+    margin-inline: auto;
+    max-width: 28rem;
+  }
+
+  .about-page__laboratory-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 999px 999px var(--radius-md) var(--radius-md);
+  }
+
+  .about-page__curator {
+    margin-block-end: var(--space-4xl);
+  }
+
+  .about-page__curator-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+
+  .about-page__arch-frame--portrait {
+    width: min(100%, 12rem);
+    margin-inline: auto;
+    border-radius: 50%;
+    padding: var(--space-xs);
+  }
+
+  .about-page__curator-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center 30%;
+    border-radius: 50%;
+  }
+
+  .about-page__curator-title {
+    margin: 0 0 var(--space-lg);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.125rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+    text-wrap: balance;
+  }
+
+  .about-page__curator-text {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .about-page__curator-text p {
+    margin: 0 0 var(--space-md);
+  }
+
+  .about-page__curator-signature {
+    margin: var(--space-xl) 0 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-xl);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+    opacity: 0.85;
+  }
+
   .about-page__conservatory {
-    padding-block: 0;
+    padding: var(--space-2xl);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-lg);
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
   }
 
   .about-page__conservatory-title {
-    margin: 0 0 calc(var(--space-2xl) * 0.6);
+    margin: 0 0 var(--space-2xl);
     font-family: var(--font-family-serif);
     font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
-    font-style: normal;
+    font-style: italic;
     font-weight: 400;
     line-height: var(--line-height-tight);
     text-align: center;
+    color: var(--color-forest-green-dark);
     text-wrap: balance;
   }
 
   .about-page__pillars {
     display: grid;
     grid-template-columns: 1fr;
-    gap: calc(var(--space-xl) * 0.6);
+    gap: var(--space-xl);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .about-page__pillar {
-    padding: var(--space-xl);
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    padding-block-start: var(--space-lg);
+    border-block-start: 1px solid rgb(0 0 0 / 0.1);
   }
 
-  .about-page__pillar-media {
-    margin-block-end: var(--space-md);
-    overflow: hidden;
-    border-radius: var(--radius-sm);
-  }
-
-  .about-page__pillar-image {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+  .about-page__pillar:first-child {
+    padding-block-start: 0;
+    border-block-start: none;
   }
 
   .about-page__pillar-title {
     margin: 0 0 var(--space-sm);
-    font-family: var(--font-family-serif);
-    font-size: var(--font-size-lg);
+    font-family: var(--font-family-base);
+    font-size: 0.75rem;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 700;
     line-height: var(--line-height-tight);
-    letter-spacing: 0.01em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
   }
 
   .about-page__pillar-text {
     margin: 0;
-    font-size: var(--font-size-sm);
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
     line-height: var(--line-height-relaxed);
-    color: var(--color-text-muted);
+    color: var(--color-forest-green-dark);
   }
 
   @media (min-width: 750px) {
     .about-page__pillars {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .about-page__pillar {
+      padding-block-start: var(--space-lg);
+      padding-inline: var(--space-md);
+      border-block-start: none;
+      border-inline-start: 1px solid rgb(0 0 0 / 0.1);
+    }
+
+    .about-page__pillar:first-child {
+      padding-inline-start: 0;
+      border-inline-start: none;
+    }
+
+    .about-page__arch-frame--compact {
+      margin-inline: auto;
     }
   }
 
   @media (min-width: 990px) {
     .about-page__split {
       grid-template-columns: 1fr 1fr;
-      gap: calc(var(--space-3xl) * 0.6);
+      gap: var(--space-4xl);
     }
 
     .about-page__split--right .about-page__split-media {
@@ -267,6 +601,28 @@
 
     .about-page__split--right .about-page__split-content {
       order: 1;
+    }
+
+    .about-page__laboratory-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4xl);
+    }
+
+    .about-page__laboratory-grid--image-left .about-page__laboratory-media {
+      order: -1;
+    }
+
+    .about-page__laboratory-grid--image-right .about-page__laboratory-content {
+      order: -1;
+    }
+
+    .about-page__curator-layout {
+      grid-template-columns: minmax(12rem, 14rem) minmax(0, 1fr);
+      gap: var(--space-3xl);
+    }
+
+    .about-page__arch-frame--portrait {
+      margin-inline: 0;
     }
   }
 {% endstylesheet %}
@@ -283,15 +639,21 @@
     },
     {
       "type": "text",
+      "id": "hero_overline",
+      "label": "t:sections.about_template.settings.hero_overline",
+      "default": "Our story"
+    },
+    {
+      "type": "text",
       "id": "hero_heading",
       "label": "t:sections.about_template.settings.hero_heading",
-      "default": "About us"
+      "default": "Cultivating the extraordinary."
     },
     {
       "type": "text",
       "id": "hero_subheading",
       "label": "t:sections.about_template.settings.hero_subheading",
-      "default": "Our mission: grow extraordinary carnivorous plants for South African collectors."
+      "default": "South Africa's premier carnivorous plant and tissue culture nursery — field-tested protocols for collectors nationwide."
     },
     {
       "type": "header",
@@ -300,7 +662,20 @@
     {
       "type": "image_picker",
       "id": "split_image",
-      "label": "t:labels.background"
+      "label": "t:sections.about_template.settings.split_image"
+    },
+    {
+      "type": "text",
+      "id": "split_placeholder_image",
+      "label": "t:sections.about_template.settings.split_placeholder_image",
+      "info": "t:sections.about_template.settings.placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600"
+    },
+    {
+      "type": "text",
+      "id": "split_overline",
+      "label": "t:sections.about_template.settings.split_overline",
+      "default": "A scientific history"
     },
     {
       "type": "select",
@@ -316,13 +691,102 @@
       "type": "text",
       "id": "split_heading",
       "label": "t:sections.about_template.settings.split_heading",
-      "default": "A scientific history of care"
+      "default": "A scientific history of care",
+      "info": "t:sections.about_template.settings.split_heading_info"
     },
     {
       "type": "richtext",
       "id": "split_text",
       "label": "t:sections.about_template.settings.split_text",
-      "default": "<p>Founded in the Western Cape, our nursery pairs macro photography with field-tested culture protocols. Every genus we sell is backed by integrated care guidance — light, water, soil, and dormancy notes written for Southern Hemisphere seasons.</p><p>We propagate in-house, acclimate stock before shipping, and prioritise living plants that arrive ready for your bench or terrarium.</p>"
+      "info": "t:sections.about_template.settings.split_text_info",
+      "default": "<p><strong>Bizarre Tropicals</strong> is South Africa's premier carnivorous plant and tissue culture nursery, meticulously curated by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p><p>Macro photography meets Southern Hemisphere culture notes on every genus page — light, water, substrate, humidity, dormancy, and feeding written for real benches and terrariums.</p><p>We propagate in-house, acclimate stock before shipping, and prioritise plants that arrive ready for your collection.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.about_template.settings.lab_header"
+    },
+    {
+      "type": "text",
+      "id": "lab_overline",
+      "label": "t:sections.about_template.settings.lab_overline",
+      "default": "The laboratory"
+    },
+    {
+      "type": "text",
+      "id": "lab_heading",
+      "label": "t:sections.about_template.settings.lab_heading",
+      "default": "Science in service of nature.",
+      "info": "t:sections.about_template.settings.lab_heading_info"
+    },
+    {
+      "type": "richtext",
+      "id": "lab_text",
+      "label": "t:sections.about_template.settings.lab_text",
+      "info": "t:sections.about_template.settings.lab_text_info",
+      "default": "<p>Tissue culture lets us multiply rare carnivorous plants under sterile conditions — preserving genetics without wild collection or poaching. Every flask in our lab is a living archive of species that might otherwise vanish from cultivation.</p><p>From initiation to weaning, we track each line for vigour, trueness to name, and pathogen-free growth before plants ever reach the bench. That is how Bizarre Tropicals supplies collectors with ethically propagated stock you can grow with confidence.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "lab_image",
+      "label": "t:sections.about_template.settings.lab_image"
+    },
+    {
+      "type": "text",
+      "id": "lab_placeholder_image",
+      "label": "t:sections.about_template.settings.lab_placeholder_image",
+      "info": "t:sections.about_template.settings.placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1600"
+    },
+    {
+      "type": "select",
+      "id": "lab_image_position",
+      "label": "t:sections.about_template.settings.lab_image_position",
+      "default": "right",
+      "options": [
+        { "value": "left", "label": "t:options.alignment.left" },
+        { "value": "right", "label": "t:options.alignment.right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.about_template.settings.curator_header"
+    },
+    {
+      "type": "text",
+      "id": "curator_heading",
+      "label": "t:sections.about_template.settings.curator_heading",
+      "default": "A message from Jaco Van Den Berg."
+    },
+    {
+      "type": "richtext",
+      "id": "curator_text",
+      "label": "t:sections.about_template.settings.curator_text",
+      "default": "<p>I have spent years studying and growing carnivorous genera across South Africa — from windowsill Drosera to climate-controlled Nepenthes. What began as a collector's obsession became a nursery built on science, patience, and respect for these plants in the wild.</p><p>At Bizarre Tropicals, every species we list reflects hands-on culture: the humidity, the dormancy timing, the substrate that actually works on a Gauteng bench. If you are building a collection, I want you to succeed — not just make a purchase.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "curator_image",
+      "label": "t:sections.about_template.settings.curator_image"
+    },
+    {
+      "type": "text",
+      "id": "curator_placeholder_image",
+      "label": "t:sections.about_template.settings.curator_placeholder_image",
+      "info": "t:sections.about_template.settings.placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200"
+    },
+    {
+      "type": "text",
+      "id": "curator_signature",
+      "label": "t:sections.about_template.settings.curator_signature",
+      "default": "Jaco Van Den Berg"
+    },
+    {
+      "type": "text",
+      "id": "default_pillar_placeholder",
+      "label": "t:sections.about_template.settings.default_pillar_placeholder",
+      "info": "t:sections.about_template.settings.placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200"
     },
     {
       "type": "header",
@@ -342,13 +806,13 @@
       "settings": [
         {
           "type": "image_picker",
-          "id": "image",
-          "label": "t:labels.background"
+          "id": "icon",
+          "label": "t:sections.about_template.blocks.pillar.settings.icon"
         },
         {
           "type": "text",
-          "id": "title",
-          "label": "t:labels.text",
+          "id": "heading",
+          "label": "t:sections.about_template.blocks.pillar.settings.heading",
           "default": "Pillar"
         },
         {
@@ -356,6 +820,12 @@
           "id": "text",
           "label": "t:general.content",
           "default": "Describe your process."
+        },
+        {
+          "type": "text",
+          "id": "placeholder_image",
+          "label": "t:sections.about_template.blocks.pillar.settings.placeholder_image",
+          "info": "t:sections.about_template.settings.placeholder_image_info"
         }
       ]
     }
@@ -367,22 +837,25 @@
         {
           "type": "pillar",
           "settings": {
-            "title": "Quality control",
-            "text": "Every plant is inspected for pests, vigour, and true-to-name characteristics before it is listed."
+            "heading": "Quality control",
+            "text": "Every plant is inspected for pests, vigour, and true-to-name characteristics before it is listed.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=1200"
           }
         },
         {
           "type": "pillar",
           "settings": {
-            "title": "Specialized soil",
-            "text": "We blend peat, perlite, and mineral components matched to each genus — never generic potting mix."
+            "heading": "Specialized soil",
+            "text": "We blend peat, perlite, and mineral components matched to each genus — never generic potting mix.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/PerliteUSGOV.jpg?width=1200"
           }
         },
         {
           "type": "pillar",
           "settings": {
-            "title": "Expert care",
-            "text": "Integrated genus guides, difficulty ratings, and seasonal dormancy notes ship with every order."
+            "heading": "Expert care",
+            "text": "Integrated genus guides, difficulty ratings, and seasonal dormancy notes ship with every order.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200"
           }
         }
       ]

@@ -69,33 +69,57 @@
         "genus_dionaea": {
           "type": "genus",
           "settings": {
-            "genus_key": "dionaea",
-            "title": "Dionaea",
-            "collection_link": "/collections/dionaea"
+            "collection": "dionaea",
+            "title": "Dionaea"
           }
         },
         "genus_sarracenia": {
           "type": "genus",
           "settings": {
-            "genus_key": "sarracenia",
-            "title": "Sarracenia",
-            "collection_link": "/collections/sarracenia"
+            "collection": "sarracenia",
+            "title": "Sarracenia"
           }
         },
         "genus_nepenthes": {
           "type": "genus",
           "settings": {
-            "genus_key": "nepenthes",
-            "title": "Nepenthes",
-            "collection_link": "/collections/nepenthes"
+            "collection": "nepenthes",
+            "title": "Nepenthes"
           }
         },
         "genus_drosera": {
           "type": "genus",
           "settings": {
-            "genus_key": "drosera",
-            "title": "Drosera",
-            "collection_link": "/collections/drosera"
+            "collection": "drosera",
+            "title": "Drosera"
+          }
+        },
+        "genus_pinguicula": {
+          "type": "genus",
+          "settings": {
+            "collection": "pinguicula",
+            "title": "Pinguicula"
+          }
+        },
+        "genus_cephalotus": {
+          "type": "genus",
+          "settings": {
+            "collection": "cephalotus",
+            "title": "Cephalotus"
+          }
+        },
+        "genus_heliamphora": {
+          "type": "genus",
+          "settings": {
+            "collection": "heliamphora",
+            "title": "Heliamphora"
+          }
+        },
+        "genus_utricularia": {
+          "type": "genus",
+          "settings": {
+            "collection": "utricularia",
+            "title": "Utricularia"
           }
         }
       },
@@ -103,7 +127,11 @@
         "genus_dionaea",
         "genus_sarracenia",
         "genus_nepenthes",
-        "genus_drosera"
+        "genus_drosera",
+        "genus_pinguicula",
+        "genus_cephalotus",
+        "genus_heliamphora",
+        "genus_utricularia"
       ]
     },
     "featured_collection": {

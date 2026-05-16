@@ -1,0 +1,116 @@
+{% doc %}
+  Renders cart drawer inner content (line items, empty state, footer).
+  Refreshed via the Sections Rendering API when the cart changes.
+
+  @example
+  {% render 'cart-drawer-contents' %}
+{% enddoc %}
+
+<div class="cart-drawer__contents" data-cart-drawer-contents>
+  {%- if cart.item_count > 0 -%}
+    <ul class="cart-drawer__items" role="list">
+      {%- for item in cart.items -%}
+        {%- liquid
+          assign line_latin = item.product.metafields.custom.latin_name.value | default: item.product.metafields.custom.latin_name
+          assign line_image = item.image | default: item.product.featured_image
+        -%}
+        <li class="cart-drawer__item" data-cart-line data-line-key="{{ item.key }}">
+          <a class="cart-drawer__item-media" href="{{ item.url }}">
+            {%- if line_image != blank -%}
+              {{
+                line_image
+                | image_url: width: 200, height: 200, crop: 'center'
+                | image_tag:
+                  class: 'cart-drawer__item-image',
+                  widths: '100, 150, 200',
+                  sizes: '80px',
+                  loading: 'lazy',
+                  alt: item.product.title
+              }}
+            {%- else -%}
+              <span class="cart-drawer__item-image cart-drawer__item-image--placeholder" aria-hidden="true"></span>
+            {%- endif -%}
+          </a>
+
+          <div class="cart-drawer__item-body">
+            <a class="cart-drawer__item-title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+            {%- if line_latin != blank -%}
+              <p class="cart-drawer__item-latin">
+                <em>{{ line_latin | escape }}</em>
+              </p>
+            {%- endif -%}
+            {%- unless item.product.has_only_default_variant -%}
+              <p class="cart-drawer__item-variant">{{ item.variant.title | escape }}</p>
+            {%- endunless -%}
+
+            <div class="cart-drawer__item-footer">
+              <p class="cart-drawer__item-price">
+                {%- if item.original_line_price > item.final_line_price -%}
+                  <span class="visually-hidden">{{ 'cart.drawer.price_sale' | t }}</span>
+                  <span class="cart-drawer__item-price-sale">{% render 'zar-price', amount_cents: item.final_line_price %}</span>
+                  <span class="visually-hidden">{{ 'cart.drawer.price_regular' | t }}</span>
+                  <s class="cart-drawer__item-price-compare">{% render 'zar-price', amount_cents: item.original_line_price %}</s>
+                {%- else -%}
+                  {% render 'zar-price', amount_cents: item.final_line_price %}
+                {%- endif -%}
+              </p>
+
+              <div class="cart-drawer__qty" data-cart-qty data-line-key="{{ item.key }}">
+                <button
+                  type="button"
+                  class="cart-drawer__qty-btn"
+                  data-cart-qty-minus
+                  aria-label="{{ 'cart.drawer.quantity_decrease' | t: product: item.product.title }}"
+                  {% if item.quantity <= 1 %}
+                    data-cart-qty-remove
+                  {% endif %}
+                >
+                  <span aria-hidden="true">−</span>
+                </button>
+                <span class="cart-drawer__qty-value" data-cart-qty-display aria-live="polite">{{ item.quantity }}</span>
+                <input
+                  type="hidden"
+                  name="updates[]"
+                  value="{{ item.key }}"
+                  data-cart-qty-input
+                  data-quantity="{{ item.quantity }}"
+                >
+                <button
+                  type="button"
+                  class="cart-drawer__qty-btn"
+                  data-cart-qty-plus
+                  aria-label="{{ 'cart.drawer.quantity_increase' | t: product: item.product.title }}"
+                >
+                  <span aria-hidden="true">+</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <footer class="cart-drawer__footer">
+      <div class="cart-drawer__subtotal">
+        <span class="cart-drawer__subtotal-label">{{ 'cart.drawer.subtotal' | t }}</span>
+        <span class="cart-drawer__subtotal-value" data-cart-subtotal>
+          {% render 'zar-price', amount_cents: cart.total_price %}
+        </span>
+      </div>
+      <p class="cart-drawer__shipping-note">{{ 'cart.drawer.shipping_note' | t }}</p>
+      <a class="cart-drawer__checkout" href="/checkout">
+        {{ 'cart.drawer.checkout' | t }}
+      </a>
+    </footer>
+  {%- else -%}
+    <div class="cart-drawer__empty">
+      <div class="cart-drawer__empty-art" aria-hidden="true">
+        {{ 'icon-botanical-watermark.svg' | inline_asset_content }}
+      </div>
+      <p class="cart-drawer__empty-title">{{ 'cart.drawer.empty_title' | t }}</p>
+      <button type="button" class="cart-drawer__empty-cta" data-cart-drawer-close>
+        {{ 'cart.drawer.continue_exploring' | t }}
+      </button>
+    </div>
+  {%- endif -%}
+</div>

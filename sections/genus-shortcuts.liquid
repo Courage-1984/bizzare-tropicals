@@ -1,5 +1,6 @@
 {%- liquid
   assign section_heading = section.settings.heading
+  assign default_placeholder = section.settings.default_placeholder_image
 -%}
 
 <section
@@ -15,93 +16,67 @@
     </header>
   {%- endif -%}
 
-  <ul class="genus-shortcuts__grid" role="list">
-    {%- for block in section.blocks -%}
-      {%- liquid
-        assign genus_key = block.settings.genus_key
-        assign card_title = block.settings.title
-        assign card_link = block.settings.collection_link
-        assign card_image = block.settings.image
-        assign use_shopify_image = false
+  {%- if section.blocks.size > 0 -%}
+    <div
+      class="genus-shortcuts__viewport"
+      tabindex="0"
+      role="region"
+      aria-label="{{ 'sections.genus_shortcuts.strip_label' | t }}"
+    >
+      <ul class="genus-shortcuts__strip" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'genus' -%}
+            {%- liquid
+              assign card_collection = block.settings.collection
+              assign card_title = block.settings.title
+              assign card_link = block.settings.link
+              assign card_image = block.settings.image
+              assign placeholder_url = block.settings.placeholder_image | default: default_placeholder
+              assign use_shopify_image = false
 
-        if card_image != blank and card_image.width > 0
-          assign use_shopify_image = true
-        endif
+              if card_collection != blank
+                if card_title == blank
+                  assign card_title = card_collection.title
+                endif
+                if card_link == blank
+                  assign card_link = card_collection.url
+                endif
+                if card_image == blank
+                  if card_collection.image != blank
+                    if card_collection.image.width > 0
+                      assign card_image = card_collection.image
+                    endif
+                  endif
+                endif
+              endif
 
-        if card_title == blank
-          case genus_key
-            when 'dionaea'
-              assign card_title = 'Dionaea'
-            when 'sarracenia'
-              assign card_title = 'Sarracenia'
-            when 'nepenthes'
-              assign card_title = 'Nepenthes'
-            when 'drosera'
-              assign card_title = 'Drosera'
-            else
-              assign card_title = 'Genus'
-          endcase
-        endif
+              if card_image != blank
+                if card_image.width > 0
+                  assign use_shopify_image = true
+                endif
+              endif
+            -%}
 
-        if card_link == blank
-          assign card_link = '/collections/' | append: genus_key
-        endif
-
-        case genus_key
-          when 'dionaea'
-            assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Fly_Trap_(Dionaea_muscipula).jpg?width=1200'
-          when 'sarracenia'
-            assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1200'
-          when 'nepenthes'
-            assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=1200'
-          when 'drosera'
-            assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1200'
-          else
-            assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1200'
-        endcase
-
-      -%}
-
-      <li class="genus-shortcuts__item" role="listitem" {{ block.shopify_attributes }}>
-        <a class="genus-shortcuts__card" href="{{ card_link }}">
-          <span class="genus-shortcuts__media" aria-hidden="true">
-            {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
-            {%- if use_shopify_image -%}
-              {{
-                card_image
-                | image_url: width: 800, height: 800, crop: 'center'
-                | image_tag:
-                  class: 'genus-shortcuts__image',
-                  widths: '400, 600, 800',
-                  sizes: '(min-width: 990px) 22vw, (min-width: 750px) 23vw, 46vw',
-                  loading: 'lazy',
-                  alt: ''
-              }}
-            {%- else -%}
-              <img
-                class="genus-shortcuts__image genus-shortcuts__image--fallback"
-                src="{{ placeholder_url }}"
-                alt=""
-                width="800"
-                height="800"
-                loading="lazy"
-                decoding="async"
-              >
+            {%- if card_title != blank -%}
+              {%- if card_link != blank -%}
+                <li class="genus-shortcuts__item" {{ block.shopify_attributes }} role="listitem">
+                  {% render 'genus-arch-card',
+                    card_title: card_title,
+                    card_link: card_link,
+                    placeholder_url: placeholder_url,
+                    card_image: card_image,
+                    use_shopify_image: use_shopify_image
+                  %}
+                </li>
+              {%- endif -%}
             {%- endif -%}
-            <span class="genus-shortcuts__scrim"></span>
-          </span>
-
-          <span class="genus-shortcuts__content">
-            <span class="genus-shortcuts__title">{{ card_title | escape }}</span>
-            <span class="genus-shortcuts__cta">{{ 'sections.genus_shortcuts.shop_collection' | t }}</span>
-          </span>
-          <span class="visually-hidden">
-            {{- 'sections.genus_shortcuts.card_label' | t: genus: card_title -}}
-          </span>
-        </a>
-      </li>
-    {%- endfor -%}
-  </ul>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- else -%}
+    <p class="genus-shortcuts__empty">{{ 'sections.genus_shortcuts.empty' | t }}</p>
+  {%- endif -%}
 </section>
 
 {% stylesheet %}
@@ -124,165 +99,67 @@
     color: var(--color-text-muted);
   }
 
-  .genus-shortcuts__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-md);
+  .genus-shortcuts__empty {
     margin: 0;
-    padding: 0;
-    list-style: none;
+    padding: var(--space-xl);
+    text-align: center;
+    color: var(--color-text-muted);
   }
 
-  .genus-shortcuts__item {
-    min-width: 0;
-  }
-
-  .genus-shortcuts__card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-height: clamp(11rem, 34vw, 16rem);
+  .genus-shortcuts__viewport {
+    margin-inline: calc(var(--page-margin) * -1);
+    padding-inline: var(--page-margin);
     overflow: hidden;
-    text-decoration: none;
-    color: var(--color-text-inverse);
-    background-color: var(--color-primary-hover);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    transition:
-      transform var(--transition-transform),
-      box-shadow var(--transition-base);
   }
 
-  .genus-shortcuts__card::after {
-    content: '';
-    position: absolute;
-    inset: var(--space-sm);
-    z-index: 2;
-    border: 1px solid rgb(255 255 255 / 0.18);
-    border-radius: var(--radius-md);
-    pointer-events: none;
-    transition: border-color var(--transition-base);
-  }
-
-  .genus-shortcuts__card:hover::after {
-    border-color: rgb(255 255 255 / 0.32);
-  }
-
-  .genus-shortcuts__card:hover {
-    transform: translate3d(0, -4px, 0);
-    box-shadow: var(--shadow-md);
-  }
-
-  .genus-shortcuts__card:focus-visible {
+  .genus-shortcuts__viewport:focus-visible {
+    outline: 2px solid var(--color-focus);
     outline-offset: 4px;
   }
 
-  .genus-shortcuts__media {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    border-radius: inherit;
-  }
-
-  .genus-shortcuts__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    transform: scale3d(1, 1, 1);
-    transition:
-      transform var(--transition-transform),
-      filter var(--transition-base);
-  }
-
-  .genus-shortcuts__scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgb(12 18 14 / 0.15) 0%,
-      rgb(12 18 14 / 0.55) 55%,
-      rgb(12 18 14 / 0.78) 100%
-    );
-    transition: background-color var(--transition-base);
-  }
-
-  .genus-shortcuts__card:hover .genus-shortcuts__image {
-    transform: scale3d(1.04, 1.04, 1);
-    filter: brightness(0.82);
-  }
-
-  .genus-shortcuts__card:hover .genus-shortcuts__scrim {
-    background: linear-gradient(
-      180deg,
-      rgb(12 18 14 / 0.25) 0%,
-      rgb(12 18 14 / 0.62) 55%,
-      rgb(12 18 14 / 0.88) 100%
-    );
-  }
-
-  .genus-shortcuts__content {
-    position: relative;
-    z-index: 1;
+  .genus-shortcuts__strip {
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: var(--space-xs);
-    margin-top: auto;
-    padding: var(--space-lg);
-    min-height: 100%;
-  }
-
-  .genus-shortcuts__title {
+    gap: 2rem;
     margin: 0;
-    font-family: var(--font-family-serif);
-    font-size: clamp(1.375rem, 2.5vw + 0.5rem, 2rem);
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--line-height-tight);
-    letter-spacing: 0.01em;
-    text-wrap: balance;
+    padding: var(--space-xs) var(--page-margin) var(--space-md);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  .genus-shortcuts__cta {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    text-decoration-thickness: 1px;
+  .genus-shortcuts__strip::-webkit-scrollbar {
+    display: none;
   }
 
-  @media (min-width: 750px) {
-    .genus-shortcuts__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: var(--space-lg);
+  .genus-shortcuts__item {
+    flex: 0 0 auto;
+    width: 60vw;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  @media (min-width: 990px) {
+    .genus-shortcuts__viewport {
+      margin-inline: 0;
+      padding-inline: 0;
     }
 
-    .genus-shortcuts__card {
-      min-height: clamp(14rem, 22vw, 18rem);
+    .genus-shortcuts__strip {
+      padding-inline: 0;
     }
 
-    .genus-shortcuts__content {
-      padding: var(--space-xl);
+    .genus-shortcuts__item {
+      width: 20vw;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .genus-shortcuts__card,
-    .genus-shortcuts__image {
-      transition: none;
-    }
-
-    .genus-shortcuts__card:hover {
-      transform: none;
-    }
-
-    .genus-shortcuts__card:hover .genus-shortcuts__image {
-      transform: none;
-      filter: none;
+    .genus-shortcuts__strip {
+      scroll-behavior: auto;
     }
   }
 {% endstylesheet %}
@@ -292,13 +169,19 @@
   "name": "t:sections.genus_shortcuts.name",
   "tag": "section",
   "class": "genus-shortcuts-section",
-  "max_blocks": 4,
   "settings": [
     {
       "type": "text",
       "id": "heading",
       "label": "t:sections.genus_shortcuts.settings.heading",
       "default": "Shop by genus"
+    },
+    {
+      "type": "text",
+      "id": "default_placeholder_image",
+      "label": "t:sections.genus_shortcuts.settings.default_placeholder_image",
+      "info": "t:sections.genus_shortcuts.settings.default_placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1200"
     }
   ],
   "blocks": [
@@ -307,31 +190,32 @@
       "name": "t:sections.genus_shortcuts.blocks.genus.name",
       "settings": [
         {
-          "type": "select",
-          "id": "genus_key",
-          "label": "t:sections.genus_shortcuts.blocks.genus.settings.genus_key",
-          "options": [
-            { "value": "dionaea", "label": "Dionaea" },
-            { "value": "sarracenia", "label": "Sarracenia" },
-            { "value": "nepenthes", "label": "Nepenthes" },
-            { "value": "drosera", "label": "Drosera" }
-          ],
-          "default": "dionaea"
+          "type": "collection",
+          "id": "collection",
+          "label": "t:general.collection"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "t:labels.text"
+          "label": "t:labels.text",
+          "info": "t:sections.genus_shortcuts.blocks.genus.settings.title_info"
         },
         {
           "type": "url",
-          "id": "collection_link",
-          "label": "t:sections.genus_shortcuts.blocks.genus.settings.collection_link"
+          "id": "link",
+          "label": "t:sections.genus_shortcuts.blocks.genus.settings.link",
+          "info": "t:sections.genus_shortcuts.blocks.genus.settings.link_info"
         },
         {
           "type": "image_picker",
           "id": "image",
           "label": "t:labels.background"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_image",
+          "label": "t:sections.genus_shortcuts.blocks.genus.settings.placeholder_image",
+          "info": "t:sections.genus_shortcuts.blocks.genus.settings.placeholder_image_info"
         }
       ]
     }
@@ -343,33 +227,57 @@
         {
           "type": "genus",
           "settings": {
-            "genus_key": "dionaea",
-            "title": "Dionaea",
-            "collection_link": "/collections/dionaea"
+            "collection": "dionaea",
+            "title": "Dionaea"
           }
         },
         {
           "type": "genus",
           "settings": {
-            "genus_key": "sarracenia",
-            "title": "Sarracenia",
-            "collection_link": "/collections/sarracenia"
+            "collection": "sarracenia",
+            "title": "Sarracenia"
           }
         },
         {
           "type": "genus",
           "settings": {
-            "genus_key": "nepenthes",
-            "title": "Nepenthes",
-            "collection_link": "/collections/nepenthes"
+            "collection": "nepenthes",
+            "title": "Nepenthes"
           }
         },
         {
           "type": "genus",
           "settings": {
-            "genus_key": "drosera",
-            "title": "Drosera",
-            "collection_link": "/collections/drosera"
+            "collection": "drosera",
+            "title": "Drosera"
+          }
+        },
+        {
+          "type": "genus",
+          "settings": {
+            "collection": "pinguicula",
+            "title": "Pinguicula"
+          }
+        },
+        {
+          "type": "genus",
+          "settings": {
+            "collection": "cephalotus",
+            "title": "Cephalotus"
+          }
+        },
+        {
+          "type": "genus",
+          "settings": {
+            "collection": "heliamphora",
+            "title": "Heliamphora"
+          }
+        },
+        {
+          "type": "genus",
+          "settings": {
+            "collection": "utricularia",
+            "title": "Utricularia"
           }
         }
       ]

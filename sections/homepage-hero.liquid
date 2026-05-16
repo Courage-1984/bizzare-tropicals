@@ -1,6 +1,7 @@
 {%- liquid
   assign overlay_opacity = section.settings.overlay_opacity | default: 50 | times: 1.0 | divided_by: 100.0
   assign slide_count = section.blocks.size
+  assign default_placeholder = section.settings.default_placeholder_image
 -%}
 
 <section
@@ -26,30 +27,7 @@
               assign use_shopify_image = true
             endif
 
-            if forloop.index == 1
-              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400'
-            elsif forloop.index == 2
-              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400'
-            elsif forloop.index == 3
-              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400'
-            elsif forloop.index == 4
-              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=2400'
-            elsif forloop.index == 5
-              assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=2400'
-            else
-              assign placeholder_modulo = forloop.index | modulo: 5
-              if placeholder_modulo == 1
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400'
-              elsif placeholder_modulo == 2
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=2400'
-              elsif placeholder_modulo == 3
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=2400'
-              elsif placeholder_modulo == 4
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=2400'
-              else
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=2400'
-              endif
-            endif
+            assign placeholder_url = block.settings.placeholder_image | default: default_placeholder
 
             assign slide_heading = block.settings.heading
             assign slide_subheading = block.settings.subheading
@@ -76,11 +54,11 @@
             {{ block.shopify_attributes }}
           >
             <div
-              class="homepage-hero__media{% unless use_shopify_image %} homepage-hero__media--fallback{% endunless %}"
+              class="homepage-hero__media{% if use_shopify_image == false and placeholder_url != blank %} homepage-hero__media--fallback{% endif %}"
               aria-hidden="true"
-              {% unless use_shopify_image %}
+              {% if use_shopify_image == false and placeholder_url != blank %}
                 style="background-image: url('{{ placeholder_url }}');"
-              {% endunless %}
+              {% endif %}
             >
               {%- if use_shopify_image -%}
                 {%- if is_first_slide -%}
@@ -107,7 +85,7 @@
                       loading: 'lazy'
                   }}
                 {%- endif -%}
-              {%- else -%}
+              {%- elsif placeholder_url != blank -%}
                 {%- comment -%} TODO: replace placeholder before launch — .cursor/context/placeholder-images.md {%- endcomment -%}
                 <img
                   class="homepage-hero__image homepage-hero__image--fallback organic-zoom"
@@ -802,6 +780,13 @@
       "step": 5,
       "unit": "%",
       "default": 50
+    },
+    {
+      "type": "text",
+      "id": "default_placeholder_image",
+      "label": "t:sections.homepage_hero.settings.default_placeholder_image",
+      "info": "t:sections.homepage_hero.settings.default_placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=2400"
     }
   ],
   "blocks": [
@@ -813,6 +798,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.homepage_hero.blocks.slide.settings.image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_image",
+          "label": "t:sections.homepage_hero.blocks.slide.settings.placeholder_image",
+          "info": "t:sections.homepage_hero.blocks.slide.settings.placeholder_image_info"
         },
         {
           "type": "text",

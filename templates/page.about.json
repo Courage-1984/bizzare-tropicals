@@ -3,33 +3,48 @@
     "about": {
       "type": "about-template",
       "settings": {
-        "hero_heading": "About us",
-        "hero_subheading": "Our mission: grow extraordinary carnivorous plants for South African collectors.",
+        "hero_overline": "Our story",
+        "hero_heading": "Cultivating the extraordinary.",
+        "hero_subheading": "South Africa's premier carnivorous plant and tissue culture nursery — field-tested protocols for collectors nationwide.",
         "image_position": "left",
+        "split_overline": "A scientific history",
         "split_heading": "A scientific history of care",
-        "split_text": "<p>Founded in the Western Cape, our nursery pairs macro photography with field-tested culture protocols. Every genus we sell is backed by integrated care guidance — light, water, soil, and dormancy notes written for Southern Hemisphere seasons.</p><p>We propagate in-house, acclimate stock before shipping, and prioritise living plants that arrive ready for your bench or terrarium.</p>",
+        "split_text": "<p><strong>Bizarre Tropicals</strong> is South Africa's premier carnivorous plant and tissue culture nursery, meticulously curated by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p><p>Macro photography meets Southern Hemisphere culture notes on every genus page — light, water, substrate, humidity, dormancy, and feeding written for real benches and terrariums, not generic houseplant advice.</p><p>We propagate in-house, acclimate stock before shipping, and prioritise plants that arrive ready for your collection.</p>",
+        "lab_overline": "The laboratory",
+        "lab_heading": "Science in service of nature.",
+        "lab_text": "<p>Tissue culture lets us multiply rare carnivorous plants under sterile conditions — preserving genetics without wild collection or poaching. Every flask in our lab is a living archive of species that might otherwise vanish from cultivation.</p><p>From initiation to weaning, we track each line for vigour, trueness to name, and pathogen-free growth before plants ever reach the bench. That is how Bizarre Tropicals supplies collectors with ethically propagated stock you can grow with confidence.</p>",
+        "lab_image_position": "right",
+        "lab_placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1600",
+        "split_placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600",
+        "curator_heading": "A message from Jaco Van Den Berg.",
+        "curator_placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200",
+        "curator_signature": "Jaco Van Den Berg",
+        "curator_text": "<p>I have spent years studying and growing carnivorous genera across South Africa — from windowsill Drosera to climate-controlled Nepenthes. What began as a collector's obsession became a nursery built on science, patience, and respect for these plants in the wild.</p><p>At Bizarre Tropicals, every species we list reflects hands-on culture: the humidity, the dormancy timing, the substrate that actually works on a Gauteng bench. If you are building a collection, I want you to succeed — not just make a purchase.</p>",
         "conservatory_heading": "The conservatory"
       },
       "blocks": {
         "pillar_quality": {
           "type": "pillar",
           "settings": {
-            "title": "Quality control",
-            "text": "Every plant is inspected for pests, vigour, and true-to-name characteristics before it is listed."
+            "heading": "Quality control",
+            "text": "Every plant is inspected for pests, vigour, and true-to-name characteristics before it is listed — the same standards we apply in our tissue culture lab.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=1200"
           }
         },
         "pillar_soil": {
           "type": "pillar",
           "settings": {
-            "title": "Specialized soil",
-            "text": "We blend peat, perlite, and mineral components matched to each genus — never generic potting mix."
+            "heading": "Specialized soil",
+            "text": "We blend peat, perlite, and mineral components matched to each genus — never generic potting mix. Growing supplies are curated for carnivorous culture only.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/PerliteUSGOV.jpg?width=1200"
           }
         },
         "pillar_care": {
           "type": "pillar",
           "settings": {
-            "title": "Expert care",
-            "text": "Integrated genus guides, difficulty ratings, and seasonal dormancy notes ship with every order."
+            "heading": "Expert care",
+            "text": "Integrated genus guides, difficulty ratings, and seasonal dormancy notes ship with every order — your cultivation dossier starts on the collection page.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200"
           }
         }
       },

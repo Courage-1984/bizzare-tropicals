@@ -6,10 +6,11 @@
 
   @param {product} [product_item] - The product to display
   @param {string} [sizes] - Optional sizes attribute for responsive images
+  @param {number} [card_index] - Zero-based index for cycling mock preview data
 
   @example
   {% render 'product-card', product_item: product %}
-  {% render 'product-card' %}
+  {% render 'product-card', card_index: forloop.index0 %}
 {% enddoc %}
 
 {%- liquid
@@ -20,10 +21,10 @@
     endif
   endif
 
-  assign card_url = product_item.url | default: '#'
   assign image_sizes = sizes | default: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
 
   if use_live_product
+    assign card_url = product_item.url
     assign card_product = product_item
     assign product_image = card_product.featured_media.preview_image | default: card_product.featured_image
     assign use_shopify_image = false
@@ -58,16 +59,84 @@
     endif
   else
     assign use_shopify_image = false
-    assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=400'
-    assign card_title = 'products.card.mock_title' | t
-    assign latin_name = 'products.card.mock_latin' | t
-    assign difficulty = 2
+    assign mock_slot = card_index | default: 0 | modulo: 11
+
+    case mock_slot
+      when 1
+        assign card_title = "Nepenthes bicalcarata"
+        assign latin_name = 'Nepenthes bicalcarata'
+        assign difficulty = 4
+        assign mock_price_cents = 85000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(8411421382).jpg?width=1200'
+      when 2
+        assign card_title = "Dionaea muscipula 'B52'"
+        assign latin_name = 'Dionaea muscipula'
+        assign difficulty = 3
+        assign mock_price_cents = 20000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=1200'
+      when 3
+        assign card_title = 'Sarracenia flava'
+        assign latin_name = 'Sarracenia flava'
+        assign difficulty = 2
+        assign mock_price_cents = 35000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_((leucophylla_x_flava)_x_(purpurea_montana_x_flava))_x_%27Judith_Hindle%27_(5065614694).jpg?width=1200'
+      when 4
+        assign card_title = 'Pinguicula moranensis'
+        assign latin_name = 'Pinguicula moranensis'
+        assign difficulty = 2
+        assign mock_price_cents = 25000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_(and_prey).jpg?width=1200'
+      when 5
+        assign card_title = 'Cephalotus follicularis'
+        assign latin_name = 'Cephalotus follicularis'
+        assign difficulty = 5
+        assign mock_price_cents = 95000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_3.jpg?width=1200'
+      when 6
+        assign card_title = 'Heliamphora minor'
+        assign latin_name = 'Heliamphora minor'
+        assign difficulty = 5
+        assign mock_price_cents = 120000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans.jpg?width=1200'
+      when 7
+        assign card_title = 'Utricularia sandersonii'
+        assign latin_name = 'Utricularia sandersonii'
+        assign difficulty = 3
+        assign mock_price_cents = 12000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Common_Bladderwort_(3630283910).jpg?width=1200'
+      when 8
+        assign card_title = 'Darlingtonia californica'
+        assign latin_name = 'Darlingtonia californica'
+        assign difficulty = 4
+        assign mock_price_cents = 65000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_ne5.JPG?width=1200'
+      when 9
+        assign card_title = 'Byblis liniflora'
+        assign latin_name = 'Byblis liniflora'
+        assign difficulty = 2
+        assign mock_price_cents = 18000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200'
+      when 10
+        assign card_title = 'Drosophyllum lusitanicum'
+        assign latin_name = 'Drosophyllum lusitanicum'
+        assign difficulty = 4
+        assign mock_price_cents = 45000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_(and_prey).jpg?width=1200'
+      else
+        assign card_title = "Drosera capensis 'Alba'"
+        assign latin_name = 'Drosera capensis'
+        assign difficulty = 2
+        assign mock_price_cents = 15000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200'
+    endcase
+
     assign image_alt = latin_name
+    assign card_url = '#'
   endif
 -%}
 
 <article class="product-card{% unless use_live_product %} product-card--mock{% endunless %}">
-  <a class="product-card__media-link" href="{{ card_url }}">
+  <a class="product-card__link" href="{{ card_url }}">
     <span class="product-card__media">
       {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
       {%- if use_live_product and use_shopify_image -%}
@@ -85,7 +154,7 @@
         <img
           class="product-card__image product-card__image--fallback"
           src="{{ placeholder_url }}"
-          alt="{{ image_alt | escape }}"
+          alt="{{ image_alt }}"
           width="800"
           height="1000"
           loading="lazy"
@@ -93,47 +162,45 @@
         >
       {%- endif -%}
     </span>
-  </a>
 
-  <div class="product-card__body">
-    {%- if difficulty > 0 -%}
-      <div
-        class="product-card__difficulty difficulty-pips"
-        role="img"
-        aria-label="{{ 'products.card.difficulty_label' | t: level: difficulty, max: 5 }}"
-      >
-        {%- for pip in (1..5) -%}
-          <span
-            class="difficulty-pip{% if pip <= difficulty %} difficulty-pip--filled{% endif %}"
-            aria-hidden="true"
-          ></span>
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
-
-    <h3 class="product-card__title">
-      <a href="{{ card_url }}">{{ card_title | escape }}</a>
-    </h3>
-
-    {%- if latin_name != blank -%}
-      <p class="product-card__latin">
-        <em>{{ latin_name | escape }}</em>
-      </p>
-    {%- endif -%}
-
-    <p class="product-card__price">
-      {%- if use_live_product -%}
-        {%- if card_product.compare_at_price > card_product.price -%}
-          <span class="visually-hidden">{{ 'products.card.price_sale' | t }}</span>
-          <span class="product-card__price-sale">{% render 'zar-price', amount_cents: card_product.price %}</span>
-          <span class="visually-hidden">{{ 'products.card.price_regular' | t }}</span>
-          <s class="product-card__price-compare">{% render 'zar-price', amount_cents: card_product.compare_at_price %}</s>
-        {%- else -%}
-          <span class="product-card__price-regular">{% render 'zar-price', amount_cents: card_product.price %}</span>
-        {%- endif -%}
-      {%- else -%}
-        <span class="product-card__price-regular">{% render 'zar-price', amount_cents: 15000 %}</span>
+    <span class="product-card__body">
+      {%- if difficulty > 0 -%}
+        <span
+          class="product-card__difficulty difficulty-pips"
+          role="img"
+          aria-label="{{ 'products.card.difficulty_label' | t: level: difficulty, max: 5 }}"
+        >
+          {%- for pip in (1..5) -%}
+            <span
+              class="difficulty-pip{% if pip <= difficulty %} difficulty-pip--filled{% endif %}"
+              aria-hidden="true"
+            ></span>
+          {%- endfor -%}
+        </span>
       {%- endif -%}
-    </p>
-  </div>
+
+      <h3 class="product-card__title">{{ card_title }}</h3>
+
+      {%- if latin_name != blank -%}
+        <span class="product-card__latin">
+          <em>{{ latin_name }}</em>
+        </span>
+      {%- endif -%}
+
+      <span class="product-card__price">
+        {%- if use_live_product -%}
+          {%- if card_product.compare_at_price > card_product.price -%}
+            <span class="visually-hidden">{{ 'products.card.price_sale' | t }}</span>
+            <span class="product-card__price-sale">{% render 'zar-price', amount_cents: card_product.price %}</span>
+            <span class="visually-hidden">{{ 'products.card.price_regular' | t }}</span>
+            <s class="product-card__price-compare">{% render 'zar-price', amount_cents: card_product.compare_at_price %}</s>
+          {%- else -%}
+            <span class="product-card__price-regular">{% render 'zar-price', amount_cents: card_product.price %}</span>
+          {%- endif -%}
+        {%- else -%}
+          <span class="product-card__price-regular">{% render 'zar-price', amount_cents: mock_price_cents %}</span>
+        {%- endif -%}
+      </span>
+    </span>
+  </a>
 </article>

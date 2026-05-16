@@ -1,40 +1,13 @@
 {%- liquid
   assign care_heading = section.settings.care_heading
+  assign placeholder_url = section.settings.placeholder_image
+  assign enable_sticky_dossier = section.settings.enable_sticky_dossier
   assign collection_image = collection.image
   assign use_collection_image = false
 
   if collection_image != blank and collection_image.width > 0
     assign use_collection_image = true
   endif
-
-  case collection.handle
-    when 'dionaea'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Fly_Trap_(Dionaea_muscipula).jpg?width=1600'
-    when 'sarracenia'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600'
-    when 'nepenthes'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=1600'
-    when 'drosera'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1600'
-    when 'pinguicula'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=1600'
-    when 'cephalotus'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=1600'
-    when 'heliamphora'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=1600'
-    when 'utricularia'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Greater_Bladderwort_Utricularia_vulgaris_(6171429381).jpg?width=1600'
-    when 'darlingtonia'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonias.JPG?width=1600'
-    when 'byblis'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/ByblisLinifloraHabitus.JPG?width=1600'
-    when 'drossophyllum'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_RBGK.JPG?width=1600'
-    when 'growing-supplies'
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sphagnum_centrale.jpeg?width=1600'
-    else
-      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1600'
-  endcase
 -%}
 
 <section
@@ -62,7 +35,7 @@
               fetchpriority: 'high',
               alt: collection.title
           }}
-        {%- else -%}
+        {%- elsif placeholder_url != blank -%}
           <img
             class="collection-hero__image collection-hero__image--fallback"
             src="{{ placeholder_url }}"
@@ -77,27 +50,75 @@
       </div>
     </div>
 
-    <aside class="collection-hero__console" aria-labelledby="collection-hero-care-{{ section.id }}">
-      <h2 id="collection-hero-care-{{ section.id }}" class="collection-hero__console-title">
+    <aside
+      class="collection-hero__dossier{% if enable_sticky_dossier %} collection-hero__dossier--sticky{% endif %}"
+      aria-labelledby="collection-hero-dossier-{{ section.id }}"
+    >
+      <p class="collection-hero__dossier-overline">
+        {{ 'sections.collection_hero.dossier_overline' | t }}
+      </p>
+      <h2 id="collection-hero-dossier-{{ section.id }}" class="collection-hero__dossier-title">
         {{ care_heading | escape }}
       </h2>
 
-      {%- if collection.description != blank -%}
-        <div class="collection-hero__care rte">
-          {{ collection.description }}
-        </div>
-      {%- else -%}
-        <div class="collection-hero__care rte collection-hero__care--fallback">
-          <p>
-            <strong>{{ 'sections.collection_hero.care_fallback.light_label' | t }}</strong>
-            {{ 'sections.collection_hero.care_fallback.light' | t }}
-            <strong>{{ 'sections.collection_hero.care_fallback.water_label' | t }}</strong>
-            {{ 'sections.collection_hero.care_fallback.water' | t }}
-            <strong>{{ 'sections.collection_hero.care_fallback.soil_label' | t }}</strong>
-            {{ 'sections.collection_hero.care_fallback.soil' | t }}
-          </p>
-        </div>
-      {%- endif -%}
+      <div class="collection-hero__dossier-care">
+        {%- if collection.description != blank -%}
+          <div class="collection-hero__dossier-body rte">
+            {{ collection.description }}
+          </div>
+        {%- else -%}
+          <ul class="collection-hero__dossier-list" role="list">
+            <li class="collection-hero__dossier-item">
+              <p class="collection-hero__dossier-label">
+                {{ 'sections.collection_hero.care_fallback.light_heading' | t }}
+              </p>
+              <p class="collection-hero__dossier-value">
+                {{ 'sections.collection_hero.care_fallback.light' | t }}
+              </p>
+            </li>
+            <li class="collection-hero__dossier-item">
+              <p class="collection-hero__dossier-label">
+                {{ 'sections.collection_hero.care_fallback.water_heading' | t }}
+              </p>
+              <p class="collection-hero__dossier-value">
+                {{ 'sections.collection_hero.care_fallback.water' | t }}
+              </p>
+            </li>
+            <li class="collection-hero__dossier-item">
+              <p class="collection-hero__dossier-label">
+                {{ 'sections.collection_hero.care_fallback.substrate_heading' | t }}
+              </p>
+              <p class="collection-hero__dossier-value">
+                {{ 'sections.collection_hero.care_fallback.substrate' | t }}
+              </p>
+            </li>
+            <li class="collection-hero__dossier-item">
+              <p class="collection-hero__dossier-label">
+                {{ 'sections.collection_hero.care_fallback.humidity_heading' | t }}
+              </p>
+              <p class="collection-hero__dossier-value">
+                {{ 'sections.collection_hero.care_fallback.humidity' | t }}
+              </p>
+            </li>
+            <li class="collection-hero__dossier-item">
+              <p class="collection-hero__dossier-label">
+                {{ 'sections.collection_hero.care_fallback.dormancy_heading' | t }}
+              </p>
+              <p class="collection-hero__dossier-value">
+                {{ 'sections.collection_hero.care_fallback.dormancy' | t }}
+              </p>
+            </li>
+            <li class="collection-hero__dossier-item">
+              <p class="collection-hero__dossier-label">
+                {{ 'sections.collection_hero.care_fallback.feeding_heading' | t }}
+              </p>
+              <p class="collection-hero__dossier-value">
+                {{ 'sections.collection_hero.care_fallback.feeding' | t }}
+              </p>
+            </li>
+          </ul>
+        {%- endif -%}
+      </div>
     </aside>
   </div>
 </section>
@@ -143,57 +164,104 @@
     border-radius: var(--radius-md);
   }
 
-  .collection-hero__console {
-    padding: var(--space-xl);
+  .collection-hero__dossier {
+    padding: 2rem;
     background-color: var(--color-parchment);
     border: 1px solid var(--color-forest-green-dark);
     border-radius: var(--radius-lg);
     box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
   }
 
-  .collection-hero__console-title {
-    margin: 0 0 var(--space-md);
+  .collection-hero__dossier-overline {
+    margin: 0 0 var(--space-sm);
     font-family: var(--font-family-base);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     font-weight: 600;
-    letter-spacing: var(--letter-spacing-wide);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  .collection-hero__care {
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-text);
-  }
-
-  .collection-hero__care :is(p, ul, ol) {
-    margin: 0 0 var(--space-md);
-  }
-
-  .collection-hero__care :is(ul, ol) {
-    padding-inline-start: 1.25rem;
-  }
-
-  .collection-hero__care li + li {
-    margin-block-start: var(--space-2xs);
-  }
-
-  .collection-hero__care strong {
-    font-weight: 600;
     color: var(--color-primary);
   }
 
-  .collection-hero__care--fallback p {
-    margin: 0;
+  .collection-hero__dossier-title {
+    margin: 0 0 var(--space-lg);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.5rem, 2.5vw + 0.35rem, 2rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
   }
 
-  .collection-hero__care-empty {
+  .collection-hero__dossier-care :is(.collection-hero__dossier-list, .collection-hero__dossier-body ul) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
     margin: 0;
-    font-size: var(--font-size-sm);
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection-hero__dossier-care :is(.collection-hero__dossier-item, .collection-hero__dossier-body ul > li) {
+    margin: 0;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid rgb(0 0 0 / 0.1);
+  }
+
+  .collection-hero__dossier-label,
+  .collection-hero__dossier-body ul li > :is(strong, b):first-child {
+    display: block;
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-family-base);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .collection-hero__dossier-value,
+  .collection-hero__dossier-body ul > li {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    font-style: normal;
+    font-weight: 400;
     line-height: var(--line-height-relaxed);
-    color: var(--color-text-muted);
+    color: var(--color-forest-green-dark);
+  }
+
+  .collection-hero__dossier-body {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .collection-hero__dossier-body > p {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+  }
+
+  .collection-hero__dossier-body > p:last-child {
+    margin-block-end: 0;
+  }
+
+  .collection-hero__dossier-body > ol {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    font-family: var(--font-family-serif);
+  }
+
+  @media (max-width: 749px) {
+    .collection-hero__dossier {
+      padding: var(--space-xl);
+    }
+
+    .collection-hero__dossier-care :is(.collection-hero__dossier-list, .collection-hero__dossier-body ul) {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (min-width: 990px) {
@@ -202,7 +270,7 @@
       gap: var(--space-3xl);
     }
 
-    .collection-hero__console {
+    .collection-hero__dossier--sticky {
       position: sticky;
       top: calc(var(--header-height) + var(--space-md));
     }
@@ -220,6 +288,19 @@
       "id": "care_heading",
       "label": "t:sections.collection_hero.settings.care_heading",
       "default": "Care guide"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_image",
+      "label": "t:sections.collection_hero.settings.placeholder_image",
+      "info": "t:sections.collection_hero.settings.placeholder_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1600"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_dossier",
+      "label": "t:sections.collection_hero.settings.enable_sticky_dossier",
+      "default": true
     }
   ]
 }

@@ -15,11 +15,21 @@
 
     {%- render 'meta-tags' -%}
 
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
     {{ content_for_header }}
   </head>
 
   <body class="template-{{ template.name | handle }}">
     {%- sections 'header-group' -%}
+
+    {% section 'cart-drawer' %}
 
     <main id="main-content" role="main" tabindex="-1">
       {{ content_for_layout }}
@@ -28,5 +38,6 @@
     {%- sections 'footer-group' -%}
 
     <script src="{{ 'global.js' | asset_url }}" defer></script>
+    <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
   </body>
 </html>

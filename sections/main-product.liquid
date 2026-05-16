@@ -6,7 +6,6 @@
     endif
   endif
 
-  assign mock_image_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(8411421382).jpg?width=1600'
   assign mock_price_cents = 85000
   assign mock_difficulty = 4
 
@@ -98,8 +97,11 @@
       assign trap_type_label = trap_type | replace: '-', ' ' | capitalize
   endcase
 
-  assign main_image_id = 'main-product-gallery-image-' | append: section.id
   assign form_id = 'main-product-form-' | append: section.id
+
+  assign mock_gallery_url_1 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(8411421382).jpg?width=1600'
+  assign mock_gallery_url_2 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Large_lower_pitcher_of_wild_Nepenthes_rajah_plant.jpg?width=1600'
+  assign mock_gallery_url_3 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria_multiple_inflorescences.jpg?width=1600'
 
   if dormancy_required == true or dormancy_required == 'true'
     assign dormancy_label = 'products.main.dormancy_yes' | t
@@ -115,61 +117,66 @@
 >
   <div class="main-product__layout">
     <div class="main-product__gallery" data-product-gallery>
-      <figure class="main-product__gallery-main">
-        {%- if use_live_product and has_gallery -%}
-          {%- assign first_media = gallery_media | first -%}
-          {{
-            first_media
-            | image_url: width: 1600, height: 2000, crop: 'center'
-            | image_tag:
-              class: 'main-product__gallery-image',
-              id: main_image_id,
-              widths: '600, 900, 1200, 1600',
-              sizes: '(min-width: 990px) 48vw, 100vw',
-              loading: 'eager',
-              fetchpriority: 'high',
-              alt: display_title,
-              data-gallery-main: ''
-          }}
-        {%- else -%}
-          {%- comment -%} TODO: replace placeholder — nepenthes-lowland-product-01 (placeholder-images.md) {%- endcomment -%}
+      {%- if use_live_product and has_gallery -%}
+        {%- for media in gallery_media -%}
+          <figure class="main-product__gallery-frame">
+            {%- liquid
+              assign gallery_loading = 'lazy'
+              assign gallery_priority = 'auto'
+              if forloop.first
+                assign gallery_loading = 'eager'
+                assign gallery_priority = 'high'
+              endif
+            -%}
+            {{
+              media
+              | image_url: width: 1600, height: 2000, crop: 'center'
+              | image_tag:
+                class: 'main-product__gallery-image',
+                widths: '600, 900, 1200, 1600',
+                sizes: '(min-width: 990px) 48vw, 100vw',
+                loading: gallery_loading,
+                fetchpriority: gallery_priority,
+                alt: media.alt | default: display_title
+            }}
+          </figure>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} TODO: replace placeholders — nepenthes-lowland-product-01 (placeholder-images.md) {%- endcomment -%}
+        <figure class="main-product__gallery-frame">
           <img
             class="main-product__gallery-image main-product__gallery-image--fallback"
-            id="{{ main_image_id }}"
-            src="{{ mock_image_url }}"
-            alt="{{ display_title | escape }}"
+            src="{{ mock_gallery_url_1 }}"
+            alt="{{ display_title }}"
             width="1600"
             height="2000"
             loading="eager"
             fetchpriority="high"
             decoding="async"
-            data-gallery-main
           >
-        {%- endif -%}
-      </figure>
-
-      {%- if use_live_product and gallery_media.size > 1 -%}
-        <ul class="main-product__gallery-thumbs" role="list" aria-label="{{ 'products.main.gallery_thumbnails' | t }}">
-          {%- for media in gallery_media -%}
-            <li class="main-product__gallery-thumb" role="listitem">
-              <button
-                type="button"
-                class="main-product__gallery-thumb-btn{% if forloop.first %} is-active{% endif %}"
-                data-gallery-thumb
-                data-image-src="{{ media | image_url: width: 1600, height: 2000, crop: 'center' }}"
-                data-image-alt="{{ media.alt | default: display_title | escape }}"
-                aria-label="{{ 'products.main.gallery_go_to_image' | t: index: forloop.index }}"
-                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
-              >
-                {{
-                  media
-                  | image_url: width: 200, height: 200, crop: 'center'
-                  | image_tag: class: 'main-product__gallery-thumb-image', loading: 'lazy', alt: ''
-                }}
-              </button>
-            </li>
-          {%- endfor -%}
-        </ul>
+        </figure>
+        <figure class="main-product__gallery-frame">
+          <img
+            class="main-product__gallery-image main-product__gallery-image--fallback"
+            src="{{ mock_gallery_url_2 }}"
+            alt="{{ latin_name }}"
+            width="1600"
+            height="2000"
+            loading="lazy"
+            decoding="async"
+          >
+        </figure>
+        <figure class="main-product__gallery-frame">
+          <img
+            class="main-product__gallery-image main-product__gallery-image--fallback"
+            src="{{ mock_gallery_url_3 }}"
+            alt="{{ display_title }}"
+            width="1600"
+            height="2000"
+            loading="lazy"
+            decoding="async"
+          >
+        </figure>
       {%- endif -%}
     </div>
 
@@ -347,8 +354,16 @@
     align-items: start;
   }
 
-  .main-product__gallery-main {
+  .main-product__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .main-product__gallery-frame {
     margin: 0;
+    width: 100%;
     overflow: hidden;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -361,44 +376,6 @@
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: center center;
-  }
-
-  .main-product__gallery-thumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin: var(--space-md) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .main-product__gallery-thumb-btn {
-    display: block;
-    width: 4.5rem;
-    height: 4.5rem;
-    padding: 0;
-    overflow: hidden;
-    cursor: pointer;
-    background: none;
-    border: 2px solid transparent;
-    border-radius: var(--radius-sm);
-    transition: border-color var(--transition-fast);
-  }
-
-  .main-product__gallery-thumb-btn.is-active,
-  .main-product__gallery-thumb-btn:hover {
-    border-color: var(--color-primary);
-  }
-
-  .main-product__gallery-thumb-btn:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 2px;
-  }
-
-  .main-product__gallery-thumb-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   .main-product__console {
@@ -639,7 +616,7 @@
 
     .main-product__console {
       position: sticky;
-      top: calc(var(--header-height) + var(--space-md));
+      top: 2rem;
     }
   }
 
@@ -659,36 +636,12 @@
         return;
       }
 
-      var gallery = root.querySelector('[data-product-gallery]');
-      var mainImage = root.querySelector('[data-gallery-main]');
-      var thumbs = root.querySelectorAll('[data-gallery-thumb]');
       var qtyInput = root.querySelector('[data-qty-input]');
       var qtyMinus = root.querySelector('[data-qty-minus]');
       var qtyPlus = root.querySelector('[data-qty-plus]');
       var variantSelect = root.querySelector('[data-variant-select]');
       var variantIdInput = root.querySelector('[data-variant-id]');
       var addButton = root.querySelector('[data-add-to-cart]');
-
-      if (gallery && mainImage && thumbs.length) {
-        thumbs.forEach(function (thumb) {
-          thumb.addEventListener('click', function () {
-            var src = thumb.getAttribute('data-image-src');
-            var alt = thumb.getAttribute('data-image-alt');
-            if (!src) {
-              return;
-            }
-            mainImage.setAttribute('src', src);
-            if (alt) {
-              mainImage.setAttribute('alt', alt);
-            }
-            thumbs.forEach(function (btn) {
-              var isActive = btn === thumb;
-              btn.classList.toggle('is-active', isActive);
-              btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            });
-          });
-        });
-      }
 
       if (qtyInput && qtyMinus && qtyPlus) {
         qtyMinus.addEventListener('click', function () {

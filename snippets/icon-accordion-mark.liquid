@@ -1,0 +1,19 @@
+{% doc %}
+  Renders plus/minus line icons for botanical accordion summaries.
+  Shows plus when closed and minus when the parent details element is open.
+
+  @param {string} [class] - Optional class on the wrapper
+{% enddoc %}
+
+<span class="botanical-accordion__mark{% if class != blank %} {{ class }}{% endif %}" aria-hidden="true">
+  <svg class="botanical-accordion__icon botanical-accordion__icon--plus" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+  </svg>
+  <svg class="botanical-accordion__icon botanical-accordion__icon--minus" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 8h10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+  </svg>
+  <svg class="botanical-accordion__icon botanical-accordion__icon--leaf" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 14c-3-2.5-5-5.5-5-9a5 5 0 0 1 10 0c0 3.5-2 6.5-5 9Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+    <path d="M8 14V5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+  </svg>
+</span>

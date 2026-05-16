@@ -1,0 +1,170 @@
+{% doc %}
+  Renders a single conservatory arch genus shortcut card.
+
+  @param {string} card_title - Display name for the genus
+  @param {string} card_link - Collection URL
+  @param {string} placeholder_url - Wikimedia fallback image URL
+  @param {image} [card_image] - Optional uploaded image from theme editor
+  @param {boolean} [use_shopify_image] - Whether to render the Shopify image
+
+  @example
+  {% render 'genus-arch-card',
+    card_title: 'Drosera',
+    card_link: '/collections/drosera',
+    placeholder_url: 'https://example.com/image.jpg',
+    use_shopify_image: false
+  %}
+{% enddoc %}
+
+<a class="genus-arch-card" href="{{ card_link }}">
+  <span class="genus-arch-card__arch">
+    <span class="genus-arch-card__media">
+      {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
+      {%- if use_shopify_image and card_image != blank -%}
+        {{
+          card_image
+          | image_url: width: 800, height: 1067, crop: 'center'
+          | image_tag:
+            class: 'genus-arch-card__image',
+            widths: '400, 600, 800',
+            sizes: '(min-width: 990px) 20vw, 60vw',
+            loading: 'lazy',
+            alt: ''
+        }}
+      {%- elsif placeholder_url != blank -%}
+        <img
+          class="genus-arch-card__image genus-arch-card__image--fallback"
+          src="{{ placeholder_url }}"
+          alt=""
+          width="800"
+          height="1067"
+          loading="lazy"
+          decoding="async"
+        >
+      {%- endif -%}
+    </span>
+  </span>
+
+  <span class="genus-arch-card__label">
+    <span class="genus-arch-card__title">{{ card_title | escape }}</span>
+    <span class="genus-arch-card__cta">{{ 'sections.genus_shortcuts.shop_collection' | t }}</span>
+  </span>
+  <span class="visually-hidden">
+    {{- 'sections.genus_shortcuts.card_label' | t: genus: card_title -}}
+  </span>
+</a>
+
+{% stylesheet %}
+  .genus-arch-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-decoration: none;
+    color: var(--color-text);
+    transition:
+      transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+      box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+
+  .genus-arch-card:hover {
+    transform: translate3d(0, -8px, 0);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+  }
+
+  .genus-arch-card:focus-visible {
+    outline-offset: 4px;
+  }
+
+  .genus-arch-card__arch {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px 999px 0 0;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .genus-arch-card__media {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  .genus-arch-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transform: scale3d(1, 1, 1);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+
+  .genus-arch-card:hover .genus-arch-card__image {
+    transform: scale3d(1.06, 1.06, 1);
+  }
+
+  .genus-arch-card__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+    width: 100%;
+    margin-block-start: var(--space-md);
+    text-align: center;
+  }
+
+  .genus-arch-card__title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.375rem, 2.5vw + 0.35rem, 2rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+  }
+
+  .genus-arch-card__cta {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .genus-arch-card:hover .genus-arch-card__cta {
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 990px) {
+    .genus-arch-card__label {
+      margin-block-start: var(--space-lg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .genus-arch-card,
+    .genus-arch-card__image,
+    .genus-arch-card__cta {
+      transition: none;
+    }
+
+    .genus-arch-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .genus-arch-card:hover .genus-arch-card__image {
+      transform: none;
+    }
+  }
+{% endstylesheet %}

@@ -1,0 +1,793 @@
+{%- liquid
+  assign form_heading = section.settings.form_heading
+  if form_heading == blank and page.title != blank
+    assign form_heading = page.title
+  endif
+
+  assign panel_heading = section.settings.panel_heading
+  assign panel_intro = section.settings.panel_intro
+  assign contact_address = section.settings.contact_address
+  assign contact_email = section.settings.contact_email
+  assign contact_phone = section.settings.contact_phone
+  assign panel_image = section.settings.panel_image
+  assign image_position = section.settings.image_position
+  assign placeholder_panel_image = section.settings.placeholder_panel_image
+  assign show_faq = section.settings.show_faq
+  assign show_social_links = section.settings.show_social_links
+  assign enable_sticky_sidebar = section.settings.enable_sticky_sidebar
+  assign faq_heading = section.settings.faq_heading
+  assign social_heading = section.settings.social_heading
+  assign facebook_url = section.settings.facebook_url
+  assign instagram_url = section.settings.instagram_url
+  assign facebook_handle = section.settings.facebook_handle
+  assign instagram_handle = section.settings.instagram_handle
+
+  assign use_panel_image = false
+  if panel_image != blank
+    if panel_image.width > 0
+      assign use_panel_image = true
+    endif
+  endif
+
+  assign faq_block_count = 0
+  for block in section.blocks
+    if block.type == 'faq'
+      if block.settings.question != blank
+        assign faq_block_count = faq_block_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+
+<article class="contact-page full-width" {{ section.shopify_attributes }}>
+  <div class="contact-page__inner">
+    {%- if form_heading != blank -%}
+      <header class="contact-page__header">
+        <h1 class="contact-page__title">{{ form_heading | escape }}</h1>
+        {%- if section.settings.form_intro != blank -%}
+          <p class="contact-page__intro">{{ section.settings.form_intro | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <div class="contact-page__split">
+      <div class="contact-page__form-column">
+        {%- if section.settings.form_subheading != blank -%}
+          <h2 class="contact-page__form-heading">{{ section.settings.form_subheading | escape }}</h2>
+        {%- endif -%}
+
+        {%- form 'contact', class: 'contact-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="contact-form__success" role="status" tabindex="-1" autofocus>
+              <p>{{ 'sections.contact_template.form_success' | t }}</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="contact-form__errors" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="ContactForm-name-{{ section.id }}">
+              {{ 'sections.contact_template.field_name' | t }}
+            </label>
+            <input
+              class="contact-form__input"
+              type="text"
+              id="ContactForm-name-{{ section.id }}"
+              name="contact[name]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              autocomplete="name"
+              required
+              {% if form.errors contains 'name' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-name-error-{{ section.id }}"
+              {% endif %}
+            >
+            {%- if form.errors contains 'name' -%}
+              <span id="ContactForm-name-error-{{ section.id }}" class="contact-form__field-error">
+                {{ form.errors.messages.name }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="ContactForm-email-{{ section.id }}">
+              {{ 'sections.contact_template.field_email' | t }}
+            </label>
+            <input
+              class="contact-form__input"
+              type="email"
+              id="ContactForm-email-{{ section.id }}"
+              name="contact[email]"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              autocomplete="email"
+              spellcheck="false"
+              autocapitalize="off"
+              required
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-email-error-{{ section.id }}"
+              {% endif %}
+            >
+            {%- if form.errors contains 'email' -%}
+              <span id="ContactForm-email-error-{{ section.id }}" class="contact-form__field-error">
+                {{ form.errors.messages.email }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="ContactForm-phone-{{ section.id }}">
+              {{ 'sections.contact_template.field_phone' | t }}
+            </label>
+            <input
+              class="contact-form__input"
+              type="tel"
+              id="ContactForm-phone-{{ section.id }}"
+              name="contact[phone]"
+              value="{% if form.phone %}{{ form.phone }}{% endif %}"
+              autocomplete="tel"
+              {% if form.errors contains 'phone' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-phone-error-{{ section.id }}"
+              {% endif %}
+            >
+            {%- if form.errors contains 'phone' -%}
+              <span id="ContactForm-phone-error-{{ section.id }}" class="contact-form__field-error">
+                {{ form.errors.messages.phone }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="ContactForm-body-{{ section.id }}">
+              {{ 'sections.contact_template.field_message' | t }}
+            </label>
+            <textarea
+              class="contact-form__textarea"
+              id="ContactForm-body-{{ section.id }}"
+              name="contact[body]"
+              rows="6"
+              required
+              {% if form.errors contains 'body' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-body-error-{{ section.id }}"
+              {% endif %}
+            >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            {%- if form.errors contains 'body' -%}
+              <span id="ContactForm-body-error-{{ section.id }}" class="contact-form__field-error">
+                {{ form.errors.messages.body }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          <button type="submit" class="contact-form__submit">
+            {{ 'sections.contact_template.submit' | t }}
+          </button>
+        {%- endform -%}
+      </div>
+
+      <aside
+        class="contact-page__details-column{% if enable_sticky_sidebar %} contact-page__details-column--sticky{% endif %}"
+        aria-labelledby="contact-panel-heading-{{ section.id }}"
+      >
+        <div class="contact-page__panel contact-page__panel--image-{{ image_position }}">
+          {%- if image_position == 'top' -%}
+            <div class="contact-page__arch-frame">
+              {%- comment -%} TODO: replace placeholder image before launch — heliamphora-hero-banner.jpg (placeholder-images.md) {%- endcomment -%}
+              {%- if use_panel_image -%}
+                {{
+                  panel_image
+                  | image_url: width: 1400, height: 1750, crop: 'center'
+                  | image_tag:
+                    class: 'contact-page__arch-image',
+                    widths: '600, 900, 1200, 1400',
+                    sizes: '(min-width: 990px) 42vw, 100vw',
+                    loading: 'lazy',
+                    alt: panel_heading
+                }}
+              {%- elsif placeholder_panel_image != blank -%}
+                <img
+                  class="contact-page__arch-image contact-page__arch-image--fallback"
+                  src="{{ placeholder_panel_image }}"
+                  alt="{{ panel_heading | default: shop.name | escape }}"
+                  width="1400"
+                  height="1750"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <div class="contact-page__panel-copy">
+            {%- if panel_heading != blank -%}
+              <h2 id="contact-panel-heading-{{ section.id }}" class="contact-page__panel-title">
+                {{ panel_heading | escape }}
+              </h2>
+            {%- endif -%}
+
+            {%- if panel_intro != blank -%}
+              <p class="contact-page__panel-intro">{{ panel_intro | escape }}</p>
+            {%- endif -%}
+
+            <dl class="contact-page__details-list">
+              {%- if contact_address != blank -%}
+                <div class="contact-page__details-row">
+                  <dt>{{ 'sections.contact_template.detail_address' | t }}</dt>
+                  <dd>{{ contact_address | escape }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if contact_email != blank -%}
+                <div class="contact-page__details-row">
+                  <dt>{{ 'sections.contact_template.detail_email' | t }}</dt>
+                  <dd>
+                    <a class="contact-page__details-link" href="mailto:{{ contact_email }}">{{ contact_email | escape }}</a>
+                  </dd>
+                </div>
+              {%- endif -%}
+              {%- if contact_phone != blank -%}
+                <div class="contact-page__details-row">
+                  <dt>{{ 'sections.contact_template.detail_phone' | t }}</dt>
+                  <dd>{{ contact_phone | escape }}</dd>
+                </div>
+              {%- endif -%}
+            </dl>
+          </div>
+
+          {%- if image_position == 'bottom' -%}
+            <div class="contact-page__arch-frame">
+              {%- comment -%} TODO: replace placeholder image before launch — heliamphora-hero-banner.jpg (placeholder-images.md) {%- endcomment -%}
+              {%- if use_panel_image -%}
+                {{
+                  panel_image
+                  | image_url: width: 1400, height: 1750, crop: 'center'
+                  | image_tag:
+                    class: 'contact-page__arch-image',
+                    widths: '600, 900, 1200, 1400',
+                    sizes: '(min-width: 990px) 42vw, 100vw',
+                    loading: 'lazy',
+                    alt: panel_heading
+                }}
+              {%- elsif placeholder_panel_image != blank -%}
+                <img
+                  class="contact-page__arch-image contact-page__arch-image--fallback"
+                  src="{{ placeholder_panel_image }}"
+                  alt="{{ panel_heading | default: shop.name | escape }}"
+                  width="1400"
+                  height="1750"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </aside>
+    </div>
+
+    {%- if show_faq and faq_block_count > 0 -%}
+      <section class="contact-page__faq" aria-labelledby="contact-faq-heading-{{ section.id }}">
+        {%- if faq_heading != blank -%}
+          <h2 id="contact-faq-heading-{{ section.id }}" class="contact-page__faq-title">
+            {{ faq_heading | escape }}
+          </h2>
+        {%- endif -%}
+
+        <div class="botanical-accordion" role="region" aria-label="{{ faq_heading | default: 'FAQ' | escape }}">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'faq' -%}
+              {%- if block.settings.question != blank -%}
+                <details class="botanical-accordion__item" {{ block.shopify_attributes }}>
+                  <summary class="botanical-accordion__summary">
+                    {% render 'icon-accordion-mark' %}
+                    <span class="botanical-accordion__question">{{ block.settings.question | escape }}</span>
+                  </summary>
+                  <div class="botanical-accordion__answer rte">
+                    {{ block.settings.answer }}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if show_social_links and social_heading != blank -%}
+      {%- if facebook_url != blank or instagram_url != blank -%}
+        <section class="contact-page__social" aria-labelledby="contact-social-heading-{{ section.id }}">
+          <h2 id="contact-social-heading-{{ section.id }}" class="contact-page__social-title">
+            {{ social_heading | escape }}
+          </h2>
+          <ul class="contact-page__social-list" role="list">
+            {%- if facebook_url != blank -%}
+              <li>
+                <a
+                  class="contact-page__social-link"
+                  href="{{ facebook_url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="contact-page__social-label">{{ 'sections.contact_template.social_facebook' | t }}</span>
+                  {%- if facebook_handle != blank -%}
+                    <span class="contact-page__social-handle" aria-hidden="true">{{ facebook_handle | escape }}</span>
+                  {%- endif -%}
+                  <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if instagram_url != blank -%}
+              <li>
+                <a
+                  class="contact-page__social-link"
+                  href="{{ instagram_url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="contact-page__social-label">{{ 'sections.contact_template.social_instagram' | t }}</span>
+                  {%- if instagram_handle != blank -%}
+                    <span class="contact-page__social-handle" aria-hidden="true">{{ instagram_handle | escape }}</span>
+                  {%- endif -%}
+                  <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </section>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</article>
+
+{% stylesheet %}
+  .contact-page {
+    background-color: var(--color-parchment);
+    padding-block: var(--space-3xl) var(--space-4xl);
+  }
+
+  .contact-page__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    max-width: 72rem;
+    margin-inline: auto;
+  }
+
+  .contact-page__header {
+    max-width: 36rem;
+    margin-block-end: var(--space-3xl);
+  }
+
+  .contact-page__title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: clamp(2rem, 4vw + 0.5rem, 3rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.01em;
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__intro {
+    margin: 0;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .contact-page__split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+  }
+
+  .contact-page__form-heading {
+    margin: 0 0 var(--space-xl);
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-xl);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-lg);
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
+  }
+
+  .contact-page__arch-frame {
+    overflow: hidden;
+    padding: var(--space-sm);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-border);
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .contact-page__arch-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center 35%;
+    border-radius: 999px 999px var(--radius-md) var(--radius-md);
+  }
+
+  .contact-page__panel-title {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.375rem, 2vw + 0.35rem, 1.75rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__panel-intro {
+    margin: 0 0 var(--space-lg);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .contact-page__details-list {
+    margin: 0;
+  }
+
+  .contact-page__details-row {
+    padding-block-start: var(--space-md);
+    border-block-start: 1px solid rgb(0 0 0 / 0.1);
+  }
+
+  .contact-page__details-row:first-child {
+    padding-block-start: 0;
+    border-block-start: none;
+  }
+
+  .contact-page__details-row dt {
+    margin: 0 0 var(--space-2xs);
+    font-family: var(--font-family-base);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__details-row dd {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__details-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .contact-page__details-link:hover {
+    color: var(--color-accent);
+  }
+
+  .contact-page__faq {
+    margin-block-start: var(--space-4xl);
+    padding-block-start: var(--space-3xl);
+    border-block-start: 1px solid var(--color-border-strong);
+  }
+
+  .contact-page__faq-title {
+    margin: 0 0 var(--space-xl);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.375rem, 2vw + 0.35rem, 1.875rem);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__social {
+    margin-block-start: var(--space-3xl);
+    padding: var(--space-2xl);
+    text-align: center;
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-lg);
+  }
+
+  .contact-page__social-title {
+    margin: 0 0 var(--space-lg);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.25rem, 2vw + 0.25rem, 1.5rem);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .contact-page__social-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-page__social-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-lg) var(--space-xl);
+    text-decoration: none;
+    color: var(--color-forest-green-dark);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .contact-page__social-link:hover {
+    border-color: var(--color-forest-green-dark);
+    transform: translate3d(0, -2px, 0);
+  }
+
+  .contact-page__social-label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .contact-page__social-handle {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    font-style: italic;
+  }
+
+  @media (min-width: 990px) {
+    .contact-page__split {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: var(--space-4xl);
+    }
+
+    .contact-page__details-column--sticky .contact-page__panel {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-md));
+    }
+
+    .contact-page__form-column {
+      padding-inline-end: var(--space-xl);
+    }
+
+    .contact-page__social-list {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .contact-page__social-link {
+      flex: 1 1 12rem;
+      max-width: 16rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.contact_template.name",
+  "tag": "section",
+  "class": "contact-template-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.contact_template.settings.display_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "t:sections.contact_template.settings.show_faq",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": "t:sections.contact_template.settings.show_social_links",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_sidebar",
+      "label": "t:sections.contact_template.settings.enable_sticky_sidebar",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.contact_template.settings.form_header"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "t:sections.contact_template.settings.form_heading",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "form_intro",
+      "label": "t:sections.contact_template.settings.form_intro",
+      "default": "Questions about availability, shipping live plants, or custom tissue culture — we read every message."
+    },
+    {
+      "type": "text",
+      "id": "form_subheading",
+      "label": "t:sections.contact_template.settings.form_subheading",
+      "default": "Send a message"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.contact_template.settings.panel_header"
+    },
+    {
+      "type": "text",
+      "id": "panel_heading",
+      "label": "t:sections.contact_template.settings.panel_heading",
+      "default": "Visit the conservatory"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_intro",
+      "label": "t:sections.contact_template.settings.panel_intro",
+      "default": "Visits are by appointment so we can give your collection the attention it deserves. Reach out to plan a bench tour or discuss a custom order."
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_image",
+      "label": "t:sections.contact_template.settings.panel_image"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_panel_image",
+      "label": "t:sections.contact_template.settings.placeholder_panel_image",
+      "info": "t:sections.contact_template.settings.placeholder_panel_image_info",
+      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=1400"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "t:sections.contact_template.settings.image_position",
+      "default": "top",
+      "options": [
+        { "value": "top", "label": "t:sections.contact_template.settings.image_position_top" },
+        { "value": "bottom", "label": "t:sections.contact_template.settings.image_position_bottom" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "contact_address",
+      "label": "t:sections.contact_template.settings.contact_address",
+      "default": "Gauteng, South Africa (By Appointment Only)"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "t:sections.contact_template.settings.contact_email",
+      "default": "info@bizarretropicals.co.za"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "t:sections.contact_template.settings.contact_phone",
+      "default": "+27 (WhatsApp Preferred)"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.contact_template.settings.faq_header"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "t:sections.contact_template.settings.faq_heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.contact_template.settings.social_header"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "t:sections.contact_template.settings.social_heading",
+      "default": "Follow the growth"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "t:sections.contact_template.settings.facebook_url"
+    },
+    {
+      "type": "text",
+      "id": "facebook_handle",
+      "label": "t:sections.contact_template.settings.facebook_handle",
+      "default": "@bizarretropicals"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "t:sections.contact_template.settings.instagram_url"
+    },
+    {
+      "type": "text",
+      "id": "instagram_handle",
+      "label": "t:sections.contact_template.settings.instagram_handle",
+      "default": "@bizarretropicals"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "t:sections.contact_template.blocks.faq.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:sections.contact_template.blocks.faq.settings.question",
+          "default": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:sections.contact_template.blocks.faq.settings.answer",
+          "default": "<p>Answer</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact_template.name",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do you ship nationwide?",
+            "answer": "<p>Yes. We ship living plants across South Africa using specialized botanical couriers who understand temperature-sensitive freight. Shipping is calculated at checkout based on your destination and order size.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Are these plants safe for pets?",
+            "answer": "<p>Carnivorous plants are generally not toxic to cats and dogs, but the traps are delicate. Curious paws can damage pitchers and snap-traps permanently. We recommend placing plants out of reach if your pets like to investigate greenery.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do I need to feed them?",
+            "answer": "<p>Never use fertilizer — it will burn the roots. Insects caught naturally are ideal. On a windowsill without wild prey, you may occasionally offer a small live or freeze-dried insect, but most plants thrive without hand-feeding if light and water are correct.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What water should I use?",
+            "answer": "<p>Always use distilled water, reverse-osmosis (RO) water, or clean rainwater. Tap water minerals accumulate in the substrate and will eventually kill carnivorous plants. The tray method works well for most genera we stock.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
