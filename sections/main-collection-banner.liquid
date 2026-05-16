@@ -1,70 +1,73 @@
 {%- liquid
-  assign hero_title = collection.title | default: 'Products'
   assign illustration_image = section.settings.illustration_image
-  assign placeholder_src = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=1200'
-  assign hero_image_src = placeholder_src
-  assign hero_image_alt = hero_title | escape
-
-  if illustration_image != blank
-    assign hero_image_src = illustration_image | image_url: width: 1200
-    assign hero_image_alt = illustration_image.alt | default: hero_title | escape
-  endif
+  assign illustration_alt = illustration_image.alt | default: collection.title | escape
 -%}
 
 <section
-  class="catalog-hero full-width"
-  aria-labelledby="catalog-hero-title-{{ section.id }}"
+  class="collection-anatomy full-width reveal-up"
+  aria-labelledby="collection-anatomy-title-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
-  <div class="catalog-hero__stage">
-    <h1 id="catalog-hero-title-{{ section.id }}" class="catalog-hero__title">
-      {{ hero_title | escape }}
+  <div class="collection-anatomy__inner">
+    <h1 id="collection-anatomy-title-{{ section.id }}" class="collection-anatomy__title">
+      {{ collection.title | escape }}
     </h1>
 
-    <div class="catalog-hero__art">
-      <img
-        class="catalog-hero__img"
-        src="{{ hero_image_src }}"
-        alt="{{ hero_image_alt }}"
-        width="1200"
-        height="1600"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      >
+    <div class="collection-anatomy__figure">
+      {%- if illustration_image != blank -%}
+        {{
+          illustration_image
+          | image_url: width: 800
+          | image_tag:
+            class: 'anatomy-hero-img',
+            widths: '400, 600, 800',
+            sizes: '300px',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: illustration_alt
+        }}
+      {%- else -%}
+        <div class="anatomy-placeholder">
+          <p class="anatomy-placeholder__text">{{ 'sections.collection_banner.placeholder_upload' | t }}</p>
+        </div>
+      {%- endif -%}
 
-      <p class="catalog-hero__callout catalog-hero__callout--rim">
-        <span class="catalog-hero__callout-text">{{ 'sections.collection_banner.callout_rim_short' | t }}</span>
+      <p class="collection-anatomy__callout collection-anatomy__callout--rim">
+        {{ 'sections.collection_banner.callout_rim' | t }}
       </p>
-      <p class="catalog-hero__callout catalog-hero__callout--wax">
-        <span class="catalog-hero__callout-text">{{ 'sections.collection_banner.callout_wax_short' | t }}</span>
+      <p class="collection-anatomy__callout collection-anatomy__callout--wax">
+        {{ 'sections.collection_banner.callout_wax' | t }}
       </p>
-      <p class="catalog-hero__callout catalog-hero__callout--pool">
-        <span class="catalog-hero__callout-text">{{ 'sections.collection_banner.callout_pool_short' | t }}</span>
+      <p class="collection-anatomy__callout collection-anatomy__callout--pool">
+        {{ 'sections.collection_banner.callout_pool' | t }}
       </p>
     </div>
+
+    {%- if collection.description != blank -%}
+      <div class="collection-anatomy__description rte">
+        {{ collection.description }}
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
 {% stylesheet %}
-  .collection-anatomy-section.shopify-section,
-  .catalog-hero-section.shopify-section {
+  .collection-anatomy-section.shopify-section {
     display: block;
     grid-template-columns: none;
   }
 
-  .collection-anatomy-section.shopify-section > *,
-  .catalog-hero-section.shopify-section > * {
+  .collection-anatomy-section.shopify-section > * {
     grid-column: auto;
   }
 
-  .catalog-hero {
-    min-height: 100vh;
+  .collection-anatomy {
+    padding: var(--space-3xl) var(--page-margin);
     color: var(--color-parchment);
     background-color: #121614;
   }
 
-  .catalog-hero__stage {
+  .collection-anatomy__inner {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -72,18 +75,15 @@
     justify-content: center;
     width: 100%;
     max-width: 1200px;
-    min-height: 100vh;
+    min-height: 60vh;
     margin: 0 auto;
-    padding: var(--space-3xl) var(--page-margin);
     text-align: center;
   }
 
-  .catalog-hero__title {
-    position: relative;
-    z-index: 2;
+  .collection-anatomy__title {
     margin: 0 0 2rem;
     font-family: var(--font-family-serif);
-    font-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
+    font-size: clamp(2rem, 4vw + 0.5rem, 3.5rem);
     font-weight: 400;
     line-height: var(--line-height-tight);
     letter-spacing: var(--letter-spacing-tight);
@@ -91,96 +91,129 @@
     text-wrap: balance;
   }
 
-  .catalog-hero__art {
+  .collection-anatomy__figure {
     position: relative;
-    width: min(100%, 420px);
-    margin: 0 auto;
+    width: 300px;
+    height: 400px;
+    margin: 4rem auto;
   }
 
-  .catalog-hero__img {
+  .anatomy-hero-img {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: block;
     width: 100%;
     height: auto;
-    max-height: min(62vh, 560px);
-    margin: 0 auto;
     object-fit: contain;
     object-position: center center;
+    border-radius: 10px;
   }
 
-  .catalog-hero__callout {
-    position: absolute;
-    z-index: 3;
-    margin: 0;
-    padding: 0;
-    text-align: start;
-  }
-
-  .catalog-hero__callout-text {
-    display: block;
-    font-family: var(--font-family-base);
-    font-size: 0.65rem;
-    font-weight: 600;
-    line-height: 1.35;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  .anatomy-placeholder {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 1px dashed rgb(244 238 224 / 0.3);
+    border-radius: 10px;
     color: var(--color-parchment);
   }
 
-  .catalog-hero__callout::after {
-    content: '';
+  .anatomy-placeholder__text {
+    margin: 0;
+    padding: var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .collection-anatomy__callout {
     position: absolute;
-    width: 100px;
+    z-index: 3;
+    width: max-content;
+    max-width: 12rem;
+    margin: 0;
+    font-family: var(--font-family-base);
+    font-size: 0.65rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-parchment);
+    text-align: start;
+  }
+
+  .collection-anatomy__callout::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
     height: 1px;
+    margin-inline-end: 0.5rem;
+    vertical-align: middle;
     background-color: var(--color-parchment);
-    transform-origin: left center;
   }
 
-  .catalog-hero__callout--rim {
-    top: 40%;
-    left: 20%;
+  .collection-anatomy__callout--rim {
+    top: 10%;
+    left: 110%;
   }
 
-  .catalog-hero__callout--rim::after {
+  .collection-anatomy__callout--wax {
     top: 50%;
-    left: 100%;
-    margin-inline-start: 0.35rem;
-    transform: rotate(-24deg);
+    right: 110%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    text-align: end;
+    transform: translateY(-50%);
   }
 
-  .catalog-hero__callout--wax {
-    top: 52%;
-    left: 18%;
+  .collection-anatomy__callout--wax::before {
+    flex-shrink: 0;
+    margin-inline-end: 0;
+    margin-inline-start: 0.5rem;
   }
 
-  .catalog-hero__callout--wax::after {
-    top: 50%;
-    left: 100%;
-    margin-inline-start: 0.35rem;
-    transform: rotate(-8deg);
+  .collection-anatomy__callout--pool {
+    bottom: 10%;
+    left: 110%;
   }
 
-  .catalog-hero__callout--pool {
-    top: 68%;
-    left: 22%;
+  .collection-anatomy__description {
+    max-width: 36rem;
+    margin: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(247 244 237 / 0.78);
   }
 
-  .catalog-hero__callout--pool::after {
-    top: 50%;
-    left: 100%;
-    margin-inline-start: 0.35rem;
-    transform: rotate(12deg);
+  .collection-anatomy__description :is(p, ul, ol) {
+    margin: 0 0 var(--space-sm);
+  }
+
+  .collection-anatomy__description > :last-child {
+    margin-block-end: 0;
   }
 
   @media (max-width: 749px) {
-    .catalog-hero__callout {
-      display: none;
+    .collection-anatomy__inner {
+      min-height: auto;
     }
 
-    .catalog-hero__stage {
-      min-height: 100vh;
-      padding-block: var(--space-2xl);
+    .collection-anatomy__figure {
+      width: min(100%, 260px);
+      height: 340px;
+      margin-block: var(--space-2xl);
+    }
+
+    .collection-anatomy__callout {
+      display: none;
     }
   }
 {% endstylesheet %}
@@ -189,8 +222,12 @@
 {
   "name": "t:sections.collection_banner.name",
   "tag": "section",
-  "class": "catalog-hero-section",
+  "class": "collection-anatomy-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.collection_banner.settings.anatomy_header"
+    },
     {
       "type": "image_picker",
       "id": "illustration_image",

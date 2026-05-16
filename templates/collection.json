@@ -1,6 +1,6 @@
 {
   "sections": {
-    "main-collection-banner": {
+    "collection_banner": {
       "type": "main-collection-banner",
       "settings": {}
     },
@@ -12,7 +12,7 @@
     }
   },
   "order": [
-    "main-collection-banner",
+    "collection_banner",
     "main"
   ]
 }

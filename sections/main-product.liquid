@@ -1,8 +1,12 @@
-{% assign is_preview = true %}
 {%- liquid
   comment
     Theme Editor / zero-product onboarding fallbacks (see placeholder-images.md).
   endcomment
+  assign force_mock = false
+  if request.design_mode
+    assign force_mock = true
+  endif
+
   assign mock_title = 'Nepenthes edwardsiana'
   assign mock_price = 450000
   assign mock_latin_name = 'N. edwardsiana (Highland)'
@@ -18,10 +22,18 @@
   assign mock_gallery_url_2 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Large_lower_pitcher_of_wild_Nepenthes_rajah_plant.jpg?width=1600'
   assign mock_gallery_url_3 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa_036.jpg?width=1600'
 
+  unless force_mock
+    if product != blank
+      if product.handle contains 'preview'
+        assign force_mock = true
+      endif
+    endif
+  endunless
+
   assign use_live_product = false
   if product
     if product.id != blank
-      unless is_preview
+      unless force_mock
         assign use_live_product = true
       endunless
     endif
@@ -30,7 +42,7 @@
   assign has_gallery = false
   assign show_mock_gallery = true
 
-  if is_preview
+  if force_mock
     assign use_live_product = false
     assign show_mock_gallery = true
     assign display_title = mock_title
@@ -156,8 +168,8 @@
 -%}
 
 <article
-  class="main-product reveal-up{% if is_preview or use_live_product == false %} main-product--preview{% endif %}"
-  data-is-preview="{% if is_preview %}true{% else %}false{% endif %}"
+  class="main-product reveal-up{% if force_mock or use_live_product == false %} main-product--preview{% endif %}"
+  data-force-mock="{% if force_mock %}true{% else %}false{% endif %}"
   data-main-product
   data-status-limited-template="{{ 'products.main.status_limited' | t: count: '__COUNT__' | escape }}"
   data-status-cultivating="{{ 'products.main.status_cultivating' | t | escape }}"
@@ -167,11 +179,11 @@
 >
   <div class="main-product__layout">
     <div class="main-product__gallery product__media" data-product-gallery>
-      {%- if false and use_live_product and has_gallery -%}
+      {%- if use_live_product and has_gallery -%}
         {%- for media in gallery_media -%}
           <div class="product__media-item main-product__gallery-frame">
             {%- if forloop.first -%}
-              {% render 'wax-seal-badge', mock_tags: mock_tags %}
+              {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
             {%- endif -%}
               {%- liquid
                 assign gallery_loading = 'lazy'
@@ -194,10 +206,10 @@
               }}
           </div>
         {%- endfor -%}
-      {%- if show_mock_gallery -%}
+      {%- elsif show_mock_gallery -%}
         {%- comment -%} TODO: replace placeholders — nepenthes-highland-product-01 (placeholder-images.md) {%- endcomment -%}
         <div class="product__media-item main-product__gallery-frame">
-          {% render 'wax-seal-badge', mock_tags: mock_tags %}
+          {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
           <img
             class="main-product__gallery-image main-product__gallery-image--fallback"
             src="{{ mock_gallery_url_1 }}"
@@ -276,7 +288,7 @@
         </span>
       </p>
 
-      {%- if use_live_product and is_preview == false -%}
+      {%- if use_live_product -%}
         {%- form 'product', product, class: 'main-product__form', id: form_id -%}
           {%- if product.variants.size > 1 -%}
             <div class="main-product__variants">
@@ -505,9 +517,9 @@
   }
 
   .main-product__layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-2xl);
     width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
     margin-inline: auto;
@@ -869,17 +881,23 @@
 
   @media (min-width: 990px) {
     .main-product__layout {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
+      flex-direction: row;
+      align-items: flex-start;
       gap: var(--space-3xl);
     }
 
     .main-product__gallery.product__media {
+      flex: 3 1 0;
       position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      align-self: start;
+      top: 20px;
+      align-self: flex-start;
+      height: auto;
+      overflow: visible;
+    }
+
+    .main-product__dossier {
+      flex: 2 1 0;
+      min-width: 0;
     }
   }
 
