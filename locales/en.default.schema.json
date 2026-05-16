@@ -75,6 +75,39 @@
         "products_to_show": "Products to show",
         "view_all_label": "View all link label"
       }
+    },
+    "footer": {
+      "name": "Footer",
+      "settings": {
+        "brand_heading": "Brand heading",
+        "brand_story": "Brand story",
+        "newsletter_heading": "Newsletter heading",
+        "newsletter_text": "Newsletter description",
+        "newsletter_button_label": "Newsletter button label",
+        "contact_address": "Address",
+        "contact_email": "Email",
+        "contact_phone": "Phone",
+        "currency_note": "Currency note"
+      }
+    },
+    "about_template": {
+      "name": "About page",
+      "settings": {
+        "hero_header": "Hero",
+        "hero_heading": "Hero heading",
+        "hero_subheading": "Hero subheading",
+        "split_header": "Story section",
+        "image_position": "Image position",
+        "split_heading": "Story heading",
+        "split_text": "Story text",
+        "conservatory_header": "Conservatory",
+        "conservatory_heading": "Conservatory heading"
+      },
+      "blocks": {
+        "pillar": {
+          "name": "Pillar"
+        }
+      }
     }
   },
   "header": {

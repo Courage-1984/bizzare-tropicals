@@ -67,6 +67,36 @@ main {
   width: 100%;
 }
 
+/* Sticky footer — main grows, footer stays at bottom on short pages */
+.shopify-section-group-footer-group,
+.site-footer-section {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* Footer utility typography */
+.site-footer {
+  font-family: var(--font-family-base);
+}
+
+.site-footer__link {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  text-decoration: none;
+  color: rgb(255 255 255 / 0.82);
+  transition: color var(--transition-fast);
+}
+
+.site-footer__link:hover {
+  color: var(--color-text-inverse);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.site-footer__link:focus-visible {
+  outline-color: var(--color-text-inverse);
+}
+
 p {
   text-wrap: pretty;
 }

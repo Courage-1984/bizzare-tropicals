@@ -75,6 +75,18 @@
     "password": "Password",
     "enter": "Enter"
   },
+  "footer": {
+    "quick_links": "Quick links",
+    "link_shop": "Shop",
+    "link_about": "About",
+    "link_care": "Care guides",
+    "link_contact": "Contact",
+    "contact_heading": "Contact",
+    "newsletter_email_label": "Email address",
+    "newsletter_placeholder": "you@example.com",
+    "newsletter_success": "Thank you for subscribing.",
+    "payment_methods": "Accepted payment methods"
+  },
   "search": {
     "title": "Search",
     "placeholder": "Search articles, pages, or products",

@@ -1,50 +1,477 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+<div
+  class="site-footer full-width"
+  {{ section.shopify_attributes }}
+>
+  <div class="site-footer__watermark" aria-hidden="true">
+    {{ 'icon-botanical-watermark.svg' | inline_asset_content }}
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+  <div class="site-footer__inner">
+    <div class="site-footer__columns">
+      <div class="site-footer__column site-footer__column--brand">
+        {%- if section.settings.brand_heading != blank -%}
+          <h2 class="site-footer__heading site-footer__heading--brand">{{ section.settings.brand_heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.brand_story != blank -%}
+          <div class="site-footer__richtext rte">{{ section.settings.brand_story }}</div>
+        {%- endif -%}
+      </div>
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">{{ 'footer.quick_links' | t }}</h2>
+        {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+          <nav aria-label="{{ 'footer.quick_links' | t }}">
+            <ul class="site-footer__link-list" role="list">
+              {%- for link in section.settings.menu.links -%}
+                <li>
+                  <a class="site-footer__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- else -%}
+          <ul class="site-footer__link-list" role="list">
+            <li><a class="site-footer__link" href="{{ routes.all_products_collection_url }}">{{ 'footer.link_shop' | t }}</a></li>
+            <li><a class="site-footer__link" href="/pages/about">{{ 'footer.link_about' | t }}</a></li>
+            <li><a class="site-footer__link" href="/pages/care-overview">{{ 'footer.link_care' | t }}</a></li>
+            <li><a class="site-footer__link" href="/pages/contact">{{ 'footer.link_contact' | t }}</a></li>
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">{{ section.settings.newsletter_heading | escape }}</h2>
+        {%- if section.settings.newsletter_text != blank -%}
+          <p class="site-footer__newsletter-text">{{ section.settings.newsletter_text | escape }}</p>
+        {%- endif -%}
+
+        {%- form 'customer', class: 'site-footer__newsletter-form', id: 'footer-newsletter' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          <div class="site-footer__newsletter-field">
+            <label class="visually-hidden" for="footer-newsletter-email-{{ section.id }}">
+              {{ 'footer.newsletter_email_label' | t }}
+            </label>
+            <input
+              id="footer-newsletter-email-{{ section.id }}"
+              class="site-footer__newsletter-input"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="{{ 'footer.newsletter_placeholder' | t }}"
+              required
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="footer-newsletter-errors-{{ section.id }}"
+              {% endif %}
+            >
+            <button class="site-footer__newsletter-button" type="submit" name="commit">
+              {{ section.settings.newsletter_button_label | escape }}
+            </button>
+          </div>
+
+          {%- if form.errors -%}
+            <p id="footer-newsletter-errors-{{ section.id }}" class="site-footer__form-message site-footer__form-message--error" role="alert">
+              {{ form.errors | default_errors }}
+            </p>
+          {%- endif -%}
+
+          {%- if form.posted_successfully? -%}
+            <p class="site-footer__form-message site-footer__form-message--success" role="status">
+              {{ 'footer.newsletter_success' | t }}
+            </p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">{{ 'footer.contact_heading' | t }}</h2>
+        <address class="site-footer__contact">
+          {%- if section.settings.contact_address != blank -%}
+            <p class="site-footer__contact-line">{{ section.settings.contact_address | newline_to_br }}</p>
+          {%- endif -%}
+          {%- if section.settings.contact_email != blank -%}
+            <p class="site-footer__contact-line">
+              <a class="site-footer__link" href="mailto:{{ section.settings.contact_email | strip }}">
+                {{ section.settings.contact_email | escape }}
+              </a>
+            </p>
+          {%- endif -%}
+          {%- if section.settings.contact_phone != blank -%}
+            <p class="site-footer__contact-line">
+              <a class="site-footer__link" href="tel:{{ section.settings.contact_phone | replace: ' ', '' | replace: '(', '' | replace: ')', '' | replace: '-', '' }}">
+                {{ section.settings.contact_phone | escape }}
+              </a>
+            </p>
+          {%- endif -%}
+        </address>
+      </div>
+    </div>
+
+    <div class="site-footer__bar">
+      <div class="site-footer__bar-start">
+        <p class="site-footer__currency">{{ section.settings.currency_note | escape }}</p>
+        <p class="site-footer__copyright">
+          &copy; {{ 'now' | date: '%Y' }}
+          <a class="site-footer__link" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
+        </p>
+      </div>
+
+      {%- if section.settings.show_payment_icons -%}
+        <div class="site-footer__payments" aria-label="{{ 'footer.payment_methods' | t }}">
+          {%- liquid
+            assign shown_visa = false
+            assign shown_master = false
+
+            for type in shop.enabled_payment_types
+              if type == 'visa'
+                assign shown_visa = true
+              endif
+              if type == 'master' or type == 'mastercard'
+                assign shown_master = true
+              endif
+            endfor
+          -%}
+
+          {%- for type in shop.enabled_payment_types -%}
+            <span class="site-footer__payment-icon">{{ type | payment_type_svg_tag: class: 'payment-icon' }}</span>
+          {%- endfor -%}
+
+          {%- unless shown_visa -%}
+            <span class="site-footer__payment-icon site-footer__payment-icon--placeholder" title="Visa">
+              {{ 'icon-visa.svg' | inline_asset_content }}
+            </span>
+          {%- endunless -%}
+
+          {%- unless shown_master -%}
+            <span class="site-footer__payment-icon site-footer__payment-icon--placeholder" title="Mastercard">
+              {{ 'icon-mastercard.svg' | inline_asset_content }}
+            </span>
+          {%- endunless -%}
+
+          <span class="site-footer__payment-icon site-footer__payment-icon--yoco" title="Yoco">
+            {{ 'icon-yoco.svg' | inline_asset_content }}
+          </span>
+        </div>
+      {%- endif -%}
+    </div>
   </div>
-</footer>
+</div>
 
 {% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+  .site-footer {
+    position: relative;
+    margin-block-start: var(--space-3xl);
+    padding-block: var(--space-3xl) var(--space-xl);
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green);
+    overflow: hidden;
   }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
+
+  .site-footer__watermark {
+    position: absolute;
+    inset-block: 10%;
+    inset-inline-end: -4%;
+    width: min(22rem, 45vw);
+    color: rgb(255 255 255 / 0.06);
+    pointer-events: none;
+    transform: rotate(-8deg);
   }
-  footer .footer__links,
-  footer .footer__payment {
+
+  .site-footer__watermark svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .site-footer__inner {
+    position: relative;
+    z-index: 1;
+    width: min(var(--page-width), 100% - var(--page-margin) * 2);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .site-footer__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .site-footer__heading {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  .site-footer__heading--brand {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-xl);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--color-text-inverse);
+  }
+
+  .site-footer__richtext {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .site-footer__richtext p {
+    margin: 0 0 var(--space-sm);
+  }
+
+  .site-footer__link-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__link-list li + li {
+    margin-block-start: var(--space-xs);
+  }
+
+  .site-footer__newsletter-text {
+    margin: 0 0 var(--space-md);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .site-footer__newsletter-field {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .site-footer__newsletter-input {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-md);
+    color: var(--color-text);
+    background-color: var(--color-surface-elevated);
+    border: 1px solid transparent;
+  }
+
+  .site-footer__newsletter-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .site-footer__newsletter-input:focus-visible {
+    outline-color: var(--color-text-inverse);
+  }
+
+  .site-footer__newsletter-button {
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-forest-green);
+    background-color: var(--color-background);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .site-footer__newsletter-button:hover {
+    color: var(--color-text-inverse);
+    background-color: var(--color-accent);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .site-footer__form-message {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-xs);
+  }
+
+  .site-footer__form-message--error {
+    color: #f5b8b8;
+  }
+
+  .site-footer__form-message--success {
+    color: #b8e0c8;
+  }
+
+  .site-footer__contact {
+    font-style: normal;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .site-footer__contact-line {
+    margin: 0 0 var(--space-xs);
+  }
+
+  .site-footer__bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .site-footer__currency {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.65);
+  }
+
+  .site-footer__copyright {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  .site-footer__payments {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .site-footer__payment-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 1.75rem;
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  .site-footer__payment-icon svg,
+  .site-footer__payment-icon .payment-icon {
+    width: 100%;
+    height: 100%;
+    max-height: 1.75rem;
+  }
+
+  @media (min-width: 750px) {
+    .site-footer__columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-xl) var(--space-2xl);
+    }
+
+    .site-footer__column--brand {
+      grid-column: span 2;
+    }
+
+    .site-footer__newsletter-field {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .site-footer__newsletter-input {
+      flex: 1;
+    }
+
+    .site-footer__bar {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  @media (min-width: 990px) {
+    .site-footer__columns {
+      grid-template-columns: 1.15fr 0.85fr 1fr 0.95fr;
+    }
+
+    .site-footer__column--brand {
+      grid-column: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-footer__newsletter-button:hover {
+      transform: none;
+    }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "t:sections.footer.name",
+  "tag": "footer",
+  "class": "site-footer-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "brand_heading",
+      "label": "t:sections.footer.settings.brand_heading",
+      "default": "Bizzare Tropicals"
+    },
+    {
+      "type": "richtext",
+      "id": "brand_story",
+      "label": "t:sections.footer.settings.brand_story",
+      "default": "<p>A South African carnivorous plant nursery rooted in field-tested culture and macro photography. We grow and ship flytraps, pitchers, and sundews for collectors across the country.</p>"
+    },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "t:labels.menu",
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.footer.settings.newsletter_heading",
+      "default": "Join the growth"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "t:sections.footer.settings.newsletter_text",
+      "default": "Seasonal drops, care notes, and new stock alerts — no spam."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "t:sections.footer.settings.newsletter_button_label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "contact_address",
+      "label": "t:sections.footer.settings.contact_address",
+      "default": "Cape Town, Western Cape\nSouth Africa"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "t:sections.footer.settings.contact_email",
+      "default": "hello@bizzare-tropicals.co.za"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "t:sections.footer.settings.contact_phone",
+      "default": "+27 21 000 0000"
+    },
+    {
+      "type": "text",
+      "id": "currency_note",
+      "label": "t:sections.footer.settings.currency_note",
+      "default": "Prices in ZAR (R)"
     },
     {
       "type": "checkbox",
@@ -55,3 +482,5 @@
   ]
 }
 {% endschema %}
+
+
