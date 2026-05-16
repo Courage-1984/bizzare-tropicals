@@ -7,6 +7,19 @@
       "slide_dots": "Choose slide",
       "go_to_slide": "Go to slide {{ index }}",
       "empty": "Add slides to build the homepage hero."
+    },
+    "genus_shortcuts": {
+      "shop_collection": "Shop collection",
+      "card_label": "{{ genus }} collection"
+    },
+    "featured_collection": {
+      "carousel_label": "Featured products",
+      "prev": "Previous products",
+      "next": "Next products",
+      "difficulty_label": "Difficulty {{ level }} out of {{ max }}",
+      "price_sale": "Sale price",
+      "price_regular": "Regular price",
+      "empty": "No products in this collection yet."
     }
   },
   "header": {

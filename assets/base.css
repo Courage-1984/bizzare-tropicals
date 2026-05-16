@@ -107,6 +107,43 @@ p:empty {
   letter-spacing: 0.01em;
 }
 
+/* Screen-reader only — WCAG 2.1 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Difficulty scale (1–5 pips) */
+.difficulty-pips {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.difficulty-pip {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+}
+
+.difficulty-pip--filled {
+  background-color: var(--color-primary);
+}
+
+/* Shared product card surface (featured collection, grids) */
+.product-card__media {
+  isolation: isolate;
+}
+
 /* Organic zoom — hero imagery (GPU-accelerated, predatory intensity) */
 @keyframes organicZoom {
   from {

@@ -51,6 +51,30 @@
           }
         }
       }
+    },
+    "genus_shortcuts": {
+      "name": "Genus shortcuts",
+      "settings": {
+        "heading": "Section heading"
+      },
+      "blocks": {
+        "genus": {
+          "name": "Genus card",
+          "settings": {
+            "genus_key": "Genus",
+            "collection_link": "Collection link"
+          }
+        }
+      }
+    },
+    "featured_collection": {
+      "name": "Featured collection",
+      "settings": {
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "products_to_show": "Products to show",
+        "view_all_label": "View all link label"
+      }
     }
   },
   "header": {
