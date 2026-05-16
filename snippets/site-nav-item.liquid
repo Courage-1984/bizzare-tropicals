@@ -6,27 +6,90 @@
   @param {string} [variant] - `desktop` or `mobile`
   @param {number} [depth] - Nesting depth (default: 0)
   @param {number} index - Sibling index for unique ids
+  @param {object} [header_section] - Header section (Catalog mega menu blocks)
 {% enddoc %}
 
 {%- liquid
   assign nav_variant = variant | default: 'desktop'
   assign nav_depth = depth | default: 0
   assign has_children = false
+  assign link_title_normalized = link.title | strip | downcase
+  assign is_catalog_mega = false
+  assign catalog_url = routes.all_products_collection_url
 
   if link.links != blank
     assign has_children = true
+  endif
+
+  if link_title_normalized == 'catalog'
+    assign is_catalog_mega = true
   endif
 
   assign item_id = nav_id | append: '-item-' | append: index
 -%}
 
 <li
-  class="site-nav__item{% if has_children %} site-nav__item--has-children{% endif %}{% if link.active %} site-nav__item--active{% endif %}{% if link.child_active %} site-nav__item--child-active{% endif %}"
-  {% if has_children %}
+  class="site-nav__item{% if has_children %} site-nav__item--has-children{% endif %}{% if is_catalog_mega %} site-nav__item--mega-catalog{% endif %}{% if link.active %} site-nav__item--active{% endif %}{% if link.child_active %} site-nav__item--child-active{% endif %}"
+  {% if has_children or is_catalog_mega %}
     data-nav-has-children
   {% endif %}
 >
-  {%- if has_children -%}
+  {%- if is_catalog_mega -%}
+    {%- if nav_variant == 'desktop' -%}
+      <a
+        class="site-nav__link site-nav__link--parent site-nav__link--catalog"
+        href="{{ catalog_url }}"
+        {% if link.active %}
+          aria-current="page"
+        {% endif %}
+        aria-haspopup="true"
+        aria-controls="catalog-mega-menu"
+      >
+        {{- link.title | escape -}}
+      </a>
+      {% render 'header-catalog-mega-menu',
+        variant: 'desktop',
+        mega_menu_blocks: header_section.blocks
+      %}
+    {%- else -%}
+      <div class="site-nav__parent site-nav__parent--catalog">
+        <a
+          class="site-nav__link site-nav__link--parent site-nav__link--catalog"
+          href="{{ catalog_url }}"
+          {% if link.active %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title | escape -}}
+        </a>
+        <button
+          type="button"
+          class="site-nav__toggle"
+          aria-expanded="false"
+          aria-controls="{{ item_id }}-submenu"
+          data-nav-submenu-toggle
+        >
+          <span class="visually-hidden">
+            {{- 'header.submenu_toggle' | t: title: link.title -}}
+          </span>
+          <span class="site-nav__toggle-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+      <ul
+        id="{{ item_id }}-submenu"
+        class="site-nav__submenu site-nav__submenu--depth-{{ nav_depth | plus: 1 }} site-nav__submenu--mobile site-nav__submenu--mega-catalog"
+        role="list"
+        data-nav-submenu
+        hidden
+      >
+        {% render 'header-catalog-mega-menu',
+          variant: 'mobile',
+          mega_menu_blocks: header_section.blocks
+        %}
+      </ul>
+    {%- endif -%}
+
+  {%- elsif has_children -%}
     <div class="site-nav__parent">
       <a
         class="site-nav__link site-nav__link--parent"
@@ -55,6 +118,9 @@
       class="site-nav__submenu site-nav__submenu--depth-{{ nav_depth | plus: 1 }}{% if nav_variant == 'mobile' %} site-nav__submenu--mobile{% endif %}"
       role="list"
       data-nav-submenu
+      {% if nav_variant == 'desktop' %}
+        hidden
+      {% endif %}
     >
       {%- for child_link in link.links -%}
         {%- render 'site-nav-item',
@@ -62,7 +128,8 @@
           nav_id: item_id,
           variant: nav_variant,
           depth: nav_depth | plus: 1,
-          index: forloop.index
+          index: forloop.index,
+          header_section: header_section
         -%}
       {%- endfor -%}
     </ul>

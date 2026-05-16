@@ -23,35 +23,38 @@
         "conservatory_heading": "The conservatory"
       },
       "blocks": {
-        "pillar_quality": {
-          "type": "pillar",
+        "plate_quality": {
+          "type": "scientific_plate",
           "settings": {
             "heading": "Quality control",
+            "ref_id": "REF. QC-01",
             "text": "Every plant is inspected for pests, vigour, and true-to-name characteristics before it is listed — the same standards we apply in our tissue culture lab.",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=1200"
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=600"
           }
         },
-        "pillar_soil": {
-          "type": "pillar",
+        "plate_soil": {
+          "type": "scientific_plate",
           "settings": {
             "heading": "Specialized soil",
+            "ref_id": "REF. SS-02",
             "text": "We blend peat, perlite, and mineral components matched to each genus — never generic potting mix. Growing supplies are curated for carnivorous culture only.",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/PerliteUSGOV.jpg?width=1200"
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/PerliteUSGOV.jpg?width=600"
           }
         },
-        "pillar_care": {
-          "type": "pillar",
+        "plate_care": {
+          "type": "scientific_plate",
           "settings": {
             "heading": "Expert care",
+            "ref_id": "REF. EC-03",
             "text": "Integrated genus guides, difficulty ratings, and seasonal dormancy notes ship with every order — your cultivation dossier starts on the collection page.",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200"
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=600"
           }
         }
       },
       "block_order": [
-        "pillar_quality",
-        "pillar_soil",
-        "pillar_care"
+        "plate_quality",
+        "plate_soil",
+        "plate_care"
       ]
     }
   },

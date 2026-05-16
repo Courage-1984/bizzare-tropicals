@@ -1,0 +1,223 @@
+{% doc %}
+  Slide-out cultivation filter drawer using Shopify storefront filters (facets).
+
+  @param {collection} collection - The current collection
+  @param {string} section_id - Section id for AJAX re-render
+{% enddoc %}
+
+{%- liquid
+  assign drawer_id = 'cultivation-filter-drawer-' | append: section_id
+  assign form_id = 'cultivation-facet-form-' | append: section_id
+  assign active_filter_count = 0
+
+  for filter in collection.filters
+    assign param_downcase = filter.param_name | downcase
+    assign label_downcase = filter.label | downcase
+    assign is_cultivation_filter = false
+
+    if param_downcase contains 'custom.genus' or label_downcase contains 'genus'
+      assign is_cultivation_filter = true
+    endif
+
+    if param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty'
+      assign is_cultivation_filter = true
+    endif
+
+    if param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
+      assign is_cultivation_filter = true
+    endif
+
+    if param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
+      assign is_cultivation_filter = true
+    endif
+
+    if is_cultivation_filter
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    endif
+  endfor
+-%}
+
+<div
+  class="cultivation-filter"
+  data-cultivation-filter
+  data-section-id="{{ section_id }}"
+  aria-hidden="true"
+>
+  <button
+    type="button"
+    class="cultivation-filter__overlay"
+    data-cultivation-filter-overlay
+    tabindex="-1"
+    aria-hidden="true"
+    hidden
+  ></button>
+
+  <aside
+    class="cultivation-filter__panel"
+    id="{{ drawer_id }}"
+    data-cultivation-filter-panel
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="{{ drawer_id }}-title"
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    <header class="cultivation-filter__header">
+      <h2 id="{{ drawer_id }}-title" class="cultivation-filter__title">
+        {{ 'sections.main_collection_product_grid.filter_drawer_title' | t }}
+      </h2>
+      <button
+        type="button"
+        class="cultivation-filter__close"
+        data-cultivation-filter-close
+        aria-label="{{ 'sections.main_collection_product_grid.filter_drawer_close' | t }}"
+      >
+        <span class="cultivation-filter__close-icon" aria-hidden="true">&times;</span>
+      </button>
+    </header>
+
+    <div class="cultivation-filter__body">
+      <form
+        id="{{ form_id }}"
+        class="cultivation-filter__form"
+        data-cultivation-facet-form
+        action="{{ collection.url }}"
+        method="get"
+      >
+        {%- assign cultivation_filters_shown = 0 -%}
+
+        {%- for filter in collection.filters -%}
+          {%- liquid
+            assign param_downcase = filter.param_name | downcase
+            assign label_downcase = filter.label | downcase
+            assign is_cultivation_filter = false
+            assign filter_group_key = ''
+
+            if param_downcase contains 'custom.genus' or label_downcase contains 'genus'
+              assign is_cultivation_filter = true
+              assign filter_group_key = 'genus'
+            endif
+
+            if param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty'
+              assign is_cultivation_filter = true
+              assign filter_group_key = 'difficulty'
+            endif
+
+            if param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
+              assign is_cultivation_filter = true
+              assign filter_group_key = 'temperature'
+            endif
+
+            if param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
+              assign is_cultivation_filter = true
+              assign filter_group_key = 'trap_type'
+            endif
+          -%}
+
+          {%- unless is_cultivation_filter -%}
+            {%- continue -%}
+          {%- endunless -%}
+
+          {%- assign cultivation_filters_shown = cultivation_filters_shown | plus: 1 -%}
+
+          <fieldset class="cultivation-filter__group" data-filter-group="{{ filter_group_key }}">
+            <legend class="cultivation-filter__group-label">
+              {%- case filter_group_key -%}
+                {%- when 'genus' -%}
+                  {{ 'sections.main_collection_product_grid.filter_genus' | t }}
+                {%- when 'difficulty' -%}
+                  {{ 'sections.main_collection_product_grid.filter_difficulty' | t }}
+                {%- when 'temperature' -%}
+                  {{ 'sections.main_collection_product_grid.filter_temperature' | t }}
+                {%- when 'trap_type' -%}
+                  {{ 'sections.main_collection_product_grid.filter_trap_type' | t }}
+                {%- else -%}
+                  {{ filter.label | escape }}
+              {%- endcase -%}
+            </legend>
+
+            <ul class="cultivation-filter__values" role="list">
+              {%- for filter_value in filter.values -%}
+                {%- liquid
+                  assign display_label = filter_value.label
+
+                  if filter_group_key == 'difficulty'
+                    unless display_label contains '/'
+                      assign difficulty_value = filter_value.value | default: filter_value.label
+                      assign display_label = difficulty_value | append: '/5'
+                    endunless
+                  endif
+
+                  if filter_group_key == 'temperature'
+                    assign display_label = filter_value.label | capitalize
+                  endif
+
+                  if filter_group_key == 'trap_type'
+                    assign trap_key = filter_value.label | downcase
+                    case trap_key
+                      when 'snap'
+                        assign display_label = 'sections.main_collection_product_grid.trap_snap' | t
+                      when 'pitfall'
+                        assign display_label = 'sections.main_collection_product_grid.trap_pitfall' | t
+                      when 'flypaper'
+                        assign display_label = 'sections.main_collection_product_grid.trap_flypaper' | t
+                      when 'suction'
+                        assign display_label = 'sections.main_collection_product_grid.trap_suction' | t
+                      when 'lobster-pot'
+                        assign display_label = 'sections.main_collection_product_grid.trap_lobster_pot' | t
+                    endcase
+                  endif
+
+                  if filter_group_key == 'genus'
+                    assign display_label = filter_value.label | capitalize
+                  endif
+                -%}
+
+                <li class="cultivation-filter__value" role="listitem">
+                  <label class="cultivation-filter__option{% if filter_value.count == 0 and filter_value.active == false %} cultivation-filter__option--disabled{% endif %}">
+                    <input
+                      type="checkbox"
+                      name="{{ filter_value.param_name }}"
+                      value="{{ filter_value.value }}"
+                      {% if filter_value.active %}
+                        checked
+                      {% endif %}
+                      {% if filter_value.count == 0 and filter_value.active == false %}
+                        disabled
+                      {% endif %}
+                      data-cultivation-facet-input
+                    >
+                    <span class="cultivation-filter__option-label">{{ display_label | escape }}</span>
+                    <span class="cultivation-filter__option-count" aria-hidden="true">{{ filter_value.count }}</span>
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </fieldset>
+        {%- endfor -%}
+
+        {%- if cultivation_filters_shown == 0 -%}
+          <p class="cultivation-filter__empty">
+            {{ 'sections.main_collection_product_grid.filter_empty' | t }}
+          </p>
+        {%- endif -%}
+      </form>
+    </div>
+
+    <footer class="cultivation-filter__footer">
+      <button
+        type="button"
+        class="cultivation-filter__clear"
+        data-cultivation-filter-clear
+        {% if active_filter_count == 0 %}
+          disabled
+        {% endif %}
+      >
+        {{ 'sections.main_collection_product_grid.filter_clear' | t }}
+      </button>
+      <p class="cultivation-filter__active" data-cultivation-filter-active-count {% if active_filter_count == 0 %}hidden{% endif %}>
+        {{ 'sections.main_collection_product_grid.filter_active_count' | t: count: active_filter_count }}
+      </p>
+    </footer>
+  </aside>
+</div>

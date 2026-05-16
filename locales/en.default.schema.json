@@ -134,6 +134,38 @@
         "background_color_end": "Background gradient end"
       }
     },
+    "featured_specimen": {
+      "name": "Featured specimen",
+      "settings": {
+        "background_color": "Background color",
+        "image": "Macro image",
+        "placeholder_image": "Placeholder image URL",
+        "placeholder_image_info": "Shown when no macro image is uploaded. Wikimedia URLs are fine for development.",
+        "subheading": "Subheading",
+        "heading": "Heading",
+        "button_label": "Button label",
+        "button_link": "Button link"
+      }
+    },
+    "conservatory_standards": {
+      "name": "Conservatory standards",
+      "settings": {
+        "subheading": "Subheading",
+        "heading": "Heading"
+      },
+      "blocks": {
+        "pillar": {
+          "name": "Pillar",
+          "settings": {
+            "image": "Thumbnail image",
+            "placeholder_image": "Placeholder image URL",
+            "placeholder_image_info": "50×50 circular preview. Wikimedia URLs are fine for development.",
+            "heading": "Pillar heading",
+            "body": "Body text"
+          }
+        }
+      }
+    },
     "footer": {
       "name": "Footer",
       "settings": {
@@ -251,16 +283,19 @@
         "curator_placeholder_image": "Curator placeholder image URL",
         "curator_signature": "Curator signature",
         "placeholder_image_info": "Wikimedia Commons URLs are fine for development.",
-        "default_pillar_placeholder": "Default pillar placeholder URL",
+        "default_pillar_placeholder": "Default plate placeholder URL",
         "conservatory_header": "Conservatory",
         "conservatory_heading": "Conservatory heading"
       },
       "blocks": {
-        "pillar": {
-          "name": "Pillar",
+        "scientific_plate": {
+          "name": "Scientific plate",
           "settings": {
-            "icon": "Icon image",
-            "heading": "Heading",
+            "image": "Plate image",
+            "ref_id": "Reference ID",
+            "ref_id_info": "Shown on the plate image, e.g. REF. QC-01.",
+            "heading": "Plate title",
+            "text": "Plate description",
             "placeholder_image": "Placeholder image URL"
           }
         }
@@ -273,7 +308,20 @@
       "navigation": "Navigation",
       "menu_desktop": "Desktop menu",
       "menu_mobile": "Mobile menu",
-      "menu_mobile_info": "Optional. Uses the desktop menu when empty."
+      "menu_mobile_info": "Optional. Uses the desktop menu when empty.",
+      "mega_menu_header": "Catalog mega menu"
+    },
+    "blocks": {
+      "mega_menu_item": {
+        "name": "Mega menu item",
+        "settings": {
+          "label": "Genus label",
+          "link": "Collection link",
+          "image": "Thumbnail image",
+          "placeholder_image": "Placeholder thumbnail URL",
+          "placeholder_image_info": "Shown when no thumbnail is uploaded. Use a square macro crop."
+        }
+      }
     }
   },
   "labels": {

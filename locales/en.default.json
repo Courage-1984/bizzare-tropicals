@@ -50,7 +50,22 @@
       "product_count": "{{ count }} products",
       "pagination": "Collection pagination",
       "empty": "No products in this collection yet.",
-      "preview_label": "Preview product grid"
+      "preview_label": "Preview product grid",
+      "filter_trigger": "Filter by cultivation",
+      "filter_drawer_title": "Filter by cultivation",
+      "filter_drawer_close": "Close cultivation filters",
+      "filter_genus": "Genus",
+      "filter_difficulty": "Difficulty",
+      "filter_temperature": "Temperature",
+      "filter_trap_type": "Trap type",
+      "filter_clear": "Clear all filters",
+      "filter_active_count": "{{ count }} filters active",
+      "filter_empty": "Configure storefront filters in Search & Discovery for genus, difficulty, temperature group, and trap type metafields.",
+      "trap_snap": "Snap trap",
+      "trap_pitfall": "Pitfall",
+      "trap_flypaper": "Flypaper",
+      "trap_suction": "Suction trap",
+      "trap_lobster_pot": "Lobster pot"
     },
     "featured_collection": {
       "carousel_label": "Featured products",
@@ -146,7 +161,8 @@
     "menu_open": "Open menu",
     "nav_desktop": "Main navigation",
     "nav_mobile": "Mobile navigation",
-    "submenu_toggle": "Toggle {{ title }} submenu"
+    "submenu_toggle": "Toggle {{ title }} submenu",
+    "catalog_mega_menu": "Shop by genus"
   },
   "404": {
     "title": "404",

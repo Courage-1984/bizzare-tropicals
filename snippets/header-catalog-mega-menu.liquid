@@ -1,0 +1,94 @@
+{% doc %}
+  Renders the Catalog mega menu genus grid from Header section blocks.
+
+  @param {string} [variant] - `desktop` or `mobile` (default: desktop)
+  @param {array} mega_menu_blocks - Header `section.blocks` (type `mega_menu_item`)
+{% enddoc %}
+
+{%- liquid
+  assign menu_variant = variant | default: 'desktop'
+  assign has_mega_items = false
+
+  for block in mega_menu_blocks
+    if block.type == 'mega_menu_item'
+      assign has_mega_items = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_mega_items -%}
+  {%- if menu_variant == 'desktop' -%}
+    <div
+      class="site-nav__mega-menu"
+      id="catalog-mega-menu"
+      role="region"
+      aria-label="{{ 'header.catalog_mega_menu' | t }}"
+    >
+      <div class="site-nav__mega-menu-grid" role="list">
+  {%- else -%}
+    <ul class="site-nav__mega-menu-list site-nav__mega-menu-list--mobile" role="list">
+  {%- endif -%}
+
+  {%- for block in mega_menu_blocks -%}
+    {%- if block.type != 'mega_menu_item' -%}
+      {%- continue -%}
+    {%- endif -%}
+
+    {%- liquid
+      assign item_label = block.settings.label | default: 'Genus'
+      assign item_link = block.settings.link | default: routes.all_products_collection_url
+      assign item_image = block.settings.image
+      assign item_placeholder = block.settings.placeholder_image
+      assign use_item_image = false
+
+      if item_image != blank and item_image.width > 0
+        assign use_item_image = true
+      endif
+    -%}
+
+    {%- if menu_variant == 'desktop' -%}
+      <a class="site-nav__mega-link" href="{{ item_link }}" role="listitem" {{ block.shopify_attributes }}>
+    {%- else -%}
+      <li class="site-nav__mega-item" role="listitem" {{ block.shopify_attributes }}>
+        <a class="site-nav__mega-link" href="{{ item_link }}">
+    {%- endif -%}
+        {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
+        {%- if use_item_image -%}
+          {{
+            item_image
+            | image_url: width: 60, height: 60, crop: 'center'
+            | image_tag:
+              class: 'site-nav__mega-thumb',
+              widths: '30, 60',
+              sizes: '30px',
+              loading: 'lazy',
+              alt: ''
+          }}
+        {%- elsif item_placeholder != blank -%}
+          <img
+            class="site-nav__mega-thumb"
+            src="{{ item_placeholder }}"
+            alt=""
+            width="30"
+            height="30"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- endif -%}
+        <span class="site-nav__mega-label">{{ item_label | escape }}</span>
+    {%- if menu_variant == 'desktop' -%}
+      </a>
+    {%- else -%}
+        </a>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if menu_variant == 'desktop' -%}
+      </div>
+    </div>
+  {%- else -%}
+    </ul>
+  {%- endif -%}
+{%- endif -%}

@@ -4,9 +4,10 @@
   @param {linklist} menu - The navigation link list
   @param {string} nav_id - Unique id prefix for aria controls
   @param {string} [variant] - `desktop` or `mobile` (default: desktop)
+  @param {object} [header_section] - Header section (for Catalog mega menu blocks)
 
   @example
-  {% render 'site-nav', menu: section.settings.menu_desktop, nav_id: 'primary', variant: 'desktop' %}
+  {% render 'site-nav', menu: section.settings.menu_desktop, nav_id: 'primary', variant: 'desktop', header_section: section %}
 {% enddoc %}
 
 {%- liquid
@@ -25,7 +26,8 @@
         nav_id: nav_id,
         variant: nav_variant,
         depth: 0,
-        index: forloop.index
+        index: forloop.index,
+        header_section: header_section
       -%}
     {%- endfor -%}
   </ul>

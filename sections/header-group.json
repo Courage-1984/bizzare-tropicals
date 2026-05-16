@@ -36,6 +36,82 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_nepenthes": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Nepenthes",
+            "link": "/collections/nepenthes",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=60"
+          }
+        },
+        "mega_drosera": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Drosera",
+            "link": "/collections/drosera",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=60"
+          }
+        },
+        "mega_pinguicula": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Pinguicula",
+            "link": "/collections/pinguicula",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=60"
+          }
+        },
+        "mega_cephalotus": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Cephalotus",
+            "link": "/collections/cephalotus",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=60"
+          }
+        },
+        "mega_heliamphora": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Heliamphora",
+            "link": "/collections/heliamphora",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=60"
+          }
+        },
+        "mega_dionaea": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Dionaea",
+            "link": "/collections/dionaea",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=60"
+          }
+        },
+        "mega_sarracenia": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Sarracenia",
+            "link": "/collections/sarracenia",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=60"
+          }
+        },
+        "mega_utricularia": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Utricularia",
+            "link": "/collections/utricularia",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Greater_Bladderwort_Utricularia_vulgaris_(6171429381).jpg?width=60"
+          }
+        }
+      },
+      "block_order": [
+        "mega_nepenthes",
+        "mega_drosera",
+        "mega_pinguicula",
+        "mega_cephalotus",
+        "mega_heliamphora",
+        "mega_dionaea",
+        "mega_sarracenia",
+        "mega_utricularia"
+      ],
       "settings": {}
     },
     "search-overlay": {

@@ -155,6 +155,53 @@
         "genus_utricularia"
       ]
     },
+    "featured_specimen": {
+      "type": "featured-specimen",
+      "settings": {
+        "subheading": "A RARE PITCHER PLANT WITH DISTINCTIVE FANG-LIKE APPENDAGES.",
+        "heading": "Nepenthes bicalcarata",
+        "button_label": "VIEW SPECIMEN",
+        "button_link": "/collections/nepenthes"
+      }
+    },
+    "conservatory_standards": {
+      "type": "conservatory-standards",
+      "settings": {
+        "subheading": "OUR PHILOSOPHY",
+        "heading": "The Conservatory Standards"
+      },
+      "blocks": {
+        "pillar_propagation": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Ethical Propagation",
+            "body": "All specimens are cultivated in-house via advanced tissue culture, ensuring zero impact on vulnerable wild populations.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=100"
+          }
+        },
+        "pillar_climate": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Climate Acclimation",
+            "body": "Our plants are hardened off in specific greenhouse zones, ensuring they thrive in the diverse South African climate.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa.jpg?width=100"
+          }
+        },
+        "pillar_transit": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Specialized Transit",
+            "body": "Shipped bare-root in protective sphagnum using specialized botanical couriers to guarantee safe arrival.",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Schultz_Sphagnum_Peat_Moss.jpg?width=100"
+          }
+        }
+      },
+      "block_order": [
+        "pillar_propagation",
+        "pillar_climate",
+        "pillar_transit"
+      ]
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
@@ -168,6 +215,8 @@
   "order": [
     "homepage_hero",
     "genus_shortcuts",
+    "featured_specimen",
+    "conservatory_standards",
     "featured_collection"
   ]
 }

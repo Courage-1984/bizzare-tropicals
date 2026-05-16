@@ -39,7 +39,8 @@
         {%- render 'site-nav',
           menu: menu_desktop,
           nav_id: 'desktop-nav',
-          variant: 'desktop'
+          variant: 'desktop',
+          header_section: section
         -%}
       </nav>
     {%- endif -%}
@@ -131,7 +132,8 @@
           {%- render 'site-nav',
             menu: menu_mobile,
             nav_id: 'mobile-nav',
-            variant: 'mobile'
+            variant: 'mobile',
+            header_section: section
           -%}
         </nav>
       </div>
@@ -168,6 +170,7 @@
     border-bottom: 1px solid rgb(0 0 0 / 0.05);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    overflow: visible;
   }
 
   .site-header__inner {
@@ -217,6 +220,7 @@
     display: none;
     flex: 1 1 auto;
     justify-content: center;
+    overflow: visible;
   }
 
   .site-header__actions {
@@ -585,6 +589,174 @@
     display: none;
   }
 
+  /* Catalog mega menu — desktop (anchored to parent li) */
+  .site-nav__list--desktop .site-nav__item--mega-catalog {
+    position: relative;
+  }
+
+  .site-nav__list--desktop .site-nav__link--catalog {
+    position: relative;
+    z-index: calc(var(--z-dropdown) + 21);
+  }
+
+  /* Hover bridge on the li — keeps :hover active while moving into the dropdown */
+  .site-nav__list--desktop .site-nav__item--mega-catalog::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    min-width: 6rem;
+    height: 0.75rem;
+    z-index: calc(var(--z-dropdown) + 19);
+    pointer-events: none;
+  }
+
+  .site-nav__mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    margin-top: 0;
+    z-index: calc(var(--z-dropdown) + 20);
+    width: max-content;
+    min-width: 400px;
+    padding: 0.75rem 2rem 2rem;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.05);
+    transform: translate3d(0, 15px, 0);
+    transition:
+      opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      visibility 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform, opacity;
+  }
+
+  /* Transparent bridge — prevents hover dead zone between Catalog link and panel */
+  .site-nav__mega-menu::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    height: 0.75rem;
+    pointer-events: none;
+  }
+
+  .site-nav__mega-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-nav__mega-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: var(--space-xs) var(--space-sm);
+    text-decoration: none;
+    color: var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-fast),
+      transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .site-nav__mega-link:hover,
+  .site-nav__mega-link:focus-visible {
+    background-color: rgb(10 24 18 / 0.04);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .site-nav__mega-link:focus-visible {
+    outline: 2px solid var(--color-forest-green-dark);
+    outline-offset: 2px;
+  }
+
+  .site-nav__mega-thumb {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 1px solid rgb(10 24 18 / 0.1);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .site-nav__mega-link:hover .site-nav__mega-thumb,
+  .site-nav__mega-link:focus-visible .site-nav__mega-thumb {
+    transform: scale(1.06);
+  }
+
+  .site-nav__mega-label {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .site-nav__list--desktop .site-nav__item--mega-catalog:hover > .site-nav__mega-menu,
+  .site-nav__list--desktop .site-nav__item--mega-catalog:focus-within > .site-nav__mega-menu {
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .site-nav__list--desktop .site-nav__item--mega-catalog:hover > .site-nav__link--catalog::after,
+  .site-nav__list--desktop .site-nav__item--mega-catalog:focus-within > .site-nav__link--catalog::after {
+    transform: scaleX(1);
+  }
+
+  .site-nav__list--mobile .site-nav__submenu--mega-catalog {
+    padding-inline-start: 0;
+    border: 0;
+  }
+
+  .site-nav__mega-menu-list--mobile {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-nav__mega-menu-list--mobile .site-nav__mega-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .site-nav__mega-menu-list--mobile .site-nav__mega-link {
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-md);
+  }
+
+  .site-nav__mega-menu-list--mobile .site-nav__mega-link:hover,
+  .site-nav__mega-menu-list--mobile .site-nav__mega-link:focus-visible {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-nav__mega-menu,
+    .site-nav__mega-link,
+    .site-nav__mega-thumb {
+      transition: none;
+    }
+
+    .site-nav__mega-link:hover,
+    .site-nav__mega-link:focus-visible,
+    .site-nav__mega-link:hover .site-nav__mega-thumb,
+    .site-nav__mega-link:focus-visible .site-nav__mega-thumb {
+      transform: none;
+    }
+  }
+
   @media (min-width: 990px) {
     .site-header__inner {
       display: grid;
@@ -793,6 +965,113 @@
       "id": "menu_mobile",
       "label": "t:header.settings.menu_mobile",
       "info": "t:header.settings.menu_mobile_info"
+    },
+    {
+      "type": "header",
+      "content": "t:header.settings.mega_menu_header"
+    }
+  ],
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "mega_menu_item",
+      "name": "t:header.blocks.mega_menu_item.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:header.blocks.mega_menu_item.settings.label",
+          "default": "Nepenthes"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:header.blocks.mega_menu_item.settings.link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:header.blocks.mega_menu_item.settings.image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_image",
+          "label": "t:header.blocks.mega_menu_item.settings.placeholder_image",
+          "info": "t:header.blocks.mega_menu_item.settings.placeholder_image_info",
+          "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=60"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.header",
+      "blocks": [
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Nepenthes",
+            "link": "/collections/nepenthes",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Drosera",
+            "link": "/collections/drosera",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Pinguicula",
+            "link": "/collections/pinguicula",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Cephalotus",
+            "link": "/collections/cephalotus",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Heliamphora",
+            "link": "/collections/heliamphora",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Dionaea",
+            "link": "/collections/dionaea",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Sarracenia",
+            "link": "/collections/sarracenia",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=60"
+          }
+        },
+        {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Utricularia",
+            "link": "/collections/utricularia",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Greater_Bladderwort_Utricularia_vulgaris_(6171429381).jpg?width=60"
+          }
+        }
+      ]
     }
   ]
 }

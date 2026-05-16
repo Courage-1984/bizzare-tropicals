@@ -3,61 +3,107 @@
   if grid_heading == blank
     assign grid_heading = collection.title
   endif
+
+  assign active_filter_count = 0
+  for filter in collection.filters
+    assign param_downcase = filter.param_name | downcase
+    assign label_downcase = filter.label | downcase
+    if param_downcase contains 'custom.genus' or label_downcase contains 'genus'
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    elsif param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty'
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    elsif param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    elsif param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    endif
+  endfor
 -%}
 
 <section
   class="collection-grid-section"
+  data-collection-grid-section
+  data-section-id="{{ section.id }}"
   data-bento-reveal
   aria-labelledby="collection-grid-heading-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
   <header class="collection-grid-section__header">
-    <h2 id="collection-grid-heading-{{ section.id }}" class="collection-grid-section__title">
-      {{ grid_heading | escape }}
-    </h2>
-    {%- if collection.products_count > 0 -%}
-      <p class="collection-grid-section__count">
-        {{ 'sections.main_collection_product_grid.product_count' | t: count: collection.products_count }}
-      </p>
-    {%- endif -%}
+    <div class="collection-grid-section__heading-group">
+      <h2 id="collection-grid-heading-{{ section.id }}" class="collection-grid-section__title">
+        {{ grid_heading | escape }}
+      </h2>
+      {%- if collection.products_count > 0 -%}
+        <p class="collection-grid-section__count" data-collection-product-count>
+          {{ 'sections.main_collection_product_grid.product_count' | t: count: collection.products_count }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <button
+      type="button"
+      class="collection-grid-section__filter-trigger"
+      data-cultivation-filter-open
+      aria-expanded="false"
+      aria-controls="cultivation-filter-drawer-{{ section.id }}"
+    >
+      <span class="collection-grid-section__filter-trigger-label">
+        {{ 'sections.main_collection_product_grid.filter_trigger' | t }}
+      </span>
+      {%- if active_filter_count > 0 -%}
+        <span class="collection-grid-section__filter-badge" data-cultivation-filter-badge aria-hidden="true">
+          {{- active_filter_count -}}
+        </span>
+      {%- else -%}
+        <span class="collection-grid-section__filter-badge" data-cultivation-filter-badge hidden aria-hidden="true">0</span>
+      {%- endif -%}
+    </button>
   </header>
 
-  {%- paginate collection.products by 24 -%}
-    {%- if collection.products.size > 0 -%}
-      <ul class="collection-grid collection-grid--bento" role="list">
-        {%- for product in collection.products -%}
-          <li class="collection-grid__item" role="listitem" data-bento-item>
-            {% render 'product-card',
-              product_item: product,
-              card_index: forloop.index0,
-              sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
-            %}
-          </li>
-        {%- endfor -%}
-      </ul>
+  {% render 'cultivation-filter-drawer', collection: collection, section_id: section.id %}
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="collection-pagination" aria-label="{{ 'sections.main_collection_product_grid.pagination' | t }}">
-          {{ paginate | default_pagination }}
-        </nav>
+  <div id="CollectionProductGrid-{{ section.id }}" data-collection-product-grid>
+    {%- paginate collection.products by 24 -%}
+      {%- if collection.products.size > 0 -%}
+        <ul class="collection-grid collection-grid--bento" role="list">
+          {%- for product in collection.products -%}
+            <li class="collection-grid__item" role="listitem" data-bento-item>
+              {% render 'product-card',
+                product_item: product,
+                card_index: forloop.index0,
+                sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="collection-pagination" aria-label="{{ 'sections.main_collection_product_grid.pagination' | t }}">
+            {{ paginate | default_pagination }}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <p class="collection-grid-section__empty">
+          {{ 'sections.main_collection_product_grid.empty' | t }}
+        </p>
+        <ul
+          class="collection-grid collection-grid--bento collection-grid--preview"
+          role="list"
+          aria-label="{{ 'sections.main_collection_product_grid.preview_label' | t }}"
+          hidden
+        >
+          {%- for i in (1..12) -%}
+            <li class="collection-grid__item" role="listitem" data-bento-item>
+              {% render 'product-card',
+                card_index: forloop.index0,
+                sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
-    {%- else -%}
-      <ul
-        class="collection-grid collection-grid--bento collection-grid--preview"
-        role="list"
-        aria-label="{{ 'sections.main_collection_product_grid.preview_label' | t }}"
-      >
-        {%- for i in (1..12) -%}
-          <li class="collection-grid__item" role="listitem" data-bento-item>
-            {% render 'product-card',
-              card_index: forloop.index0,
-              sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
-            %}
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  {%- endpaginate -%}
+    {%- endpaginate -%}
+  </div>
 </section>
 
 {% stylesheet %}
@@ -68,10 +114,15 @@
   .collection-grid-section__header {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-sm) var(--space-lg);
     margin-block-end: var(--space-xl);
+  }
+
+  .collection-grid-section__heading-group {
+    flex: 1 1 auto;
+    min-width: min(100%, 12rem);
   }
 
   .collection-grid-section__title {
@@ -82,9 +133,301 @@
   }
 
   .collection-grid-section__count {
-    margin: 0;
+    margin: var(--space-2xs) 0 0;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+  }
+
+  .collection-grid-section__filter-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-lg);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .collection-grid-section__filter-trigger:hover {
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green-dark);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .collection-grid-section__filter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding-inline: 0.3rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-parchment);
+    background-color: var(--color-forest-green-dark);
+    border-radius: var(--radius-full);
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .collection-grid-section__filter-trigger:hover .collection-grid-section__filter-badge {
+    color: var(--color-forest-green-dark);
+    background-color: var(--color-parchment);
+  }
+
+  .collection-grid-section__empty {
+    margin: 0 0 var(--space-xl);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+  }
+
+  .collection-grid-section--busy [data-collection-product-grid] {
+    opacity: 0.55;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Cultivation filter drawer */
+  .cultivation-filter {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 5);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .cultivation-filter.is-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .cultivation-filter__overlay {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgb(10 24 18 / 0.68);
+    backdrop-filter: blur(6px);
+    border: 0;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter.is-open .cultivation-filter__overlay {
+    opacity: 1;
+  }
+
+  .cultivation-filter__panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 22rem);
+    max-width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    background-color: var(--color-parchment);
+    border-inline-end: 1px solid var(--color-forest-green-dark);
+    box-shadow: 8px 0 32px rgb(10 24 18 / 0.18);
+    transform: translate3d(-100%, 0, 0);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+
+  .cultivation-filter.is-open .cultivation-filter__panel {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .cultivation-filter__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-shrink: 0;
+    padding: var(--space-lg) var(--space-xl);
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .cultivation-filter__title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    transition:
+      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter__close:hover {
+    background-color: var(--color-surface);
+    border-color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__close-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .cultivation-filter__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-lg) var(--space-xl);
+  }
+
+  .cultivation-filter__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .cultivation-filter__group {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .cultivation-filter__group-label {
+    margin: 0 0 var(--space-md);
+    padding: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__values {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cultivation-filter__value + .cultivation-filter__value {
+    margin-block-start: var(--space-xs);
+  }
+
+  .cultivation-filter__option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter__option:hover {
+    background-color: rgb(10 24 18 / 0.04);
+  }
+
+  .cultivation-filter__option--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .cultivation-filter__option input {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__option-label {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__option-count {
+    font-size: var(--font-size-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter__empty {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter__footer {
+    flex-shrink: 0;
+    padding: var(--space-lg) var(--space-xl) var(--space-xl);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .cultivation-filter__clear {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter__clear:hover:not(:disabled) {
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__clear:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .cultivation-filter__active {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-xs);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter--busy .cultivation-filter__form {
+    opacity: 0.55;
+    pointer-events: none;
   }
 
   .collection-grid {
@@ -153,6 +496,9 @@
     text-decoration: none;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
+    transition:
+      color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .collection-pagination a:hover {
@@ -200,10 +546,25 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .collection-grid-section__filter-trigger,
+    .collection-grid-section__filter-badge,
+    .cultivation-filter__overlay,
+    .cultivation-filter__panel,
+    .cultivation-filter__option,
+    .cultivation-filter__clear,
+    .collection-pagination a,
+    .collection-grid--bento .collection-grid__item,
+    .collection-grid-section--busy [data-collection-product-grid] {
+      transition: none;
+    }
+
+    .collection-grid-section__filter-trigger:hover {
+      transform: none;
+    }
+
     .collection-grid--bento .collection-grid__item {
       opacity: 1;
       transform: none;
-      transition: none;
     }
   }
 {% endstylesheet %}
@@ -259,6 +620,8 @@
         );
 
         items.forEach(function (item) {
+          item.classList.remove('is-revealed');
+          item.style.transitionDelay = '';
           observer.observe(item);
         });
 
@@ -266,9 +629,235 @@
       });
     }
 
-    function initAll(scope) {
-      initBentoReveal(scope);
+    function resetBentoReveal(section) {
+      if (!section) {
+        return;
+      }
+      section.dataset.bentoRevealInitialized = 'false';
+      initBentoReveal(section);
     }
+
+    function getCollectionSection(root) {
+      return root.closest('[data-collection-grid-section]');
+    }
+
+    function buildFacetUrl(form, sectionId) {
+      var params = new URLSearchParams(new FormData(form));
+      var url = new URL(form.action, window.location.origin);
+
+      params.forEach(function (value, key) {
+        url.searchParams.append(key, value);
+      });
+
+      url.searchParams.set('section_id', sectionId);
+      return url;
+    }
+
+    function updateFilterBadge(section, count) {
+      var badge = section.querySelector('[data-cultivation-filter-badge]');
+      if (!badge) {
+        return;
+      }
+
+      if (count > 0) {
+        badge.textContent = String(count);
+        badge.hidden = false;
+      } else {
+        badge.hidden = true;
+      }
+    }
+
+    function renderCollectionSection(section, html) {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, 'text/html');
+      var sectionId = section.dataset.sectionId;
+      var incomingWrapper = doc.getElementById('shopify-section-' + sectionId);
+      var incomingSection = incomingWrapper
+        ? incomingWrapper.querySelector('[data-collection-grid-section]')
+        : doc.querySelector('[data-collection-grid-section]');
+
+      if (!incomingSection) {
+        return;
+      }
+
+      section.innerHTML = incomingSection.innerHTML;
+      bindCultivationFilter(section);
+      resetBentoReveal(section);
+    }
+
+    function setFilterBusy(section, busy) {
+      section.classList.toggle('collection-grid-section--busy', busy);
+      var drawer = section.querySelector('[data-cultivation-filter]');
+      if (drawer) {
+        drawer.classList.toggle('cultivation-filter--busy', busy);
+      }
+    }
+
+    function submitFacetForm(form, section) {
+      var sectionId = section.dataset.sectionId;
+      if (!sectionId) {
+        return Promise.resolve();
+      }
+
+      setFilterBusy(section, true);
+      var url = buildFacetUrl(form, sectionId);
+
+      return fetch(url.toString(), {
+        credentials: 'same-origin',
+        headers: { Accept: 'text/html' },
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Collection filter: section render failed.');
+          }
+          return response.text();
+        })
+        .then(function (html) {
+          renderCollectionSection(section, html);
+          var nextUrl = new URL(form.action, window.location.origin);
+          var params = new URLSearchParams(new FormData(form));
+          params.delete('section_id');
+          params.forEach(function (value, key) {
+            nextUrl.searchParams.append(key, value);
+          });
+          window.history.replaceState({}, '', nextUrl.pathname + nextUrl.search);
+        })
+        .catch(function (error) {
+          console.error(error);
+        })
+        .finally(function () {
+          setFilterBusy(section, false);
+        });
+    }
+
+    function openFilterDrawer(drawer, trigger) {
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      var panel = drawer.querySelector('[data-cultivation-filter-panel]');
+      var overlay = drawer.querySelector('[data-cultivation-filter-overlay]');
+
+      if (panel) {
+        panel.setAttribute('aria-hidden', 'false');
+      }
+
+      if (overlay) {
+        overlay.hidden = false;
+      }
+
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+
+      document.documentElement.classList.add('is-scroll-locked');
+    }
+
+    function closeFilterDrawer(drawer, trigger) {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      var panel = drawer.querySelector('[data-cultivation-filter-panel]');
+      var overlay = drawer.querySelector('[data-cultivation-filter-overlay]');
+
+      if (panel) {
+        panel.setAttribute('aria-hidden', 'true');
+      }
+
+      if (overlay) {
+        overlay.hidden = true;
+      }
+
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.focus();
+      }
+
+      document.documentElement.classList.remove('is-scroll-locked');
+    }
+
+    function bindCultivationFilter(scope) {
+      var section = getCollectionSection(scope) || scope;
+      if (!section || !section.matches('[data-collection-grid-section]')) {
+        return;
+      }
+
+      var drawer = section.querySelector('[data-cultivation-filter]');
+      var trigger = section.querySelector('[data-cultivation-filter-open]');
+      var form = section.querySelector('[data-cultivation-facet-form]');
+
+      if (!drawer || !form) {
+        return;
+      }
+
+      if (drawer.dataset.cultivationFilterBound === 'true') {
+        return;
+      }
+
+      drawer.dataset.cultivationFilterBound = 'true';
+
+      var overlay = drawer.querySelector('[data-cultivation-filter-overlay]');
+      var closeButtons = drawer.querySelectorAll('[data-cultivation-filter-close]');
+      var clearButton = drawer.querySelector('[data-cultivation-filter-clear]');
+      var inputs = drawer.querySelectorAll('[data-cultivation-facet-input]');
+
+      if (trigger) {
+        trigger.addEventListener('click', function () {
+          if (drawer.classList.contains('is-open')) {
+            closeFilterDrawer(drawer, trigger);
+          } else {
+            openFilterDrawer(drawer, trigger);
+          }
+        });
+      }
+
+      closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          closeFilterDrawer(drawer, trigger);
+        });
+      });
+
+      if (overlay) {
+        overlay.addEventListener('click', function () {
+          closeFilterDrawer(drawer, trigger);
+        });
+      }
+
+      inputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+          submitFacetForm(form, section);
+        });
+      });
+
+      if (clearButton) {
+        clearButton.addEventListener('click', function () {
+          inputs.forEach(function (input) {
+            input.checked = false;
+          });
+          submitFacetForm(form, section);
+        });
+      }
+    }
+
+    function initAll(scope) {
+      var root = scope || document;
+      initBentoReveal(root);
+      root.querySelectorAll('[data-collection-grid-section]').forEach(function (section) {
+        bindCultivationFilter(section);
+      });
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      var openDrawer = document.querySelector('.cultivation-filter.is-open');
+      if (!openDrawer) {
+        return;
+      }
+
+      var section = getCollectionSection(openDrawer);
+      var trigger = section ? section.querySelector('[data-cultivation-filter-open]') : null;
+      closeFilterDrawer(openDrawer, trigger);
+    });
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
