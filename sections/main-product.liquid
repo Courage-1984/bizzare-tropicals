@@ -1,4 +1,22 @@
 {%- liquid
+  comment
+    Theme Editor / zero-product onboarding fallbacks (see placeholder-images.md).
+  endcomment
+  assign mock_title = 'Nepenthes edwardsiana'
+  assign mock_price = 450000
+  assign mock_latin_name = 'N. edwardsiana (Highland)'
+  assign mock_inventory = 3
+  assign mock_tags = 'Rare, In-House'
+  assign mock_description = '<ul><li><strong>LIGHT:</strong> Bright, indirect light.</li><li><strong>WATER:</strong> Reverse osmosis only. Keep sphagnum moist.</li><li><strong>HUMIDITY:</strong> 70-90% ambient required.</li><li><strong>TEMPERATURE:</strong> Highland (Day: 25°C, Night: 12°C).</li></ul>'
+  assign mock_difficulty = 4
+  assign mock_temperature_group = 'highland'
+  assign mock_trap_type = 'pitfall'
+  assign mock_dormancy_required = false
+
+  assign mock_gallery_url_1 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa_(14238410874).jpg?width=1600'
+  assign mock_gallery_url_2 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Large_lower_pitcher_of_wild_Nepenthes_rajah_plant.jpg?width=1600'
+  assign mock_gallery_url_3 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa_036.jpg?width=1600'
+
   assign use_live_product = false
   if product
     if product.id != blank
@@ -6,60 +24,45 @@
     endif
   endif
 
-  assign mock_price_cents = 85000
-  assign mock_difficulty = 4
+  assign has_gallery = false
+  assign show_mock_gallery = true
 
   if use_live_product
-    assign display_title = product.title
-    assign latin_name = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name
+    assign display_title = product.title | default: mock_title
+    assign latin_name = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name | default: mock_latin_name
     assign difficulty_raw = product.metafields.custom.difficulty.value | default: product.metafields.custom.difficulty
-    assign difficulty = difficulty_raw | plus: 0
-    assign temperature_group = product.metafields.custom.temperature_group.value | default: product.metafields.custom.temperature_group
-    assign trap_type = product.metafields.custom.trap_type.value | default: product.metafields.custom.trap_type
-    assign dormancy_required = product.metafields.custom.dormancy_required.value | default: product.metafields.custom.dormancy_required
-    assign price_cents = product.selected_or_first_available_variant.price
-    assign compare_at_cents = product.selected_or_first_available_variant.compare_at_price
-    assign product_description = product.description
+    assign difficulty = difficulty_raw | default: mock_difficulty | plus: 0
+    if difficulty == 0
+      assign difficulty = mock_difficulty
+    endif
+    assign temperature_group = product.metafields.custom.temperature_group.value | default: product.metafields.custom.temperature_group | default: mock_temperature_group
+    assign trap_type = product.metafields.custom.trap_type.value | default: product.metafields.custom.trap_type | default: mock_trap_type
+    assign dormancy_required = product.metafields.custom.dormancy_required.value | default: product.metafields.custom.dormancy_required | default: mock_dormancy_required
+    assign price_cents = product.selected_or_first_available_variant.price | default: mock_price
+    assign compare_at_cents = product.selected_or_first_available_variant.compare_at_price | default: 0
+    assign product_description = product.description | default: mock_description
     assign current_variant = product.selected_or_first_available_variant
 
     assign gallery_media = product.media
     if gallery_media.size == 0 and product.images.size > 0
       assign gallery_media = product.images
     endif
-    assign has_gallery = false
     if gallery_media.size > 0
       assign has_gallery = true
-    endif
-
-    if latin_name == blank
-      assign latin_name = 'products.main.mock_latin' | t
-    endif
-    if difficulty == 0
-      assign difficulty = mock_difficulty
-    endif
-    if temperature_group == blank
-      assign temperature_group = 'lowland'
-    endif
-    if trap_type == blank
-      assign trap_type = 'pitfall'
-    endif
-    if dormancy_required == blank
-      assign dormancy_required = false
-    endif
-    if product_description == blank
-      assign product_description = 'products.main.mock_description' | t
+      assign show_mock_gallery = false
     endif
   else
-    assign display_title = 'products.main.mock_title' | t
-    assign latin_name = 'products.main.mock_latin' | t
+    assign display_title = mock_title
+    assign latin_name = mock_latin_name
     assign difficulty = mock_difficulty
-    assign temperature_group = 'lowland'
-    assign trap_type = 'pitfall'
-    assign dormancy_required = false
-    assign price_cents = mock_price_cents
+    assign temperature_group = mock_temperature_group
+    assign trap_type = mock_trap_type
+    assign dormancy_required = mock_dormancy_required
+    assign price_cents = mock_price
     assign compare_at_cents = 0
-    assign product_description = 'products.main.mock_description' | t
+    assign product_description = mock_description
     assign has_gallery = false
+    assign show_mock_gallery = true
   endif
 
   assign temp_group_key = temperature_group | handleize
@@ -99,26 +102,58 @@
 
   assign form_id = 'main-product-form-' | append: section.id
 
-  assign mock_gallery_url_1 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(8411421382).jpg?width=1600'
-  assign mock_gallery_url_2 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Large_lower_pitcher_of_wild_Nepenthes_rajah_plant.jpg?width=1600'
-  assign mock_gallery_url_3 = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria_multiple_inflorescences.jpg?width=1600'
-
   if dormancy_required == true or dormancy_required == 'true'
     assign dormancy_label = 'products.main.dormancy_yes' | t
   else
     assign dormancy_label = 'products.main.dormancy_no' | t
+  endif
+
+  assign status_mode = 'cultivating'
+  assign status_inventory = 0
+  assign tracks_inventory = false
+
+  if use_live_product
+    assign status_inventory = current_variant.inventory_quantity | default: 0 | plus: 0
+    if current_variant.inventory_management == 'shopify'
+      assign tracks_inventory = true
+    endif
+
+    if current_variant.available == false
+      assign status_mode = 'sold_out'
+    elsif tracks_inventory
+      if status_inventory > 5
+        assign status_mode = 'cultivating'
+      elsif status_inventory > 0
+        assign status_mode = 'limited'
+      else
+        assign status_mode = 'sold_out'
+      endif
+    else
+      assign status_mode = 'cultivating'
+    endif
+  else
+    assign status_inventory = mock_inventory
+    assign status_mode = 'limited'
   endif
 -%}
 
 <article
   class="main-product{% unless use_live_product %} main-product--preview{% endunless %}"
   data-main-product
+  data-status-limited-template="{{ 'products.main.status_limited' | t: count: '__COUNT__' | escape }}"
+  data-status-cultivating="{{ 'products.main.status_cultivating' | t | escape }}"
+  data-label-add="{{ 'products.main.add_to_conservatory' | t | escape }}"
+  data-label-sold-out="{{ 'products.main.sold_out' | t | escape }}"
   {{ section.shopify_attributes }}
 >
   <div class="main-product__layout">
     <div class="main-product__gallery" data-product-gallery>
       {%- if use_live_product and has_gallery -%}
         {%- for media in gallery_media -%}
+          {%- if forloop.first -%}
+            <div class="main-product__gallery-primary">
+              {% render 'product-card-badges', product_item: product %}
+          {%- endif -%}
           <figure class="main-product__gallery-frame">
             {%- liquid
               assign gallery_loading = 'lazy'
@@ -140,21 +175,31 @@
                 alt: media.alt | default: display_title
             }}
           </figure>
+          {%- if forloop.first -%}
+            </div>
+          {%- endif -%}
         {%- endfor -%}
-      {%- else -%}
-        {%- comment -%} TODO: replace placeholders — nepenthes-lowland-product-01 (placeholder-images.md) {%- endcomment -%}
-        <figure class="main-product__gallery-frame">
-          <img
-            class="main-product__gallery-image main-product__gallery-image--fallback"
-            src="{{ mock_gallery_url_1 }}"
+      {%- elsif show_mock_gallery -%}
+        {%- comment -%} TODO: replace placeholders — nepenthes-highland-product-01 (placeholder-images.md) {%- endcomment -%}
+        <div class="main-product__gallery-primary">
+          {%- if use_live_product -%}
+            {% render 'product-card-badges', product_item: product %}
+          {%- else -%}
+            {% render 'product-card-badges', mock_tags: mock_tags %}
+          {%- endif -%}
+          <figure class="main-product__gallery-frame">
+            <img
+              class="main-product__gallery-image main-product__gallery-image--fallback"
+              src="{{ mock_gallery_url_1 }}"
             alt="{{ display_title }}"
             width="1600"
             height="2000"
             loading="eager"
             fetchpriority="high"
-            decoding="async"
-          >
-        </figure>
+              decoding="async"
+            >
+          </figure>
+        </div>
         <figure class="main-product__gallery-frame">
           <img
             class="main-product__gallery-image main-product__gallery-image--fallback"
@@ -180,25 +225,46 @@
       {%- endif -%}
     </div>
 
-    <div class="main-product__console">
+    <div class="main-product__dossier" data-product-dossier>
       <header class="main-product__header">
-        <h1 class="main-product__title">{{ display_title | escape }}</h1>
         {%- if latin_name != blank -%}
           <p class="main-product__latin">
             <em>{{ latin_name | escape }}</em>
           </p>
         {%- endif -%}
+        <h1 class="main-product__title">{{ display_title | escape }}</h1>
       </header>
 
-      <p class="main-product__price">
+      <p class="main-product__price" data-product-price>
         {%- if compare_at_cents > price_cents -%}
           <span class="visually-hidden">{{ 'products.card.price_sale' | t }}</span>
-          <span class="main-product__price-sale">{% render 'zar-price', amount_cents: price_cents %}</span>
+          <span class="main-product__price-sale" data-product-price-sale>{% render 'zar-price', amount_cents: price_cents %}</span>
           <span class="visually-hidden">{{ 'products.card.price_regular' | t }}</span>
-          <s class="main-product__price-compare">{% render 'zar-price', amount_cents: compare_at_cents %}</s>
+          <s class="main-product__price-compare" data-product-price-compare>{% render 'zar-price', amount_cents: compare_at_cents %}</s>
         {%- else -%}
-          <span class="main-product__price-regular">{% render 'zar-price', amount_cents: price_cents %}</span>
+          <span class="main-product__price-regular" data-product-price-regular>{% render 'zar-price', amount_cents: price_cents %}</span>
         {%- endif -%}
+      </p>
+
+      <p
+        class="main-product__status main-product__status--{{ status_mode }}"
+        data-product-status
+        data-status-mode="{{ status_mode }}"
+        {% if status_mode == 'limited' %}
+          data-status-count="{{ status_inventory }}"
+        {% endif %}
+        {% if status_mode == 'sold_out' %}
+          hidden
+        {% endif %}
+      >
+        <span class="main-product__status-dot" aria-hidden="true"></span>
+        <span class="main-product__status-text" data-product-status-text>
+          {%- if status_mode == 'limited' -%}
+            {{ 'products.main.status_limited' | t: count: status_inventory }}
+          {%- else -%}
+            {{ 'products.main.status_cultivating' | t }}
+          {%- endif -%}
+        </span>
       </p>
 
       {%- if use_live_product -%}
@@ -279,7 +345,7 @@
               data-add-to-cart
             >
               {%- if current_variant.available -%}
-                {{ 'products.main.add_to_cart' | t }}
+                {{ 'products.main.add_to_conservatory' | t }}
               {%- else -%}
                 {{ 'products.main.sold_out' | t }}
               {%- endif -%}
@@ -288,10 +354,67 @@
         {%- endform -%}
       {%- else -%}
         <p class="main-product__preview-note">{{ 'products.main.preview_note' | t }}</p>
-        <button type="button" class="main-product__submit" disabled>
-          {{ 'products.main.add_to_cart' | t }}
-        </button>
+        <div class="main-product__purchase main-product__purchase--preview">
+          <div class="main-product__quantity" data-quantity>
+            <span class="main-product__label" id="main-product-qty-label-preview-{{ section.id }}">
+              {{ 'products.main.quantity' | t }}
+            </span>
+            <div
+              class="main-product__quantity-control"
+              role="group"
+              aria-labelledby="main-product-qty-label-preview-{{ section.id }}"
+            >
+              <button type="button" class="main-product__qty-btn" disabled aria-hidden="true">
+                <span aria-hidden="true">−</span>
+              </button>
+              <input
+                class="main-product__qty-input"
+                type="number"
+                value="1"
+                min="1"
+                readonly
+                tabindex="-1"
+                aria-hidden="true"
+              >
+              <button type="button" class="main-product__qty-btn" disabled aria-hidden="true">
+                <span aria-hidden="true">+</span>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="main-product__submit" disabled>
+            {{ 'products.main.add_to_conservatory' | t }}
+          </button>
+        </div>
       {%- endif -%}
+
+      {%- if use_live_product -%}
+        <script type="application/json" data-main-product-variants>
+          [
+            {%- for variant in product.variants -%}
+              {
+                "id": {{ variant.id | json }},
+                "available": {{ variant.available | json }},
+                "price": {{ variant.price }},
+                "compare_at_price": {{ variant.compare_at_price | default: 0 }},
+                "inventory_quantity": {{ variant.inventory_quantity | default: 0 }},
+                "inventory_management": {{ variant.inventory_management | json }}
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        </script>
+      {%- endif -%}
+
+      <section
+        class="main-product__cultivation main-product__cultivation-dossier"
+        aria-labelledby="main-product-cultivation-{{ section.id }}"
+      >
+        <h2 id="main-product-cultivation-{{ section.id }}" class="visually-hidden">
+          {{ 'products.main.cultivation_heading' | t }}
+        </h2>
+        <div class="main-product__description rte" data-product-description>
+          {{ product_description }}
+        </div>
+      </section>
 
       <section class="main-product__field-data" aria-labelledby="main-product-field-data-{{ section.id }}">
         <h2 id="main-product-field-data-{{ section.id }}" class="main-product__field-data-title">
@@ -330,14 +453,6 @@
           </div>
         </dl>
       </section>
-
-      <div class="main-product__description rte">
-        {%- if use_live_product -%}
-          {{ product_description }}
-        {%- else -%}
-          <p>{{ product_description | escape }}</p>
-        {%- endif -%}
-      </div>
     </div>
   </div>
 </article>
@@ -352,6 +467,8 @@
     grid-template-columns: 1fr;
     gap: var(--space-2xl);
     align-items: start;
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
   }
 
   .main-product__gallery {
@@ -359,6 +476,21 @@
     flex-direction: column;
     gap: 2rem;
     width: 100%;
+    min-width: 0;
+  }
+
+  .main-product__gallery-primary {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .main-product__gallery-primary .product-card__badges {
+    position: absolute;
+    top: var(--space-md);
+    inset-inline-end: var(--space-md);
+    z-index: 4;
   }
 
   .main-product__gallery-frame {
@@ -378,7 +510,8 @@
     object-position: center center;
   }
 
-  .main-product__console {
+  .main-product__dossier {
+    min-width: 0;
     padding: var(--space-xl);
     background-color: var(--color-parchment);
     border: 1px solid var(--color-forest-green-dark);
@@ -386,29 +519,36 @@
     box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
   }
 
-  .main-product__title {
-    margin: 0 0 var(--space-xs);
-    font-family: var(--font-family-base);
-    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
-    font-weight: 600;
-    line-height: var(--line-height-tight);
-    letter-spacing: var(--letter-spacing-tight);
+  .main-product__header {
+    margin-block-end: var(--space-md);
   }
 
   .main-product__latin {
-    margin: 0;
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-base);
-    color: var(--color-text-muted);
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-primary);
   }
 
   .main-product__latin em {
-    font-family: var(--font-family-serif);
     font-style: italic;
   }
 
+  .main-product__title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(2rem, 3.5vw + 0.5rem, 3.25rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-forest-green-dark);
+  }
+
   .main-product__price {
-    margin: var(--space-lg) 0;
+    margin: var(--space-lg) 0 var(--space-md);
     font-size: clamp(1.25rem, 2vw + 0.25rem, 1.75rem);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
@@ -423,6 +563,42 @@
     font-size: var(--font-size-md);
     font-weight: 400;
     color: var(--color-text-muted);
+  }
+
+  .main-product__status {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    margin: 0 0 var(--space-lg);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__status-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-block-start: 0.2rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+  }
+
+  .main-product__status--limited .main-product__status-dot {
+    background-color: #c45c2a;
+  }
+
+  .main-product__status--cultivating .main-product__status-dot {
+    background-color: #3d6b4a;
+  }
+
+  .main-product__status-text {
+    flex: 1;
+    min-width: 0;
   }
 
   .main-product__label {
@@ -501,25 +677,27 @@
 
   .main-product__submit {
     flex: 1 1 12rem;
-    min-height: 2.75rem;
+    min-height: 3rem;
     padding: var(--space-sm) var(--space-xl);
+    font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
-    font-weight: 600;
-    letter-spacing: var(--letter-spacing-wide);
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
-    color: var(--color-text-inverse);
-    background-color: var(--color-primary);
-    border: 1px solid var(--color-primary);
+    color: var(--color-parchment);
+    background-color: var(--color-forest-green-dark);
+    border: 1px solid var(--color-forest-green-dark);
     border-radius: var(--radius-sm);
     transition:
-      background-color var(--transition-fast),
-      transform var(--transition-fast);
+      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
   }
 
   .main-product__submit:hover:not(:disabled) {
-    background-color: var(--color-primary-hover);
-    transform: translate3d(0, -1px, 0);
+    background-color: var(--color-primary);
+    transform: scale(1.02);
   }
 
   .main-product__submit:disabled {
@@ -533,8 +711,48 @@
     color: var(--color-text-muted);
   }
 
+  .main-product__cultivation {
+    margin-block: var(--space-xl);
+    padding-block-start: var(--space-lg);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .main-product__cultivation-dossier .main-product__description ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .main-product__cultivation-dossier .main-product__description ul > li {
+    margin: 0;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid rgb(0 0 0 / 0.1);
+  }
+
+  .main-product__cultivation-dossier .main-product__description ul li > :is(strong, b):first-child {
+    display: block;
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-family-base);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__cultivation-dossier .main-product__description ul > li {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
   .main-product__field-data {
-    margin-block-end: var(--space-xl);
     padding-block-start: var(--space-lg);
     border-block-start: 1px solid var(--color-border);
   }
@@ -608,19 +826,30 @@
     margin: 0 0 var(--space-md);
   }
 
+  @media (min-width: 750px) {
+    .main-product__cultivation-dossier .main-product__description ul {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (min-width: 990px) {
     .main-product__layout {
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
       gap: var(--space-3xl);
     }
 
-    .main-product__console {
+    .main-product__gallery {
       position: sticky;
-      top: 2rem;
+      top: 100px;
+      align-self: start;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .main-product__submit {
+      transition: background-color var(--transition-fast);
+    }
+
     .main-product__submit:hover:not(:disabled) {
       transform: none;
     }
@@ -631,6 +860,175 @@
   (function () {
     'use strict';
 
+    function formatZar(cents) {
+      var value = parseInt(cents, 10) || 0;
+      var rands = Math.floor(value / 100);
+      var fractional = value % 100;
+      var fractionalDisplay = fractional < 10 ? '0' + fractional : String(fractional);
+      var randsDisplay = String(rands);
+
+      if (rands >= 1000) {
+        var thousands = Math.floor(rands / 1000);
+        var remainder = rands % 1000;
+        var remainderPadded = String(remainder);
+        while (remainderPadded.length < 3) {
+          remainderPadded = '0' + remainderPadded;
+        }
+        randsDisplay = thousands + ' ' + remainderPadded;
+      }
+
+      return 'R ' + randsDisplay + ',' + fractionalDisplay;
+    }
+
+    function readVariants(root) {
+      var script = root.querySelector('[data-main-product-variants]');
+      if (!script) {
+        return [];
+      }
+      try {
+        return JSON.parse(script.textContent);
+      } catch (error) {
+        console.error('Main product: invalid variant JSON.', error);
+        return [];
+      }
+    }
+
+    function findVariant(variants, id) {
+      var targetId = parseInt(id, 10);
+      for (var i = 0; i < variants.length; i += 1) {
+        if (variants[i].id === targetId) {
+          return variants[i];
+        }
+      }
+      return null;
+    }
+
+    function getStatusMode(variant) {
+      if (!variant || !variant.available) {
+        return 'sold_out';
+      }
+      if (variant.inventory_management === 'shopify') {
+        var qty = parseInt(variant.inventory_quantity, 10) || 0;
+        if (qty > 5) {
+          return 'cultivating';
+        }
+        if (qty > 0) {
+          return 'limited';
+        }
+        return 'sold_out';
+      }
+      return 'cultivating';
+    }
+
+    function updateStatus(root, variant) {
+      var statusEl = root.querySelector('[data-product-status]');
+      var statusText = root.querySelector('[data-product-status-text]');
+      if (!statusEl || !statusText) {
+        return;
+      }
+
+      var mode = getStatusMode(variant);
+      var limitedTemplate = root.dataset.statusLimitedTemplate || '';
+      var cultivatingText = root.dataset.statusCultivating || '';
+
+      statusEl.classList.remove(
+        'main-product__status--limited',
+        'main-product__status--cultivating',
+        'main-product__status--sold_out'
+      );
+      statusEl.classList.add('main-product__status--' + mode);
+      statusEl.dataset.statusMode = mode;
+
+      if (mode === 'sold_out') {
+        statusEl.hidden = true;
+        return;
+      }
+
+      statusEl.hidden = false;
+
+      if (mode === 'limited') {
+        var qty = parseInt(variant.inventory_quantity, 10) || 0;
+        statusEl.dataset.statusCount = String(qty);
+        statusText.textContent = limitedTemplate.replace('__COUNT__', String(qty));
+      } else {
+        statusText.textContent = cultivatingText;
+      }
+    }
+
+    function updatePrice(root, variant) {
+      var priceRoot = root.querySelector('[data-product-price]');
+      if (!priceRoot || !variant) {
+        return;
+      }
+
+      var price = parseInt(variant.price, 10) || 0;
+      var compareAt = parseInt(variant.compare_at_price, 10) || 0;
+      var saleEl = priceRoot.querySelector('[data-product-price-sale]');
+      var compareEl = priceRoot.querySelector('[data-product-price-compare]');
+      var regularEl = priceRoot.querySelector('[data-product-price-regular]');
+
+      if (compareAt > price) {
+        if (!saleEl) {
+          priceRoot.innerHTML =
+            '<span class="visually-hidden">Sale</span>' +
+            '<span class="main-product__price-sale" data-product-price-sale></span>' +
+            '<span class="visually-hidden">Regular</span>' +
+            '<s class="main-product__price-compare" data-product-price-compare></s>';
+          saleEl = priceRoot.querySelector('[data-product-price-sale]');
+          compareEl = priceRoot.querySelector('[data-product-price-compare]');
+        }
+        if (regularEl) {
+          regularEl.remove();
+        }
+        saleEl.textContent = formatZar(price);
+        compareEl.textContent = formatZar(compareAt);
+      } else {
+        if (!regularEl) {
+          priceRoot.innerHTML =
+            '<span class="main-product__price-regular" data-product-price-regular></span>';
+          regularEl = priceRoot.querySelector('[data-product-price-regular]');
+        }
+        if (saleEl) {
+          saleEl.remove();
+        }
+        if (compareEl) {
+          compareEl.remove();
+        }
+        regularEl.textContent = formatZar(price);
+      }
+    }
+
+    function updateVariantUrl(variantId) {
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set('variant', String(variantId));
+        window.history.replaceState({}, '', url.toString());
+      } catch (error) {
+        /* Non-blocking */
+      }
+    }
+
+    function applyVariant(root, variantId) {
+      var variants = readVariants(root);
+      var variant = findVariant(variants, variantId);
+      if (!variant) {
+        return;
+      }
+
+      var addButton = root.querySelector('[data-add-to-cart]');
+      var addLabel = root.dataset.labelAdd || 'ADD TO CONSERVATORY';
+      var soldOutLabel = root.dataset.labelSoldOut || 'Sold out';
+
+      updatePrice(root, variant);
+      updateStatus(root, variant);
+      updateVariantUrl(variant.id);
+
+      if (addButton) {
+        addButton.disabled = !variant.available;
+        addButton.textContent = variant.available ? addLabel : soldOutLabel;
+      }
+    }
+
     function initMainProduct(root) {
       if (!root || root.dataset.mainProductInitialized === 'true') {
         return;
@@ -640,7 +1038,6 @@
       var qtyMinus = root.querySelector('[data-qty-minus]');
       var qtyPlus = root.querySelector('[data-qty-plus]');
       var variantSelect = root.querySelector('[data-variant-select]');
-      var variantIdInput = root.querySelector('[data-variant-id]');
       var addButton = root.querySelector('[data-add-to-cart]');
 
       if (qtyInput && qtyMinus && qtyPlus) {
@@ -654,12 +1051,16 @@
         });
       }
 
-      if (variantSelect && addButton) {
+      if (variantSelect) {
         variantSelect.addEventListener('change', function () {
-          var selected = variantSelect.options[variantSelect.selectedIndex];
-          var isDisabled = selected && selected.disabled;
-          addButton.disabled = !!isDisabled;
+          applyVariant(root, variantSelect.value);
         });
+        applyVariant(root, variantSelect.value);
+      } else if (addButton) {
+        var hiddenId = root.querySelector('[data-variant-id]');
+        if (hiddenId && hiddenId.value) {
+          applyVariant(root, hiddenId.value);
+        }
       }
 
       root.dataset.mainProductInitialized = 'true';

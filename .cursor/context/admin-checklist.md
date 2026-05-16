@@ -236,7 +236,7 @@ Use **Online Store → Themes → Customize** to control homepage, header, and A
 - [ ] About: curator portrait, laboratory image, scientific plates with REF IDs and plate imagery.
 - [ ] Header: Catalog mega menu items (labels, links, thumbnails).
 - [ ] Collection: hero, **2-column dossier** (bulleted description), product grid, **Filter by cultivation** drawer (genus, difficulty, temperature, trap type).
-- [ ] PDP: `latin_name`, difficulty, `temperature_group`, `trap_type`, dormancy, ZAR price, cart drawer.
+- [ ] PDP (Specimen dossier): `latin_name`, difficulty, `temperature_group`, `trap_type`, dormancy, ZAR price, inventory status line, **ADD TO CONSERVATORY** (AJAX cart drawer), bulleted description → 2-column cultivation grid.
 - [ ] Footer: address, email, WhatsApp, social, payments.
 - [ ] Announcement bar, search overlay, Field Notes modal (if enabled).
 - [ ] Product badges: `Rare`, `In-House`, difficulty **1**.

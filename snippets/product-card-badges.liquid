@@ -2,11 +2,13 @@
   Renders wax-seal and lab-label badges on product cards from tags and metafields.
 
   @param {product} [product_item] - Live product for tag/metafield checks
+  @param {string} [mock_tags] - Comma-separated tag list for Theme Editor preview (e.g. `Rare, In-House`)
   @param {number} [mock_slot] - Preview slot index when no product is passed
   @param {number} [mock_difficulty] - Difficulty level for mock preview cards
 
   @example
   {% render 'product-card-badges', product_item: product %}
+  {% render 'product-card-badges', mock_tags: 'Rare, In-House' %}
 {% enddoc %}
 
 {%- liquid
@@ -26,6 +28,13 @@
     assign difficulty_level = difficulty_raw | plus: 0
     if difficulty_level == 1
       assign show_easy = true
+    endif
+  elsif mock_tags != blank
+    if mock_tags contains 'Rare'
+      assign show_rare = true
+    endif
+    if mock_tags contains 'In-House'
+      assign show_lab = true
     endif
   elsif mock_slot != blank
     assign preview_slot = mock_slot | modulo: 11
