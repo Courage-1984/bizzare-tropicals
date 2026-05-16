@@ -16,7 +16,7 @@
 -%}
 
 <section
-  class="featured-collection full-width"
+  class="featured-collection full-width reveal-up"
   data-featured-carousel
   aria-labelledby="featured-collection-heading-{{ section.id }}"
   style="--featured-collection-bg-start: {{ background_color_start }}; --featured-collection-bg-end: {{ background_color_end }};"
@@ -75,12 +75,13 @@
         id="featured-carousel-track-{{ section.id }}"
         class="featured-collection__track"
         data-carousel-track
+        data-reveal-stagger
         role="list"
         tabindex="0"
         aria-label="{{ 'sections.featured_collection.carousel_label' | t }}"
       >
         {%- for product in featured_collection.products limit: products_limit -%}
-          <li class="featured-collection__item" data-carousel-item role="listitem">
+          <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
             {% render 'product-card',
               product_item: product,
               sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
@@ -98,12 +99,13 @@
         id="featured-carousel-track-{{ section.id }}"
         class="featured-collection__track"
         data-carousel-track
+        data-reveal-stagger
         role="list"
         tabindex="0"
         aria-label="{{ 'sections.featured_collection.preview_label' | t }}"
       >
         {%- for i in (1..8) -%}
-          <li class="featured-collection__item" data-carousel-item role="listitem">
+          <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
             {% render 'product-card',
               card_index: forloop.index0,
               sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'

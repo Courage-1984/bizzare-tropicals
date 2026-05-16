@@ -24,7 +24,6 @@
   class="collection-grid-section"
   data-collection-grid-section
   data-section-id="{{ section.id }}"
-  data-bento-reveal
   aria-labelledby="collection-grid-heading-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
@@ -65,9 +64,9 @@
   <div id="CollectionProductGrid-{{ section.id }}" data-collection-product-grid>
     {%- paginate collection.products by 24 -%}
       {%- if collection.products.size > 0 -%}
-        <ul class="collection-grid collection-grid--bento" role="list">
+        <ul class="collection-grid collection-grid--bento" role="list" data-reveal-stagger>
           {%- for product in collection.products -%}
-            <li class="collection-grid__item" role="listitem" data-bento-item>
+            <li class="collection-grid__item reveal-up" role="listitem">
               {% render 'product-card',
                 product_item: product,
                 card_index: forloop.index0,
@@ -93,7 +92,7 @@
           hidden
         >
           {%- for i in (1..12) -%}
-            <li class="collection-grid__item" role="listitem" data-bento-item>
+            <li class="collection-grid__item reveal-up" role="listitem">
               {% render 'product-card',
                 card_index: forloop.index0,
                 sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
@@ -444,20 +443,6 @@
     overflow: visible;
   }
 
-  .collection-grid--bento .collection-grid__item {
-    opacity: 0;
-    transform: translate3d(0, 30px, 0);
-    transition:
-      opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1),
-      transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform, opacity;
-  }
-
-  .collection-grid--bento .collection-grid__item.is-revealed {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-
   .collection-grid--bento .product-card__media {
     aspect-ratio: 1 / 1;
   }
@@ -553,17 +538,11 @@
     .cultivation-filter__option,
     .cultivation-filter__clear,
     .collection-pagination a,
-    .collection-grid--bento .collection-grid__item,
     .collection-grid-section--busy [data-collection-product-grid] {
       transition: none;
     }
 
     .collection-grid-section__filter-trigger:hover {
-      transform: none;
-    }
-
-    .collection-grid--bento .collection-grid__item {
-      opacity: 1;
       transform: none;
     }
   }
@@ -573,68 +552,13 @@
   (function () {
     'use strict';
 
-    function initBentoReveal(scope) {
-      var root = scope || document;
-      var sections = root.querySelectorAll('[data-bento-reveal]');
-
-      sections.forEach(function (section) {
-        if (section.dataset.bentoRevealInitialized === 'true') {
-          return;
+    function initCollectionReveal(scope) {
+      if (window.ThemeReveal) {
+        if (scope) {
+          window.ThemeReveal.reset(scope);
         }
-
-        var items = section.querySelectorAll('[data-bento-item]');
-        if (!items.length) {
-          return;
-        }
-
-        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-          items.forEach(function (item) {
-            item.classList.add('is-revealed');
-          });
-          section.dataset.bentoRevealInitialized = 'true';
-          return;
-        }
-
-        var staggerIndex = 0;
-        var observer = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (!entry.isIntersecting) {
-                return;
-              }
-
-              var item = entry.target;
-              var delay = staggerIndex * 0.08;
-              staggerIndex += 1;
-              item.style.transitionDelay = delay + 's';
-              item.classList.add('is-revealed');
-              observer.unobserve(item);
-            });
-          },
-          {
-            root: null,
-            rootMargin: '0px 0px -8% 0px',
-            threshold: 0.12,
-          }
-        );
-
-        items.forEach(function (item) {
-          item.classList.remove('is-revealed');
-          item.style.transitionDelay = '';
-          observer.observe(item);
-        });
-
-        section.dataset.bentoRevealInitialized = 'true';
-      });
-    }
-
-    function resetBentoReveal(section) {
-      if (!section) {
-        return;
+        window.ThemeReveal.init(scope || document);
       }
-      section.dataset.bentoRevealInitialized = 'false';
-      initBentoReveal(section);
     }
 
     function getCollectionSection(root) {
@@ -682,7 +606,7 @@
 
       section.innerHTML = incomingSection.innerHTML;
       bindCultivationFilter(section);
-      resetBentoReveal(section);
+      initCollectionReveal(section);
     }
 
     function setFilterBusy(section, busy) {
@@ -838,7 +762,7 @@
 
     function initAll(scope) {
       var root = scope || document;
-      initBentoReveal(root);
+      initCollectionReveal(root);
       root.querySelectorAll('[data-collection-grid-section]').forEach(function (section) {
         bindCultivationFilter(section);
       });

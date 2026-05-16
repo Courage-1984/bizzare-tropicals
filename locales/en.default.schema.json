@@ -187,6 +187,9 @@
         "designer_link_label": "Designer link label"
       }
     },
+    "collection_banner": {
+      "name": "Collection banner"
+    },
     "collection_hero": {
       "name": "Collection hero",
       "settings": {

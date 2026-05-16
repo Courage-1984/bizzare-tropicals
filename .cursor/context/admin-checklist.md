@@ -34,11 +34,18 @@ Social URLs and contact details are configured in the **Footer** section (not gl
 - [ ] **Conservatory standards:** **Theme Editor → Home page → Conservatory standards** — see **§6.3**.
 - [ ] **Genus shortcuts:** Confirm each **Shop by genus** card points to the correct collection handle.
 
-### The “Dossier” rule (collections)
+### Collection banner (catalog header)
 
-**IMPORTANT:** The **Cultivation Dossier** 2-column grid in `collection-hero.liquid` only activates when the collection **Description** contains a **bulleted list** (`<ul>`). Plain paragraphs render as a single column.
+The **Collection banner** (`main-collection-banner.liquid`) renders the collection **Title** and **Description** as centered hero copy (max-width 600px). It does **not** use the Cultivation Dossier bullet-grid layout — use plain paragraphs or short prose in the collection **Description** for the header.
 
-- [ ] Enter each genus collection description as a **bulleted list** (HTML `<ul><li>…</li></ul>` or the rich-text bullet control in admin).
+- [ ] Upload a **collection image** in **Products → Collections** for a textured hero backdrop (optional).
+- [ ] Enter a concise collection **Description** for the banner (plain text or paragraphs; not required to be a bullet list).
+
+### The “Dossier” rule (in-page care content)
+
+**IMPORTANT:** Where the theme renders a **Cultivation Dossier** grid (e.g. product PDP cultivation block), the 2-column layout activates when copy contains a **bulleted list** (`<ul>`). Plain paragraphs render as a single column.
+
+- [ ] For genus care tables on collection pages (future `section-genus-care` or rich description blocks), enter care copy as a **bulleted list** (HTML `<ul><li>…</li></ul>` or the rich-text bullet control in admin).
 - [ ] Include all six care dimensions in every genus dossier:
   - **Light**
   - **Water**
@@ -265,7 +272,7 @@ Modular sections — add, hide, or reorder without code:
 - [ ] **Homepage hero** — slides, placeholders, overlay opacity.
 - [ ] **Genus shortcuts** — collection per card, placeholders.
 - [ ] **Featured collection** — collection, copy, count, gradient colors.
-- [ ] **Collection hero** — care heading, placeholder URL, sticky dossier; dossier copy in collection **Description** (bulleted list).
+- [ ] **Collection banner** (`main-collection-banner.liquid`) — collection **Title**, **Description** (centered hero copy), and optional **Collection image** for the backdrop.
 - [ ] **Contact template** — FAQ blocks, social URLs.
 - [ ] **About template** — curator, laboratory, scientific plates (see **§6.4**).
 - [ ] **Footer** — brand story, contact fields, social URLs, menu, newsletter, payment icons.
@@ -274,4 +281,4 @@ Modular sections — add, hide, or reorder without code:
 
 ---
 
-*Last aligned with theme files: schema audit — `sections/header.liquid`, `sections/header-group.json`, `snippets/header-catalog-mega-menu.liquid`, `snippets/site-nav.liquid`, `snippets/site-nav-item.liquid`, `sections/featured-specimen.liquid`, `sections/conservatory-standards.liquid`, `sections/about-template.liquid`, `templates/page.about.json`, `locales/en.default.schema.json`, plus `layout/theme.liquid`, `sections/main-collection-product-grid.liquid`, `snippets/cultivation-filter-drawer.liquid`, `page.contact.json`, `index.json`, `footer-group.json`, `en.default.json`.*
+*Last aligned with theme files: `assets/theme.js`, `assets/base.css`, `layout/theme.liquid`, `sections/main-collection-banner.liquid`, `sections/main-product.liquid`, `sections/main-collection-product-grid.liquid`, `snippets/product-card-badges.liquid`, `templates/collection.json`, `locales/en.default.json`, `locales/en.default.schema.json`, plus `sections/about-template.liquid`, `sections/genus-shortcuts.liquid`, `sections/footer.liquid`, `sections/featured-collection.liquid`, `sections/featured-specimen.liquid`, `sections/conservatory-standards.liquid`, `.cursor/context/admin-checklist.md`.*

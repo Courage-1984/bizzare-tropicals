@@ -146,6 +146,13 @@
         "tropical": "Tropical",
         "mediterranean": "Mediterranean"
       },
+      "accordions_label": "Product details",
+      "origin_heading": "Specimen origin",
+      "origin_text": "Endemic to the montane rainforests of Mount Kinabalu, Borneo. Cultivated in Gauteng.",
+      "accordion_arrival_title": "Live arrival guarantee",
+      "accordion_arrival_body": "Specialized transit via botanical courier. Hand-packed in sphagnum.",
+      "accordion_lineage_title": "Laboratory lineage",
+      "accordion_lineage_body": "Clone derived from tissue culture batch #TC-409. Zero wild poaching.",
       "trap_types": {
         "snap": "Snap",
         "pitfall": "Pitfall",

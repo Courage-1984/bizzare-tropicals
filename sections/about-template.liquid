@@ -52,7 +52,7 @@
 -%}
 
 <article class="about-page full-width" {{ section.shopify_attributes }}>
-  <header class="about-page__hero">
+  <header class="about-page__hero reveal-up">
     <p class="about-page__hero-overline">{{ section.settings.hero_overline | default: 'Our story' | escape }}</p>
     <h1 class="about-page__hero-title">
       {{ hero_heading | default: 'Cultivating the extraordinary.' | escape }}
@@ -62,7 +62,7 @@
     </p>
   </header>
 
-  <section class="about-page__split about-page__split--{{ image_position }}" aria-labelledby="about-split-heading-{{ section.id }}">
+  <section class="about-page__split about-page__split--{{ image_position }} reveal-up" aria-labelledby="about-split-heading-{{ section.id }}">
     <div class="about-page__split-media about-page__arch-frame">
       {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
       {%- if use_split_image -%}
@@ -99,7 +99,7 @@
   </section>
 
   <section
-    class="about-page__laboratory full-width"
+    class="about-page__laboratory full-width reveal-up"
     aria-labelledby="about-laboratory-heading-{{ section.id }}"
   >
     <div class="about-page__laboratory-inner">
@@ -141,7 +141,7 @@
     </div>
   </section>
 
-  <section class="about-page__curator" aria-labelledby="about-curator-heading-{{ section.id }}">
+  <section class="about-page__curator reveal-up" aria-labelledby="about-curator-heading-{{ section.id }}">
     <div class="about-page__curator-layout">
       <div class="about-page__curator-portrait about-page__frame about-page__frame--circle">
         {%- comment -%} TODO: replace placeholder — curator portrait before launch {%- endcomment -%}
@@ -187,7 +187,7 @@
         {{ section.settings.conservatory_heading | default: 'The conservatory' | escape }}
       </h2>
 
-      <ul class="about-page__plates" role="list">
+      <ul class="about-page__plates" role="list" data-reveal-stagger>
         {%- for block in section.blocks -%}
           {%- unless block.type == 'scientific_plate' -%}
             {%- continue -%}
@@ -217,7 +217,7 @@
             endif
           -%}
 
-          <li class="about-page__plates-item" {{ block.shopify_attributes }} role="listitem">
+          <li class="about-page__plates-item reveal-up" {{ block.shopify_attributes }} role="listitem">
             <article class="about-page__plate">
               <div class="about-page__plate__media">
                 <span class="about-page__plate__ref" aria-hidden="true">{{ plate_ref | escape }}</span>

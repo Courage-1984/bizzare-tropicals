@@ -19,9 +19,17 @@
   if product_item != blank
     if product_item.tags contains 'Rare'
       assign show_rare = true
+    elsif mock_tags != blank
+      if mock_tags contains 'Rare'
+        assign show_rare = true
+      endif
     endif
     if product_item.tags contains 'In-House'
       assign show_lab = true
+    elsif mock_tags != blank
+      if mock_tags contains 'In-House'
+        assign show_lab = true
+      endif
     endif
 
     assign difficulty_raw = product_item.metafields.custom.difficulty.value | default: product_item.metafields.custom.difficulty

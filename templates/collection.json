@@ -1,10 +1,8 @@
 {
   "sections": {
-    "collection_hero": {
-      "type": "collection-hero",
-      "settings": {
-        "care_heading": "Care guide"
-      }
+    "collection_banner": {
+      "type": "main-collection-banner",
+      "settings": {}
     },
     "main": {
       "type": "main-collection-product-grid",
@@ -14,7 +12,7 @@
     }
   },
   "order": [
-    "collection_hero",
+    "collection_banner",
     "main"
   ]
 }

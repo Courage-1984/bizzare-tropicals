@@ -4,7 +4,7 @@
 -%}
 
 <section
-  class="genus-shortcuts"
+  class="genus-shortcuts reveal-up"
   data-genus-carousel
   aria-labelledby="genus-shortcuts-heading-{{ section.id }}"
   {{ section.shopify_attributes }}
@@ -48,6 +48,7 @@
         id="genus-carousel-track-{{ section.id }}"
         class="genus-shortcuts__strip"
         data-carousel-track
+        data-reveal-stagger
         role="list"
         tabindex="0"
         aria-label="{{ 'sections.genus_shortcuts.strip_label' | t }}"
@@ -110,7 +111,7 @@
 
             {%- if card_title != blank -%}
               {%- if card_link != blank -%}
-                <li class="genus-shortcuts__item" data-carousel-item {{ block.shopify_attributes }} role="listitem">
+                <li class="genus-shortcuts__item reveal-up" data-carousel-item {{ block.shopify_attributes }} role="listitem">
                   {% render 'genus-arch-card',
                     card_title: card_title,
                     card_link: card_link,
