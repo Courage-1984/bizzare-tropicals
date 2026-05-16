@@ -115,12 +115,16 @@
 
 {% stylesheet %}
   .about-page {
-    padding-block: var(--space-3xl) var(--space-4xl);
+    --about-pad-block: calc(var(--space-3xl) * 0.6);
+    --about-pad-end: calc(var(--space-4xl) * 0.6);
+    --about-section-gap: calc(var(--space-3xl) * 0.6);
+    --about-section-gap-lg: calc(var(--space-4xl) * 0.6);
+    padding-block: var(--about-pad-block) var(--about-pad-end);
   }
 
   .about-page__hero {
     max-width: 42rem;
-    margin: 0 auto var(--space-3xl);
+    margin: 0 auto var(--about-section-gap);
     text-align: center;
   }
 
@@ -146,9 +150,9 @@
   .about-page__split {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-2xl);
+    gap: calc(var(--space-2xl) * 0.6);
     align-items: center;
-    margin-block-end: var(--space-4xl);
+    margin-block-end: var(--about-section-gap-lg);
   }
 
   .about-page__split-media {
@@ -167,9 +171,12 @@
 
   .about-page__split-heading {
     margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
     font-size: clamp(1.375rem, 2vw + 0.5rem, 2rem);
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 400;
     line-height: var(--line-height-tight);
+    letter-spacing: 0.01em;
   }
 
   .about-page__split-text {
@@ -182,8 +189,12 @@
     margin: 0 0 var(--space-md);
   }
 
+  .about-page__conservatory {
+    padding-block: 0;
+  }
+
   .about-page__conservatory-title {
-    margin: 0 0 var(--space-2xl);
+    margin: 0 0 calc(var(--space-2xl) * 0.6);
     font-family: var(--font-family-serif);
     font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
     font-style: normal;
@@ -196,7 +207,7 @@
   .about-page__pillars {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-xl);
+    gap: calc(var(--space-xl) * 0.6);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -223,9 +234,12 @@
 
   .about-page__pillar-title {
     margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
     font-size: var(--font-size-lg);
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 400;
     line-height: var(--line-height-tight);
+    letter-spacing: 0.01em;
   }
 
   .about-page__pillar-text {
@@ -244,7 +258,7 @@
   @media (min-width: 990px) {
     .about-page__split {
       grid-template-columns: 1fr 1fr;
-      gap: var(--space-3xl);
+      gap: calc(var(--space-3xl) * 0.6);
     }
 
     .about-page__split--right .about-page__split-media {

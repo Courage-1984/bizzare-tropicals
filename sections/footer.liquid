@@ -1,3 +1,20 @@
+{%- liquid
+  assign footer_address = section.settings.contact_address
+  if footer_address == blank
+    assign footer_address = 'Gauteng, South Africa (By Appointment Only)'
+  endif
+
+  assign footer_email = section.settings.contact_email
+  if footer_email == blank
+    assign footer_email = 'info@bizarretropicals.co.za'
+  endif
+
+  assign footer_phone = section.settings.contact_phone
+  if footer_phone == blank
+    assign footer_phone = '+27 (WhatsApp Preferred)'
+  endif
+-%}
+
 <div
   class="site-footer full-width"
   {{ section.shopify_attributes }}
@@ -12,9 +29,45 @@
         {%- if section.settings.brand_heading != blank -%}
           <h2 class="site-footer__heading site-footer__heading--brand">{{ section.settings.brand_heading | escape }}</h2>
         {%- endif -%}
-        {%- if section.settings.brand_story != blank -%}
-          <div class="site-footer__richtext rte">{{ section.settings.brand_story }}</div>
-        {%- endif -%}
+        {%- liquid
+          if section.settings.brand_story != blank
+            assign brand_story_html = section.settings.brand_story
+            if brand_story_html contains '&lt;'
+              assign brand_story_html = brand_story_html | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&'
+            endif
+          else
+            assign brand_story_html = '<p>Bizarre Tropicals is a South African carnivorous plant nursery run by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p>'
+          endif
+        -%}
+        <div class="site-footer__richtext rte">{{ brand_story_html }}</div>
+
+        <div class="site-footer__social">
+          <h3 class="visually-hidden">{{ 'footer.social_heading' | t }}</h3>
+          <ul class="site-footer__social-list" role="list">
+            <li>
+              <a
+                class="site-footer__link site-footer__social-link"
+                href="https://www.facebook.com/bizarretropicals/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ 'footer.social_facebook' | t }}
+                <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="site-footer__link site-footer__social-link"
+                href="https://www.instagram.com/bizarretropicals/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ 'footer.social_instagram' | t }}
+                <span class="visually-hidden">{{ 'footer.opens_new_window' | t }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="site-footer__column">
@@ -90,23 +143,13 @@
       <div class="site-footer__column">
         <h2 class="site-footer__heading">{{ 'footer.contact_heading' | t }}</h2>
         <address class="site-footer__contact">
-          {%- if section.settings.contact_address != blank -%}
-            <p class="site-footer__contact-line">{{ section.settings.contact_address | newline_to_br }}</p>
-          {%- endif -%}
-          {%- if section.settings.contact_email != blank -%}
-            <p class="site-footer__contact-line">
-              <a class="site-footer__link" href="mailto:{{ section.settings.contact_email | strip }}">
-                {{ section.settings.contact_email | escape }}
-              </a>
-            </p>
-          {%- endif -%}
-          {%- if section.settings.contact_phone != blank -%}
-            <p class="site-footer__contact-line">
-              <a class="site-footer__link" href="tel:{{ section.settings.contact_phone | replace: ' ', '' | replace: '(', '' | replace: ')', '' | replace: '-', '' }}">
-                {{ section.settings.contact_phone | escape }}
-              </a>
-            </p>
-          {%- endif -%}
+          <p class="site-footer__contact-line">{{ footer_address | newline_to_br }}</p>
+          <p class="site-footer__contact-line">
+            <a class="site-footer__link" href="mailto:{{ footer_email | strip }}">
+              {{ footer_email | escape }}
+            </a>
+          </p>
+          <p class="site-footer__contact-line">{{ footer_phone | escape }}</p>
         </address>
       </div>
     </div>
@@ -115,8 +158,8 @@
       <div class="site-footer__bar-start">
         <p class="site-footer__currency">{{ section.settings.currency_note | escape }}</p>
         <p class="site-footer__copyright">
-          &copy; {{ 'now' | date: '%Y' }}
-          <a class="site-footer__link" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
+          © 2026 Bizarre Tropicals | Designed and hosted by
+          <a href="https://logi-ink.co.za/" target="_blank" rel="noopener noreferrer">Logi-Ink</a>
         </p>
       </div>
 
@@ -152,8 +195,9 @@
             </span>
           {%- endunless -%}
 
-          <span class="site-footer__payment-icon site-footer__payment-icon--yoco" title="Yoco">
+          <span class="site-footer__payment-icon site-footer__payment-icon--yoco" title="{{ 'footer.payment_yoco' | t }}">
             {{ 'icon-yoco.svg' | inline_asset_content }}
+            <span class="visually-hidden">{{ 'footer.payment_yoco' | t }}</span>
           </span>
         </div>
       {%- endif -%}
@@ -166,7 +210,7 @@
     position: relative;
     margin-block-start: var(--space-3xl);
     padding-block: var(--space-3xl) var(--space-xl);
-    color: var(--color-text-inverse);
+    color: var(--color-footer-text);
     background-color: var(--color-forest-green);
     overflow: hidden;
   }
@@ -217,7 +261,7 @@
     font-weight: 400;
     letter-spacing: 0.01em;
     text-transform: none;
-    color: var(--color-text-inverse);
+    color: var(--color-footer-text);
   }
 
   .site-footer__richtext {
@@ -228,6 +272,25 @@
 
   .site-footer__richtext p {
     margin: 0 0 var(--space-sm);
+  }
+
+  .site-footer__social {
+    margin-block-start: var(--space-lg);
+  }
+
+  .site-footer__social-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__social-link {
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
   }
 
   .site-footer__link-list {
@@ -328,18 +391,36 @@
   }
 
   .site-footer__currency {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
     margin: 0 0 var(--space-xs);
+    padding: var(--space-2xs) var(--space-sm);
     font-size: var(--font-size-xs);
     font-weight: 600;
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    color: rgb(255 255 255 / 0.65);
+    color: rgb(255 255 255 / 0.88);
+    background-color: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: var(--radius-sm);
   }
 
   .site-footer__copyright {
     margin: 0;
     font-size: var(--font-size-xs);
-    color: rgb(255 255 255 / 0.55);
+    line-height: var(--line-height-relaxed);
+    color: rgb(245 243 238 / 0.78);
+  }
+
+  .site-footer__copyright a {
+    color: var(--color-footer-text);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .site-footer__copyright a:hover {
+    color: #ffffff;
   }
 
   .site-footer__payments {
@@ -363,6 +444,20 @@
     width: 100%;
     height: 100%;
     max-height: 1.75rem;
+  }
+
+  .site-footer__payment-icon--yoco {
+    width: 3.75rem;
+    height: 2rem;
+    padding: 0.2rem 0.35rem;
+    color: var(--color-text-inverse);
+    background-color: rgb(255 255 255 / 0.14);
+    border: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: var(--radius-sm);
+  }
+
+  .site-footer__payment-icon--yoco svg {
+    max-height: 1.5rem;
   }
 
   @media (min-width: 750px) {
@@ -418,18 +513,18 @@
       "type": "text",
       "id": "brand_heading",
       "label": "t:sections.footer.settings.brand_heading",
-      "default": "Bizzare Tropicals"
+      "default": "Bizarre Tropicals"
     },
     {
-      "type": "richtext",
+      "type": "html",
       "id": "brand_story",
       "label": "t:sections.footer.settings.brand_story",
-      "default": "<p>A South African carnivorous plant nursery rooted in field-tested culture and macro photography. We grow and ship flytraps, pitchers, and sundews for collectors across the country.</p>"
+      "default": "<p>Bizarre Tropicals is a South African carnivorous plant nursery run by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p>"
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu",
+      "label": "t:labels.menu"
     },
     {
       "type": "text",
@@ -453,25 +548,25 @@
       "type": "text",
       "id": "contact_address",
       "label": "t:sections.footer.settings.contact_address",
-      "default": "Cape Town, Western Cape\nSouth Africa"
+      "default": "Gauteng, South Africa (By Appointment Only)"
     },
     {
       "type": "text",
       "id": "contact_email",
       "label": "t:sections.footer.settings.contact_email",
-      "default": "hello@bizzare-tropicals.co.za"
+      "default": "info@bizarretropicals.co.za"
     },
     {
       "type": "text",
       "id": "contact_phone",
       "label": "t:sections.footer.settings.contact_phone",
-      "default": "+27 21 000 0000"
+      "default": "+27 (WhatsApp Preferred)"
     },
     {
       "type": "text",
       "id": "currency_note",
       "label": "t:sections.footer.settings.currency_note",
-      "default": "Prices in ZAR (R)"
+      "default": "All prices in South African Rand (ZAR · R)"
     },
     {
       "type": "checkbox",
@@ -482,5 +577,7 @@
   ]
 }
 {% endschema %}
+
+
 
 

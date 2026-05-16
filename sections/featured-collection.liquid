@@ -1,10 +1,9 @@
 {%- liquid
   assign featured_collection = section.settings.collection
-  if featured_collection == blank
-    if collections.frontpage != blank and collections.frontpage.products_count > 0
-      assign featured_collection = collections.frontpage
-    else
-      assign featured_collection = collections.all
+  assign show_real_products = false
+  if featured_collection != blank
+    if featured_collection.products.size > 0
+      assign show_real_products = true
     endif
   endif
 
@@ -33,7 +32,7 @@
     </div>
 
     <div class="featured-collection__actions">
-      {%- if featured_collection != blank and view_all_label != blank -%}
+      {%- if show_real_products and view_all_label != blank -%}
         <a class="featured-collection__view-all" href="{{ featured_collection.url }}">
           {{ view_all_label | escape }}
         </a>
@@ -62,7 +61,7 @@
     </div>
   </header>
 
-  {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+  {%- if show_real_products -%}
     <div
       class="featured-collection__viewport"
       data-carousel-viewport
@@ -76,115 +75,35 @@
         aria-label="{{ 'sections.featured_collection.carousel_label' | t }}"
       >
         {%- for product in featured_collection.products limit: products_limit -%}
-          {%- liquid
-            assign product_image = product.featured_media.preview_image | default: product.featured_image
-            assign use_shopify_image = false
-            if product_image != blank and product_image.width > 0
-              assign use_shopify_image = true
-            endif
-
-            assign genus_handle = product.metafields.custom.genus.value | default: product.metafields.custom.genus
-            assign latin_name = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name
-            assign difficulty_raw = product.metafields.custom.difficulty.value | default: product.metafields.custom.difficulty
-            assign difficulty = difficulty_raw | plus: 0
-
-            case genus_handle
-              when 'dionaea'
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=1200'
-              when 'sarracenia'
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_((leucophylla_x_flava)_x_(purpurea_montana_x_flava))_x_%27Judith_Hindle%27_(5065614694).jpg?width=1200'
-              when 'nepenthes'
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200'
-              when 'drosera'
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_aliciae2_ies.jpg?width=1200'
-              when 'pinguicula'
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_0zz.jpg?width=1200'
-              when 'cephalotus'
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Albany_Pitcher_Plant_Oxford_Botanic_Garden.jpg?width=1200'
-              else
-                assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_aliciae2_ies.jpg?width=1200'
-            endcase
-
-            assign image_alt = product.title
-            if latin_name != blank
-              assign image_alt = latin_name
-            endif
-          -%}
-
           <li class="featured-collection__item" data-carousel-item role="listitem">
-            <article class="product-card">
-              <a class="product-card__media-link" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
-                <span class="product-card__media">
-                  {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
-                  {%- if use_shopify_image -%}
-                    {{
-                      product_image
-                      | image_url: width: 800, height: 1000, crop: 'center'
-                      | image_tag:
-                        class: 'product-card__image',
-                        widths: '400, 600, 800',
-                        sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw',
-                        loading: 'lazy',
-                        alt: image_alt
-                    }}
-                  {%- else -%}
-                    <img
-                      class="product-card__image product-card__image--fallback"
-                      src="{{ placeholder_url }}"
-                      alt="{{ image_alt | escape }}"
-                      width="800"
-                      height="1000"
-                      loading="lazy"
-                      decoding="async"
-                    >
-                  {%- endif -%}
-                </span>
-              </a>
-
-              <div class="product-card__body">
-                {%- if difficulty > 0 -%}
-                  <div
-                    class="product-card__difficulty difficulty-pips"
-                    role="img"
-                    aria-label="{{ 'sections.featured_collection.difficulty_label' | t: level: difficulty, max: 5 }}"
-                  >
-                    {%- for pip in (1..5) -%}
-                      <span
-                        class="difficulty-pip{% if pip <= difficulty %} difficulty-pip--filled{% endif %}"
-                        aria-hidden="true"
-                      ></span>
-                    {%- endfor -%}
-                  </div>
-                {%- endif -%}
-
-                <h3 class="product-card__title">
-                  <a href="{{ product.url }}">{{ product.title | escape }}</a>
-                </h3>
-
-                {%- if latin_name != blank -%}
-                  <p class="product-card__latin">
-                    <em>{{ latin_name | escape }}</em>
-                  </p>
-                {%- endif -%}
-
-                <p class="product-card__price">
-                  {%- if product.compare_at_price > product.price -%}
-                    <span class="visually-hidden">{{ 'sections.featured_collection.price_sale' | t }}</span>
-                    <span class="product-card__price-sale">{{ product.price | money }}</span>
-                    <span class="visually-hidden">{{ 'sections.featured_collection.price_regular' | t }}</span>
-                    <s class="product-card__price-compare">{{ product.compare_at_price | money }}</s>
-                  {%- else -%}
-                    <span class="product-card__price-regular">{{ product.price | money }}</span>
-                  {%- endif -%}
-                </p>
-              </div>
-            </article>
+            {% render 'product-card',
+              product_item: product,
+              sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
+            %}
           </li>
         {%- endfor -%}
       </ul>
     </div>
   {%- else -%}
-    <p class="featured-collection__empty">{{ 'sections.featured_collection.empty' | t }}</p>
+    <div
+      class="featured-collection__viewport featured-collection__viewport--preview"
+      data-carousel-viewport
+    >
+      <ul
+        id="featured-carousel-track-{{ section.id }}"
+        class="featured-collection__track"
+        data-carousel-track
+        role="list"
+        tabindex="0"
+        aria-label="{{ 'sections.featured_collection.preview_label' | t }}"
+      >
+        {%- for i in (1..8) -%}
+          <li class="featured-collection__item" data-carousel-item role="listitem">
+            {% render 'product-card', sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw' %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
   {%- endif -%}
 </section>
 
@@ -311,103 +230,6 @@
     min-width: 0;
   }
 
-  .product-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background-color: var(--color-surface-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    transition: box-shadow var(--transition-base);
-  }
-
-  .product-card:hover {
-    box-shadow: var(--shadow-md);
-  }
-
-  .product-card__media-link {
-    display: block;
-    text-decoration: none;
-  }
-
-  .product-card__media {
-    display: block;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    background-color: var(--color-surface);
-  }
-
-  .product-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    transition: transform var(--transition-transform);
-  }
-
-  .product-card:hover .product-card__image {
-    transform: scale3d(1.03, 1.03, 1);
-  }
-
-  .product-card__body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: var(--space-2xs);
-    padding: var(--space-md);
-  }
-
-  .product-card__difficulty {
-    margin-block-end: var(--space-2xs);
-  }
-
-  .product-card__title {
-    margin: 0;
-    font-size: var(--font-size-md);
-    font-weight: 600;
-    line-height: var(--line-height-tight);
-  }
-
-  .product-card__title a {
-    text-decoration: none;
-  }
-
-  .product-card__title a:hover {
-    color: var(--color-accent);
-  }
-
-  .product-card__latin {
-    margin: 0;
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-base);
-    color: var(--color-text-muted);
-  }
-
-  .product-card__latin em {
-    font-family: var(--font-family-serif);
-    font-style: italic;
-  }
-
-  .product-card__price {
-    margin: auto 0 0;
-    padding-block-start: var(--space-xs);
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .product-card__price-sale {
-    color: var(--color-accent);
-    margin-inline-end: var(--space-xs);
-  }
-
-  .product-card__price-compare {
-    font-size: var(--font-size-sm);
-    font-weight: 400;
-    color: var(--color-text-muted);
-  }
-
   .featured-collection__empty {
     margin: 0;
     padding: var(--space-xl);
@@ -443,7 +265,6 @@
       scroll-behavior: auto;
     }
 
-    .product-card__image,
     .featured-collection__arrow:hover:not(:disabled) {
       transition: none;
       transform: none;

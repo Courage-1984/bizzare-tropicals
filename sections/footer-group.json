@@ -5,15 +5,15 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "brand_heading": "Bizzare Tropicals",
-        "brand_story": "<p>A South African carnivorous plant nursery rooted in field-tested culture and macro photography. We grow and ship flytraps, pitchers, and sundews for collectors across the country.</p>",
+        "brand_heading": "Bizarre Tropicals",
+        "brand_story": "<p>Bizarre Tropicals is a South African carnivorous plant nursery run by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p>",
         "newsletter_heading": "Join the growth",
         "newsletter_text": "Seasonal drops, care notes, and new stock alerts — no spam.",
         "newsletter_button_label": "Subscribe",
-        "contact_address": "Cape Town, Western Cape\nSouth Africa",
-        "contact_email": "hello@bizzare-tropicals.co.za",
-        "contact_phone": "+27 21 000 0000",
-        "currency_note": "Prices in ZAR (R)",
+        "contact_address": "Gauteng, South Africa (By Appointment Only)",
+        "contact_email": "info@bizarretropicals.co.za",
+        "contact_phone": "+27 (WhatsApp Preferred)",
+        "currency_note": "All prices in South African Rand (ZAR · R)",
         "show_payment_icons": true
       }
     }

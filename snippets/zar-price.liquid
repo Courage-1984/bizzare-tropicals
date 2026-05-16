@@ -1,0 +1,26 @@
+{% doc %}
+  Formats a Shopify price (in cents) as South African Rand: R 1 250,00
+
+  @param {number} amount_cents - Price in cents (e.g. product.price)
+{% enddoc %}
+
+{%- liquid
+  assign cents = amount_cents | default: 0 | plus: 0
+  assign rands = cents | divided_by: 100
+  assign fractional = cents | modulo: 100
+
+  if fractional < 10
+    assign fractional_display = '0' | append: fractional
+  else
+    assign fractional_display = fractional
+  endif
+
+  if rands >= 1000
+    assign thousands = rands | divided_by: 1000
+    assign remainder = rands | modulo: 1000
+    assign remainder_padded = remainder | prepend: '000' | slice: -3, 3
+    assign rands_display = thousands | append: ' ' | append: remainder_padded
+  else
+    assign rands_display = rands
+  endif
+-%}{{- 'R ' -}}{{- rands_display -}},{{- fractional_display -}}

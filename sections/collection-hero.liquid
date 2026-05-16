@@ -1,0 +1,226 @@
+{%- liquid
+  assign care_heading = section.settings.care_heading
+  assign collection_image = collection.image
+  assign use_collection_image = false
+
+  if collection_image != blank and collection_image.width > 0
+    assign use_collection_image = true
+  endif
+
+  case collection.handle
+    when 'dionaea'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Fly_Trap_(Dionaea_muscipula).jpg?width=1600'
+    when 'sarracenia'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600'
+    when 'nepenthes'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=1600'
+    when 'drosera'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1600'
+    when 'pinguicula'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis.jpg?width=1600'
+    when 'cephalotus'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=1600'
+    when 'heliamphora'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(a_pitcher_plant_from_Venezuela)_at_Kew_Gardens_(5253200783).jpg?width=1600'
+    when 'utricularia'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Greater_Bladderwort_Utricularia_vulgaris_(6171429381).jpg?width=1600'
+    when 'darlingtonia'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonias.JPG?width=1600'
+    when 'byblis'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/ByblisLinifloraHabitus.JPG?width=1600'
+    when 'drossophyllum'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_RBGK.JPG?width=1600'
+    when 'growing-supplies'
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sphagnum_centrale.jpeg?width=1600'
+    else
+      assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1600'
+  endcase
+-%}
+
+<section
+  class="collection-hero"
+  aria-labelledby="collection-hero-title-{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="collection-hero__layout">
+    <div class="collection-hero__identity">
+      <h1 id="collection-hero-title-{{ section.id }}" class="collection-hero__title">
+        {{ collection.title | escape }}
+      </h1>
+
+      <div class="collection-hero__frame">
+        {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
+        {%- if use_collection_image -%}
+          {{
+            collection_image
+            | image_url: width: 1200, height: 1200, crop: 'center'
+            | image_tag:
+              class: 'collection-hero__image',
+              widths: '400, 600, 900, 1200',
+              sizes: '(min-width: 990px) 38vw, 88vw',
+              loading: 'eager',
+              fetchpriority: 'high',
+              alt: collection.title
+          }}
+        {%- else -%}
+          <img
+            class="collection-hero__image collection-hero__image--fallback"
+            src="{{ placeholder_url }}"
+            alt="{{ collection.title | escape }}"
+            width="1200"
+            height="1200"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+
+    <aside class="collection-hero__console" aria-labelledby="collection-hero-care-{{ section.id }}">
+      <h2 id="collection-hero-care-{{ section.id }}" class="collection-hero__console-title">
+        {{ care_heading | escape }}
+      </h2>
+
+      {%- if collection.description != blank -%}
+        <div class="collection-hero__care rte">
+          {{ collection.description }}
+        </div>
+      {%- else -%}
+        <div class="collection-hero__care rte collection-hero__care--fallback">
+          <p>
+            <strong>{{ 'sections.collection_hero.care_fallback.light_label' | t }}</strong>
+            {{ 'sections.collection_hero.care_fallback.light' | t }}
+            <strong>{{ 'sections.collection_hero.care_fallback.water_label' | t }}</strong>
+            {{ 'sections.collection_hero.care_fallback.water' | t }}
+            <strong>{{ 'sections.collection_hero.care_fallback.soil_label' | t }}</strong>
+            {{ 'sections.collection_hero.care_fallback.soil' | t }}
+          </p>
+        </div>
+      {%- endif -%}
+    </aside>
+  </div>
+</section>
+
+{% stylesheet %}
+  .collection-hero {
+    padding-block: var(--space-2xl) var(--space-xl);
+  }
+
+  .collection-hero__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .collection-hero__title {
+    margin: 0 0 var(--space-lg);
+    font-family: var(--font-family-serif);
+    font-size: clamp(2.25rem, 5vw + 0.5rem, 3.75rem);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+
+  .collection-hero__frame {
+    overflow: hidden;
+    max-width: 28rem;
+    padding: var(--space-sm);
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .collection-hero__image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: var(--radius-md);
+  }
+
+  .collection-hero__console {
+    padding: var(--space-xl);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-lg);
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
+  }
+
+  .collection-hero__console-title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .collection-hero__care {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+  }
+
+  .collection-hero__care :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+  }
+
+  .collection-hero__care :is(ul, ol) {
+    padding-inline-start: 1.25rem;
+  }
+
+  .collection-hero__care li + li {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .collection-hero__care strong {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .collection-hero__care--fallback p {
+    margin: 0;
+  }
+
+  .collection-hero__care-empty {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 990px) {
+    .collection-hero__layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: var(--space-3xl);
+    }
+
+    .collection-hero__console {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-md));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.collection_hero.name",
+  "tag": "section",
+  "class": "collection-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "care_heading",
+      "label": "t:sections.collection_hero.settings.care_heading",
+      "default": "Care guide"
+    }
+  ]
+}
+{% endschema %}

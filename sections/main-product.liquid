@@ -1,0 +1,744 @@
+{%- liquid
+  assign use_live_product = false
+  if product
+    if product.id != blank
+      assign use_live_product = true
+    endif
+  endif
+
+  assign mock_image_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(8411421382).jpg?width=1600'
+  assign mock_price_cents = 85000
+  assign mock_difficulty = 4
+
+  if use_live_product
+    assign display_title = product.title
+    assign latin_name = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name
+    assign difficulty_raw = product.metafields.custom.difficulty.value | default: product.metafields.custom.difficulty
+    assign difficulty = difficulty_raw | plus: 0
+    assign temperature_group = product.metafields.custom.temperature_group.value | default: product.metafields.custom.temperature_group
+    assign trap_type = product.metafields.custom.trap_type.value | default: product.metafields.custom.trap_type
+    assign dormancy_required = product.metafields.custom.dormancy_required.value | default: product.metafields.custom.dormancy_required
+    assign price_cents = product.selected_or_first_available_variant.price
+    assign compare_at_cents = product.selected_or_first_available_variant.compare_at_price
+    assign product_description = product.description
+    assign current_variant = product.selected_or_first_available_variant
+
+    assign gallery_media = product.media
+    if gallery_media.size == 0 and product.images.size > 0
+      assign gallery_media = product.images
+    endif
+    assign has_gallery = false
+    if gallery_media.size > 0
+      assign has_gallery = true
+    endif
+
+    if latin_name == blank
+      assign latin_name = 'products.main.mock_latin' | t
+    endif
+    if difficulty == 0
+      assign difficulty = mock_difficulty
+    endif
+    if temperature_group == blank
+      assign temperature_group = 'lowland'
+    endif
+    if trap_type == blank
+      assign trap_type = 'pitfall'
+    endif
+    if dormancy_required == blank
+      assign dormancy_required = false
+    endif
+    if product_description == blank
+      assign product_description = 'products.main.mock_description' | t
+    endif
+  else
+    assign display_title = 'products.main.mock_title' | t
+    assign latin_name = 'products.main.mock_latin' | t
+    assign difficulty = mock_difficulty
+    assign temperature_group = 'lowland'
+    assign trap_type = 'pitfall'
+    assign dormancy_required = false
+    assign price_cents = mock_price_cents
+    assign compare_at_cents = 0
+    assign product_description = 'products.main.mock_description' | t
+    assign has_gallery = false
+  endif
+
+  assign temp_group_key = temperature_group | handleize
+  assign trap_type_key = trap_type | handleize
+
+  case temp_group_key
+    when 'highland'
+      assign temp_group_label = 'products.main.temperature_groups.highland' | t
+    when 'intermediate'
+      assign temp_group_label = 'products.main.temperature_groups.intermediate' | t
+    when 'lowland'
+      assign temp_group_label = 'products.main.temperature_groups.lowland' | t
+    when 'temperate'
+      assign temp_group_label = 'products.main.temperature_groups.temperate' | t
+    when 'tropical'
+      assign temp_group_label = 'products.main.temperature_groups.tropical' | t
+    when 'mediterranean'
+      assign temp_group_label = 'products.main.temperature_groups.mediterranean' | t
+    else
+      assign temp_group_label = temperature_group | replace: '-', ' ' | capitalize
+  endcase
+
+  case trap_type_key
+    when 'snap'
+      assign trap_type_label = 'products.main.trap_types.snap' | t
+    when 'pitfall'
+      assign trap_type_label = 'products.main.trap_types.pitfall' | t
+    when 'flypaper'
+      assign trap_type_label = 'products.main.trap_types.flypaper' | t
+    when 'suction'
+      assign trap_type_label = 'products.main.trap_types.suction' | t
+    when 'lobster-pot'
+      assign trap_type_label = 'products.main.trap_types.lobster_pot' | t
+    else
+      assign trap_type_label = trap_type | replace: '-', ' ' | capitalize
+  endcase
+
+  assign main_image_id = 'main-product-gallery-image-' | append: section.id
+  assign form_id = 'main-product-form-' | append: section.id
+
+  if dormancy_required == true or dormancy_required == 'true'
+    assign dormancy_label = 'products.main.dormancy_yes' | t
+  else
+    assign dormancy_label = 'products.main.dormancy_no' | t
+  endif
+-%}
+
+<article
+  class="main-product{% unless use_live_product %} main-product--preview{% endunless %}"
+  data-main-product
+  {{ section.shopify_attributes }}
+>
+  <div class="main-product__layout">
+    <div class="main-product__gallery" data-product-gallery>
+      <figure class="main-product__gallery-main">
+        {%- if use_live_product and has_gallery -%}
+          {%- assign first_media = gallery_media | first -%}
+          {{
+            first_media
+            | image_url: width: 1600, height: 2000, crop: 'center'
+            | image_tag:
+              class: 'main-product__gallery-image',
+              id: main_image_id,
+              widths: '600, 900, 1200, 1600',
+              sizes: '(min-width: 990px) 48vw, 100vw',
+              loading: 'eager',
+              fetchpriority: 'high',
+              alt: display_title,
+              data-gallery-main: ''
+          }}
+        {%- else -%}
+          {%- comment -%} TODO: replace placeholder — nepenthes-lowland-product-01 (placeholder-images.md) {%- endcomment -%}
+          <img
+            class="main-product__gallery-image main-product__gallery-image--fallback"
+            id="{{ main_image_id }}"
+            src="{{ mock_image_url }}"
+            alt="{{ display_title | escape }}"
+            width="1600"
+            height="2000"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            data-gallery-main
+          >
+        {%- endif -%}
+      </figure>
+
+      {%- if use_live_product and gallery_media.size > 1 -%}
+        <ul class="main-product__gallery-thumbs" role="list" aria-label="{{ 'products.main.gallery_thumbnails' | t }}">
+          {%- for media in gallery_media -%}
+            <li class="main-product__gallery-thumb" role="listitem">
+              <button
+                type="button"
+                class="main-product__gallery-thumb-btn{% if forloop.first %} is-active{% endif %}"
+                data-gallery-thumb
+                data-image-src="{{ media | image_url: width: 1600, height: 2000, crop: 'center' }}"
+                data-image-alt="{{ media.alt | default: display_title | escape }}"
+                aria-label="{{ 'products.main.gallery_go_to_image' | t: index: forloop.index }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                {{
+                  media
+                  | image_url: width: 200, height: 200, crop: 'center'
+                  | image_tag: class: 'main-product__gallery-thumb-image', loading: 'lazy', alt: ''
+                }}
+              </button>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="main-product__console">
+      <header class="main-product__header">
+        <h1 class="main-product__title">{{ display_title | escape }}</h1>
+        {%- if latin_name != blank -%}
+          <p class="main-product__latin">
+            <em>{{ latin_name | escape }}</em>
+          </p>
+        {%- endif -%}
+      </header>
+
+      <p class="main-product__price">
+        {%- if compare_at_cents > price_cents -%}
+          <span class="visually-hidden">{{ 'products.card.price_sale' | t }}</span>
+          <span class="main-product__price-sale">{% render 'zar-price', amount_cents: price_cents %}</span>
+          <span class="visually-hidden">{{ 'products.card.price_regular' | t }}</span>
+          <s class="main-product__price-compare">{% render 'zar-price', amount_cents: compare_at_cents %}</s>
+        {%- else -%}
+          <span class="main-product__price-regular">{% render 'zar-price', amount_cents: price_cents %}</span>
+        {%- endif -%}
+      </p>
+
+      {%- if use_live_product -%}
+        {%- form 'product', product, class: 'main-product__form', id: form_id -%}
+          {%- if product.variants.size > 1 -%}
+            <div class="main-product__variants">
+              <label class="main-product__label" for="main-product-variant-{{ section.id }}">
+                {{ 'products.main.variant_label' | t }}
+              </label>
+              <select
+                id="main-product-variant-{{ section.id }}"
+                class="main-product__variant-select"
+                name="id"
+                data-variant-select
+              >
+                {%- for variant in product.variants -%}
+                  <option
+                    value="{{ variant.id }}"
+                    {% if variant == current_variant %}
+                      selected
+                    {% endif %}
+                    {% unless variant.available %}
+                      disabled
+                    {% endunless %}
+                  >
+                    {{ variant.title }}
+                    {%- unless variant.available %} — {{ 'products.main.sold_out' | t }}{% endunless -%}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+          {%- endif -%}
+
+          <div class="main-product__purchase">
+            <div class="main-product__quantity" data-quantity>
+              <span class="main-product__label" id="main-product-qty-label-{{ section.id }}">
+                {{ 'products.main.quantity' | t }}
+              </span>
+              <div class="main-product__quantity-control" role="group" aria-labelledby="main-product-qty-label-{{ section.id }}">
+                <button
+                  type="button"
+                  class="main-product__qty-btn"
+                  data-qty-minus
+                  aria-label="{{ 'products.main.quantity_decrease' | t }}"
+                >
+                  <span aria-hidden="true">−</span>
+                </button>
+                <input
+                  class="main-product__qty-input"
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  inputmode="numeric"
+                  data-qty-input
+                  aria-label="{{ 'products.main.quantity' | t }}"
+                >
+                <button
+                  type="button"
+                  class="main-product__qty-btn"
+                  data-qty-plus
+                  aria-label="{{ 'products.main.quantity_increase' | t }}"
+                >
+                  <span aria-hidden="true">+</span>
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="main-product__submit"
+              name="add"
+              {% unless current_variant.available %}
+                disabled
+              {% endunless %}
+              data-add-to-cart
+            >
+              {%- if current_variant.available -%}
+                {{ 'products.main.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.main.sold_out' | t }}
+              {%- endif -%}
+            </button>
+          </div>
+        {%- endform -%}
+      {%- else -%}
+        <p class="main-product__preview-note">{{ 'products.main.preview_note' | t }}</p>
+        <button type="button" class="main-product__submit" disabled>
+          {{ 'products.main.add_to_cart' | t }}
+        </button>
+      {%- endif -%}
+
+      <section class="main-product__field-data" aria-labelledby="main-product-field-data-{{ section.id }}">
+        <h2 id="main-product-field-data-{{ section.id }}" class="main-product__field-data-title">
+          {{ 'products.main.field_data_heading' | t }}
+        </h2>
+        <dl class="main-product__field-grid">
+          <div class="main-product__field-row">
+            <dt>{{ 'products.main.spec_difficulty' | t }}</dt>
+            <dd>
+              <span class="main-product__field-value">{{ difficulty }}/5</span>
+              <span
+                class="main-product__difficulty difficulty-pips"
+                role="img"
+                aria-label="{{ 'products.card.difficulty_label' | t: level: difficulty, max: 5 }}"
+              >
+                {%- for pip in (1..5) -%}
+                  <span
+                    class="difficulty-pip{% if pip <= difficulty %} difficulty-pip--filled{% endif %}"
+                    aria-hidden="true"
+                  ></span>
+                {%- endfor -%}
+              </span>
+            </dd>
+          </div>
+          <div class="main-product__field-row">
+            <dt>{{ 'products.main.spec_temperature' | t }}</dt>
+            <dd class="main-product__field-value">{{ temp_group_label | escape }}</dd>
+          </div>
+          <div class="main-product__field-row">
+            <dt>{{ 'products.main.spec_trap' | t }}</dt>
+            <dd class="main-product__field-value">{{ trap_type_label | escape }}</dd>
+          </div>
+          <div class="main-product__field-row">
+            <dt>{{ 'products.main.spec_dormancy' | t }}</dt>
+            <dd class="main-product__field-value">{{ dormancy_label | escape }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div class="main-product__description rte">
+        {%- if use_live_product -%}
+          {{ product_description }}
+        {%- else -%}
+          <p>{{ product_description | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .main-product {
+    padding-block: var(--space-2xl) var(--space-3xl);
+  }
+
+  .main-product__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .main-product__gallery-main {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .main-product__gallery-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .main-product__gallery-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .main-product__gallery-thumb-btn {
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: none;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition-fast);
+  }
+
+  .main-product__gallery-thumb-btn.is-active,
+  .main-product__gallery-thumb-btn:hover {
+    border-color: var(--color-primary);
+  }
+
+  .main-product__gallery-thumb-btn:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .main-product__gallery-thumb-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-product__console {
+    padding: var(--space-xl);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-lg);
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
+  }
+
+  .main-product__title {
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-family-base);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-weight: 600;
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .main-product__latin {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-base);
+    color: var(--color-text-muted);
+  }
+
+  .main-product__latin em {
+    font-family: var(--font-family-serif);
+    font-style: italic;
+  }
+
+  .main-product__price {
+    margin: var(--space-lg) 0;
+    font-size: clamp(1.25rem, 2vw + 0.25rem, 1.75rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .main-product__price-sale {
+    color: var(--color-accent);
+    margin-inline-end: var(--space-sm);
+  }
+
+  .main-product__price-compare {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .main-product__label {
+    display: block;
+    margin-block-end: var(--space-xs);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .main-product__variants {
+    margin-block-end: var(--space-lg);
+  }
+
+  .main-product__variant-select {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-border);
+  }
+
+  .main-product__purchase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    align-items: flex-end;
+    margin-block-end: var(--space-xl);
+  }
+
+  .main-product__quantity-control {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--color-surface-elevated);
+  }
+
+  .main-product__qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: none;
+    transition: background-color var(--transition-fast);
+  }
+
+  .main-product__qty-btn:hover {
+    background-color: var(--color-border);
+  }
+
+  .main-product__qty-input {
+    width: 3.5rem;
+    min-height: 2.75rem;
+    padding: var(--space-xs);
+    text-align: center;
+    border: none;
+    border-inline: 1px solid var(--color-border);
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .main-product__qty-input::-webkit-outer-spin-button,
+  .main-product__qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .main-product__submit {
+    flex: 1 1 12rem;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-xl);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-text-inverse);
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .main-product__submit:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .main-product__submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .main-product__preview-note {
+    margin: 0 0 var(--space-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .main-product__field-data {
+    margin-block-end: var(--space-xl);
+    padding-block-start: var(--space-lg);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .main-product__field-data-title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .main-product__field-grid {
+    margin: 0;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--color-surface-elevated);
+  }
+
+  .main-product__field-row {
+    display: grid;
+    grid-template-columns: minmax(7rem, 38%) 1fr;
+    gap: var(--space-md);
+    margin: 0;
+    padding: var(--space-sm) var(--space-md);
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .main-product__field-row:last-child {
+    border-block-end: none;
+  }
+
+  .main-product__field-row dt {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .main-product__field-row dd {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+  }
+
+  .main-product__field-value {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .main-product__difficulty {
+    margin-inline-start: auto;
+  }
+
+  .main-product__description {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .main-product__description :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+  }
+
+  @media (min-width: 990px) {
+    .main-product__layout {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: var(--space-3xl);
+    }
+
+    .main-product__console {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-md));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .main-product__submit:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    function initMainProduct(root) {
+      if (!root || root.dataset.mainProductInitialized === 'true') {
+        return;
+      }
+
+      var gallery = root.querySelector('[data-product-gallery]');
+      var mainImage = root.querySelector('[data-gallery-main]');
+      var thumbs = root.querySelectorAll('[data-gallery-thumb]');
+      var qtyInput = root.querySelector('[data-qty-input]');
+      var qtyMinus = root.querySelector('[data-qty-minus]');
+      var qtyPlus = root.querySelector('[data-qty-plus]');
+      var variantSelect = root.querySelector('[data-variant-select]');
+      var variantIdInput = root.querySelector('[data-variant-id]');
+      var addButton = root.querySelector('[data-add-to-cart]');
+
+      if (gallery && mainImage && thumbs.length) {
+        thumbs.forEach(function (thumb) {
+          thumb.addEventListener('click', function () {
+            var src = thumb.getAttribute('data-image-src');
+            var alt = thumb.getAttribute('data-image-alt');
+            if (!src) {
+              return;
+            }
+            mainImage.setAttribute('src', src);
+            if (alt) {
+              mainImage.setAttribute('alt', alt);
+            }
+            thumbs.forEach(function (btn) {
+              var isActive = btn === thumb;
+              btn.classList.toggle('is-active', isActive);
+              btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+          });
+        });
+      }
+
+      if (qtyInput && qtyMinus && qtyPlus) {
+        qtyMinus.addEventListener('click', function () {
+          var current = parseInt(qtyInput.value, 10) || 1;
+          qtyInput.value = Math.max(1, current - 1);
+        });
+        qtyPlus.addEventListener('click', function () {
+          var current = parseInt(qtyInput.value, 10) || 1;
+          qtyInput.value = current + 1;
+        });
+      }
+
+      if (variantSelect && addButton) {
+        variantSelect.addEventListener('change', function () {
+          var selected = variantSelect.options[variantSelect.selectedIndex];
+          var isDisabled = selected && selected.disabled;
+          addButton.disabled = !!isDisabled;
+        });
+      }
+
+      root.dataset.mainProductInitialized = 'true';
+    }
+
+    function initAll(scope) {
+      var context = scope || document;
+      context.querySelectorAll('[data-main-product]').forEach(initMainProduct);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        initAll();
+      });
+    } else {
+      initAll();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      initAll(event.target);
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.main_product.name",
+  "tag": "section",
+  "class": "main-product-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": []
+}
+{% endschema %}

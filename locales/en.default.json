@@ -12,14 +12,76 @@
       "shop_collection": "Shop collection",
       "card_label": "{{ genus }} collection"
     },
+    "collection_hero": {
+      "care_empty": "Add care instructions to this collection's description in the Shopify admin.",
+      "care_fallback": {
+        "light_label": "Light:",
+        "light": "Bright indirect sunlight.",
+        "water_label": " Water:",
+        "water": "Distilled or rainwater only (Tray method).",
+        "soil_label": " Soil:",
+        "soil": "Carnivorous plant peat/perlite mix."
+      }
+    },
+    "main_collection_product_grid": {
+      "product_count": "{{ count }} products",
+      "pagination": "Collection pagination",
+      "empty": "No products in this collection yet.",
+      "preview_label": "Preview product grid"
+    },
     "featured_collection": {
       "carousel_label": "Featured products",
       "prev": "Previous products",
       "next": "Next products",
+      "empty": "No products in this collection yet.",
+      "preview_label": "Preview featured products"
+    }
+  },
+  "products": {
+    "card": {
+      "mock_title": "Drosera capensis 'Alba'",
+      "mock_latin": "Drosera capensis",
+      "mock_price": "R 150,00",
+      "mock_difficulty": "Difficulty: 2/5",
       "difficulty_label": "Difficulty {{ level }} out of {{ max }}",
       "price_sale": "Sale price",
-      "price_regular": "Regular price",
-      "empty": "No products in this collection yet."
+      "price_regular": "Regular price"
+    },
+    "main": {
+      "mock_title": "Nepenthes bicalcarata",
+      "mock_latin": "Nepenthes bicalcarata",
+      "mock_description": "A spectacular lowland species known for the distinctive 'fangs' under its lid.",
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "quantity": "Quantity",
+      "quantity_decrease": "Decrease quantity",
+      "quantity_increase": "Increase quantity",
+      "variant_label": "Option",
+      "preview_note": "Preview product — assign a product in the theme editor to enable checkout.",
+      "field_data_heading": "Field data",
+      "spec_difficulty": "Difficulty",
+      "spec_temperature": "Temperature group",
+      "spec_trap": "Trap type",
+      "spec_dormancy": "Dormancy",
+      "dormancy_yes": "Yes",
+      "dormancy_no": "No",
+      "gallery_thumbnails": "Product images",
+      "gallery_go_to_image": "View image {{ index }}",
+      "temperature_groups": {
+        "highland": "Highland",
+        "intermediate": "Intermediate",
+        "lowland": "Lowland",
+        "temperate": "Temperate",
+        "tropical": "Tropical",
+        "mediterranean": "Mediterranean"
+      },
+      "trap_types": {
+        "snap": "Snap",
+        "pitfall": "Pitfall",
+        "flypaper": "Flypaper",
+        "suction": "Suction",
+        "lobster_pot": "Lobster pot"
+      }
     }
   },
   "header": {
@@ -85,7 +147,12 @@
     "newsletter_email_label": "Email address",
     "newsletter_placeholder": "you@example.com",
     "newsletter_success": "Thank you for subscribing.",
-    "payment_methods": "Accepted payment methods"
+    "payment_methods": "Accepted payment methods",
+    "payment_yoco": "Yoco",
+    "social_heading": "Social media",
+    "social_facebook": "Facebook",
+    "social_instagram": "Instagram",
+    "opens_new_window": "(opens in a new window)"
   },
   "search": {
     "title": "Search",

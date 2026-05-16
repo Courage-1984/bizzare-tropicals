@@ -81,6 +81,9 @@
       "settings": {
         "brand_heading": "Brand heading",
         "brand_story": "Brand story",
+        "facebook_url": "Facebook URL",
+        "instagram_url": "Instagram URL",
+        "social_url_info": "Leave blank to use the default Bizarre Tropicals profile links.",
         "newsletter_heading": "Newsletter heading",
         "newsletter_text": "Newsletter description",
         "newsletter_button_label": "Newsletter button label",
@@ -88,6 +91,22 @@
         "contact_email": "Email",
         "contact_phone": "Phone",
         "currency_note": "Currency note"
+      }
+    },
+    "collection_hero": {
+      "name": "Collection hero",
+      "settings": {
+        "care_heading": "Care guide heading"
+      }
+    },
+    "main_product": {
+      "name": "Product information"
+    },
+    "main_collection_product_grid": {
+      "name": "Collection product grid",
+      "settings": {
+        "heading": "Grid heading",
+        "heading_info": "Leave blank to use the collection title."
       }
     },
     "about_template": {

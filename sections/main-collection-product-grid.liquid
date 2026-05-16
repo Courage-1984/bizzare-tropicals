@@ -1,0 +1,169 @@
+{%- liquid
+  assign grid_heading = section.settings.heading
+  if grid_heading == blank
+    assign grid_heading = collection.title
+  endif
+-%}
+
+<section
+  class="collection-grid-section"
+  aria-labelledby="collection-grid-heading-{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <header class="collection-grid-section__header">
+    <h2 id="collection-grid-heading-{{ section.id }}" class="collection-grid-section__title">
+      {{ grid_heading | escape }}
+    </h2>
+    {%- if collection.products_count > 0 -%}
+      <p class="collection-grid-section__count">
+        {{ 'sections.main_collection_product_grid.product_count' | t: count: collection.products_count }}
+      </p>
+    {%- endif -%}
+  </header>
+
+  {%- paginate collection.products by 24 -%}
+    {%- if collection.products.size > 0 -%}
+      <ul class="collection-grid" role="list">
+        {%- for product in collection.products -%}
+          <li class="collection-grid__item" role="listitem">
+            {% render 'product-card',
+              product_item: product,
+              sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
+            %}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="collection-pagination" aria-label="{{ 'sections.main_collection_product_grid.pagination' | t }}">
+          {{ paginate | default_pagination }}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <ul class="collection-grid collection-grid--preview" role="list" aria-label="{{ 'sections.main_collection_product_grid.preview_label' | t }}">
+        {%- for i in (1..8) -%}
+          <li class="collection-grid__item" role="listitem">
+            {% render 'product-card', sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw' %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% stylesheet %}
+  .collection-grid-section {
+    padding-block: var(--space-xl) var(--space-4xl);
+  }
+
+  .collection-grid-section__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm) var(--space-lg);
+    margin-block-end: var(--space-xl);
+  }
+
+  .collection-grid-section__title {
+    margin: 0;
+    font-size: clamp(1.25rem, 2vw + 0.5rem, 1.75rem);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .collection-grid-section__count {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection-grid__item {
+    min-width: 0;
+  }
+
+  .collection-grid-section__empty {
+    margin: 0;
+    padding: var(--space-2xl);
+    text-align: center;
+    color: var(--color-text-muted);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+  }
+
+  .collection-pagination {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .collection-pagination :is(.pagination, nav) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+  }
+
+  .collection-pagination a,
+  .collection-pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .collection-pagination a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .collection-pagination .current,
+  .collection-pagination [aria-current='page'] {
+    font-weight: 600;
+    color: var(--color-text-inverse);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  @media (min-width: 750px) {
+    .collection-grid {
+      gap: var(--space-lg);
+    }
+  }
+
+  @media (min-width: 990px) {
+    .collection-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_collection_product_grid.name",
+  "tag": "section",
+  "class": "main-collection-product-grid-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.main_collection_product_grid.settings.heading",
+      "info": "t:sections.main_collection_product_grid.settings.heading_info"
+    }
+  ]
+}
+{% endschema %}
