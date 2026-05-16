@@ -33,7 +33,10 @@
       "placeholder_upload": "Upload transparent PNG",
       "callout_rim": "Nectar-rich rim to lure prey.",
       "callout_wax": "Slippery waxy zone for capture.",
-      "callout_pool": "Digestive enzyme pool at base."
+      "callout_pool": "Digestive enzyme pool at base.",
+      "callout_rim_short": "Nectar rim",
+      "callout_wax_short": "Slippery zone",
+      "callout_pool_short": "Enzyme pool"
     },
     "collection_hero": {
       "dossier_overline": "Cultivation dossier",
