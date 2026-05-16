@@ -117,6 +117,7 @@ Create in **Settings → Custom data → Products**, namespace **`custom`**. Key
 | `custom.temperature_group` | `sections/main-product.liquid` | PDP temperature badge |
 | `custom.trap_type` | `sections/main-product.liquid` | PDP trap-type badge |
 | `custom.dormancy_required` | `sections/main-product.liquid` | PDP dormancy notice |
+| `custom.care_guide` | `sections/main-product.liquid` | **Botanical husbandry** PDP accordion (`metafield_tag`); fallback copy when empty or in theme preview |
 
 ### 4.2 Required definitions (create before product import)
 
@@ -126,6 +127,7 @@ Create in **Settings → Custom data → Products**, namespace **`custom`**. Key
 - [ ] **`custom.temperature_group`** — Single line text
 - [ ] **`custom.trap_type`** — Single line text
 - [ ] **`custom.dormancy_required`** — True or false
+- [ ] **`custom.care_guide`** — **Rich text** — Populates the **Botanical husbandry** accordion on the product page. Leave blank to show theme fallback husbandry copy (preview/mock products always use the fallback).
 
 ### 4.3 Allowed values
 

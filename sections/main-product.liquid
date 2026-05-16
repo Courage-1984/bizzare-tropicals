@@ -165,6 +165,17 @@
     assign status_inventory = mock_inventory
     assign status_mode = 'limited'
   endif
+
+  assign has_care_guide = false
+  if use_live_product
+    assign care_guide_metafield = product.metafields.custom.care_guide
+    if care_guide_metafield != blank
+      assign care_guide_value = care_guide_metafield.value | default: care_guide_metafield
+      if care_guide_value != blank
+        assign has_care_guide = true
+      endif
+    endif
+  endif
 -%}
 
 <article
@@ -408,6 +419,40 @@
         </div>
       {%- endif -%}
 
+      <div class="main-product__accordions" aria-label="{{ 'products.main.accordions_label' | t }}">
+        <details>
+          <summary class="pdp-accordion-title">
+            {{ 'products.main.accordion_care_title' | t }}
+            <span class="icon-plus" aria-hidden="true">+</span>
+          </summary>
+          <div class="pdp-accordion-content">
+            {%- if has_care_guide -%}
+              {{ product.metafields.custom.care_guide | metafield_tag }}
+            {%- else -%}
+              <p>{{ 'products.main.accordion_care_fallback' | t }}</p>
+            {%- endif -%}
+          </div>
+        </details>
+        <details>
+          <summary class="pdp-accordion-title">
+            {{ 'products.main.accordion_lineage_title' | t }}
+            <span class="icon-plus" aria-hidden="true">+</span>
+          </summary>
+          <div class="pdp-accordion-content">
+            <p>{{ 'products.main.accordion_lineage_body' | t }}</p>
+          </div>
+        </details>
+        <details>
+          <summary class="pdp-accordion-title">
+            {{ 'products.main.accordion_arrival_title' | t }}
+            <span class="icon-plus" aria-hidden="true">+</span>
+          </summary>
+          <div class="pdp-accordion-content">
+            <p>{{ 'products.main.accordion_arrival_body' | t }}</p>
+          </div>
+        </details>
+      </div>
+
       <div class="main-product__origin" aria-labelledby="main-product-origin-{{ section.id }}">
         <span class="main-product__origin-icon" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -420,25 +465,6 @@
           <span class="visually-hidden">{{ 'products.main.origin_heading' | t }}:</span>
           {{ 'products.main.origin_text' | t }}
         </p>
-      </div>
-
-      <div class="main-product__accordions" aria-label="{{ 'products.main.accordions_label' | t }}">
-        <details class="main-product__accordion">
-          <summary class="main-product__accordion-summary">
-            {{ 'products.main.accordion_arrival_title' | t }}
-          </summary>
-          <div class="main-product__accordion-body rte">
-            <p>{{ 'products.main.accordion_arrival_body' | t }}</p>
-          </div>
-        </details>
-        <details class="main-product__accordion">
-          <summary class="main-product__accordion-summary">
-            {{ 'products.main.accordion_lineage_title' | t }}
-          </summary>
-          <div class="main-product__accordion-body rte">
-            <p>{{ 'products.main.accordion_lineage_body' | t }}</p>
-          </div>
-        </details>
       </div>
 
       {%- if use_live_product -%}
@@ -531,19 +557,33 @@
 
   .main-product__gallery.product__media {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    flex-direction: row;
+    gap: 1rem;
     width: 100%;
     min-width: 0;
     height: auto;
-    overflow: visible;
+    padding-bottom: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .main-product__gallery.product__media::-webkit-scrollbar {
+    display: none;
   }
 
   .product__media-item.main-product__gallery-frame {
     position: relative;
+    flex: 0 0 90vw;
     margin: 0;
-    width: 100%;
+    width: auto;
+    max-height: 60vh;
     overflow: hidden;
+    scroll-snap-align: center;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -888,11 +928,26 @@
 
     .main-product__gallery.product__media {
       flex: 3 1 0;
+      flex-direction: column;
       position: sticky;
       top: 20px;
       align-self: flex-start;
+      gap: 2rem;
       height: auto;
-      overflow: visible;
+      padding-bottom: 0;
+      overflow-x: visible;
+      overflow-y: visible;
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+      -ms-overflow-style: auto;
+      scrollbar-width: auto;
+    }
+
+    .product__media-item.main-product__gallery-frame {
+      flex: unset;
+      width: 100%;
+      max-height: none;
+      scroll-snap-align: none;
     }
 
     .main-product__dossier {
@@ -934,39 +989,31 @@
   .main-product__accordions {
     display: flex;
     flex-direction: column;
+    margin-block-start: 2rem;
     margin-block-end: var(--space-xl);
   }
 
-  .main-product__accordion {
-    border-block-end: 1px solid var(--color-border-strong);
+  .main-product__accordions details {
+    border-bottom: 1px solid var(--color-forest-green-dark);
+    padding-block: 1rem;
   }
 
-  .main-product__accordion:first-child {
-    border-block-start: 1px solid var(--color-border-strong);
-  }
-
-  .main-product__accordion-summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
-    padding: var(--space-md) 0;
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-forest-green-dark);
+  .main-product__accordions summary {
     cursor: pointer;
     list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-forest-green-dark);
   }
 
-  .main-product__accordion-summary::-webkit-details-marker {
+  .main-product__accordions summary::-webkit-details-marker {
     display: none;
   }
 
-  .main-product__accordion-summary::after {
-    content: '+';
+  .main-product__accordions .icon-plus {
     flex-shrink: 0;
     font-size: 1.125rem;
     font-weight: 400;
@@ -975,19 +1022,25 @@
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  .main-product__accordion[open] .main-product__accordion-summary::after {
+  .main-product__accordions details[open] .icon-plus {
     transform: rotate(45deg);
   }
 
-  .main-product__accordion-body {
-    padding-block: 0 var(--space-md);
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-text-muted);
+  .pdp-accordion-content {
+    padding-top: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-forest-green-dark);
+    opacity: 0.9;
   }
 
-  .main-product__accordion-body p {
+  .pdp-accordion-content p {
     margin: 0;
+  }
+
+  .pdp-accordion-content :is(p, ul, ol) + :is(p, ul, ol) {
+    margin-block-start: var(--space-sm);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -996,6 +1049,10 @@
     }
 
     .main-product__submit:hover:not(:disabled) {
+      transform: none;
+    }
+
+    .main-product__accordions details[open] .icon-plus {
       transform: none;
     }
   }

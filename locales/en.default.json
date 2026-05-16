@@ -154,12 +154,14 @@
         "mediterranean": "Mediterranean"
       },
       "accordions_label": "Product details",
+      "accordion_care_title": "Botanical husbandry",
+      "accordion_care_fallback": "Requires pure reverse-osmosis or rainwater. Maintain high ambient humidity (70%+) and provide bright, diffused light. Do not fertilize directly into the substrate; use specialized foliar feeding sparingly.",
       "origin_heading": "Specimen origin",
       "origin_text": "Endemic to the montane rainforests of Mount Kinabalu, Borneo. Cultivated in Gauteng.",
       "accordion_arrival_title": "Live arrival guarantee",
-      "accordion_arrival_body": "Specialized transit via botanical courier. Hand-packed in sphagnum.",
-      "accordion_lineage_title": "Laboratory lineage",
-      "accordion_lineage_body": "Clone derived from tissue culture batch #TC-409. Zero wild poaching.",
+      "accordion_arrival_body": "Shipped via specialized botanical courier. Specimen is hand-packed in long-fiber sphagnum moss and insulated against temperature fluctuations.",
+      "accordion_lineage_title": "Lineage & genetics",
+      "accordion_lineage_body": "Cultivated via tissue culture from ethically sourced mother stock. Zero wild poaching. Acclimated to ambient humidity prior to dispatch.",
       "trap_types": {
         "snap": "Snap",
         "pitfall": "Pitfall",

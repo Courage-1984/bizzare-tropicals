@@ -13,7 +13,7 @@
       {{ collection.title | escape }}
     </h1>
 
-    <div class="collection-anatomy__figure">
+    <div class="collection-anatomy__figure anatomy-hero-container">
       {%- if illustration_image != blank -%}
         {{
           illustration_image
@@ -32,13 +32,13 @@
         </div>
       {%- endif -%}
 
-      <p class="collection-anatomy__callout collection-anatomy__callout--rim">
+      <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--rim">
         {{ 'sections.collection_banner.callout_rim' | t }}
       </p>
-      <p class="collection-anatomy__callout collection-anatomy__callout--wax">
+      <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--wax">
         {{ 'sections.collection_banner.callout_wax' | t }}
       </p>
-      <p class="collection-anatomy__callout collection-anatomy__callout--pool">
+      <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--pool">
         {{ 'sections.collection_banner.callout_pool' | t }}
       </p>
     </div>
@@ -91,19 +91,27 @@
     text-wrap: balance;
   }
 
-  .collection-anatomy__figure {
+  .anatomy-hero-container {
     position: relative;
-    width: 300px;
-    height: 400px;
-    margin: 4rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: min(100%, 32rem);
+    height: 60vh;
+    max-height: 600px;
+    margin: 2rem auto;
+    overflow: visible;
   }
 
   .anatomy-hero-img {
     position: relative;
     z-index: 2;
     display: block;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     height: auto;
+    max-height: 100%;
     object-fit: contain;
     object-position: center center;
     border-radius: 10px;
@@ -158,14 +166,14 @@
     background-color: var(--color-parchment);
   }
 
-  .collection-anatomy__callout--rim {
+  .anatomy-callout.collection-anatomy__callout--rim {
     top: 10%;
-    left: 110%;
+    left: 105%;
   }
 
-  .collection-anatomy__callout--wax {
+  .anatomy-callout.collection-anatomy__callout--wax {
     top: 50%;
-    right: 110%;
+    right: 105%;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -179,9 +187,9 @@
     margin-inline-start: 0.5rem;
   }
 
-  .collection-anatomy__callout--pool {
+  .anatomy-callout.collection-anatomy__callout--pool {
     bottom: 10%;
-    left: 110%;
+    left: 105%;
   }
 
   .collection-anatomy__description {
@@ -206,12 +214,13 @@
       min-height: auto;
     }
 
-    .collection-anatomy__figure {
-      width: min(100%, 260px);
-      height: 340px;
+    .anatomy-hero-container {
+      height: 50vh;
+      max-height: 420px;
       margin-block: var(--space-2xl);
     }
 
+    .anatomy-callout,
     .collection-anatomy__callout {
       display: none;
     }
