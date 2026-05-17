@@ -1,322 +1,355 @@
 # Shopify Admin Setup Checklist
 
-Manual configuration required in the Shopify Admin and Theme Editor for the Bizarre Tropicals custom theme. Complete every section before launch on the official store.
+Manual configuration required in the Shopify Admin and Theme Editor for the **Bizarre Tropicals** custom theme. Complete every section before launch on the official store.
 
 **Store:** `bizzare-tropicals.myshopify.com`  
-**Theme path:** Online Store → Themes → Customize
+**Theme path:** Online Store → Themes → Customize  
+**Codebase root:** Shopify Online Store 2.0 theme (`sections/`, `templates/`, `snippets/`, `layout/theme.liquid`)
+
+---
+
+## How data flows (dynamic vs manual)
+
+| Area | Source | Notes |
+|------|--------|--------|
+| **Catalog mega menu** | Live `collections` | Auto-lists in-stock genus collections (`snippets/header-catalog-mega-menu.liquid`). Thumbnails: block upload → collection image → first product image → placeholder. |
+| **Shop by genus** (homepage) | Live collections **or** manual blocks | Default: **Use live Shopify collections** (`use_dynamic_genera`). Same genus rules as mega menu. Turn off to use manual **Genus card** blocks. |
+| **Botanical discovery strip** | Per-block collection picker | Up to 4 cards; image fallback: override → collection image → first product image. |
+| **Newly cataloged** | Collection picker + `created_at` sort | Default collection: **All** (`all`). Newest products first in Liquid. |
+| **Featured plants** | Collection picker | Falls back to `collections.all` on homepage; on PDP falls back to product’s first collection. |
+| **Featured specimen** | Product picker + optional overrides | Pick a product for live image, title (Latin metafield), and URL. |
+| **Collection grid** | `collection.products` + Search & Discovery filters | AJAX filters + load more; dedupes product IDs. |
+| **Product cards / PDP** | `product` + `custom.*` metafields | Mock/placeholder only in theme preview or empty catalog. |
+| **Cart / checkout** | Shopify Cart API + hosted checkout | Cart drawer is theme-side; checkout is Shopify-hosted. |
+| **Customer account link** | Theme `/account` + login | Avoids 401 from hosted profile URL on theme dev. |
+
+**Launch rule:** Replace Wikimedia / Unsplash placeholder URLs with uploaded Shopify Files or product photography (see `.cursor/context/placeholder-images.md`). Placeholders hurt performance and SEO.
+
+---
+
+## Template registry
+
+Assign each **Page** in Admin → **Online Store → Pages** to the matching template suffix.
+
+| Template file | Type | Purpose | Section(s) |
+|---------------|------|---------|------------|
+| `templates/index.json` | Home | Homepage | `home-slider`, `genus-shortcuts`, `botanical-discovery-strip`, `new-specimens`, `featured-specimen`, `conservatory-standards`, `featured-collection` |
+| `templates/collection.json` | Collection | All genus / catalog grids | `main-collection-banner`, `main-collection-product-grid` |
+| `templates/product.json` | Product | Specimen PDP | `main-product`, `featured-collection` (related) |
+| `templates/cart.json` | Cart | Full cart page | Theme cart section |
+| `templates/search.json` | Search | Search results | `search` |
+| `templates/list-collections.json` | List collections | Collection index | `collections` |
+| `templates/blog.json` | Blog | Blog index | `blog` |
+| `templates/article.json` | Article | Blog post | `article` |
+| `templates/404.json` | 404 | Not found | `main-404` |
+| `templates/password.json` | Password | Store password | `password` |
+| `templates/gift_card.liquid` | Gift card | Gift card | Liquid gift card |
+| `templates/page.json` | Page (default) | Generic rich page | `page` |
+| `templates/page.about.json` | Page | About | `about-template` |
+| `templates/page.contact.json` | Page | Contact | `contact-template` |
+| `templates/page.privacy.json` | Page | Privacy policy | `main-policy-page` |
+| `templates/page.refund.json` | Page | Refund policy | `main-policy-page` |
+| `templates/page.shipping.json` | Page | Shipping policy | `main-policy-page` |
+| `templates/customers/login.json` | Customer | Login | `main-login` |
+| `templates/customers/register.json` | Customer | Register | `main-register` |
+| `templates/customers/account.json` | Customer | Account hub | `main-account` |
+| `templates/customers/order.json` | Customer | Order detail (JSON) | `main-order` |
+| `templates/customers/order.liquid` | Customer | Order detail (Liquid) | `main-order` — **do not enable both**; repo keeps `.liquid` for Theme Editor certificate preview |
+
+**Section groups**
+
+| File | Renders |
+|------|---------|
+| `sections/header-group.json` | Announcement bar, header, search overlay |
+| `sections/footer-group.json` | Footer |
+
+**Legacy / unused on storefront (safe to ignore in admin)**
+
+| File | Note |
+|------|------|
+| `sections/homepage-hero.liquid` | Duplicate of `home-slider`; not referenced in `index.json` |
+| `sections/collection.liquid`, `sections/product.liquid`, `sections/404.liquid` | Starter stubs; live templates use `main-*` sections |
 
 ---
 
 ## Development essentials (do these first)
 
-Steps discovered during theme build that are easy to miss:
-
 ### Theme Editor — brand, contact, and social
 
-Social URLs and contact details are configured in the **Footer** section (not global Theme settings). Open **Theme Editor → Footer** (footer group):
+Social URLs and contact details are configured in the **Footer** section (footer group):
 
-- [ ] **Address** — Enter the Gauteng address (default placeholder: `Gauteng, South Africa (By Appointment Only)`). Setting ID: `contact_address`.
-- [ ] **Email** — `info@bizarretropicals.co.za` (setting: `contact_email`).
-- [ ] **Phone / WhatsApp** — Live WhatsApp number (setting: `contact_phone`; default placeholder: `+27 (WhatsApp Preferred)`).
-- [ ] **Facebook URL** — Official page (setting: `facebook_url`; schema default in `footer-group.json`: `https://www.facebook.com/bizarretropicals/`).
-- [ ] **Instagram URL** — Official profile (setting: `instagram_url`; schema default: `https://www.instagram.com/bizarretropicals/`).
-- [ ] **Show social links** — Enable `show_social` so icons render in the brand column.
+- [ ] **Address** — Gauteng address (`contact_address`).
+- [ ] **Email** — `info@bizarretropicals.co.za` (`contact_email`).
+- [ ] **Phone / WhatsApp** — Live number (`contact_phone`).
+- [ ] **Facebook / Instagram URLs** — Official profiles (`facebook_url`, `instagram_url`).
+- [ ] **Show social links** — Enable `show_social`.
 
 ### Main navigation
 
-- [ ] **Catalog mega menu:** Ensure the desktop menu includes a top-level link titled **Catalog** (case-insensitive). It routes to **All products** (`/collections/all`) and opens the genus mega menu on hover. Populate genus thumbnails via **Mega menu item** blocks in the Header section (see **§6 Theme Editor**).
+- [ ] **Main menu** (`main-menu` in `header-group.json`): Home, **Catalog**, About, Contact.
+- [ ] **Catalog** link opens mega menu → **All products** (`/collections/all`).
+- [ ] Mega menu auto-shows in-stock genera; optional **Mega menu item** blocks override thumbnails/labels.
 
-### Homepage layout
+### Homepage layout (`templates/index.json`)
 
-- [ ] **Home slider:** **Theme Editor → Home page → Home slider** (`home-slider.liquid`, max **5** slide blocks). Per slide: upload botanical **macro** imagery, set **Heading**, **Subheading**, **Button label**, and **Button link** (or **Placeholder image URL** for demo). Tune **Overlay opacity** for text contrast. Ken Burns + crossfade run automatically on the storefront.
-- [ ] **Featured collection:** **Theme Editor → Home page → Featured collection** (`featured-collection.liquid`). Select a **Featured** (or equivalent) collection for the dark-gradient carousel; set product count, heading, subheading, and view-all label.
-- [ ] **New specimen ledger:** **Theme Editor → Home page → New specimen ledger** (`new-specimens.liquid`) — select the **New Arrivals** collection (or equivalent), edit heading/subheading, and set **Maximum products** (tray scroll).
-- [ ] **Featured specimen:** **Theme Editor → Home page → Featured specimen** — see **§6.2**.
-- [ ] **Conservatory standards:** **Theme Editor → Home page → Conservatory standards** — see **§6.3**.
-- [ ] **Genus shortcuts:** Confirm each **Shop by genus** card points to the correct collection handle.
+- [ ] **Home slider** (`home-slider.liquid`) — Up to **5** slides. Upload macro images (not Wikimedia URLs). First slide loads with `fetchpriority: high`. Autoplay + Ken Burns; pauses when tab hidden.
+- [ ] **Shop by genus** (`genus-shortcuts.liquid`) — Enable **Use live Shopify collections** (recommended). Or manual genus blocks with collection per card. Carousel: autoplay, loop, arrow wrap.
+- [ ] **Botanical discovery strip** (`botanical-discovery-strip.liquid`) — 4 collection cards; anchor heading in Bizarre red. Assign collections in blocks.
+- [ ] **New specimen ledger** (`new-specimens.liquid`) — Collection **All** (or New Arrivals); sorted newest first; autoplay + loop.
+- [ ] **Featured specimen** (`featured-specimen.liquid`) — Pick a **Featured product** for live image/link; override copy as needed.
+- [ ] **Conservatory standards** — Pillar blocks; replace placeholder thumbnails.
+- [ ] **Featured plants** (`featured-collection.liquid`) — Select collection (defaults to **All** in code if empty). Autoplay + loop.
 
 ### Catalog hero — Anatomy of a predator
 
-The **Collection banner** (`main-collection-banner.liquid`) renders the **Anatomy of a Predator** hero: dark `#121614` backdrop, centered collection title, fixed-size illustration frame, and anchored scientific callouts (desktop only).
+**Collection banner** (`main-collection-banner.liquid`):
 
-- [ ] **Catalog hero:** **Theme Editor → Collection template → Collection banner** — upload **Illustration image** (transparent PNG) or rely on **Fallback background image URL** (vintage botanical default). Hero is constrained to the fold (`80vh` / `min-height: 500px`). Edit anatomy callouts in the sidebar.
-- [ ] Enter an optional collection **Description** below the illustration (plain prose; not the dossier bullet grid).
-- [ ] Collection **Title** comes from **Products → Collections**; it appears as the visible heading and as the large background serif watermark.
+- [ ] Upload **Illustration image** (transparent PNG) or set fallback URL.
+- [ ] Collection **title** and optional **description** from Admin → Collections.
 
 ### The “Dossier” rule (in-page care content)
 
-**IMPORTANT:** Where the theme renders a **Cultivation Dossier** grid (e.g. product PDP cultivation block), the 2-column layout activates when copy contains a **bulleted list** (`<ul>`). Plain paragraphs render as a single column.
+Bulleted HTML (`<ul><li>…</li></ul>`) in collection or product descriptions activates the 2-column cultivation grid on PDP.
 
-- [ ] For genus care tables on collection pages (future `section-genus-care` or rich description blocks), enter care copy as a **bulleted list** (HTML `<ul><li>…</li></ul>` or the rich-text bullet control in admin).
-- [ ] Include all six care dimensions in every genus dossier:
-  - **Light**
-  - **Water**
-  - **Substrate** (soil/media)
-  - **Humidity**
-  - **Dormancy**
-  - **Feeding**
-- [ ] Use **bold** labels on each line (e.g. `**Light:**`) so they match dossier heading styles.
+- [ ] Six dimensions: Light, Water, Substrate, Humidity, Dormancy, Feeding — bold labels per line.
 
-**Example (Collection → Description):**
+---
 
-```html
-<ul>
-  <li><strong>Light:</strong> Bright direct sun, 6+ hours daily.</li>
-  <li><strong>Water:</strong> Tray method; distilled or RO water only.</li>
-  <li><strong>Substrate:</strong> 50/50 peat and perlite, no fertiliser.</li>
-  <li><strong>Humidity:</strong> 40–60% for most windowsill species.</li>
-  <li><strong>Dormancy:</strong> Not required for tropical sundews.</li>
-  <li><strong>Feeding:</strong> Optional; let plants catch insects naturally.</li>
-</ul>
-```
+## Performance checklist (for merchants & dev)
 
-- [ ] **Collection hero (optional):** Adjust **Care guide heading** and **Enable sticky dossier** in **Theme Editor → Collection pages → Collection hero**.
+Report slow loads to your developer if these are not done:
+
+### Critical (biggest impact)
+
+- [ ] **Replace external placeholder images** — Wikimedia/Unsplash URLs on homepage, genus cards, and hero force large off-domain downloads. Upload to **Settings → Files** or product/collection images.
+- [ ] **Compress macro photography** — WebP/JPEG, reasonable dimensions (hero ≤ 2400px wide).
+- [ ] **Limit homepage slides** to 3–5 with real uploads (not 5× duplicate-weight placeholders).
+- [ ] **Search & Discovery** — Only enable filters you need; many filters slow collection AJAX.
+
+### Theme behaviour (already in code)
+
+- [ ] First hero slide: `loading="eager"` + `fetchpriority="high"`.
+- [ ] Other images: lazy loading via `image_tag` / `loading="lazy"`.
+- [ ] Carousels pause autoplay when browser tab is hidden (`document.hidden`).
+- [ ] Below-fold sections use `content-visibility: auto` on desktop (see `assets/base.css`).
+- [ ] Scripts: `global.js`, `theme.js`, `cart-drawer.js` are **deferred** in `layout/theme.liquid`.
+- [ ] Section CSS/JS is bundled per section by Shopify (no jQuery/React).
+
+### Shopify Admin
+
+- [ ] **Apps** — Remove unused apps (inject scripts into `content_for_header`).
+- [ ] **Markets / analytics** — Keep only required tracking.
+- [ ] Run **Shopify Theme Check** and **PageSpeed** on production URL after placeholders removed.
+
+### Theme dev proxy
+
+- [ ] `shopify theme dev` is slower than production CDN; judge performance on the published `.myshopify.com` or live domain.
 
 ---
 
 ## 1. Store settings
 
-- [ ] **Favicon:** **Theme Editor → Theme settings → Brand** — upload **Favicon image** (`layout/theme.liquid`).
-- [ ] **Currency:** **Settings → Store details** — default **ZAR (South African Rand)**.
-- [ ] **Markets:** South Africa as primary market (single-currency, Phase 1).
-- [ ] **Checkout:** Shipping zones, live-plant policies, order notifications.
-- [ ] **Newsletter:** Configure **Shopify Email** for subscribers from the **Field Notes** modal (`sections/newsletter-modal.liquid`). Tags: `newsletter`, `field-notes`. **Theme Editor → Field Notes newsletter modal** — trigger, delay, cookie duration (default 7 days).
+- [ ] **Favicon:** Theme settings → Brand (`layout/theme.liquid`).
+- [ ] **Currency:** ZAR default.
+- [ ] **Checkout:** Shipping zones, live-plant policies.
+- [ ] **Newsletter:** Shopify Email + **Field Notes** modal (`newsletter-modal.liquid`).
 
 ---
 
 ## 2. Navigation
 
-- [ ] **Main menu:** **Online Store → Navigation → Main menu** — Home, Catalog, About Us, Contact.
-- [ ] **Header group** (**Theme Editor → Header**):
-  - **Announcement bar** — Message blocks; rotation interval; dismiss stored in `localStorage` (`bt-announcement-<section-id>`).
-  - **Header** — Desktop/mobile menus; logo; **Mega menu item** blocks for Catalog dropdown; **Search** opens overlay (`data-search-overlay-open`); **Cart** opens drawer (`data-cart-drawer-open`).
-  - **Search overlay** — Genus quick-link blocks (defaults: `/collections/drosera`, etc.).
-- [ ] **Predictive search:** **Search & Discovery** app enabled for `/search/suggest.json`.
-- [ ] **Footer menu (optional):** **Theme Editor → Footer → Menu** for curated quick links.
+- [ ] **Main menu** — Home, Catalog, About, Contact.
+- [ ] **Header group:** Announcement bar, Header (logo, menus, mega menu blocks), Search overlay genus quick links.
+- [ ] **Predictive search:** Search & Discovery app → `/search/suggest.json`.
+- [ ] **Footer menu** (optional).
 
 ---
 
 ## 3. Pages and templates
 
-- [ ] **About** — Page created; template **`about`** (`page.about.json`).
-- [ ] **Contact** — Handle `contact`; template **`contact`** (`page.contact.json`).
-- [ ] **404 page:** **Theme Editor → 404 → 404 page** (`main-404.liquid`) — edit **Heading**, **Message**, **Button label**, and **Button link** (default CTA: `/collections/all`).
-- [ ] **Care overview (optional):** `/pages/care-overview` for footer “Care” link.
+Create pages in Admin and assign templates:
+
+| Page | Handle (suggested) | Template suffix |
+|------|-------------------|-----------------|
+| About | `about` | `about` |
+| Contact | `contact` | `contact` |
+| Privacy | `privacy-policy` | `privacy` |
+| Refund | `refund-policy` | `refund` |
+| Shipping | `shipping-policy` | `shipping` |
+| Care overview (optional) | `care-overview` | `page` (default) or custom |
+
+- [ ] **404:** Theme Editor → 404 → `main-404` (CTA default `/collections/all`).
 
 ---
 
 ## 4. Custom metafields (products)
 
-Create in **Settings → Custom data → Products**, namespace **`custom`**. Keys must match Liquid exactly (`product.metafields.custom.<key>`).
+**Settings → Custom data → Products**, namespace **`custom`**.
 
-### 4.1 Code cross-check (theme usage)
+### 4.1 Theme usage
 
-| Metafield key | Read in Liquid | Used for |
-|---------------|--------------|----------|
-| `custom.latin_name` | `sections/main-product.liquid`, `snippets/product-card.liquid`, `snippets/cart-drawer-contents.liquid` | PDP title line, card subtitle, cart line |
-| `custom.difficulty` | `sections/main-product.liquid`, `snippets/product-card.liquid`, `snippets/product-card-badges.liquid` | Difficulty pips; **Easy care** wax seal when value = **1** |
-| `custom.genus` | `snippets/product-card.liquid` | Genus handle / placeholder image selection |
-| `custom.temperature_group` | `sections/main-product.liquid` | PDP temperature badge |
-| `custom.trap_type` | `sections/main-product.liquid` | PDP trap-type badge |
-| `custom.dormancy_required` | `sections/main-product.liquid` | PDP dormancy notice |
-| `custom.care_guide` | `sections/main-product.liquid` | **Botanical husbandry** PDP accordion (`metafield_tag`); fallback copy when empty or in theme preview |
+| Metafield key | Used in |
+|---------------|---------|
+| `custom.latin_name` | PDP, product cards, cart drawer |
+| `custom.difficulty` | PDP, cards, badges (1 = Easy care) |
+| `custom.genus` | Product cards, placeholder genus art |
+| `custom.temperature_group` | PDP badge |
+| `custom.trap_type` | PDP badge |
+| `custom.dormancy_required` | PDP notice |
+| `custom.care_guide` | PDP **Botanical husbandry** accordion |
 
-### 4.2 Required definitions (create before product import)
+### 4.2 Required definitions
 
-- [ ] **`custom.latin_name`** — Single line text
-- [ ] **`custom.difficulty`** — Integer **1–5** (1 = beginner; triggers **Easy care** badge at 1)
-- [ ] **`custom.genus`** — Single line text (lowercase handle, e.g. `dionaea`)
-- [ ] **`custom.temperature_group`** — Single line text
-- [ ] **`custom.trap_type`** — Single line text
-- [ ] **`custom.dormancy_required`** — True or false
-- [ ] **`custom.care_guide`** — **Rich text** — Populates the **Botanical husbandry** accordion on the product page. Leave blank to show **Botanical husbandry fallback** from **Theme Editor → Product template → Product information** (`care_fallback` setting in `main-product.liquid`).
+- [ ] `custom.latin_name` — Single line text  
+- [ ] `custom.difficulty` — Integer 1–5  
+- [ ] `custom.genus` — Single line (handle, e.g. `drosera`)  
+- [ ] `custom.temperature_group` — Single line text  
+- [ ] `custom.trap_type` — Single line text  
+- [ ] `custom.dormancy_required` — Boolean  
+- [ ] `custom.care_guide` — Rich text  
 
 ### 4.3 Allowed values
 
-**`custom.temperature_group`:** `highland` · `intermediate` · `lowland` · `temperate` · `tropical` · `mediterranean`
+**`temperature_group`:** `highland` · `intermediate` · `lowland` · `temperate` · `tropical` · `mediterranean`  
 
-**`custom.trap_type`:** `snap` · `pitfall` · `flypaper` · `suction` · `lobster-pot`
+**`trap_type`:** `snap` · `pitfall` · `flypaper` · `suction` · `lobster-pot`
 
-### 4.4 Recommended later (not rendered in current Liquid)
+### 4.4 Product tags (badges)
 
-`custom.common_name` · `custom.temp_min_c` · `custom.temp_max_c` · `custom.cultivar` · `custom.pot_size_cm` · `custom.growth_stage` · `custom.cites_listed` · supply fields (`custom.supply_category`, etc.)
-
-### 4.5 Product card badges (tags, not metafields)
-
-Configured in `snippets/product-card-badges.liquid`:
-
-- [ ] Tag **`Rare`** → **Rare specimen** wax seal
-- [ ] Tag **`In-House`** → **Lab propagated** label
-- [ ] **`custom.difficulty` = 1** → **Easy care** wax seal
+- [ ] `Rare` → Rare specimen seal  
+- [ ] `In-House` → Lab propagated  
+- [ ] `custom.difficulty` = 1 → Easy care  
 
 ---
 
 ## 5. Collections (genera)
 
-- [ ] Handles: `drosera` · `nepenthes` · `pinguicula` · `heliamphora` · `cephalotus` · `utricularia` · `darlingtonia` · `byblis` · `drossophyllum` · `sarracenia` · `dionaea` · `other` · `growing-supplies`
-
-### 5.1 Nepenthes sub-collections
-
-- [ ] `nepenthes-highland` · `nepenthes-intermediate` · `nepenthes-lowland` (smart collections on `temperature_group` + genus tags)
-
-### 5.2 Collection images and dossier
-
-- [ ] **Collection image** — macro hero per genus.
-- [ ] **Description** — bulleted dossier list (see **Development essentials → Dossier rule**).
+- [ ] Handles: `drosera`, `nepenthes`, `pinguicula`, `heliamphora`, `cephalotus`, `utricularia`, `darlingtonia`, `byblis`, `drossophyllum`, `sarracenia`, `dionaea`, `other`, `growing-supplies`, `all`
+- [ ] **Nepenthes sub-collections:** `nepenthes-highland`, `nepenthes-intermediate`, `nepenthes-lowland` (smart collections on metafields/tags)
+- [ ] **Collection image** + bulleted dossier **description** per genus
 
 ---
 
-## 6. Theme Editor (Customize) management
-
-Use **Online Store → Themes → Customize** to control homepage, header, and About content without code. Every section below uses **blocks** or **settings** in the theme editor; development placeholders (Wikimedia URLs) apply until you upload production macro assets.
+## 6. Theme Editor sections (reference)
 
 ### 6.1 Header / mega menu
 
-**Path:** **Theme Editor → Header** (header group) → select the **Header** section.
+- [ ] **Catalog** in desktop menu.  
+- [ ] **Mega menu item** blocks: optional label, link, thumbnail (else live collection/product/placeholder).
 
-- [ ] Confirm the **Desktop menu** includes a top-level link titled **Catalog** (case-insensitive). Hover opens the genus mega menu.
-- [ ] Under **Catalog mega menu**, add or edit **Mega menu item** blocks (up to 12). Each block controls one genus column:
-  - **Genus label** — Display name (e.g. `Drosera`).
-  - **Collection link** — URL to the genus collection (e.g. `/collections/drosera`).
-  - **Thumbnail image** — Square macro upload (recommended). If empty, the **Placeholder thumbnail URL** is used until launch photography is ready.
-- [ ] Drag blocks to reorder columns in the dropdown.
-- [ ] Remove blocks for genera you do not stock yet.
+### 6.2 Homepage sections
 
-### 6.2 Homepage — Featured specimen
+| Section file | Key settings |
+|--------------|--------------|
+| `home-slider.liquid` | Slide blocks, overlay opacity, images |
+| `genus-shortcuts.liquid` | **Use live Shopify collections**, hide empty blocks, heading |
+| `botanical-discovery-strip.liquid` | Anchor heading/color, 4 discovery cards |
+| `new-specimens.liquid` | Collection, product limit, copy |
+| `featured-specimen.liquid` | **Product**, image override, CTA |
+| `conservatory-standards.liquid` | Pillar blocks |
+| `featured-collection.liquid` | Collection, count, gradient |
 
-**Path:** **Theme Editor → Home page → Featured specimen**.
+### 6.3 About page (`page.about.json`)
 
-- [ ] **Background color** — Dark panel behind copy (default forest charcoal).
-- [ ] **Macro image** — Hero specimen photo; if empty, **Placeholder image URL** is shown.
-- [ ] **Subheading**, **Heading** (Latin binomial), **Button label**, **Button link** — CTA to a product or collection.
+- [ ] **About page** section: hero, story, laboratory, curator, **Scientific plate** blocks.
 
-### 6.3 Homepage — Conservatory standards
+### 6.4 Policy pages
 
-**Path:** **Theme Editor → Home page → Conservatory standards**.
-
-- [ ] Set section **Subheading** and **Heading**.
-- [ ] Add, remove, or reorder **Pillar** blocks (up to 4). Per pillar: **Thumbnail image** (or placeholder URL), **Pillar heading**, **Body text**.
-- [ ] Replace Wikimedia placeholder URLs with uploaded 50×50 macro thumbnails before launch.
-
-### 6.4 About page — Scientific plates
-
-**Path:** **Theme Editor → Pages → About** (template **about**) → **About page** section.
-
-- [ ] **Hero**, **Story**, **Laboratory**, and **The curator** groups — edit overlines, headings, rich text, portrait, and asymmetrical story/lab images (or placeholder URLs).
-- [ ] **Conservatory** — set the section heading; then manage **Scientific plate** blocks:
-  - **Plate image** — 4:5 botanical plate macro.
-  - **Reference ID** — Label on the plate (e.g. `REF. QC-01`).
-  - **Plate title** and **Plate description**.
-  - **Placeholder image URL** — Development fallback per plate.
-- [ ] Drag plates to reorder the conservatory grid.
+- [ ] Privacy / Refund / Shipping → `main-policy-page` with fallback body copy in template JSON.
 
 ---
 
 ## 7. Products and merchandising
 
-- [ ] Populate all **§4.2** metafields on every live plant SKU before relying on PDP/cards.
-- [ ] Macro photography; first image = featured image.
-- [ ] Prices in **ZAR** (`snippets/zar-price.liquid`).
-- [ ] Tags for filters: `genus:<handle>`, `temperature-group:<value>`, `trap-type:<value>`, `difficulty:1`–`5`, `dormancy:yes` / `no`.
+- [ ] All §4.2 metafields on live plant SKUs.  
+- [ ] Featured image = primary macro photo.  
+- [ ] ZAR pricing.  
+- [ ] Tags: `genus:<handle>`, `temperature-group:<value>`, `trap-type:<value>`, `difficulty:1`–`5`, `dormancy:yes` / `no`.
 
 ---
 
 ## 8. Payments
 
-- [ ] **Yoco** — **Settings → Payments**.
-- [ ] **Footer → Show payment icons** — Yoco + enabled gateways.
+- [ ] **Yoco** in Settings → Payments.  
+- [ ] Footer payment icons enabled.  
 - [ ] Test checkout on staging.
 
 ---
 
-## 9. Apps and discovery (required for catalog filters)
+## 9. Search & Discovery (catalog filters)
 
-- [ ] **Search & Discovery** — enable **Storefront filters** on collection pages for:
-  - **Availability** (in stock / out of stock)
-  - **Price**
-  - `custom.genus` or **Product type** (label: **Genus**)
-  - `custom.difficulty` (label: **Difficulty**)
-  - `custom.temperature_group` (label: **Temperature**) — optional
-  - `custom.trap_type` (label: **Trap type**) — optional
-- [ ] **Collection product grid** (`main-collection-product-grid.liquid`) — desktop **filter bar** above the grid; mobile slide-out drawer. Filters apply via AJAX. **Load more specimens** button replaces numbered pagination.
-- [ ] **Shopify Inbox** (optional, Phase 1).
+- [ ] Storefront filters: Availability, Price, Genus, Difficulty, Temperature, Trap type (as needed).  
+- [ ] Collection grid: desktop filter bar + mobile drawer; **Load more specimens** (no numbered pagination).
 
 ---
 
 ## 10. Pre-launch QA
 
-- [ ] Home: hero, genus shortcuts, featured specimen, conservatory standards (pillar blocks), featured collection (real products and macro imagery, not placeholders).
-- [ ] About: curator portrait, laboratory image, scientific plates with REF IDs and plate imagery.
-- [ ] Header: Catalog mega menu items (labels, links, thumbnails).
-- [ ] Collection: hero, **2-column dossier** (bulleted description), product grid, **Filter by cultivation** drawer (genus, difficulty, temperature, trap type).
-- [ ] PDP (Specimen dossier): `latin_name`, difficulty, `temperature_group`, `trap_type`, dormancy, ZAR price, inventory status line, **ADD TO CONSERVATORY** (AJAX cart drawer), bulleted description → 2-column cultivation grid.
-- [ ] Footer: address, email, WhatsApp, social, payments.
-- [ ] Announcement bar, search overlay, Field Notes modal (if enabled).
-- [ ] Product badges: `Rare`, `In-House`, difficulty **1**.
-- [ ] Mobile: dossier single column; hero and carousels usable.
+- [ ] Home: real images, dynamic genus strip, discovery strip links, newly cataloged from live products, featured collection not mock cards.  
+- [ ] Catalog: no duplicate products in grid; filters work; load more works.  
+- [ ] PDP: metafields, cart drawer add, cultivation accordion.  
+- [ ] Account icon → login or `/account` (no 401).  
+- [ ] Mobile: carousels swipe; reduced motion respected.  
+- [ ] PageSpeed / Lighthouse on production after placeholder removal.
 
 ---
 
-## 10.1 Order fulfillment vibe
+## 10.1 Order fulfillment
 
-Post-purchase trust cues are split between **checkout** (thank-you page) and the **customer order** template. Use these steps so physical unboxing matches the digital “laboratory receipt” tone.
-
-### Lab certificate in every shipment
-
-- [ ] **Printable insert:** After each order is packed, print the customer’s **order status** page (account → order) or save as PDF. The theme renders a **Specimen Log** frame with **SPECIMEN ACQUISITION COMPLETE**, line items, and the Head Curator signature (`sections/main-order.liquid`, `templates/customers/order.json`).
-- [ ] **Fold and pack:** Slip the printout (or a branded duplicate) inside the box with the specimens so buyers see the same terminology as the website.
-- [ ] **Checkout thank-you (Shopify Plus):** If the store uses **`layout/checkout.liquid`**, the thank-you step shows the same header and signature above/below Shopify’s native receipt. Non-Plus stores rely on the order status page + packing insert; checkout UI cannot be fully themed without Plus or Checkout Extensibility.
-
-### Specimen ID on the order timeline
-
-- [ ] **Admin → Orders → [order] → Timeline:** Add a staff note when packing, e.g. `Specimen ID: #BT-LOG-4821` (match the ledger format from the New specimen tray: `#BT-LOG-` + last four digits of the product ID, or your internal batch code).
-- [ ] **Optional metafield:** For repeat collectors, store a `custom.specimen_dispatch_id` on the order (Settings → Custom data → Orders) and reference it in packing notes and WhatsApp updates.
-
-### Laboratory certificate (Theme Editor)
-
-- [ ] **Theme Editor → Orders** (`templates/order.liquid` + `sections/main-order.liquid`) — customize certificate title and curator signature. The `order` template type does **not** support JSON; use this Liquid template for editor preview.
-- [ ] **Live customer orders** still use `templates/customers/order.json` (same section).
-
-### Cart drawer dispatch protocol
-
-- [ ] Confirm the **Botanical dispatch** dashed box appears above **Checkout** in the cart drawer (`snippets/cart-drawer-dispatch.liquid`) — Monday dispatch and sphagnum packing copy should match your real fulfillment schedule. Edit strings in **`locales/en.default.json`** under `cart.drawer.dispatch_*` if the schedule changes.
-
-### Terminology consistency
-
-- [ ] Order references use **ORDER NO.** (checkout strings in `locales/en.default.json` under `shopify.checkout`, plus order status section). Do not rename Shopify’s underlying order name/handle — only the visible label.
+- [ ] Pack **Specimen Log** printout from customer order page (`main-order.liquid`).  
+- [ ] Cart drawer **Botanical dispatch** copy matches schedule (`cart-drawer-dispatch.liquid`).
 
 ---
 
-## 11. New account transfer
+## 11. New account transfer (production store)
 
-Complete when moving the theme to the **official** production Shopify store:
-
-- [ ] **Domain:** **Settings → Domains** — connect the official domain; set as primary; confirm SSL/HTTPS.
-- [ ] **Metafields first:** Re-create **all** product metafield definitions in **§4.2** (**Settings → Custom data → Products**) **before** importing product CSVs. Imported rows will not populate undefined metafields.
-- [ ] **Staff access:** Ensure the **Logi-Ink** collaborator account has **Themes** and **Products** permissions (and **Settings** for metafields/payments as needed).
-- [ ] **Billing & payments:** Reconnect **Yoco**; verify payout/business details.
-- [ ] **Theme publish:** Publish this theme on the live store.
-- [ ] **Re-run this checklist:** Theme Editor content (hero slides, mega menu blocks, footer URLs, featured collection) does not always migrate with code-only deploys — reconfigure sections **1–10** on production.
-- [ ] **Replace placeholders:** Client macro photography per `.cursor/context/placeholder-images.md`.
+- [ ] Domain + SSL.  
+- [ ] Recreate metafields **before** CSV import.  
+- [ ] Reconnect Yoco.  
+- [ ] Publish theme; re-run Theme Editor sections 1–10.  
+- [ ] Replace all placeholder imagery.
 
 ---
 
-## 12. Merchant customization (Theme Editor)
+## 12. Theme Editor — global overlays
 
-Modular sections — add, hide, or reorder without code:
+These sections are included in `layout/theme.liquid` (not on `index.json`). In **Customize**, open the left sidebar and select:
 
-- [ ] **Home slider** — slides, placeholder URLs, overlay opacity (`home-slider.liquid`).
-- [ ] **New specimen ledger** — collection, copy, product limit (`new-specimens.liquid`).
-- [ ] **Product information (PDP)** — mock gallery URLs, **Botanical husbandry fallback**, lineage/arrival/origin copy (`main-product.liquid`).
-- [ ] **Genus shortcuts** — collection per card, placeholders.
-- [ ] **Featured collection** — collection, copy, count, gradient colors.
-- [ ] **Collection banner** (`main-collection-banner.liquid`) — **Illustration image** upload (`illustration_image`), collection **Title**, optional **Description**.
-- [ ] **Contact template** — FAQ blocks, social URLs.
-- [ ] **About template** — curator, laboratory, scientific plates (see **§6.4**).
-- [ ] **Footer** — brand story, contact fields, social URLs, menu, newsletter, payment icons.
-- [ ] **Header group** — announcement bar, mega menu items, search overlay quick links.
-- [ ] **Field Notes modal** — enable, trigger, copy, illustration.
+| Section | What the client can edit |
+|---------|-------------------------|
+| **Field Notes newsletter modal** | Heading, subtext, button, illustration, trigger, delay — preview opens when the section is selected |
+| **Cart drawer** | Drawer title, empty-cart copy, dispatch note toggle |
+
+All homepage sections (`home-slider`, `genus-shortcuts`, `botanical-discovery-strip`, etc.) expose text, images, and collection pickers when clicked.
+
+**Shop by genus:** enable **Use live Shopify collections** to auto-list in-stock genera (recommended).
 
 ---
 
-*Last aligned with theme files: `sections/main-404.liquid`, `sections/main-order.liquid`, `templates/order.liquid`, `layout/checkout.liquid`, `snippets/cart-drawer-dispatch.liquid`, `sections/new-specimens.liquid`, `snippets/specimen-ledger-card.liquid`, `sections/main-collection-banner.liquid`, `sections/main-collection-product-grid.liquid`, `snippets/cultivation-filter-drawer.liquid`, `templates/index.json`, `templates/customers/order.json`, `locales/en.default.json`, `locales/en.default.schema.json`.*
+## 13. Customer accounts
+
+- [ ] **Classic accounts:** Theme templates under `templates/customers/`.  
+- [ ] **New customer accounts:** Header uses theme login; logged-in users go to `/account` (not hosted profile URL) to avoid dev/proxy 401 errors.  
+- [ ] Enable customer accounts in **Settings → Customer accounts**.
+
+---
+
+## Code map (quick reference)
+
+```
+layout/theme.liquid          → header-group, cart-drawer, newsletter, footer-group, deferred JS
+sections/header-group.json   → announcement-bar, header, search-overlay
+sections/footer-group.json   → footer
+snippets/header-catalog-mega-menu.liquid  → dynamic genus list
+snippets/genus-shortcuts-dynamic-strip.liquid → homepage genus carousel (dynamic)
+snippets/customer-account-link-url.liquid → account/login URLs
+sections/main-collection-product-grid.liquid → catalog + filters + load more
+sections/main-product.liquid → PDP
+assets/base.css              → global styles + content-visibility
+assets/global.js             → reduced motion + tab visibility
+assets/theme.js              → scroll reveal
+```
+
+---
+
+*Last aligned with theme: `newsletter-modal.liquid`, `cart-drawer.liquid`, `page.liquid`, `genus-shortcuts.liquid` (dynamic genera), `botanical-discovery-strip.liquid`, `genus-shortcuts.liquid` (dynamic genera), `featured-collection.liquid`, `new-specimens.liquid`, `featured-specimen.liquid` (product picker), `main-collection-product-grid.liquid`, `customer-account-link-url.liquid`, `templates/index.json`, `templates/product.json`, policy templates, `assets/base.css`, `assets/global.js`.*

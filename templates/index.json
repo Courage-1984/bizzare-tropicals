@@ -77,7 +77,9 @@
     "genus_shortcuts": {
       "type": "genus-shortcuts",
       "settings": {
-        "heading": "Shop by genus"
+        "heading": "Shop by genus",
+        "use_dynamic_genera": true,
+        "hide_empty_collections": true
       },
       "blocks": {
         "genus_dionaea": {
@@ -164,9 +166,58 @@
         "genus_utricularia"
       ]
     },
+    "botanical_discovery_strip": {
+      "type": "botanical-discovery-strip",
+      "settings": {
+        "anchor_heading": "SHOP PLANTS AND ACCESSORIES BELOW!",
+        "anchor_color": "#c41e3a",
+        "card_min_height": 320
+      },
+      "blocks": {
+        "discovery_beginner": {
+          "type": "discovery_card",
+          "settings": {
+            "collection": "all",
+            "title": "Beginner plants",
+            "description": "Hardy carnivores for your first bench or windowsill."
+          }
+        },
+        "discovery_nepenthes": {
+          "type": "discovery_card",
+          "settings": {
+            "collection": "nepenthes",
+            "title": "Nepenthes",
+            "description": "Tropical pitchers from lowland to highland forms."
+          }
+        },
+        "discovery_drosera": {
+          "type": "discovery_card",
+          "settings": {
+            "collection": "drosera",
+            "title": "Drosera",
+            "description": "Sundews and sticky-leaf specialists for every setup."
+          }
+        },
+        "discovery_sarracenia": {
+          "type": "discovery_card",
+          "settings": {
+            "collection": "sarracenia",
+            "title": "Sarracenia",
+            "description": "North American pitcher plants for outdoor benches."
+          }
+        }
+      },
+      "block_order": [
+        "discovery_beginner",
+        "discovery_nepenthes",
+        "discovery_drosera",
+        "discovery_sarracenia"
+      ]
+    },
     "new_specimens": {
       "type": "new-specimens",
       "settings": {
+        "collection": "all",
         "heading": "NEWLY CATALOGED",
         "subheading": "Fresh arrivals from the propagation lab.",
         "products_to_show": 12,
@@ -223,6 +274,7 @@
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
         "heading": "Featured plants",
         "subheading": "Hand-picked specimens from our living collection.",
         "products_to_show": 8,
@@ -233,6 +285,7 @@
   "order": [
     "homepage_hero",
     "genus_shortcuts",
+    "botanical_discovery_strip",
     "new_specimens",
     "featured_specimen",
     "conservatory_standards",

@@ -2,8 +2,10 @@
   Renders cart drawer inner content (line items, empty state, footer).
   Refreshed via the Sections Rendering API when the cart changes.
 
+  @param {section} [section] - Cart drawer section for theme editor strings
+
   @example
-  {% render 'cart-drawer-contents' %}
+  {% render 'cart-drawer-contents', section: section %}
 {% enddoc %}
 
 <div class="cart-drawer__contents" data-cart-drawer-contents>
@@ -98,7 +100,17 @@
         </span>
       </div>
       <p class="cart-drawer__shipping-note">{{ 'cart.drawer.shipping_note' | t }}</p>
-      {% render 'cart-drawer-dispatch' %}
+      {%- liquid
+        assign show_dispatch_note = true
+        if section != blank
+          if section.settings.show_dispatch_note == false
+            assign show_dispatch_note = false
+          endif
+        endif
+      -%}
+      {%- if show_dispatch_note -%}
+        {% render 'cart-drawer-dispatch' %}
+      {%- endif -%}
       <a class="cart-drawer__checkout" href="/checkout">
         {{ 'cart.drawer.checkout' | t }}
       </a>
@@ -108,9 +120,27 @@
       <div class="cart-drawer__empty-art" aria-hidden="true">
         {{ 'icon-botanical-watermark.svg' | inline_asset_content }}
       </div>
-      <p class="cart-drawer__empty-title">{{ 'cart.drawer.empty_title' | t }}</p>
+      <p class="cart-drawer__empty-title">
+        {%- if section != blank -%}
+          {%- if section.settings.empty_title != blank -%}
+            {{ section.settings.empty_title | escape }}
+          {%- else -%}
+            {{ 'cart.drawer.empty_title' | t }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'cart.drawer.empty_title' | t }}
+        {%- endif -%}
+      </p>
       <button type="button" class="cart-drawer__empty-cta" data-cart-drawer-close>
-        {{ 'cart.drawer.continue_exploring' | t }}
+        {%- if section != blank -%}
+          {%- if section.settings.empty_button_label != blank -%}
+            {{ section.settings.empty_button_label | escape }}
+          {%- else -%}
+            {{ 'cart.drawer.continue_exploring' | t }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'cart.drawer.continue_exploring' | t }}
+        {%- endif -%}
       </button>
     </div>
   {%- endif -%}

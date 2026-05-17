@@ -1,17 +1,100 @@
-{% comment %}
-  This section is used in the page template to render store pages like About us
-  or Contact us.
+{%- liquid
+  assign page_title = page.title
+  assign content_width = section.settings.content_width
+-%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/page
-{% endcomment %}
+<article
+  class="generic-page generic-page--{{ content_width }} full-width"
+  {{ section.shopify_attributes }}
+>
+  <div class="generic-page__inner">
+    <header class="generic-page__header">
+      <h1 class="generic-page__title">{{ page_title | escape }}</h1>
+    </header>
 
-<h1>{{ page.title }}</h1>
+    <div class="generic-page__content rte">
+      {{ page.content }}
+    </div>
+  </div>
+</article>
 
-{{ page.content }}
+{% stylesheet %}
+  .generic-page {
+    padding-block: var(--space-3xl) var(--space-4xl);
+    background-color: var(--color-background);
+  }
+
+  .generic-page__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+  }
+
+  .generic-page--narrow .generic-page__inner {
+    max-width: 42rem;
+  }
+
+  .generic-page--wide .generic-page__inner {
+    max-width: none;
+  }
+
+  .generic-page__title {
+    margin: 0 0 var(--space-xl);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+    overflow-wrap: anywhere;
+  }
+
+  .generic-page__content :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .generic-page__content :is(h2, h3, h4) {
+    margin: var(--space-xl) 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    color: var(--color-forest-green-dark);
+    overflow-wrap: anywhere;
+  }
+
+  .generic-page__content li + li {
+    margin-block-start: var(--space-xs);
+  }
+
+  @media (max-width: 749px) {
+    .generic-page {
+      padding-block: var(--space-2xl) var(--space-3xl);
+    }
+
+    .generic-page__title {
+      margin-block-end: var(--space-lg);
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.page",
-  "settings": []
+  "name": "t:sections.generic_page.name",
+  "tag": "section",
+  "class": "generic-page-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.generic_page.settings.editor_help"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:sections.generic_page.settings.content_width",
+      "default": "narrow",
+      "options": [
+        { "value": "narrow", "label": "t:sections.generic_page.settings.content_width_narrow" },
+        { "value": "wide", "label": "t:sections.generic_page.settings.content_width_wide" }
+      ]
+    }
+  ]
 }
 {% endschema %}

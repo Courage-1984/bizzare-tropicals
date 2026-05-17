@@ -1,0 +1,68 @@
+{% doc %}
+  Outputs genus shortcut carousel items from live Shopify collections (in-stock genera only).
+
+  Uses the same genus order and exclusions as the catalog mega menu.
+
+  @param {string} default_placeholder - Section fallback image URL
+
+  @example
+  {% render 'genus-shortcuts-dynamic-strip', default_placeholder: section.settings.default_placeholder_image %}
+{% enddoc %}
+
+{%- liquid
+  assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories' | split: ','
+  assign genus_order = 'dionaea,sarracenia,nepenthes,drosera,pinguicula,cephalotus,heliamphora,utricularia,darlingtonia,byblis,drossophyllum,other' | split: ','
+  assign rendered_handles = ''
+-%}
+
+{%- for genus_handle in genus_order -%}
+  {%- assign card_collection = collections[genus_handle] -%}
+  {%- if card_collection == blank -%}
+    {%- continue -%}
+  {%- endif -%}
+  {%- if card_collection.products_count == 0 -%}
+    {%- continue -%}
+  {%- endif -%}
+  {%- assign rendered_handles = rendered_handles | append: genus_handle | append: ',' -%}
+  {% render 'genus-shortcut-card',
+    card_collection: card_collection,
+    default_placeholder: default_placeholder
+  %}
+{%- endfor -%}
+
+{%- for card_collection in collections -%}
+  {%- liquid
+    assign skip_collection = false
+
+    assign rendered_needle = ',' | append: card_collection.handle | append: ','
+    assign rendered_haystack = ',' | append: rendered_handles
+    if rendered_haystack contains rendered_needle
+      assign skip_collection = true
+    endif
+
+    for excluded_handle in excluded_handles
+      if card_collection.handle == excluded_handle
+        assign skip_collection = true
+        break
+      endif
+    endfor
+
+    if skip_collection == false
+      if card_collection.handle contains '-'
+        assign skip_collection = true
+      endif
+    endif
+
+    if skip_collection
+      continue
+    endif
+
+    if card_collection.products_count == 0
+      continue
+    endif
+  -%}
+  {% render 'genus-shortcut-card',
+    card_collection: card_collection,
+    default_placeholder: default_placeholder
+  %}
+{%- endfor -%}

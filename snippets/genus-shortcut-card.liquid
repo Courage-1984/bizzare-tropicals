@@ -1,0 +1,60 @@
+{% doc %}
+  Renders one genus shortcut carousel list item from a Shopify collection.
+
+  @param {collection} card_collection - Genus collection
+  @param {string} [default_placeholder] - Section-level fallback image URL
+  @param {string} [block_attributes] - Optional block.shopify_attributes for theme editor
+
+  @example
+  {% render 'genus-shortcut-card', card_collection: collections.drosera, default_placeholder: section.settings.default_placeholder_image %}
+{% enddoc %}
+
+{%- liquid
+  assign card_title = card_collection.title
+  assign card_link = card_collection.url
+  assign card_image = blank
+  assign placeholder_url = blank
+  assign genus_handle = card_collection.handle
+  assign use_shopify_image = false
+
+  if card_collection.image != blank
+    if card_collection.image.width > 0
+      assign card_image = card_collection.image
+    endif
+  endif
+
+  if card_image == blank
+    assign fallback_product = card_collection.products.first
+    if fallback_product != blank
+      assign card_image = fallback_product.featured_media.preview_image | default: fallback_product.featured_image
+    endif
+  endif
+
+  if card_image != blank
+    if card_image.width > 0
+      assign use_shopify_image = true
+    endif
+  endif
+
+  unless use_shopify_image
+    capture genus_placeholder
+      render 'genus-placeholder-url', genus_handle: genus_handle
+    endcapture
+    assign placeholder_url = genus_placeholder | strip
+    if placeholder_url == blank
+      assign placeholder_url = default_placeholder
+    endif
+  endunless
+-%}
+
+{%- if card_title != blank and card_link != blank -%}
+  <li class="genus-shortcuts__item reveal-up" data-carousel-item{% if block_attributes != blank %} {{ block_attributes }}{% endif %} role="listitem">
+    {% render 'genus-arch-card',
+      card_title: card_title,
+      card_link: card_link,
+      placeholder_url: placeholder_url,
+      card_image: card_image,
+      use_shopify_image: use_shopify_image
+    %}
+  </li>
+{%- endif -%}

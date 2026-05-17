@@ -47,6 +47,10 @@
       "next": "Next genera",
       "empty": "Add genus cards in the theme editor."
     },
+    "botanical_discovery_strip": {
+      "card_label": "{{ title }} collection",
+      "empty": "Add up to four discovery cards in the theme editor."
+    },
     "collection_banner": {
       "collection_label": "Collection",
       "placeholder_upload": "Upload transparent PNG",

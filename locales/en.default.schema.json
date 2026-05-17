@@ -120,6 +120,7 @@
     "newsletter_modal": {
       "name": "Field Notes newsletter modal",
       "settings": {
+        "editor_help": "Edit heading, subtext, button label, and illustration below. The popup preview appears when this section is selected in the theme editor.",
         "enable_modal": "Enable modal",
         "trigger_mode": "Trigger",
         "trigger_delay": "Time delay only",
@@ -134,12 +135,38 @@
         "illustration_info": "Optional. Replaces the default sundew line art."
       }
     },
+    "botanical_discovery_strip": {
+      "name": "Botanical discovery strip",
+      "settings": {
+        "anchor_heading": "Anchor heading",
+        "anchor_color": "Anchor accent color",
+        "card_min_height": "Card minimum height"
+      },
+      "blocks": {
+        "discovery_card": {
+          "name": "Discovery card",
+          "settings": {
+            "title": "Card title",
+            "title_info": "Optional. Uses the collection title when empty.",
+            "description": "Description",
+            "link": "Custom link",
+            "link_info": "Optional. Uses the collection URL when empty.",
+            "image": "Background image",
+            "image_info": "Optional. Uses the collection image, then the first product image when empty."
+          }
+        }
+      }
+    },
     "genus_shortcuts": {
       "name": "Genus shortcuts",
       "settings": {
         "heading": "Section heading",
         "default_placeholder_image": "Default placeholder image URL",
-        "default_placeholder_image_info": "Fallback when a card has no image and no per-block placeholder."
+        "default_placeholder_image_info": "Fallback when a card has no image and no per-block placeholder.",
+        "use_dynamic_genera": "Use live Shopify collections",
+        "use_dynamic_genera_info": "When enabled, cards are built from in-stock genus collections (same rules as the Catalog mega menu). Manual genus blocks are ignored.",
+        "hide_empty_collections": "Hide empty genus blocks",
+        "hide_empty_collections_info": "When using manual blocks, skip cards whose collection has zero products."
       },
       "blocks": {
         "genus": {
@@ -158,7 +185,7 @@
       "name": "New specimen ledger",
       "settings": {
         "collection": "Collection",
-        "collection_info": "Choose the collection that powers the horizontal ledger tray on the homepage.",
+        "collection_info": "Choose the collection for the ledger tray (for example, All products). Products are shown newest first by date added.",
         "heading": "Heading",
         "subheading": "Subheading",
         "products_to_show": "Maximum products",
@@ -181,7 +208,10 @@
       "name": "Featured specimen",
       "settings": {
         "background_color": "Background color",
-        "image": "Macro image",
+        "product": "Featured product",
+        "product_info": "Optional. Uses the product image, Latin name or title, and URL when set.",
+        "image": "Macro image override",
+        "image_info": "Optional. Overrides the product featured image.",
         "placeholder_image": "Placeholder image URL",
         "placeholder_image_info": "Shown when no macro image is uploaded. Wikimedia URLs are fine for development.",
         "subheading": "Subheading",
@@ -294,7 +324,23 @@
       }
     },
     "cart_drawer": {
-      "name": "Cart drawer"
+      "name": "Cart drawer",
+      "settings": {
+        "editor_help": "Cart drawer appears site-wide. Customize the title and empty-cart message below.",
+        "drawer_title": "Drawer title",
+        "empty_title": "Empty cart message",
+        "empty_button_label": "Empty cart button label",
+        "show_dispatch_note": "Show botanical dispatch note"
+      }
+    },
+    "generic_page": {
+      "name": "Page content",
+      "settings": {
+        "editor_help": "Page title and body come from Shopify Admin → Pages. Choose layout width below.",
+        "content_width": "Content width",
+        "content_width_narrow": "Narrow (readable)",
+        "content_width_wide": "Wide"
+      }
     },
     "main_collection_product_grid": {
       "name": "Collection product grid",
@@ -304,7 +350,12 @@
       }
     },
     "main_login": {
-      "name": "Customer login"
+      "name": "Customer login",
+      "settings": {
+        "heading": "Page heading",
+        "intro": "Intro text",
+        "intro_info": "Optional line below the heading."
+      }
     },
     "main_account": {
       "name": "Customer account"

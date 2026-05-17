@@ -41,7 +41,7 @@
   >
     <header class="cart-drawer__header">
       <h2 id="cart-drawer-title-{{ section.id }}" class="cart-drawer__title">
-        {{ 'cart.drawer.title' | t }}
+        {{ section.settings.drawer_title | default: 'cart.drawer.title' | t }}
       </h2>
       <button
         type="button"
@@ -54,7 +54,7 @@
     </header>
 
     <div class="cart-drawer__body" data-cart-drawer-body>
-      {% render 'cart-drawer-contents' %}
+      {% render 'cart-drawer-contents', section: section %}
     </div>
   </aside>
 </div>
@@ -508,7 +508,37 @@
 {% schema %}
 {
   "name": "t:sections.cart_drawer.name",
+  "tag": "section",
   "class": "cart-drawer-section",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.cart_drawer.settings.editor_help"
+    },
+    {
+      "type": "text",
+      "id": "drawer_title",
+      "label": "t:sections.cart_drawer.settings.drawer_title",
+      "default": "Your collection"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "t:sections.cart_drawer.settings.empty_title",
+      "default": "Your cart is empty"
+    },
+    {
+      "type": "text",
+      "id": "empty_button_label",
+      "label": "t:sections.cart_drawer.settings.empty_button_label",
+      "default": "Continue exploring"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dispatch_note",
+      "label": "t:sections.cart_drawer.settings.show_dispatch_note",
+      "default": true
+    }
+  ]
 }
 {% endschema %}

@@ -641,11 +641,14 @@
       function startAutoplay() {
         stopAutoplay();
 
-        if (slidesLength <= 1 || autoplayPaused || prefersReducedMotion()) {
+        if (slidesLength <= 1 || autoplayPaused || prefersReducedMotion() || document.hidden) {
           return;
         }
 
         state.autoplayTimer = setInterval(function () {
+          if (document.hidden) {
+            return;
+          }
           try {
             setActiveSlide(currentIndex + 1, { fromAutoplay: true });
           } catch (error) {

@@ -1112,3 +1112,63 @@ p:empty {
 .cultivation-filter__option--pill:hover {
   background-color: rgb(10 24 18 / 0.05);
 }
+
+/* Performance — defer paint for below-the-fold sections (homepage / long pages) */
+@media (min-width: 750px) {
+  .shopify-section:not(:first-of-type):not(.cart-drawer-section):not(.header-group-section) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 28rem;
+  }
+}
+
+.page-is-hidden [data-genus-carousel],
+.page-is-hidden [data-featured-carousel],
+.page-is-hidden [data-new-specimens] {
+  pointer-events: none;
+}
+
+/* Responsive foundation */
+:where(img, video, svg:not(.site-nav__icon svg)) {
+  max-width: 100%;
+  height: auto;
+}
+
+.rte :where(img, video, iframe) {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(
+  .site-header__icon-link,
+  .cart-drawer__close,
+  .newsletter-modal__close,
+  .collection-grid-section__filter-trigger
+) {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}
+
+@media (max-width: 749px) {
+  .cart-drawer__header,
+  .cart-drawer__items,
+  .cart-drawer__footer {
+    padding-inline: var(--space-md);
+  }
+
+  .cart-drawer__item {
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .cart-drawer__panel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .policy-page__inner,
+  .customer-login__inner,
+  .customer-register__inner,
+  .customer-account__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+  }
+}

@@ -1,13 +1,30 @@
 {%- liquid
+  assign featured_product = section.settings.product
   assign specimen_image = section.settings.image
   assign placeholder_fallback = section.settings.placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(8411421382).jpg?width=1600'
   assign use_shopify_image = false
+  assign display_heading = section.settings.heading
+  assign display_subheading = section.settings.subheading
+  assign button_label = section.settings.button_label
+  assign button_link = section.settings.button_link
+
+  if featured_product != blank
+    if specimen_image == blank
+      assign specimen_image = featured_product.featured_media.preview_image | default: featured_product.featured_image
+    endif
+    if display_heading == blank
+      assign display_heading = featured_product.metafields.custom.latin_name.value | default: featured_product.metafields.custom.latin_name | default: featured_product.title
+    endif
+    if button_link == blank
+      assign button_link = featured_product.url
+    endif
+  endif
 
   if specimen_image != blank and specimen_image.width > 0
     assign use_shopify_image = true
   endif
 
-  assign image_alt = section.settings.heading | default: 'Nepenthes bicalcarata'
+  assign image_alt = display_heading | default: 'Nepenthes bicalcarata'
 -%}
 
 <section
@@ -19,15 +36,15 @@
   <div class="featured-specimen__grid">
     <div class="featured-specimen__content">
       <p class="featured-specimen__subheading">
-        {{ section.settings.subheading | default: 'A rare pitcher plant with distinctive fang-like appendages.' | escape }}
+        {{ display_subheading | default: 'A rare pitcher plant with distinctive fang-like appendages.' | escape }}
       </p>
 
       <h2 id="featured-specimen-heading-{{ section.id }}" class="featured-specimen__heading">
-        <em>{{ section.settings.heading | default: 'Nepenthes bicalcarata' | escape }}</em>
+        <em>{{ display_heading | default: 'Nepenthes bicalcarata' | escape }}</em>
       </h2>
 
-      {%- assign button_label = section.settings.button_label | default: 'View specimen' -%}
-      {%- assign button_link = section.settings.button_link | default: '/collections/nepenthes' -%}
+      {%- assign button_label = button_label | default: 'View specimen' -%}
+      {%- assign button_link = button_link | default: '/collections/nepenthes' -%}
       {%- if button_label != blank and button_link != blank -%}
         <a class="featured-specimen__button" href="{{ button_link }}">
           {{- button_label | escape -}}
@@ -216,9 +233,16 @@
       "default": "#121614"
     },
     {
+      "type": "product",
+      "id": "product",
+      "label": "t:sections.featured_specimen.settings.product",
+      "info": "t:sections.featured_specimen.settings.product_info"
+    },
+    {
       "type": "image_picker",
       "id": "image",
-      "label": "t:sections.featured_specimen.settings.image"
+      "label": "t:sections.featured_specimen.settings.image",
+      "info": "t:sections.featured_specimen.settings.image_info"
     },
     {
       "type": "text",

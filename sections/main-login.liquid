@@ -6,8 +6,11 @@
   <div class="customer-login__inner">
     <header class="customer-login__header">
       <h1 id="customer-login-title-{{ section.id }}" class="customer-login__title">
-        {{ 'customers.login.title' | t }}
+        {{ section.settings.heading | default: 'customers.login.title' | t }}
       </h1>
+      {%- if section.settings.intro != blank -%}
+        <p class="customer-login__intro">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
     </header>
 
     {%- form 'customer_login', class: 'customer-login__form' -%}
@@ -97,6 +100,13 @@
     width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
     max-width: 28rem;
     margin-inline: auto;
+  }
+
+  .customer-login__intro {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
   }
 
   .customer-login__title {
@@ -213,6 +223,19 @@
   "name": "t:sections.main_login.name",
   "tag": "section",
   "class": "customer-login-section",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.main_login.settings.heading",
+      "default": "Sign in"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "t:sections.main_login.settings.intro",
+      "info": "t:sections.main_login.settings.intro_info"
+    }
+  ]
 }
 {% endschema %}

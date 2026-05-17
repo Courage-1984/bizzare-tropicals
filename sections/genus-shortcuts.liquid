@@ -1,6 +1,14 @@
 {%- liquid
   assign section_heading = section.settings.heading
   assign default_placeholder = section.settings.default_placeholder_image
+  assign use_dynamic_genera = section.settings.use_dynamic_genera
+  assign has_genus_cards = false
+
+  if use_dynamic_genera
+    assign has_genus_cards = true
+  elsif section.blocks.size > 0
+    assign has_genus_cards = true
+  endif
 -%}
 
 <section
@@ -9,7 +17,7 @@
   aria-labelledby="genus-shortcuts-heading-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
-  {%- if section_heading != blank or section.blocks.size > 0 -%}
+  {%- if section_heading != blank or has_genus_cards -%}
     <header class="genus-shortcuts__header">
       {%- if section_heading != blank -%}
         <h2 id="genus-shortcuts-heading-{{ section.id }}" class="genus-shortcuts__section-title">
@@ -17,7 +25,7 @@
         </h2>
       {%- endif -%}
 
-      {%- if section.blocks.size > 0 -%}
+      {%- if has_genus_cards -%}
         <div class="genus-shortcuts__nav" data-carousel-nav hidden>
           <button
             type="button"
@@ -42,7 +50,7 @@
     </header>
   {%- endif -%}
 
-  {%- if section.blocks.size > 0 -%}
+  {%- if has_genus_cards -%}
     <div class="genus-shortcuts__viewport" data-carousel-viewport>
       <ul
         id="genus-carousel-track-{{ section.id }}"
@@ -53,6 +61,9 @@
         tabindex="0"
         aria-label="{{ 'sections.genus_shortcuts.strip_label' | t }}"
       >
+        {%- if use_dynamic_genera -%}
+          {% render 'genus-shortcuts-dynamic-strip', default_placeholder: default_placeholder %}
+        {%- else -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'genus' -%}
             {%- liquid
@@ -80,6 +91,20 @@
                     if card_collection.image.width > 0
                       assign card_image = card_collection.image
                     endif
+                  endif
+                  if card_image == blank
+                    assign fallback_product = card_collection.products.first
+                    if fallback_product != blank
+                      assign card_image = fallback_product.featured_media.preview_image | default: fallback_product.featured_image
+                    endif
+                  endif
+                endif
+              endif
+
+              if section.settings.hide_empty_collections
+                if card_collection != blank
+                  if card_collection.products_count == 0
+                    assign card_title = blank
                   endif
                 endif
               endif
@@ -124,6 +149,7 @@
             {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
+        {%- endif -%}
       </ul>
     </div>
   {%- else -%}
@@ -277,6 +303,8 @@
     'use strict';
 
     var SECTION_SELECTOR = '[data-genus-carousel]';
+    var AUTOPLAY_MS = 6000;
+    var RESUME_DELAY_MS = 8000;
 
     function prefersReducedMotion() {
       try {
@@ -293,6 +321,15 @@
 
       try {
         var state = root._genusCarouselState;
+
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+        }
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
         state.listeners.forEach(function (entry) {
           entry.target.removeEventListener(entry.type, entry.handler);
         });
@@ -309,13 +346,9 @@
         return;
       }
 
-      var maxScroll = track.scrollWidth - track.clientWidth;
-      var scrollLeft = track.scrollLeft;
-      var atStart = scrollLeft <= 2;
-      var atEnd = scrollLeft >= maxScroll - 2;
-
-      prevButton.disabled = atStart;
-      nextButton.disabled = atEnd;
+      var overflow = track.scrollWidth > track.clientWidth + 2;
+      prevButton.disabled = !overflow;
+      nextButton.disabled = !overflow;
     }
 
     function getScrollStep(track) {
@@ -346,7 +379,12 @@
       }
 
       var desktopQuery = window.matchMedia('(min-width: 990px)');
-      var state = { listeners: [] };
+      var autoplayPaused = false;
+      var state = {
+        listeners: [],
+        autoplayTimer: null,
+        resumeTimer: null
+      };
 
       function trackListener(target, type, handler, options) {
         target.addEventListener(type, handler, options);
@@ -359,6 +397,84 @@
         track.scrollBy({ left: step, behavior: behavior });
       }
 
+      function scrollNextWithLoop() {
+        var maxScroll = track.scrollWidth - track.clientWidth;
+        var atEnd = track.scrollLeft >= maxScroll - 2;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+
+        if (atEnd) {
+          track.scrollTo({ left: 0, behavior: behavior });
+          return;
+        }
+
+        scrollByStep(1);
+      }
+
+      function scrollPrevWithLoop() {
+        var atStart = track.scrollLeft <= 2;
+        var maxScroll = track.scrollWidth - track.clientWidth;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+
+        if (atStart) {
+          track.scrollTo({ left: maxScroll, behavior: behavior });
+          return;
+        }
+
+        scrollByStep(-1);
+      }
+
+      function stopAutoplay() {
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+          state.autoplayTimer = null;
+        }
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+
+        var overflow = track.scrollWidth > track.clientWidth + 2;
+        if (!overflow || autoplayPaused || prefersReducedMotion() || document.hidden) {
+          return;
+        }
+
+        state.autoplayTimer = setInterval(function () {
+          if (document.hidden) {
+            return;
+          }
+          try {
+            scrollNextWithLoop();
+          } catch (error) {
+            console.error('Genus shortcuts: autoplay tick failed.', error);
+          }
+        }, AUTOPLAY_MS);
+      }
+
+      function pauseAutoplay() {
+        autoplayPaused = true;
+        stopAutoplay();
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+          state.resumeTimer = null;
+        }
+      }
+
+      function scheduleAutoplayResume() {
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
+        state.resumeTimer = setTimeout(function () {
+          try {
+            autoplayPaused = false;
+            startAutoplay();
+          } catch (error) {
+            console.error('Genus shortcuts: autoplay resume failed.', error);
+          }
+        }, RESUME_DELAY_MS);
+      }
+
       function syncNavVisibility() {
         var isDesktop = desktopQuery.matches;
         var overflow = track.scrollWidth > track.clientWidth + 2;
@@ -368,19 +484,31 @@
       }
 
       trackListener(prevButton, 'click', function () {
-        scrollByStep(-1);
+        pauseAutoplay();
+        scrollPrevWithLoop();
+        scheduleAutoplayResume();
       });
 
       trackListener(nextButton, 'click', function () {
-        scrollByStep(1);
+        pauseAutoplay();
+        scrollNextWithLoop();
+        scheduleAutoplayResume();
       });
 
       trackListener(track, 'scroll', function () {
         updateNavState(track, prevButton, nextButton);
       }, { passive: true });
 
+      trackListener(track, 'pointerdown', pauseAutoplay);
+      trackListener(track, 'pointerenter', pauseAutoplay);
+      trackListener(track, 'focusin', pauseAutoplay);
+      trackListener(track, 'pointerup', scheduleAutoplayResume);
+      trackListener(track, 'pointerleave', scheduleAutoplayResume);
+      trackListener(track, 'focusout', scheduleAutoplayResume);
+
       trackListener(window, 'resize', function () {
         syncNavVisibility();
+        startAutoplay();
       });
 
       if (typeof desktopQuery.addEventListener === 'function') {
@@ -394,6 +522,7 @@
       syncNavVisibility();
       root._genusCarouselState = state;
       root.dataset.genusCarouselInitialized = 'true';
+      startAutoplay();
     }
 
     function initAllCarousels(scope) {
@@ -447,6 +576,20 @@
       "label": "t:sections.genus_shortcuts.settings.default_placeholder_image",
       "info": "t:sections.genus_shortcuts.settings.default_placeholder_image_info",
       "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1200"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_dynamic_genera",
+      "label": "t:sections.genus_shortcuts.settings.use_dynamic_genera",
+      "info": "t:sections.genus_shortcuts.settings.use_dynamic_genera_info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_empty_collections",
+      "label": "t:sections.genus_shortcuts.settings.hide_empty_collections",
+      "info": "t:sections.genus_shortcuts.settings.hide_empty_collections_info",
+      "default": true
     }
   ],
   "blocks": [

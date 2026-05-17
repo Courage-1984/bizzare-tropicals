@@ -1,26 +1,30 @@
 {% doc %}
   Outputs the storefront account or login URL for classic and new Shopify customer accounts.
 
-  New customer accounts redirect `/account` to a shop-scoped path that 404s on theme dev;
-  use `routes.storefront_login_url` and `routes.account_profile_url` when the profile URL is hosted on shopify.com.
+  Logged-in customers use the theme `/account` page. New customer accounts use hosted login on production;
+  theme dev always uses theme login URLs to avoid 401 responses from shopify.com profile links.
 
   @example
   <a href="{% render 'customer-account-link-url' %}">Account</a>
 {% enddoc %}
 
 {%- liquid
+  assign customer_account_link_url = routes.account_login_url
   if customer
     assign customer_account_link_url = routes.account_url
-  else
-    assign customer_account_link_url = routes.account_login_url
+  endif
+
+  assign on_theme_dev = false
+  if request.host contains '127.0.0.1' or request.host contains 'localhost'
+    assign on_theme_dev = true
   endif
 
   if routes.account_profile_url contains 'shopify.com'
-    if customer
-      assign customer_account_link_url = routes.account_profile_url
-    else
-      assign customer_account_link_url = routes.storefront_login_url
-    endif
+    unless on_theme_dev
+      if customer == blank
+        assign customer_account_link_url = routes.storefront_login_url
+      endif
+    endunless
   endif
 -%}
 {{- customer_account_link_url -}}

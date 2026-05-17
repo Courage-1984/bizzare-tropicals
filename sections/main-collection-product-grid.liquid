@@ -61,14 +61,19 @@
     {%- paginate collection.products by 24 -%}
       {%- if collection.products.size > 0 -%}
         <ul class="collection-grid collection-grid--bento" role="list" data-collection-grid-list data-reveal-stagger>
+          {%- assign rendered_product_ids = '' -%}
           {%- for product in collection.products -%}
-            <li class="collection-grid__item reveal-up" role="listitem">
-              {% render 'product-card',
-                product_item: product,
-                card_index: forloop.index0,
-                sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
-              %}
-            </li>
+            {%- assign product_id_marker = product.id | append: '|' -%}
+            {%- unless rendered_product_ids contains product_id_marker -%}
+              {%- assign rendered_product_ids = rendered_product_ids | append: product_id_marker -%}
+              <li class="collection-grid__item reveal-up" role="listitem" data-product-id="{{ product.id }}">
+                {% render 'product-card',
+                  product_item: product,
+                  card_index: forloop.index0,
+                  sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
+                %}
+              </li>
+            {%- endunless -%}
           {%- endfor -%}
         </ul>
 
@@ -673,8 +678,23 @@
             return;
           }
 
+          var existingIds = new Set();
+          list.querySelectorAll('[data-product-id]').forEach(function (item) {
+            var id = item.getAttribute('data-product-id');
+            if (id) {
+              existingIds.add(id);
+            }
+          });
+
           var newItems = incomingList.querySelectorAll('.collection-grid__item');
           newItems.forEach(function (item) {
+            var productId = item.getAttribute('data-product-id');
+            if (productId && existingIds.has(productId)) {
+              return;
+            }
+            if (productId) {
+              existingIds.add(productId);
+            }
             list.appendChild(item);
           });
 

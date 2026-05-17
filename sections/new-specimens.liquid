@@ -10,10 +10,16 @@
       assign show_real_products = true
     endif
   endif
+
+  assign catalog_products = ledger_collection.products
+  if show_real_products
+    assign catalog_products = ledger_collection.products | sort: 'created_at' | reverse
+  endif
 -%}
 
 <section
   class="new-specimens full-width reveal-up"
+  data-new-specimens
   aria-labelledby="new-specimens-heading-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
@@ -55,7 +61,7 @@
     </div>
 
     {%- if show_real_products and ledger_collection.url != blank -%}
-      <a class="new-specimens__view-all link-underline-grow" href="{{ ledger_collection.url }}">
+      <a class="new-specimens__view-all link-underline-grow" href="{{ ledger_collection.url }}?sort_by=created-descending">
         {{ section.settings.view_all_label | default: 'View ledger' | escape }}
       </a>
     {%- endif -%}
@@ -70,7 +76,7 @@
       aria-label="{{ 'sections.new_specimens.tray_label' | t }}"
     >
       {%- if show_real_products -%}
-        {%- for product in ledger_collection.products limit: products_limit -%}
+        {%- for product in catalog_products limit: products_limit -%}
           <li class="new-specimens__item reveal-up" role="listitem">
             {% render 'specimen-ledger-card',
               product_item: product,
@@ -353,12 +359,46 @@
   (function () {
     'use strict';
 
-    function updateTrayProgress(tray) {
-      var section = tray.closest('.new-specimens');
-      if (!section) {
+    var SECTION_SELECTOR = '[data-new-specimens]';
+    var AUTOPLAY_MS = 6000;
+    var RESUME_DELAY_MS = 8000;
+
+    function prefersReducedMotion() {
+      try {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function destroyNewSpecimens(section) {
+      if (!section || !section._newSpecimensState) {
         return;
       }
 
+      try {
+        var state = section._newSpecimensState;
+
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+        }
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
+        state.listeners.forEach(function (entry) {
+          entry.target.removeEventListener(entry.type, entry.handler, entry.options);
+        });
+      } catch (error) {
+        console.error('New specimens: teardown failed.', error);
+      }
+
+      delete section._newSpecimensState;
+      section.dataset.newSpecimensInitialized = 'false';
+    }
+
+    function updateTrayProgress(tray, section) {
       var fill = section.querySelector('[data-new-specimens-progress]');
       if (fill) {
         var maxScroll = tray.scrollWidth - tray.clientWidth;
@@ -368,15 +408,14 @@
 
       var prevBtn = section.querySelector('[data-new-specimens-prev]');
       var nextBtn = section.querySelector('[data-new-specimens-next]');
-      var atStart = tray.scrollLeft <= 1;
-      var atEnd = tray.scrollLeft + tray.clientWidth >= tray.scrollWidth - 1;
+      var overflow = tray.scrollWidth > tray.clientWidth + 2;
 
       if (prevBtn) {
-        prevBtn.disabled = atStart;
+        prevBtn.disabled = !overflow;
       }
 
       if (nextBtn) {
-        nextBtn.disabled = atEnd;
+        nextBtn.disabled = !overflow;
       }
     }
 
@@ -396,57 +435,180 @@
       return firstItem.offsetWidth + gap;
     }
 
-    function scrollTrayByCard(tray, direction) {
-      var step = getTrayScrollStep(tray) * direction;
-      tray.scrollBy({ left: step, behavior: 'smooth' });
-    }
+    function initNewSpecimens(section) {
+      if (!section) {
+        return;
+      }
 
-    function bindNewSpecimensTray(scope) {
-      var root = scope || document;
-      root.querySelectorAll('[data-new-specimens-tray]').forEach(function (tray) {
-        if (tray.dataset.newSpecimensTrayBound === 'true') {
+      destroyNewSpecimens(section);
+
+      var tray = section.querySelector('[data-new-specimens-tray]');
+      var prevBtn = section.querySelector('[data-new-specimens-prev]');
+      var nextBtn = section.querySelector('[data-new-specimens-next]');
+
+      if (!tray) {
+        return;
+      }
+
+      var autoplayPaused = false;
+      var state = {
+        listeners: [],
+        autoplayTimer: null,
+        resumeTimer: null
+      };
+
+      function trackListener(target, type, handler, options) {
+        target.addEventListener(type, handler, options);
+        state.listeners.push({ target: target, type: type, handler: handler, options: options });
+      }
+
+      function scrollTrayByCard(direction) {
+        var step = getTrayScrollStep(tray) * direction;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+        tray.scrollBy({ left: step, behavior: behavior });
+      }
+
+      function scrollTrayNextWithLoop() {
+        var maxScroll = tray.scrollWidth - tray.clientWidth;
+        var atEnd = tray.scrollLeft >= maxScroll - 2;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+
+        if (atEnd) {
+          tray.scrollTo({ left: 0, behavior: behavior });
           return;
         }
 
-        tray.dataset.newSpecimensTrayBound = 'true';
+        scrollTrayByCard(1);
+      }
 
-        var section = tray.closest('.new-specimens');
-        var prevBtn = section ? section.querySelector('[data-new-specimens-prev]') : null;
-        var nextBtn = section ? section.querySelector('[data-new-specimens-next]') : null;
+      function scrollTrayPrevWithLoop() {
+        var atStart = tray.scrollLeft <= 2;
+        var maxScroll = tray.scrollWidth - tray.clientWidth;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
 
-        var onScroll = function () {
-          updateTrayProgress(tray);
-        };
-
-        tray.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
-
-        if (prevBtn) {
-          prevBtn.addEventListener('click', function () {
-            scrollTrayByCard(tray, -1);
-          });
+        if (atStart) {
+          tray.scrollTo({ left: maxScroll, behavior: behavior });
+          return;
         }
 
-        if (nextBtn) {
-          nextBtn.addEventListener('click', function () {
-            scrollTrayByCard(tray, 1);
-          });
+        scrollTrayByCard(-1);
+      }
+
+      function stopAutoplay() {
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+          state.autoplayTimer = null;
+        }
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+
+        var overflow = tray.scrollWidth > tray.clientWidth + 2;
+        if (!overflow || autoplayPaused || prefersReducedMotion() || document.hidden) {
+          return;
         }
 
-        updateTrayProgress(tray);
+        state.autoplayTimer = setInterval(function () {
+          if (document.hidden) {
+            return;
+          }
+          try {
+            scrollTrayNextWithLoop();
+          } catch (error) {
+            console.error('New specimens: autoplay tick failed.', error);
+          }
+        }, AUTOPLAY_MS);
+      }
+
+      function pauseAutoplay() {
+        autoplayPaused = true;
+        stopAutoplay();
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+          state.resumeTimer = null;
+        }
+      }
+
+      function scheduleAutoplayResume() {
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
+        state.resumeTimer = setTimeout(function () {
+          try {
+            autoplayPaused = false;
+            startAutoplay();
+          } catch (error) {
+            console.error('New specimens: autoplay resume failed.', error);
+          }
+        }, RESUME_DELAY_MS);
+      }
+
+      var onScroll = function () {
+        updateTrayProgress(tray, section);
+      };
+
+      trackListener(tray, 'scroll', onScroll, { passive: true });
+      trackListener(window, 'resize', onScroll);
+
+      if (prevBtn) {
+        trackListener(prevBtn, 'click', function () {
+          pauseAutoplay();
+          scrollTrayPrevWithLoop();
+          scheduleAutoplayResume();
+        });
+      }
+
+      if (nextBtn) {
+        trackListener(nextBtn, 'click', function () {
+          pauseAutoplay();
+          scrollTrayNextWithLoop();
+          scheduleAutoplayResume();
+        });
+      }
+
+      trackListener(tray, 'pointerdown', pauseAutoplay);
+      trackListener(tray, 'pointerenter', pauseAutoplay);
+      trackListener(tray, 'focusin', pauseAutoplay);
+      trackListener(tray, 'pointerup', scheduleAutoplayResume);
+      trackListener(tray, 'pointerleave', scheduleAutoplayResume);
+      trackListener(tray, 'focusout', scheduleAutoplayResume);
+
+      section._newSpecimensState = state;
+      section.dataset.newSpecimensInitialized = 'true';
+      updateTrayProgress(tray, section);
+      startAutoplay();
+    }
+
+    function initAll(scope) {
+      var context = scope || document;
+      context.querySelectorAll(SECTION_SELECTOR).forEach(function (section) {
+        if (section.dataset.newSpecimensInitialized === 'true') {
+          return;
+        }
+        initNewSpecimens(section);
       });
     }
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
-        bindNewSpecimensTray();
+        initAll();
       });
     } else {
-      bindNewSpecimensTray();
+      initAll();
     }
 
     document.addEventListener('shopify:section:load', function (event) {
-      bindNewSpecimensTray(event.target);
+      initAll(event.target);
+    });
+
+    document.addEventListener('shopify:section:unload', function (event) {
+      var section = event.target.querySelector(SECTION_SELECTOR);
+      if (section) {
+        destroyNewSpecimens(section);
+      }
     });
   })();
 {% endjavascript %}

@@ -149,7 +149,12 @@
   endif
 -%}
 
-<article class="product-card{% unless use_live_product %} product-card--mock{% endunless %}">
+<article
+  class="product-card{% unless use_live_product %} product-card--mock{% endunless %}"
+  {% if use_live_product %}
+    data-product-id="{{ card_product.id }}"
+  {% endif %}
+>
   <p class="product-card__specimen-id">
     <span class="visually-hidden">{{ 'products.card.specimen_id' | t }}</span>
     {{- specimen_id | escape -}}

@@ -1,5 +1,21 @@
 {%- liquid
   assign featured_collection = section.settings.collection
+
+  if featured_collection == blank
+    assign featured_collection = collections.all
+  endif
+
+  if featured_collection == blank
+    if product != blank
+      for coll in product.collections
+        if coll.products_count > 0
+          assign featured_collection = coll
+          break
+        endif
+      endfor
+    endif
+  endif
+
   assign show_real_products = false
   if featured_collection != blank
     if featured_collection.products.size > 0
@@ -337,6 +353,8 @@
     'use strict';
 
     var SECTION_SELECTOR = '[data-featured-carousel]';
+    var AUTOPLAY_MS = 6000;
+    var RESUME_DELAY_MS = 8000;
 
     function prefersReducedMotion() {
       try {
@@ -353,6 +371,15 @@
 
       try {
         var state = root._featuredCarouselState;
+
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+        }
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
         state.listeners.forEach(function (entry) {
           entry.target.removeEventListener(entry.type, entry.handler);
         });
@@ -369,13 +396,9 @@
         return;
       }
 
-      var maxScroll = track.scrollWidth - track.clientWidth;
-      var scrollLeft = track.scrollLeft;
-      var atStart = scrollLeft <= 2;
-      var atEnd = scrollLeft >= maxScroll - 2;
-
-      prevButton.disabled = atStart;
-      nextButton.disabled = atEnd;
+      var overflow = track.scrollWidth > track.clientWidth + 2;
+      prevButton.disabled = !overflow;
+      nextButton.disabled = !overflow;
     }
 
     function getScrollStep(track) {
@@ -406,7 +429,12 @@
       }
 
       var desktopQuery = window.matchMedia('(min-width: 750px)');
-      var state = { listeners: [] };
+      var autoplayPaused = false;
+      var state = {
+        listeners: [],
+        autoplayTimer: null,
+        resumeTimer: null
+      };
 
       function trackListener(target, type, handler, options) {
         target.addEventListener(type, handler, options);
@@ -419,6 +447,84 @@
         track.scrollBy({ left: step, behavior: behavior });
       }
 
+      function scrollNextWithLoop() {
+        var maxScroll = track.scrollWidth - track.clientWidth;
+        var atEnd = track.scrollLeft >= maxScroll - 2;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+
+        if (atEnd) {
+          track.scrollTo({ left: 0, behavior: behavior });
+          return;
+        }
+
+        scrollByStep(1);
+      }
+
+      function scrollPrevWithLoop() {
+        var atStart = track.scrollLeft <= 2;
+        var maxScroll = track.scrollWidth - track.clientWidth;
+        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+
+        if (atStart) {
+          track.scrollTo({ left: maxScroll, behavior: behavior });
+          return;
+        }
+
+        scrollByStep(-1);
+      }
+
+      function stopAutoplay() {
+        if (state.autoplayTimer) {
+          clearInterval(state.autoplayTimer);
+          state.autoplayTimer = null;
+        }
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+
+        var overflow = track.scrollWidth > track.clientWidth + 2;
+        if (!overflow || autoplayPaused || prefersReducedMotion() || document.hidden) {
+          return;
+        }
+
+        state.autoplayTimer = setInterval(function () {
+          if (document.hidden) {
+            return;
+          }
+          try {
+            scrollNextWithLoop();
+          } catch (error) {
+            console.error('Featured collection: autoplay tick failed.', error);
+          }
+        }, AUTOPLAY_MS);
+      }
+
+      function pauseAutoplay() {
+        autoplayPaused = true;
+        stopAutoplay();
+
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+          state.resumeTimer = null;
+        }
+      }
+
+      function scheduleAutoplayResume() {
+        if (state.resumeTimer) {
+          clearTimeout(state.resumeTimer);
+        }
+
+        state.resumeTimer = setTimeout(function () {
+          try {
+            autoplayPaused = false;
+            startAutoplay();
+          } catch (error) {
+            console.error('Featured collection: autoplay resume failed.', error);
+          }
+        }, RESUME_DELAY_MS);
+      }
+
       function syncNavVisibility() {
         var isDesktop = desktopQuery.matches;
         var overflow = track.scrollWidth > track.clientWidth + 2;
@@ -428,19 +534,31 @@
       }
 
       trackListener(prevButton, 'click', function () {
-        scrollByStep(-1);
+        pauseAutoplay();
+        scrollPrevWithLoop();
+        scheduleAutoplayResume();
       });
 
       trackListener(nextButton, 'click', function () {
-        scrollByStep(1);
+        pauseAutoplay();
+        scrollNextWithLoop();
+        scheduleAutoplayResume();
       });
 
       trackListener(track, 'scroll', function () {
         updateNavState(track, prevButton, nextButton);
       }, { passive: true });
 
+      trackListener(track, 'pointerdown', pauseAutoplay);
+      trackListener(track, 'pointerenter', pauseAutoplay);
+      trackListener(track, 'focusin', pauseAutoplay);
+      trackListener(track, 'pointerup', scheduleAutoplayResume);
+      trackListener(track, 'pointerleave', scheduleAutoplayResume);
+      trackListener(track, 'focusout', scheduleAutoplayResume);
+
       trackListener(window, 'resize', function () {
         syncNavVisibility();
+        startAutoplay();
       });
 
       if (typeof desktopQuery.addEventListener === 'function') {
@@ -454,6 +572,7 @@
       syncNavVisibility();
       root._featuredCarouselState = state;
       root.dataset.featuredCarouselInitialized = 'true';
+      startAutoplay();
     }
 
     function initAllCarousels(scope) {
