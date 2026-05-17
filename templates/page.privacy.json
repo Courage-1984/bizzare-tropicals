@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-policy-page",
+      "settings": {
+        "fallback_title": "Privacy policy",
+        "intro": "How Bizarre Tropicals collects, uses, and protects your personal information.",
+        "default_body": "<p>We respect your privacy and only use your data to run the store, fulfil orders, and communicate with you about your purchase or enquiry.</p><ul><li><strong>What we collect:</strong> Name, email, phone, shipping address, and order history when you buy or contact us. Newsletter sign-ups store your email only.</li><li><strong>How we use it:</strong> To process payments, ship orders, respond to messages, and send marketing emails if you opted in. We do not sell your data to third parties.</li><li><strong>Payment processing:</strong> Card and checkout data are handled by Shopify and our payment providers — we do not store full card numbers on our servers.</li><li><strong>Cookies:</strong> The site uses cookies for cart, checkout, analytics, and preferences as described in Shopify’s cookie banner where applicable.</li><li><strong>Your rights:</strong> You may request access, correction, or deletion of your personal data by contacting us. South African POPIA rights apply where relevant.</li><li><strong>Retention:</strong> Order records are kept as required for tax and warranty purposes, then archived or deleted according to law.</li></ul><p>Questions about privacy? Contact <a href=\"mailto:sales@bizarretropicals.com\">sales@bizarretropicals.com</a>.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

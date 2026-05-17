@@ -1,0 +1,1897 @@
+{
+  "total": 77,
+  "complete": 77,
+  "incomplete": [],
+  "skipped_cached": 0,
+  "results": {
+    "byblis-aquatica": {
+      "latin": "Byblis aquatica",
+      "filenames": [
+        "ByblisAquaticaCapsula.jpg",
+        "ByblisAquaticaFlora.jpg",
+        "ByblisAquaticaSeedling.jpg",
+        "ByblisAquaticaHabitus.jpg",
+        "Byblis gigantea - Flickr - Kevin Thiele.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisAquaticaCapsula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisAquaticaFlora.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisAquaticaSeedling.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisAquaticaHabitus.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_gigantea_-_Flickr_-_Kevin_Thiele.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [],
+      "genus_fallback": false
+    },
+    "byblis-filifolia-large": {
+      "latin": "Byblis filifolia",
+      "filenames": [
+        "Byblis filifolia flower.jpg",
+        "Byblis filifolia detail.jpg",
+        "Byblis filifolia.jpg",
+        "Byblis filifolia1.jpg",
+        "Byblis filifolia flower1.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia_detail.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia_flower1.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Byblis_filifolia_flower.jpg/1280px-Byblis_filifolia_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Byblis_filifolia_detail.jpg/1280px-Byblis_filifolia_detail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Byblis_filifolia.jpg/1280px-Byblis_filifolia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Byblis_filifolia1.jpg/1280px-Byblis_filifolia1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Byblis_filifolia_flower1.jpg/1280px-Byblis_filifolia_flower1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "byblis-gigantea": {
+      "latin": "Byblis gigantea",
+      "filenames": [
+        "Byblis gigantea - Flickr - Kevin Thiele.jpg",
+        "ByblisGigantea.jpg",
+        "(Byblis gigantea in Cannington, Australia) - DPLA - 07e12c2c6093bbe8cbcc62b082ecc4e8.jpg",
+        "(Byblis gigantea in Cannington, Australia) - DPLA - 181ca2a17510c96136ea471f818c48e3.jpg",
+        "(Byblis gigantea in Cannington, Australia) - DPLA - 04d9440b94793c581ed4953b7476f480.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_gigantea_-_Flickr_-_Kevin_Thiele.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisGigantea.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/(Byblis_gigantea_in_Cannington%2C_Australia)_-_DPLA_-_07e12c2c6093bbe8cbcc62b082ecc4e8.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/(Byblis_gigantea_in_Cannington%2C_Australia)_-_DPLA_-_181ca2a17510c96136ea471f818c48e3.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/(Byblis_gigantea_in_Cannington%2C_Australia)_-_DPLA_-_04d9440b94793c581ed4953b7476f480.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Byblis_gigantea_-_Flickr_-_Kevin_Thiele.jpg/1280px-Byblis_gigantea_-_Flickr_-_Kevin_Thiele.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/ByblisGigantea.jpg/1280px-ByblisGigantea.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/%28Byblis_gigantea_in_Cannington%2C_Australia%29_-_DPLA_-_07e12c2c6093bbe8cbcc62b082ecc4e8.jpg/1280px-%28Byblis_gigantea_in_Cannington%2C_Australia%29_-_DPLA_-_07e12c2c6093bbe8cbcc62b082ecc4e8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/%28Byblis_gigantea_in_Cannington%2C_Australia%29_-_DPLA_-_181ca2a17510c96136ea471f818c48e3.jpg/1280px-%28Byblis_gigantea_in_Cannington%2C_Australia%29_-_DPLA_-_181ca2a17510c96136ea471f818c48e3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/%28Byblis_gigantea_in_Cannington%2C_Australia%29_-_DPLA_-_04d9440b94793c581ed4953b7476f480.jpg/1280px-%28Byblis_gigantea_in_Cannington%2C_Australia%29_-_DPLA_-_04d9440b94793c581ed4953b7476f480.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "byblis-liniflora": {
+      "latin": "Byblis liniflora",
+      "filenames": [
+        "Byblis liniflora 3 flowering.jpg",
+        "ByblisLinifloraFlora.JPG",
+        "ByblisLinifloraHabitus.JPG",
+        "Byblis liniflora capsule1.JPG",
+        "Byblis liniflora capsule2.JPG"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_3_flowering.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisLinifloraFlora.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisLinifloraHabitus.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_capsule1.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_capsule2.JPG?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/6/66/Byblis_liniflora_3_flowering.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/ByblisLinifloraFlora.JPG/1280px-ByblisLinifloraFlora.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/6/64/ByblisLinifloraHabitus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/1/1a/Byblis_liniflora_capsule1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Byblis_liniflora_capsule2.JPG/1280px-Byblis_liniflora_capsule2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "byblis-liniflora-rainbow": {
+      "latin": "Byblis liniflora",
+      "filenames": [
+        "ByblisLinifloraHabitus.JPG",
+        "Byblis liniflora capsule2.JPG",
+        "Byblis liniflora capsule3.JPG",
+        "Byblis liniflora capsule1.JPG",
+        "Byblis liniflora 3 flowering.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/ByblisLinifloraHabitus.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_capsule2.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_capsule3.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_capsule1.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_liniflora_3_flowering.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/6/64/ByblisLinifloraHabitus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Byblis_liniflora_capsule2.JPG/1280px-Byblis_liniflora_capsule2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Byblis_liniflora_capsule3.JPG/1280px-Byblis_liniflora_capsule3.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/1/1a/Byblis_liniflora_capsule1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/6/66/Byblis_liniflora_3_flowering.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "cephalotus-follicularis": {
+      "latin": "Cephalotus follicularis",
+      "filenames": [
+        "Cephalotus follicularis 0001.JPG",
+        "Cephalotus follicularis 002.jpg",
+        "Cephalotus follicularis 01.jpg",
+        "Cephalotus follicularis Hennern 3.jpg",
+        "Cephalotus follicularis001.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_0001.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_002.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_3.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis001.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/6/6e/Cephalotus_follicularis_0001.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Cephalotus_follicularis_002.jpg/1280px-Cephalotus_follicularis_002.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Cephalotus_follicularis_01.jpg/1280px-Cephalotus_follicularis_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Cephalotus_follicularis_Hennern_3.jpg/1280px-Cephalotus_follicularis_Hennern_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/d/da/Cephalotus_follicularis001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "cephalotus-follicularis-eden-black": {
+      "latin": "Cephalotus follicularis",
+      "filenames": [
+        "Cephalotus follicularis 01.jpg",
+        "Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg",
+        "Cephalotus follicularis Hennern 4.jpg",
+        "Cephalotus follicularis Hennern 2.jpg",
+        "Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_4.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Cephalotus_follicularis_01.jpg/1280px-Cephalotus_follicularis_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg/1280px-Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cephalotus_follicularis_Hennern_4.jpg/1280px-Cephalotus_follicularis_Hennern_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Cephalotus_follicularis_Hennern_2.jpg/1280px-Cephalotus_follicularis_Hennern_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg/1280px-Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "cephalotus-follicularis-hummers-giant": {
+      "latin": "Cephalotus follicularis",
+      "filenames": [
+        "Cephalotus follicularis 01.jpg",
+        "Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg",
+        "Cephalotus follicularis Hennern 4.jpg",
+        "Cephalotus follicularis Hennern 2.jpg",
+        "Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_4.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Cephalotus_follicularis_01.jpg/1280px-Cephalotus_follicularis_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg/1280px-Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cephalotus_follicularis_Hennern_4.jpg/1280px-Cephalotus_follicularis_Hennern_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Cephalotus_follicularis_Hennern_2.jpg/1280px-Cephalotus_follicularis_Hennern_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg/1280px-Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "cephalotus-follicularis-squat": {
+      "latin": "Cephalotus follicularis",
+      "filenames": [
+        "Cephalotus follicularis 01.jpg",
+        "Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg",
+        "Cephalotus follicularis Hennern 4.jpg",
+        "Cephalotus follicularis Hennern 2.jpg",
+        "Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_4.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Cephalotus_follicularis_01.jpg/1280px-Cephalotus_follicularis_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg/1280px-Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cephalotus_follicularis_Hennern_4.jpg/1280px-Cephalotus_follicularis_Hennern_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Cephalotus_follicularis_Hennern_2.jpg/1280px-Cephalotus_follicularis_Hennern_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg/1280px-Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "cephalotus-follicularis-standard": {
+      "latin": "Cephalotus follicularis",
+      "filenames": [
+        "Cephalotus follicularis 01.jpg",
+        "Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg",
+        "Cephalotus follicularis Hennern 4.jpg",
+        "Cephalotus follicularis Hennern 2.jpg",
+        "Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_4.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Cephalotus_follicularis_01.jpg/1280px-Cephalotus_follicularis_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg/1280px-Cephalotus_follicularis_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cephalotus_follicularis_Hennern_4.jpg/1280px-Cephalotus_follicularis_Hennern_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Cephalotus_follicularis_Hennern_2.jpg/1280px-Cephalotus_follicularis_Hennern_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg/1280px-Cephalotus_follicularis_-_California_Carnivores_-_Sarah_Stierch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "darlingtonia-californica": {
+      "latin": "Darlingtonia californica",
+      "filenames": [
+        "Darlingtonia californica, by Mary Vaux Walcott.jpg",
+        "Darlingtonia Macfarlane illustration.jpg",
+        "Darlingtonia californica.jpg",
+        "Darlingtonia californica 3.jpg",
+        "Darlingtonia californica ne1.JPG"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica%2C_by_Mary_Vaux_Walcott.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_Macfarlane_illustration.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_3.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_ne1.JPG?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/1/10/Darlingtonia_californica%2C_by_Mary_Vaux_Walcott.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/3/36/Darlingtonia_Macfarlane_illustration.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/0/06/Darlingtonia_californica.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/0/05/Darlingtonia_californica_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Darlingtonia_californica_ne1.JPG/1280px-Darlingtonia_californica_ne1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "darlingtonia-californica-coastal": {
+      "latin": "Darlingtonia californica",
+      "filenames": [
+        "Darlingtonia californica Torr - par Mickael Schauli.jpg",
+        "Darlingtonia californica - par Mickael Schauli.jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg",
+        "Darlingtonia Californica (14007752361).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(3)_(5898133348).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(4)_(5898140266).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_Californica_(14007752361).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Darlingtonia_californica_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Darlingtonia_Californica_%2814007752361%29.jpg/1280px-Darlingtonia_Californica_%2814007752361%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "darlingtonia-californica-cobra": {
+      "latin": "Darlingtonia californica",
+      "filenames": [
+        "Darlingtonia californica Torr - par Mickael Schauli.jpg",
+        "Darlingtonia californica - par Mickael Schauli.jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg",
+        "Darlingtonia Californica (14007752361).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(3)_(5898133348).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(4)_(5898140266).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_Californica_(14007752361).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Darlingtonia_californica_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Darlingtonia_Californica_%2814007752361%29.jpg/1280px-Darlingtonia_Californica_%2814007752361%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "darlingtonia-californica-red": {
+      "latin": "Darlingtonia californica",
+      "filenames": [
+        "Darlingtonia californica Torr - par Mickael Schauli.jpg",
+        "Darlingtonia californica - par Mickael Schauli.jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg",
+        "Darlingtonia Californica (14007752361).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(3)_(5898133348).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(4)_(5898140266).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_Californica_(14007752361).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Darlingtonia_californica_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Darlingtonia_Californica_%2814007752361%29.jpg/1280px-Darlingtonia_Californica_%2814007752361%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "darlingtonia-californica-standard": {
+      "latin": "Darlingtonia californica",
+      "filenames": [
+        "Darlingtonia californica Torr - par Mickael Schauli.jpg",
+        "Darlingtonia californica - par Mickael Schauli.jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg",
+        "0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg",
+        "Darlingtonia Californica (14007752361).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_californica_-_par_Mickael_Schauli.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(3)_(5898133348).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_(Darlingtonia_californica)_(6-21-11)_near_florence%2C_lane_co%2C_or_-_(4)_(5898140266).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darlingtonia_Californica_(14007752361).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_Torr_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Darlingtonia_californica_-_par_Mickael_Schauli.jpg/1280px-Darlingtonia_californica_-_par_Mickael_Schauli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%283%29_%285898133348%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg/1280px-0101a_-_PITCHER-PLANT%2C_DALINGTONIA_%28Darlingtonia_californica%29_%286-21-11%29_near_florence%2C_lane_co%2C_or_-_%284%29_%285898140266%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Darlingtonia_Californica_%2814007752361%29.jpg/1280px-Darlingtonia_Californica_%2814007752361%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "dionaea-muscipula": {
+      "latin": "Dionaea muscipula",
+      "filenames": [
+        "01 Venusfliegenfalle.jpg",
+        "Dionaea muscipula.jpg",
+        "Dionaea muscipula 1.jpg",
+        "Dionaea muscipula 001.JPG",
+        "Dionaea muscipula 2.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/01_Venusfliegenfalle.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_001.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_2.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/01_Venusfliegenfalle.jpg/1280px-01_Venusfliegenfalle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Dionaea_muscipula.jpg/1280px-Dionaea_muscipula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dionaea_muscipula_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Dionaea_muscipula_001.JPG/1280px-Dionaea_muscipula_001.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/6/6b/Dionaea_muscipula_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "dionaea-muscipula-akai-ryu": {
+      "latin": "Dionaea muscipula",
+      "filenames": [
+        "Dionaea muscipula 3.jpg",
+        "Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg",
+        "2012-07-27 15-29-54-Dionaea muscipula.jpg",
+        "Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg",
+        "Dionaea muscipula 34zz.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_3.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_(51693075042).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/2012-07-27_15-29-54-Dionaea_muscipula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_34zz.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Dionaea_muscipula_3.jpg/1280px-Dionaea_muscipula_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg/1280px-Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/2012-07-27_15-29-54-Dionaea_muscipula.jpg/1280px-2012-07-27_15-29-54-Dionaea_muscipula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg/1280px-Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Dionaea_muscipula_34zz.jpg/1280px-Dionaea_muscipula_34zz.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "dionaea-muscipula-alien": {
+      "latin": "Dionaea muscipula",
+      "filenames": [
+        "Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg",
+        "2012-07-27 15-29-54-Dionaea muscipula.jpg",
+        "Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg",
+        "Dionaea muscipula 34zz.jpg",
+        "Venus flytrap (Dionaea muscipula) Zagreb Botanical Garden 1060.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_(51693075042).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/2012-07-27_15-29-54-Dionaea_muscipula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_34zz.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_(Dionaea_muscipula)_Zagreb_Botanical_Garden_1060.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg/1280px-Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/2012-07-27_15-29-54-Dionaea_muscipula.jpg/1280px-2012-07-27_15-29-54-Dionaea_muscipula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg/1280px-Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Dionaea_muscipula_34zz.jpg/1280px-Dionaea_muscipula_34zz.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Venus_flytrap_%28Dionaea_muscipula%29_Zagreb_Botanical_Garden_1060.jpg/1280px-Venus_flytrap_%28Dionaea_muscipula%29_Zagreb_Botanical_Garden_1060.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "dionaea-muscipula-b52": {
+      "latin": "Dionaea muscipula",
+      "filenames": [
+        "Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg",
+        "2012-07-27 15-29-54-Dionaea muscipula.jpg",
+        "Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg",
+        "Dionaea muscipula 34zz.jpg",
+        "Venus flytrap (Dionaea muscipula) Zagreb Botanical Garden 1060.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_(51693075042).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/2012-07-27_15-29-54-Dionaea_muscipula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_34zz.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_(Dionaea_muscipula)_Zagreb_Botanical_Garden_1060.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg/1280px-Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/2012-07-27_15-29-54-Dionaea_muscipula.jpg/1280px-2012-07-27_15-29-54-Dionaea_muscipula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg/1280px-Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Dionaea_muscipula_34zz.jpg/1280px-Dionaea_muscipula_34zz.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Venus_flytrap_%28Dionaea_muscipula%29_Zagreb_Botanical_Garden_1060.jpg/1280px-Venus_flytrap_%28Dionaea_muscipula%29_Zagreb_Botanical_Garden_1060.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "dionaea-muscipula-king-henry": {
+      "latin": "Dionaea muscipula",
+      "filenames": [
+        "Dionaea muscipula 1.jpg",
+        "Dionaea muscipula trap.jpg",
+        "Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg",
+        "2012-07-27 15-29-54-Dionaea muscipula.jpg",
+        "Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_trap.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_(51693075042).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/2012-07-27_15-29-54-Dionaea_muscipula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dionaea_muscipula_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Dionaea_muscipula_trap.jpg/1280px-Dionaea_muscipula_trap.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg/1280px-Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/2012-07-27_15-29-54-Dionaea_muscipula.jpg/1280px-2012-07-27_15-29-54-Dionaea_muscipula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg/1280px-Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "dionaea-muscipula-sawtooth": {
+      "latin": "Dionaea muscipula",
+      "filenames": [
+        "Dionaea muscipula 1.jpg",
+        "Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg",
+        "2012-07-27 15-29-54-Dionaea muscipula.jpg",
+        "Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg",
+        "Dionaea muscipula 34zz.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_(51693075042).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/2012-07-27_15-29-54-Dionaea_muscipula.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Dionaea_muscipula_34zz.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/e/e2/Dionaea_muscipula_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg/1280px-Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/2012-07-27_15-29-54-Dionaea_muscipula.jpg/1280px-2012-07-27_15-29-54-Dionaea_muscipula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg/1280px-Dionaea_muscipula_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09968.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Dionaea_muscipula_34zz.jpg/1280px-Dionaea_muscipula_34zz.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-aliciae": {
+      "latin": "Drosera aliciae",
+      "filenames": [
+        "Alice Sundew - Drosera aliciae (40046905595).jpg",
+        "Alice Sundew - Drosera aliciae (40046912215).jpg",
+        "Alice Sundew - Drosera aliciae (40232713724).jpg",
+        "Drosera aliciae kz02.jpg",
+        "Drosera aliciae kz03.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Alice_Sundew_-_Drosera_aliciae_(40046905595).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Alice_Sundew_-_Drosera_aliciae_(40046912215).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Alice_Sundew_-_Drosera_aliciae_(40232713724).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_aliciae_kz02.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_aliciae_kz03.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Alice_Sundew_-_Drosera_aliciae_%2840046905595%29.jpg/1280px-Alice_Sundew_-_Drosera_aliciae_%2840046905595%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Alice_Sundew_-_Drosera_aliciae_%2840046912215%29.jpg/1280px-Alice_Sundew_-_Drosera_aliciae_%2840046912215%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Alice_Sundew_-_Drosera_aliciae_%2840232713724%29.jpg/1280px-Alice_Sundew_-_Drosera_aliciae_%2840232713724%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Drosera_aliciae_kz02.jpg/1280px-Drosera_aliciae_kz02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Drosera_aliciae_kz03.jpg/1280px-Drosera_aliciae_kz03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-anglica": {
+      "latin": "Drosera anglica",
+      "filenames": [
+        "Drosera anglica Sundew (39333653521).jpg",
+        "Lange zonnedauw - English sundew - Drosera anglica.jpg",
+        "English sundew (Drosera anglica) (8200403593).jpg",
+        "Drosera anglica 15-p.bot-dros.angli-10.jpg",
+        "Drosera anglica 15-p.bot-dros.angli-11.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_anglica_Sundew_(39333653521).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Lange_zonnedauw_-_English_sundew_-_Drosera_anglica.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/English_sundew_(Drosera_anglica)_(8200403593).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_anglica_15-p.bot-dros.angli-10.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_anglica_15-p.bot-dros.angli-11.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Drosera_anglica_Sundew_%2839333653521%29.jpg/1280px-Drosera_anglica_Sundew_%2839333653521%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Lange_zonnedauw_-_English_sundew_-_Drosera_anglica.jpg/1280px-Lange_zonnedauw_-_English_sundew_-_Drosera_anglica.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/English_sundew_%28Drosera_anglica%29_%288200403593%29.jpg/1280px-English_sundew_%28Drosera_anglica%29_%288200403593%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Drosera_anglica_15-p.bot-dros.angli-10.jpg/1280px-Drosera_anglica_15-p.bot-dros.angli-10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Drosera_anglica_15-p.bot-dros.angli-11.jpg/1280px-Drosera_anglica_15-p.bot-dros.angli-11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-capensis": {
+      "latin": "Drosera capensis",
+      "filenames": [
+        "Drosera capensis bend.JPG",
+        "Drosera capensis (carnivorous-plant-142084).jpg",
+        "Drosera capensis leaf.jpg",
+        "Drosera capensis 2.jpg",
+        "Drosera capensis Luc Viatour.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_(carnivorous-plant-142084).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_leaf.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_Luc_Viatour.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/0/0f/Drosera_capensis_bend.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Drosera_capensis_%28carnivorous-plant-142084%29.jpg/1280px-Drosera_capensis_%28carnivorous-plant-142084%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Drosera_capensis_leaf.jpg/1280px-Drosera_capensis_leaf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/1/17/Drosera_capensis_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Drosera_capensis_Luc_Viatour.jpg/1280px-Drosera_capensis_Luc_Viatour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-capensis-typical": {
+      "latin": "Drosera capensis",
+      "filenames": [
+        "Drosera capensis bend.JPG",
+        "Cape Sundew - Drosera capensis (39142412240).jpg",
+        "Cape Sundew - Drosera capensis (39142410090).jpg",
+        "Cape Sundew - Drosera capensis (39142407930).jpg",
+        "Drosera capensis Luc Viatour.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cape_Sundew_-_Drosera_capensis_(39142412240).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cape_Sundew_-_Drosera_capensis_(39142410090).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Cape_Sundew_-_Drosera_capensis_(39142407930).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_Luc_Viatour.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/0/0f/Drosera_capensis_bend.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Cape_Sundew_-_Drosera_capensis_%2839142412240%29.jpg/1280px-Cape_Sundew_-_Drosera_capensis_%2839142412240%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Cape_Sundew_-_Drosera_capensis_%2839142410090%29.jpg/1280px-Cape_Sundew_-_Drosera_capensis_%2839142410090%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Cape_Sundew_-_Drosera_capensis_%2839142407930%29.jpg/1280px-Cape_Sundew_-_Drosera_capensis_%2839142407930%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Drosera_capensis_Luc_Viatour.jpg/1280px-Drosera_capensis_Luc_Viatour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-filiformis": {
+      "latin": "Drosera filiformis",
+      "filenames": [
+        "Drosera filiformis var. tracyii.jpg",
+        "Drosera filiformis closeup 2.jpg",
+        "Drosera filiformis closeup 4.jpg",
+        "Drosera filiformis closeup 1.jpg",
+        "Drosera filiformis closeup 3.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_filiformis_var._tracyii.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_filiformis_closeup_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_filiformis_closeup_4.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_filiformis_closeup_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_filiformis_closeup_3.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Drosera_filiformis_var._tracyii.jpg/1280px-Drosera_filiformis_var._tracyii.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Drosera_filiformis_closeup_2.jpg/1280px-Drosera_filiformis_closeup_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Drosera_filiformis_closeup_4.jpg/1280px-Drosera_filiformis_closeup_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Drosera_filiformis_closeup_1.jpg/1280px-Drosera_filiformis_closeup_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Drosera_filiformis_closeup_3.jpg/1280px-Drosera_filiformis_closeup_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-meristocaulis": {
+      "latin": "Drosera meristocaulis",
+      "filenames": [
+        "Drosera meristocaulis.jpg",
+        "DroseraMeristocaulis.jpg",
+        "Bl\u00fchender rundbl\u00e4ttriger Sonnentau (Drosera rotundifolia).jpg",
+        "Drosera rotundifolia TK 2023-07-08 9.jpg",
+        "Ronde zonnedauw - round-leaved sundew - Drosera rotundifolia.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_meristocaulis.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/DroseraMeristocaulis.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Bl%C3%BChender_rundbl%C3%A4ttriger_Sonnentau_(Drosera_rotundifolia).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_rotundifolia_TK_2023-07-08_9.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Ronde_zonnedauw_-_round-leaved_sundew_-_Drosera_rotundifolia.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [],
+      "genus_fallback": false
+    },
+    "drosera-regia-giant": {
+      "latin": "Drosera regia",
+      "filenames": [
+        "Drosera regia - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04338.JPG",
+        "Drosera regia - open and closed flowers without spider web.jpg",
+        "Drosera Regia - Flickr - incidencematrix.jpg",
+        "20210620 Hortus botanicus Leiden - Drosera regia .jpg",
+        "20210620 Hortus botanicus Leiden - Drosera regia v2.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_regia_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04338.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_regia_-_open_and_closed_flowers_without_spider_web.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Regia_-_Flickr_-_incidencematrix.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/20210620_Hortus_botanicus_Leiden_-_Drosera_regia_.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/20210620_Hortus_botanicus_Leiden_-_Drosera_regia_v2.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Drosera_regia_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04338.JPG/1280px-Drosera_regia_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04338.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Drosera_regia_-_open_and_closed_flowers_without_spider_web.jpg/1280px-Drosera_regia_-_open_and_closed_flowers_without_spider_web.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Drosera_Regia_-_Flickr_-_incidencematrix.jpg/1280px-Drosera_Regia_-_Flickr_-_incidencematrix.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/20210620_Hortus_botanicus_Leiden_-_Drosera_regia_.jpg/1280px-20210620_Hortus_botanicus_Leiden_-_Drosera_regia_.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/20210620_Hortus_botanicus_Leiden_-_Drosera_regia_v2.jpg/1280px-20210620_Hortus_botanicus_Leiden_-_Drosera_regia_v2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosera-spatulata-spoon": {
+      "latin": "Drosera spatulata",
+      "filenames": [
+        "Drosera spatulata 1.jpg",
+        "Drosera spatulata flower.jpg",
+        "Drosera spatulata (23441069360).jpg",
+        "Spoon-leaved Sundew - Drosera spatulata (40952594791).jpg",
+        "Spoon-leaved Sundew - Drosera spatulata (40245309344).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_spatulata_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_spatulata_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_spatulata_(23441069360).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Spoon-leaved_Sundew_-_Drosera_spatulata_(40952594791).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Spoon-leaved_Sundew_-_Drosera_spatulata_(40245309344).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Drosera_spatulata_1.jpg/1280px-Drosera_spatulata_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/0/06/Drosera_spatulata_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Drosera_spatulata_%2823441069360%29.jpg/1280px-Drosera_spatulata_%2823441069360%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Spoon-leaved_Sundew_-_Drosera_spatulata_%2840952594791%29.jpg/1280px-Spoon-leaved_Sundew_-_Drosera_spatulata_%2840952594791%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Spoon-leaved_Sundew_-_Drosera_spatulata_%2840245309344%29.jpg/1280px-Spoon-leaved_Sundew_-_Drosera_spatulata_%2840245309344%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosophyllum-lusitanicum": {
+      "latin": "Drosophyllum lusitanicum",
+      "filenames": [
+        "Drosophyllum lusitanicum a.JPG",
+        "Drosophyllum lusitanicum ne.jpg",
+        "Drosophyllum lusitanicum kz06.jpg",
+        "Drosophyllum lusitanicum kz03.jpg",
+        "Drosophyllum lusitanicum kz01.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_a.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_ne.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz06.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz03.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz01.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d9/Drosophyllum_lusitanicum_a.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Drosophyllum_lusitanicum_ne.jpg/1280px-Drosophyllum_lusitanicum_ne.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Drosophyllum_lusitanicum_kz06.jpg/1280px-Drosophyllum_lusitanicum_kz06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Drosophyllum_lusitanicum_kz03.jpg/1280px-Drosophyllum_lusitanicum_kz03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Drosophyllum_lusitanicum_kz01.jpg/1280px-Drosophyllum_lusitanicum_kz01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosophyllum-lusitanicum-dewy-pine": {
+      "latin": "Drosophyllum lusitanicum",
+      "filenames": [
+        "Drosophyllum lusitanicum kz12.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum kz09.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-4-21 SierraMadrona.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz12.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz09.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Drosophyllum_lusitanicum_kz12.jpg/1280px-Drosophyllum_lusitanicum_kz12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Drosophyllum_lusitanicum_kz09.jpg/1280px-Drosophyllum_lusitanicum_kz09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosophyllum-lusitanicum-spain": {
+      "latin": "Drosophyllum lusitanicum",
+      "filenames": [
+        "Drosophyllum lusitanicum kz12.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum Plantas 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum kz09.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz12.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Plantas_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz09.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Drosophyllum_lusitanicum_kz12.jpg/1280px-Drosophyllum_lusitanicum_kz12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Drosophyllum_lusitanicum_Plantas_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Plantas_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Drosophyllum_lusitanicum_kz09.jpg/1280px-Drosophyllum_lusitanicum_kz09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosophyllum-lusitanicum-specimen": {
+      "latin": "Drosophyllum lusitanicum",
+      "filenames": [
+        "Drosophyllum lusitanicum kz12.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum kz09.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-4-21 SierraMadrona.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz12.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz09.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Drosophyllum_lusitanicum_kz12.jpg/1280px-Drosophyllum_lusitanicum_kz12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Drosophyllum_lusitanicum_kz09.jpg/1280px-Drosophyllum_lusitanicum_kz09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "drosophyllum-lusitanicum-starter": {
+      "latin": "Drosophyllum lusitanicum",
+      "filenames": [
+        "Drosophyllum lusitanicum kz12.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg",
+        "Drosophyllum lusitanicum kz09.jpg",
+        "Drosophyllum lusitanicum Habitat 2011-4-21 SierraMadrona.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz12.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_kz09.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Drosophyllum_lusitanicum_kz12.jpg/1280px-Drosophyllum_lusitanicum_kz12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitus_2011-5-22_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Drosophyllum_lusitanicum_kz09.jpg/1280px-Drosophyllum_lusitanicum_kz09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg/1280px-Drosophyllum_lusitanicum_Habitat_2011-4-21_SierraMadrona.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "heliamphora-heterodoxa": {
+      "latin": "Heliamphora heterodoxa",
+      "filenames": [
+        "Heliamphora heterodoxa x minor Jard\u00edn bot\u00e1nico de Valencia (2).JPG",
+        "Heliamphora heterodoxa x minor Jard\u00edn bot\u00e1nico de Valencia (1).JPG",
+        "Heliamphora heterodoxa \u00d7 minori in Jardin des Plantes de Toulouse 02.jpg",
+        "Heliamphora heterodoxa \u00d7 minori in Jardin des Plantes de Toulouse 01.jpg",
+        "Heliamphora minor x heterodoxa.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_(2).JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_(1).JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_heterodoxa_%C3%97_minori_in_Jardin_des_Plantes_de_Toulouse_02.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_heterodoxa_%C3%97_minori_in_Jardin_des_Plantes_de_Toulouse_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_x_heterodoxa.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%282%29.JPG/1280px-Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%282%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%281%29.JPG/1280px-Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%281%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Heliamphora_heterodoxa_%C3%97_minori_in_Jardin_des_Plantes_de_Toulouse_02.jpg/1280px-Heliamphora_heterodoxa_%C3%97_minori_in_Jardin_des_Plantes_de_Toulouse_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Heliamphora_heterodoxa_%C3%97_minori_in_Jardin_des_Plantes_de_Toulouse_01.jpg/1280px-Heliamphora_heterodoxa_%C3%97_minori_in_Jardin_des_Plantes_de_Toulouse_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Heliamphora_minor_x_heterodoxa.jpg/1280px-Heliamphora_minor_x_heterodoxa.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "heliamphora-minor": {
+      "latin": "Heliamphora minor",
+      "filenames": [
+        "Heliamphora minor Auyan-tepui.jpg",
+        "Heliamphora minor2.jpg",
+        "Heliamphora minor - Atlanta Botanical Garden.JPG",
+        "Heliamphora minor kz01.jpg",
+        "Heliamphora minor var minor.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_Auyan-tepui.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_-_Atlanta_Botanical_Garden.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_kz01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_var_minor.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/8/81/Heliamphora_minor_Auyan-tepui.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Heliamphora_minor2.jpg/1280px-Heliamphora_minor2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Heliamphora_minor_-_Atlanta_Botanical_Garden.JPG/1280px-Heliamphora_minor_-_Atlanta_Botanical_Garden.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Heliamphora_minor_kz01.jpg/1280px-Heliamphora_minor_kz01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Heliamphora_minor_var_minor.jpg/1280px-Heliamphora_minor_var_minor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "heliamphora-minor-auyan-tepui": {
+      "latin": "Heliamphora minor",
+      "filenames": [
+        "Heliamphora heterodoxa x minor Jard\u00edn bot\u00e1nico de Valencia (2).JPG",
+        "Heliamphora heterodoxa x minor Jard\u00edn bot\u00e1nico de Valencia (1).JPG",
+        "Heliamphora minor x heterodoxa.jpg",
+        "Heliamphora minor - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04340.JPG",
+        "Heliamphora minor1.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_(2).JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_(1).JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_x_heterodoxa.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04340.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_minor1.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%282%29.JPG/1280px-Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%282%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%281%29.JPG/1280px-Heliamphora_heterodoxa_x_minor_Jard%C3%ADn_bot%C3%A1nico_de_Valencia_%281%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Heliamphora_minor_x_heterodoxa.jpg/1280px-Heliamphora_minor_x_heterodoxa.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Heliamphora_minor_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04340.JPG/1280px-Heliamphora_minor_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04340.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Heliamphora_minor1.jpg/1280px-Heliamphora_minor1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "heliamphora-nutans": {
+      "latin": "Heliamphora nutans",
+      "filenames": [
+        "Heliamphora nutans 1.jpg",
+        "Heliamphora nutans-IMG 0453.jpg",
+        "Heliamphora nutans-IMG 0452.jpg",
+        "Heliamphora nutans - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04339.JPG",
+        "Heliamphora nutans (Habitus) edit.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans-IMG_0453.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans-IMG_0452.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04339.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_nutans_(Habitus)_edit.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Heliamphora_nutans_1.jpg/1280px-Heliamphora_nutans_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Heliamphora_nutans-IMG_0453.jpg/1280px-Heliamphora_nutans-IMG_0453.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Heliamphora_nutans-IMG_0452.jpg/1280px-Heliamphora_nutans-IMG_0452.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Heliamphora_nutans_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04339.JPG/1280px-Heliamphora_nutans_-_Botanischer_Garten_Braunschweig_-_Braunschweig%2C_Germany_-_DSC04339.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Heliamphora_nutans_%28Habitus%29_edit.jpg/1280px-Heliamphora_nutans_%28Habitus%29_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "heliamphora-pulchella-tepui": {
+      "latin": "Heliamphora pulchella",
+      "filenames": [
+        "Heliamphora Pulchella (23508095812).jpg",
+        "Heliamphora Pulchella (23508103422).jpg",
+        "Heliamphora pulchella, exhibition in Botanical garden Brno.JPG",
+        "Heliamphora Pulchella (23508099002).jpg",
+        "Heliamphora pulchella (2), exhibition in Botanical garden Brno.JPG"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_Pulchella_(23508095812).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_Pulchella_(23508103422).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_pulchella%2C_exhibition_in_Botanical_garden_Brno.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_Pulchella_(23508099002).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_pulchella_(2)%2C_exhibition_in_Botanical_garden_Brno.JPG?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Heliamphora_Pulchella_%2823508095812%29.jpg/1280px-Heliamphora_Pulchella_%2823508095812%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Heliamphora_Pulchella_%2823508103422%29.jpg/1280px-Heliamphora_Pulchella_%2823508103422%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Heliamphora_pulchella%2C_exhibition_in_Botanical_garden_Brno.JPG/1280px-Heliamphora_pulchella%2C_exhibition_in_Botanical_garden_Brno.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Heliamphora_Pulchella_%2823508099002%29.jpg/1280px-Heliamphora_Pulchella_%2823508099002%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Heliamphora_pulchella_%282%29%2C_exhibition_in_Botanical_garden_Brno.JPG/1280px-Heliamphora_pulchella_%282%29%2C_exhibition_in_Botanical_garden_Brno.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "heliamphora-tatei": {
+      "latin": "Heliamphora tatei",
+      "filenames": [
+        "Heliamphora tatei aerial roots.JPG",
+        "Heliamphora tatei hairs.JPG",
+        "Heliamphora tateii juvenile.JPG",
+        "Heliamphora tatei.JPG",
+        "Heliamhora tatei juvenile pitcher.JPG"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_tatei_aerial_roots.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_tatei_hairs.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_tateii_juvenile.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamphora_tatei.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Heliamhora_tatei_juvenile_pitcher.JPG?width=1024"
+      ],
+      "verified_thumb_urls": [],
+      "genus_fallback": false
+    },
+    "nepenthes-alata": {
+      "latin": "Nepenthes alata",
+      "filenames": [
+        "Caryophyllales - Nepenthes alata - 1.jpg",
+        "Nepenthes alata Kannukasvi Kanntaime liik C IMG 5303.JPG",
+        "Nepenthes alata (3).JPG",
+        "Caryophyllales - Nepenthes alata - 5.jpg",
+        "Nepenthes alata waxy zone.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Caryophyllales_-_Nepenthes_alata_-_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_alata_Kannukasvi_Kanntaime_liik_C_IMG_5303.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_alata_(3).JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Caryophyllales_-_Nepenthes_alata_-_5.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_alata_waxy_zone.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Caryophyllales_-_Nepenthes_alata_-_1.jpg/1280px-Caryophyllales_-_Nepenthes_alata_-_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Nepenthes_alata_Kannukasvi_Kanntaime_liik_C_IMG_5303.JPG/1280px-Nepenthes_alata_Kannukasvi_Kanntaime_liik_C_IMG_5303.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Nepenthes_alata_%283%29.JPG/1280px-Nepenthes_alata_%283%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Caryophyllales_-_Nepenthes_alata_-_5.jpg/1280px-Caryophyllales_-_Nepenthes_alata_-_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Nepenthes_alata_waxy_zone.jpg/1280px-Nepenthes_alata_waxy_zone.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-ampullaria": {
+      "latin": "Nepenthes ampullaria",
+      "filenames": [
+        "Nepenthes ampullaria 1.jpg",
+        "Nepenthes ampullaria (Bogor botanical park).jpg",
+        "Pitcher Plant (Nepenthes ampullaria) (14136485484).jpg",
+        "Nepenthes ampullaria Sarawak P1100345 03.jpg",
+        "Nepenthes ampullaria botanical illustration (1824).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria_(Bogor_botanical_park).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthes_ampullaria)_(14136485484).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria_Sarawak_P1100345_03.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria_botanical_illustration_(1824).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d6/Nepenthes_ampullaria_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Nepenthes_ampullaria_%28Bogor_botanical_park%29.jpg/1280px-Nepenthes_ampullaria_%28Bogor_botanical_park%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Pitcher_Plant_%28Nepenthes_ampullaria%29_%2814136485484%29.jpg/1280px-Pitcher_Plant_%28Nepenthes_ampullaria%29_%2814136485484%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Nepenthes_ampullaria_Sarawak_P1100345_03.jpg/1280px-Nepenthes_ampullaria_Sarawak_P1100345_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Nepenthes_ampullaria_botanical_illustration_%281824%29.jpg/1280px-Nepenthes_ampullaria_botanical_illustration_%281824%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-bicalcarata": {
+      "latin": "Nepenthes bicalcarata",
+      "filenames": [
+        "Nepenthes bicalcarata.jpg",
+        "Nepenthesbicalcarata1.jpg",
+        "Nepenthes bicalcarata (cultivated1).jpg",
+        "Nepenthes bicalcarata Macfarlane illustration.jpg",
+        "Nepenthes bicalcarata Kebun Raya Bogor.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthesbicalcarata1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata_(cultivated1).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata_Macfarlane_illustration.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata_Kebun_Raya_Bogor.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d2/Nepenthes_bicalcarata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/f/fe/Nepenthesbicalcarata1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Nepenthes_bicalcarata_%28cultivated1%29.jpg/960px-Nepenthes_bicalcarata_%28cultivated1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Nepenthes_bicalcarata_Macfarlane_illustration.jpg/1280px-Nepenthes_bicalcarata_Macfarlane_illustration.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Nepenthes_bicalcarata_Kebun_Raya_Bogor.jpg/1280px-Nepenthes_bicalcarata_Kebun_Raya_Bogor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-bicalcarata-lowland": {
+      "latin": "Nepenthes bicalcarata",
+      "filenames": [
+        "Nepenthes bicalcarata, Camponotus schmitzi and fly larvae.png",
+        "Nepenthes bicalcarata-2-JNTBGRI-palode-kerala-India.jpg",
+        "Nepenthes bicalcarata-1-JNTBGRI-palode-kerala-India.jpg",
+        "Nepenthes bicalcarata-3-JNTBGRI-palode-kerala-India.jpg",
+        "Nepenthesbicalcarata8.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata%2C_Camponotus_schmitzi_and_fly_larvae.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata-2-JNTBGRI-palode-kerala-India.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata-1-JNTBGRI-palode-kerala-India.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_bicalcarata-3-JNTBGRI-palode-kerala-India.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthesbicalcarata8.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Nepenthes_bicalcarata%2C_Camponotus_schmitzi_and_fly_larvae.png/1280px-Nepenthes_bicalcarata%2C_Camponotus_schmitzi_and_fly_larvae.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Nepenthes_bicalcarata-2-JNTBGRI-palode-kerala-India.jpg/1280px-Nepenthes_bicalcarata-2-JNTBGRI-palode-kerala-India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Nepenthes_bicalcarata-1-JNTBGRI-palode-kerala-India.jpg/1280px-Nepenthes_bicalcarata-1-JNTBGRI-palode-kerala-India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Nepenthes_bicalcarata-3-JNTBGRI-palode-kerala-India.jpg/1280px-Nepenthes_bicalcarata-3-JNTBGRI-palode-kerala-India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Nepenthesbicalcarata8.jpg/1280px-Nepenthesbicalcarata8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-burbidgeae": {
+      "latin": "Nepenthes burbidgeae",
+      "filenames": [
+        "Nepenthes burbidgeae.jpg",
+        "Nepenthes burbidgeae 066.jpg",
+        "Pig Hill Kinabalu N. burbidgeae.jpg",
+        "Nepenthes burbidgeae.png",
+        "Pig Hill Kinabalu N. burbidgeae site two 2.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae_066.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pig_Hill_Kinabalu_N._burbidgeae.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pig_Hill_Kinabalu_N._burbidgeae_site_two_2.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Nepenthes_burbidgeae.jpg/1280px-Nepenthes_burbidgeae.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/b/bc/Nepenthes_burbidgeae_066.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Pig_Hill_Kinabalu_N._burbidgeae.jpg/1280px-Pig_Hill_Kinabalu_N._burbidgeae.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Nepenthes_burbidgeae.png/1280px-Nepenthes_burbidgeae.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Pig_Hill_Kinabalu_N._burbidgeae_site_two_2.jpg/1280px-Pig_Hill_Kinabalu_N._burbidgeae_site_two_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-burbidgeae-intermediate": {
+      "latin": "Nepenthes burbidgeae",
+      "filenames": [
+        "Nepenthes burbidgeae.png",
+        "Nepenthes burbidgeae x Nepenthes fusca.jpg",
+        "Nepenthes burbidgeae.jpg",
+        "Nepenthes burbidgeae 066.jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae_x_Nepenthes_fusca.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae_066.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49359429783).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Nepenthes_burbidgeae.png/1280px-Nepenthes_burbidgeae.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Nepenthes_burbidgeae_x_Nepenthes_fusca.jpg/1280px-Nepenthes_burbidgeae_x_Nepenthes_fusca.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Nepenthes_burbidgeae.jpg/1280px-Nepenthes_burbidgeae.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/b/bc/Nepenthes_burbidgeae_066.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-burbidgeae-x-edwardsiana": {
+      "latin": "Nepenthes burbidgeae x edwardsiana",
+      "filenames": [
+        "Nepenthes burbidgeae.png",
+        "Nepenthes burbidgeae x Nepenthes fusca.jpg",
+        "Nepenthes burbidgeae.jpg",
+        "Nepenthes burbidgeae 066.jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae_x_Nepenthes_fusca.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_burbidgeae_066.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49359429783).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Nepenthes_burbidgeae.png/1280px-Nepenthes_burbidgeae.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Nepenthes_burbidgeae_x_Nepenthes_fusca.jpg/1280px-Nepenthes_burbidgeae_x_Nepenthes_fusca.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Nepenthes_burbidgeae.jpg/1280px-Nepenthes_burbidgeae.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/b/bc/Nepenthes_burbidgeae_066.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-edwardsiana": {
+      "latin": "Nepenthes edwardsiana",
+      "filenames": [
+        "Nepenthes edwardsiana Macfarlane illustration.jpg",
+        "Nepenthes edwardsiana entire ASR 052007 tambu.jpg",
+        "Nepenthes edwardsiana ASR 052007 tambu.jpg",
+        "N.edwardsiana IP.jpg",
+        "Nepenthes edwardsiana - Transactions of the Linnean Society of London (1859).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_Macfarlane_illustration.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_entire_ASR_052007_tambu.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_ASR_052007_tambu.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/N.edwardsiana_IP.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_-_Transactions_of_the_Linnean_Society_of_London_(1859).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/7/78/Nepenthes_edwardsiana_Macfarlane_illustration.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f1/Nepenthes_edwardsiana_entire_ASR_052007_tambu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/5/50/Nepenthes_edwardsiana_ASR_052007_tambu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f6/N.edwardsiana_IP.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Nepenthes_edwardsiana_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg/1280px-Nepenthes_edwardsiana_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-edwardsiana-highland": {
+      "latin": "Nepenthes edwardsiana",
+      "filenames": [
+        "Nepenthes edwardsiana Life in the forests of the Far East.png",
+        "Nepenthes edwardsiana - Transactions of the Linnean Society of London (1859).jpg",
+        "Nepenthes edwardsiana Macfarlane illustration.jpg",
+        "Nepenthes edwardsiana ASR 052007 tambu.jpg",
+        "Nepenthes edwardsiana entire ASR 052007 tambu.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_Life_in_the_forests_of_the_Far_East.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_-_Transactions_of_the_Linnean_Society_of_London_(1859).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_Macfarlane_illustration.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_ASR_052007_tambu.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_edwardsiana_entire_ASR_052007_tambu.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/0/05/Nepenthes_edwardsiana_Life_in_the_forests_of_the_Far_East.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Nepenthes_edwardsiana_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg/1280px-Nepenthes_edwardsiana_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/7/78/Nepenthes_edwardsiana_Macfarlane_illustration.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/5/50/Nepenthes_edwardsiana_ASR_052007_tambu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f1/Nepenthes_edwardsiana_entire_ASR_052007_tambu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-hamata": {
+      "latin": "Nepenthes hamata",
+      "filenames": [
+        "Nepenthes hamata teeth.jpg",
+        "Nepenthes spathulata x hamata 2015-10-03 5924b.jpg",
+        "Nepenthes spathulata x hamata 2015-10-03 5923.jpg",
+        "Nepenthes spathulata x hamata 2015-10-03 5925.jpg",
+        "Nepenthes spathulata x hamata 2015-10-03 5926.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_hamata_teeth.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_spathulata_x_hamata_2015-10-03_5924b.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_spathulata_x_hamata_2015-10-03_5923.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_spathulata_x_hamata_2015-10-03_5925.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_spathulata_x_hamata_2015-10-03_5926.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Nepenthes_hamata_teeth.jpg/1280px-Nepenthes_hamata_teeth.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Nepenthes_spathulata_x_hamata_2015-10-03_5924b.jpg/1280px-Nepenthes_spathulata_x_hamata_2015-10-03_5924b.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Nepenthes_spathulata_x_hamata_2015-10-03_5923.jpg/1280px-Nepenthes_spathulata_x_hamata_2015-10-03_5923.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Nepenthes_spathulata_x_hamata_2015-10-03_5925.jpg/1280px-Nepenthes_spathulata_x_hamata_2015-10-03_5925.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nepenthes_spathulata_x_hamata_2015-10-03_5926.jpg/1280px-Nepenthes_spathulata_x_hamata_2015-10-03_5926.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-lowii-highland": {
+      "latin": "Nepenthes lowii",
+      "filenames": [
+        "Nepenthes Lowii (13991706846).jpg",
+        "Nepenthes lowii Life in the forests of the Far East.png",
+        "Nepenthes lowii - Transactions of the Linnean Society of London (1859).jpg",
+        "Nepenthes lowii Macfarlane illustration.jpg",
+        "Nepenthes lowii.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_Lowii_(13991706846).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_lowii_Life_in_the_forests_of_the_Far_East.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_lowii_-_Transactions_of_the_Linnean_Society_of_London_(1859).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_lowii_Macfarlane_illustration.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_lowii.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Nepenthes_Lowii_%2813991706846%29.jpg/1280px-Nepenthes_Lowii_%2813991706846%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/4/4d/Nepenthes_lowii_Life_in_the_forests_of_the_Far_East.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Nepenthes_lowii_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg/1280px-Nepenthes_lowii_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/2/26/Nepenthes_lowii_Macfarlane_illustration.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/b/b9/Nepenthes_lowii.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-macrophylla": {
+      "latin": "Nepenthes macrophylla",
+      "filenames": [
+        "Nepenthes macrophylla 22748.jpg",
+        "Nepenthes macrophylla.jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg",
+        "Pitcher Plant - Nepenthes - \"Monkey Cup\".jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_macrophylla_22748.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_macrophylla.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49359429783).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49360096312).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_-_Nepenthes_-_%22Monkey_Cup%22.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nepenthes_macrophylla_22748.jpg/1280px-Nepenthes_macrophylla_22748.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Nepenthes_macrophylla.jpg/1280px-Nepenthes_macrophylla.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849360096312%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849360096312%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/b/b7/Pitcher_Plant_-_Nepenthes_-_%22Monkey_Cup%22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-macrophylla-trusmadi": {
+      "latin": "Nepenthes macrophylla",
+      "filenames": [
+        "Nepenthes macrophylla 22748.jpg",
+        "Nepenthes macrophylla.jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg",
+        "Pitcher Plant - Nepenthes - \"Monkey Cup\".jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_macrophylla_22748.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_macrophylla.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49359429783).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49360096312).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_-_Nepenthes_-_%22Monkey_Cup%22.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nepenthes_macrophylla_22748.jpg/1280px-Nepenthes_macrophylla_22748.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Nepenthes_macrophylla.jpg/1280px-Nepenthes_macrophylla.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849360096312%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849360096312%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/b/b7/Pitcher_Plant_-_Nepenthes_-_%22Monkey_Cup%22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-rafflesiana-spotted": {
+      "latin": "Nepenthes rafflesiana",
+      "filenames": [
+        "Nepenthes rafflesiana in the greenhouse of Higashiyama Botanical Garden - 1.jpg",
+        "Nepenthes rafflesiana in cultivation - front view.jpg",
+        "Nepenthes rafflesiana in the greenhouse of Higashiyama Botanical Garden - 2.jpg",
+        "Nepenthes rafflesiana in cultivation - side view.jpg",
+        "Nepenthes rafflesiana botanical illustration (1824).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rafflesiana_in_the_greenhouse_of_Higashiyama_Botanical_Garden_-_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rafflesiana_in_cultivation_-_front_view.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rafflesiana_in_the_greenhouse_of_Higashiyama_Botanical_Garden_-_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rafflesiana_in_cultivation_-_side_view.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rafflesiana_botanical_illustration_(1824).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Nepenthes_rafflesiana_in_the_greenhouse_of_Higashiyama_Botanical_Garden_-_1.jpg/1280px-Nepenthes_rafflesiana_in_the_greenhouse_of_Higashiyama_Botanical_Garden_-_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Nepenthes_rafflesiana_in_cultivation_-_front_view.jpg/1280px-Nepenthes_rafflesiana_in_cultivation_-_front_view.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Nepenthes_rafflesiana_in_the_greenhouse_of_Higashiyama_Botanical_Garden_-_2.jpg/1280px-Nepenthes_rafflesiana_in_the_greenhouse_of_Higashiyama_Botanical_Garden_-_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nepenthes_rafflesiana_in_cultivation_-_side_view.jpg/1280px-Nepenthes_rafflesiana_in_cultivation_-_side_view.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Nepenthes_rafflesiana_botanical_illustration_%281824%29.jpg/1280px-Nepenthes_rafflesiana_botanical_illustration_%281824%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-rajah": {
+      "latin": "Nepenthes rajah",
+      "filenames": [
+        "2008-1-1 cultivated Nepenthes rajah (279).jpg",
+        "Nepenthes rajah - Curtis\u2019s Botanical Magazine (1905).jpg",
+        "Nepenthes rajah Life in the forests of the Far East.png",
+        "Nepenthes rajah 41 cm pitcher.jpg",
+        "Nepenthes rajah - Transactions of the Linnean Society of London (1859).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/2008-1-1_cultivated_Nepenthes_rajah_(279).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah_-_Curtis%E2%80%99s_Botanical_Magazine_(1905).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah_Life_in_the_forests_of_the_Far_East.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah_41_cm_pitcher.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah_-_Transactions_of_the_Linnean_Society_of_London_(1859).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/2008-1-1_cultivated_Nepenthes_rajah_%28279%29.jpg/1280px-2008-1-1_cultivated_Nepenthes_rajah_%28279%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Nepenthes_rajah_-_Curtis%E2%80%99s_Botanical_Magazine_%281905%29.jpg/1280px-Nepenthes_rajah_-_Curtis%E2%80%99s_Botanical_Magazine_%281905%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/8/8c/Nepenthes_rajah_Life_in_the_forests_of_the_Far_East.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Nepenthes_rajah_41_cm_pitcher.jpg/1280px-Nepenthes_rajah_41_cm_pitcher.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Nepenthes_rajah_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg/1280px-Nepenthes_rajah_-_Transactions_of_the_Linnean_Society_of_London_%281859%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-truncata-giant": {
+      "latin": "Nepenthes truncata",
+      "filenames": [
+        "Nepenthes truncata pitcher.jpg",
+        "Nepenthes truncata 1.jpg",
+        "Nepenthes truncata - Lyman Plant House, Smith College - DSC02006.jpg",
+        "Nepenthes truncata dark peristome.jpg",
+        "Nepenthes truncata plant.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_truncata_pitcher.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_truncata_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_truncata_-_Lyman_Plant_House%2C_Smith_College_-_DSC02006.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_truncata_dark_peristome.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_truncata_plant.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Nepenthes_truncata_pitcher.jpg/1280px-Nepenthes_truncata_pitcher.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/1/1f/Nepenthes_truncata_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Nepenthes_truncata_-_Lyman_Plant_House%2C_Smith_College_-_DSC02006.jpg/1280px-Nepenthes_truncata_-_Lyman_Plant_House%2C_Smith_College_-_DSC02006.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Nepenthes_truncata_dark_peristome.jpg/1280px-Nepenthes_truncata_dark_peristome.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Nepenthes_truncata_plant.jpg/1280px-Nepenthes_truncata_plant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "nepenthes-veitchii": {
+      "latin": "Nepenthes veitchii",
+      "filenames": [
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg",
+        "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg",
+        "Nepenthes veitchii x maxima.jpg",
+        "Nepenthes veitchii (22309086385).jpg",
+        "Nepenthes veitchii (22121194850).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49359429783).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pitcher_Plant_(Nepenthaceae)_Nepenthes_Veitchii_Pink_(49360096312).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_veitchii_x_maxima.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_veitchii_(22309086385).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_veitchii_(22121194850).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849359429783%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849360096312%29.jpg/1280px-Pitcher_Plant_%28Nepenthaceae%29_Nepenthes_Veitchii_Pink_%2849360096312%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Nepenthes_veitchii_x_maxima.jpg/1280px-Nepenthes_veitchii_x_maxima.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Nepenthes_veitchii_%2822309086385%29.jpg/1280px-Nepenthes_veitchii_%2822309086385%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Nepenthes_veitchii_%2822121194850%29.jpg/1280px-Nepenthes_veitchii_%2822121194850%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "pinguicula-aphrodite": {
+      "latin": "Pinguicula (moctezumae x agnata)",
+      "filenames": [
+        "Pinguicula 'Aphrodite'.jpg",
+        "Pinguicula 'Aphrodite' 1.jpg",
+        "Pinguicula 'Aphrodite' 2.jpg",
+        "\u6355\u87f2\u5807\u5c6c Pinguicula 'Aphrodite' -\u4e0a\u6d77\u690d\u7269\u5712 Shanghai Botanical Garden- (17317722492).jpg",
+        "Pinguicula moctezumae, exhibition in Botanical garden Brno.JPG"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_'Aphrodite'.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_'Aphrodite'_1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_'Aphrodite'_2.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%8D%95%E8%9F%B2%E5%A0%87%E5%B1%AC_Pinguicula_'Aphrodite'_-%E4%B8%8A%E6%B5%B7%E6%A4%8D%E7%89%A9%E5%9C%92_Shanghai_Botanical_Garden-_(17317722492).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moctezumae%2C_exhibition_in_Botanical_garden_Brno.JPG?width=1024"
+      ],
+      "verified_thumb_urls": [],
+      "genus_fallback": false
+    },
+    "pinguicula-emarginata": {
+      "latin": "Pinguicula emarginata",
+      "filenames": [
+        "Pinguicula emarginata-IMG 0256.jpg",
+        "Pinguicula emarginata GotBot 2015 003.JPG",
+        "Pinguicula emarginata in Sakuya Konohana Kan, Osaka.jpg",
+        "Pinguicula emarginata flower in Sakuya Konohana Kan, Osaka.jpg",
+        "Pinguicula emarginata GotBot 2015 002.JPG"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_emarginata-IMG_0256.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_emarginata_GotBot_2015_003.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_emarginata_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_emarginata_flower_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_emarginata_GotBot_2015_002.JPG?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Pinguicula_emarginata-IMG_0256.jpg/1280px-Pinguicula_emarginata-IMG_0256.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Pinguicula_emarginata_GotBot_2015_003.JPG/1280px-Pinguicula_emarginata_GotBot_2015_003.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Pinguicula_emarginata_in_Sakuya_Konohana_Kan%2C_Osaka.jpg/1280px-Pinguicula_emarginata_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pinguicula_emarginata_flower_in_Sakuya_Konohana_Kan%2C_Osaka.jpg/1280px-Pinguicula_emarginata_flower_in_Sakuya_Konohana_Kan%2C_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pinguicula_emarginata_GotBot_2015_002.JPG/1280px-Pinguicula_emarginata_GotBot_2015_002.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "pinguicula-gigantea-giant": {
+      "latin": "Pinguicula gigantea",
+      "filenames": [
+        "Pinguicula gigantea - Orto botanico - Rome, Italy - DSC09940.jpg",
+        "Pinguicula gigantea in Jardin des Plantes de Toulouse 01.jpg",
+        "Pinguicula gigantea in Jardin des Plantes de Toulouse 02.jpg",
+        "Pinguicula gigantea (2), exhibition in Botanical garden Brno.JPG",
+        "Pinguicula gigantea kz01.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_gigantea_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09940.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_gigantea_in_Jardin_des_Plantes_de_Toulouse_01.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_gigantea_in_Jardin_des_Plantes_de_Toulouse_02.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_gigantea_(2)%2C_exhibition_in_Botanical_garden_Brno.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_gigantea_kz01.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Pinguicula_gigantea_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09940.jpg/1280px-Pinguicula_gigantea_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09940.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Pinguicula_gigantea_in_Jardin_des_Plantes_de_Toulouse_01.jpg/1280px-Pinguicula_gigantea_in_Jardin_des_Plantes_de_Toulouse_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Pinguicula_gigantea_in_Jardin_des_Plantes_de_Toulouse_02.jpg/1280px-Pinguicula_gigantea_in_Jardin_des_Plantes_de_Toulouse_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Pinguicula_gigantea_%282%29%2C_exhibition_in_Botanical_garden_Brno.JPG/1280px-Pinguicula_gigantea_%282%29%2C_exhibition_in_Botanical_garden_Brno.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pinguicula_gigantea_kz01.jpg/1280px-Pinguicula_gigantea_kz01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "pinguicula-john-rizzi": {
+      "latin": "Pinguicula 'John Rizzi'",
+      "filenames": [
+        "Pinguicula vulgaris01(js).jpg",
+        "Pinguicula vulgaris flower (side view) - Keila.jpg",
+        "Pinguicula vulgaris flower (front view) - Keila.jpg",
+        "Pinguicula esseriana 02.jpg",
+        "Common butterwort (Pinguicula vulgaris).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_vulgaris01(js).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_vulgaris_flower_(side_view)_-_Keila.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_vulgaris_flower_(front_view)_-_Keila.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_esseriana_02.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Common_butterwort_(Pinguicula_vulgaris).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Pinguicula_vulgaris01%28js%29.jpg/1280px-Pinguicula_vulgaris01%28js%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Pinguicula_vulgaris_flower_%28side_view%29_-_Keila.jpg/1280px-Pinguicula_vulgaris_flower_%28side_view%29_-_Keila.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pinguicula_vulgaris_flower_%28front_view%29_-_Keila.jpg/1280px-Pinguicula_vulgaris_flower_%28front_view%29_-_Keila.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Pinguicula_esseriana_02.jpg/1280px-Pinguicula_esseriana_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Common_butterwort_%28Pinguicula_vulgaris%29.jpg/1280px-Common_butterwort_%28Pinguicula_vulgaris%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "pinguicula-moranensis": {
+      "latin": "Pinguicula moranensis",
+      "filenames": [
+        "Pinguicula moranensis flower.jpg",
+        "Pinguicula moranensis - Orto botanico - Rome, Italy - DSC09933.jpg",
+        "Pinguicula moranensis - Orto botanico - Rome, Italy - DSC09935.jpg",
+        "Pinguicula moranensis tree.png",
+        "Pinguicula Moranensis (15057446518).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09933.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09935.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_tree.png?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_Moranensis_(15057446518).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/2/29/Pinguicula_moranensis_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Pinguicula_moranensis_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09933.jpg/1280px-Pinguicula_moranensis_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09933.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Pinguicula_moranensis_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09935.jpg/1280px-Pinguicula_moranensis_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09935.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Pinguicula_moranensis_tree.png/1280px-Pinguicula_moranensis_tree.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Pinguicula_Moranensis_%2815057446518%29.jpg/1280px-Pinguicula_Moranensis_%2815057446518%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-alabamensis": {
+      "latin": "Sarracenia alabamensis",
+      "filenames": [
+        "Sarracenia flower.jpg",
+        "Sarracenia alabamensis ssp. alabamensis imported from iNaturalist photo 174154943 on 14 April 2025.jpg",
+        "Sarracenia alabamensis ssp. wherryi (6081337228).jpg",
+        "Sarracenia alabamensis ssp. alabamensis imported from iNaturalist photo 174155990 on 14 April 2025.jpg",
+        "Sarracenia alabamensis x oreophila (5815542368).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_alabamensis_ssp._alabamensis_imported_from_iNaturalist_photo_174154943_on_14_April_2025.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_alabamensis_ssp._wherryi_(6081337228).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_alabamensis_ssp._alabamensis_imported_from_iNaturalist_photo_174155990_on_14_April_2025.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_alabamensis_x_oreophila_(5815542368).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d5/Sarracenia_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Sarracenia_alabamensis_ssp._alabamensis_imported_from_iNaturalist_photo_174154943_on_14_April_2025.jpg/1280px-Sarracenia_alabamensis_ssp._alabamensis_imported_from_iNaturalist_photo_174154943_on_14_April_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Sarracenia_alabamensis_ssp._wherryi_%286081337228%29.jpg/1280px-Sarracenia_alabamensis_ssp._wherryi_%286081337228%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Sarracenia_alabamensis_ssp._alabamensis_imported_from_iNaturalist_photo_174155990_on_14_April_2025.jpg/1280px-Sarracenia_alabamensis_ssp._alabamensis_imported_from_iNaturalist_photo_174155990_on_14_April_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Sarracenia_alabamensis_x_oreophila_%285815542368%29.jpg/1280px-Sarracenia_alabamensis_x_oreophila_%285815542368%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-flava": {
+      "latin": "Sarracenia flava",
+      "filenames": [
+        "Sarracenia flava.JPG",
+        "Sarracenia flava (19317814192).jpg",
+        "Sarracenia flava 2zz.jpg",
+        "Sarracenia flava 001.jpg",
+        "Sarraceniaceae Sarracenia flava 3.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_(19317814192).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_2zz.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_001.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarraceniaceae_Sarracenia_flava_3.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/7/70/Sarracenia_flava.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Sarracenia_flava_%2819317814192%29.jpg/1280px-Sarracenia_flava_%2819317814192%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/f/fe/Sarracenia_flava_2zz.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Sarracenia_flava_001.jpg/1280px-Sarracenia_flava_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f6/Sarraceniaceae_Sarracenia_flava_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-flava-maxima": {
+      "latin": "Sarracenia flava",
+      "filenames": [
+        "Bad Rappenau - Salinenpark - Mustergarten - Sarracenia flava var. ornata 05.jpg",
+        "Sarracenia flava - Orto botanico - Rome, Italy - DSC09965.jpg",
+        "Yellow pitcherplant (Sarracenia flava) (41144091621).jpg",
+        "Sarracenia flava 2 - G\u00f6ttingen.jpg",
+        "Sarracenia flava 1 - G\u00f6ttingen.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Bad_Rappenau_-_Salinenpark_-_Mustergarten_-_Sarracenia_flava_var._ornata_05.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09965.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Yellow_pitcherplant_(Sarracenia_flava)_(41144091621).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_2_-_G%C3%B6ttingen.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_flava_1_-_G%C3%B6ttingen.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Bad_Rappenau_-_Salinenpark_-_Mustergarten_-_Sarracenia_flava_var._ornata_05.jpg/1280px-Bad_Rappenau_-_Salinenpark_-_Mustergarten_-_Sarracenia_flava_var._ornata_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Sarracenia_flava_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09965.jpg/1280px-Sarracenia_flava_-_Orto_botanico_-_Rome%2C_Italy_-_DSC09965.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Yellow_pitcherplant_%28Sarracenia_flava%29_%2841144091621%29.jpg/1280px-Yellow_pitcherplant_%28Sarracenia_flava%29_%2841144091621%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Sarracenia_flava_2_-_G%C3%B6ttingen.jpg/1280px-Sarracenia_flava_2_-_G%C3%B6ttingen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Sarracenia_flava_1_-_G%C3%B6ttingen.jpg/1280px-Sarracenia_flava_1_-_G%C3%B6ttingen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-leucophylla": {
+      "latin": "Sarracenia leucophylla",
+      "filenames": [
+        "Sarracenia leucophylla - G\u00f6ttingen.jpg",
+        "Sarracenia leucophylla plants.jpg",
+        "Sarracenia leucophylla Palmengarten Frankfurt (Main).jpg",
+        "Sarracenia leucophylla at the Brooklyn Botanic Garden (81396).jpg",
+        "Sarracenia leucophylla (9146975804).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_leucophylla_-_G%C3%B6ttingen.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_leucophylla_plants.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_leucophylla_Palmengarten_Frankfurt_(Main).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_leucophylla_at_the_Brooklyn_Botanic_Garden_(81396).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_leucophylla_(9146975804).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Sarracenia_leucophylla_-_G%C3%B6ttingen.jpg/1280px-Sarracenia_leucophylla_-_G%C3%B6ttingen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Sarracenia_leucophylla_plants.jpg/1280px-Sarracenia_leucophylla_plants.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Sarracenia_leucophylla_Palmengarten_Frankfurt_%28Main%29.jpg/1280px-Sarracenia_leucophylla_Palmengarten_Frankfurt_%28Main%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Sarracenia_leucophylla_at_the_Brooklyn_Botanic_Garden_%2881396%29.jpg/1280px-Sarracenia_leucophylla_at_the_Brooklyn_Botanic_Garden_%2881396%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Sarracenia_leucophylla_%289146975804%29.jpg/1280px-Sarracenia_leucophylla_%289146975804%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-minor-hooded": {
+      "latin": "Sarracenia minor",
+      "filenames": [
+        "Hooded Pitcherplant (Sarracenia minor) by Mary Vaux Walcott-saam1970.355.589.jpg",
+        "20220605 Hortus Botanicus 07 - Sarracenia minor x flava.jpg",
+        "Sarracenia minor kz1.jpg",
+        "Sarraceniaceae - Sarracenia minor-001.JPG",
+        "Sarracenia minor (9920263856).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Hooded_Pitcherplant_(Sarracenia_minor)_by_Mary_Vaux_Walcott-saam1970.355.589.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/20220605_Hortus_Botanicus_07_-_Sarracenia_minor_x_flava.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_minor_kz1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarraceniaceae_-_Sarracenia_minor-001.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_minor_(9920263856).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Hooded_Pitcherplant_%28Sarracenia_minor%29_by_Mary_Vaux_Walcott-saam1970.355.589.jpg/1280px-Hooded_Pitcherplant_%28Sarracenia_minor%29_by_Mary_Vaux_Walcott-saam1970.355.589.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/20220605_Hortus_Botanicus_07_-_Sarracenia_minor_x_flava.jpg/1280px-20220605_Hortus_Botanicus_07_-_Sarracenia_minor_x_flava.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Sarracenia_minor_kz1.jpg/1280px-Sarracenia_minor_kz1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Sarraceniaceae_-_Sarracenia_minor-001.JPG/1280px-Sarraceniaceae_-_Sarracenia_minor-001.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sarracenia_minor_%289920263856%29.jpg/1280px-Sarracenia_minor_%289920263856%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-purpurea-northern": {
+      "latin": "Sarracenia purpurea",
+      "filenames": [
+        "Sarracenia purpurea Flowers.JPG",
+        "Purple Pitcher Plant (Sarracenia purpurea) (9240775311).jpg",
+        "Purple Pitcher Plant (Sarracenia purpurea) (9467171169).jpg",
+        "Sarracenia purpurea Vertical.JPG",
+        "WLE2019 - Frasne-Bouverans - Sarracenia purpurea 05.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_purpurea_Flowers.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Purple_Pitcher_Plant_(Sarracenia_purpurea)_(9240775311).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Purple_Pitcher_Plant_(Sarracenia_purpurea)_(9467171169).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_purpurea_Vertical.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/WLE2019_-_Frasne-Bouverans_-_Sarracenia_purpurea_05.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Sarracenia_purpurea_Flowers.JPG/1280px-Sarracenia_purpurea_Flowers.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289240775311%29.jpg/1280px-Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289240775311%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289467171169%29.jpg/1280px-Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289467171169%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Sarracenia_purpurea_Vertical.JPG/1280px-Sarracenia_purpurea_Vertical.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/WLE2019_-_Frasne-Bouverans_-_Sarracenia_purpurea_05.jpg/1280px-WLE2019_-_Frasne-Bouverans_-_Sarracenia_purpurea_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "sarracenia-purpurea-venosa": {
+      "latin": "Sarracenia purpurea subsp. venosa",
+      "filenames": [
+        "Sarracenia purpurea Flowers.JPG",
+        "Purple Pitcher Plant (Sarracenia purpurea) (9240775311).jpg",
+        "Purple Pitcher Plant (Sarracenia purpurea) (9467171169).jpg",
+        "Sarracenia purpurea Vertical.JPG",
+        "Sarracenia purpurea venosa 15.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_purpurea_Flowers.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Purple_Pitcher_Plant_(Sarracenia_purpurea)_(9240775311).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Purple_Pitcher_Plant_(Sarracenia_purpurea)_(9467171169).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_purpurea_Vertical.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_purpurea_venosa_15.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Sarracenia_purpurea_Flowers.JPG/1280px-Sarracenia_purpurea_Flowers.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289240775311%29.jpg/1280px-Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289240775311%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289467171169%29.jpg/1280px-Purple_Pitcher_Plant_%28Sarracenia_purpurea%29_%289467171169%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Sarracenia_purpurea_Vertical.JPG/1280px-Sarracenia_purpurea_Vertical.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Sarracenia_purpurea_venosa_15.jpg/1280px-Sarracenia_purpurea_venosa_15.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "utricularia-alpina": {
+      "latin": "Utricularia alpina",
+      "filenames": [
+        "Utricularia alpina.jpg",
+        "Utricularia alpina traps Darwiniana.jpg",
+        "Utricularia alpina cultivated flower.jpg",
+        "UtriculariaAlpinaInflorescence.jpg",
+        "UtriculariaAlpinaFlora.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_alpina.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_alpina_traps_Darwiniana.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_alpina_cultivated_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/UtriculariaAlpinaInflorescence.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/UtriculariaAlpinaFlora.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Utricularia_alpina.jpg/1280px-Utricularia_alpina.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Utricularia_alpina_traps_Darwiniana.jpg/1280px-Utricularia_alpina_traps_Darwiniana.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a5/Utricularia_alpina_cultivated_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/UtriculariaAlpinaInflorescence.jpg/1280px-UtriculariaAlpinaInflorescence.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/UtriculariaAlpinaFlora.jpg/1280px-UtriculariaAlpinaFlora.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "utricularia-alpina-epiphytic": {
+      "latin": "Utricularia alpina",
+      "filenames": [
+        "Utricularia alpina.jpg",
+        "UtriculariaAlpinaInflorescence.jpg",
+        "Utricularia alpina traps Darwiniana.jpg",
+        "UtriculariaAlpinaFlora.jpg",
+        "Utricularia alpina cultivated flower.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_alpina.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/UtriculariaAlpinaInflorescence.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_alpina_traps_Darwiniana.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/UtriculariaAlpinaFlora.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_alpina_cultivated_flower.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Utricularia_alpina.jpg/1280px-Utricularia_alpina.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/UtriculariaAlpinaInflorescence.jpg/1280px-UtriculariaAlpinaInflorescence.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Utricularia_alpina_traps_Darwiniana.jpg/1280px-Utricularia_alpina_traps_Darwiniana.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/UtriculariaAlpinaFlora.jpg/1280px-UtriculariaAlpinaFlora.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a5/Utricularia_alpina_cultivated_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "utricularia-bisquamata": {
+      "latin": "Utricularia bisquamata",
+      "filenames": [
+        "20210620 Hortus botanicus Leiden - Utricularia bisquamata (overview).jpg",
+        "20210620 Hortus botanicus Leiden - Utricularia bisquamata.jpg",
+        "Utricularia bisquamata leaves.jpg",
+        "Utricularia bisquamata habitus.jpg",
+        "Utricularia bisquamata.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/20210620_Hortus_botanicus_Leiden_-_Utricularia_bisquamata_(overview).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/20210620_Hortus_botanicus_Leiden_-_Utricularia_bisquamata.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_bisquamata_leaves.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_bisquamata_habitus.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_bisquamata.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/20210620_Hortus_botanicus_Leiden_-_Utricularia_bisquamata_%28overview%29.jpg/1280px-20210620_Hortus_botanicus_Leiden_-_Utricularia_bisquamata_%28overview%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/20210620_Hortus_botanicus_Leiden_-_Utricularia_bisquamata.jpg/1280px-20210620_Hortus_botanicus_Leiden_-_Utricularia_bisquamata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Utricularia_bisquamata_leaves.jpg/1280px-Utricularia_bisquamata_leaves.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Utricularia_bisquamata_habitus.jpg/1280px-Utricularia_bisquamata_habitus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/b/bc/Utricularia_bisquamata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+      ],
+      "genus_fallback": false
+    },
+    "utricularia-livida-lilac": {
+      "latin": "Utricularia livida",
+      "filenames": [
+        "Utricularia livida flower.jpg",
+        "Utricularia livida E.Mey. (AM AK304513-1).jpg",
+        "Utricularia livida1.jpg",
+        "Utricularia livida flower cut.JPG",
+        "Utricularia livida E.Mey. (AM AK304513-3).jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_livida_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_livida_E.Mey._(AM_AK304513-1).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_livida1.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_livida_flower_cut.JPG?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_livida_E.Mey._(AM_AK304513-3).jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Utricularia_livida_flower.jpg/1280px-Utricularia_livida_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Utricularia_livida_E.Mey._%28AM_AK304513-1%29.jpg/1280px-Utricularia_livida_E.Mey._%28AM_AK304513-1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Utricularia_livida1.jpg/1280px-Utricularia_livida1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Utricularia_livida_flower_cut.JPG/1280px-Utricularia_livida_flower_cut.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Utricularia_livida_E.Mey._%28AM_AK304513-3%29.jpg/1280px-Utricularia_livida_E.Mey._%28AM_AK304513-3%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "utricularia-nelumbifolia": {
+      "latin": "Utricularia nelumbifolia",
+      "filenames": [
+        "Utricularia nelumbifolia.jpg",
+        "Utricularia reticulata 1386.jpg",
+        "Utricularia reticulata 1599.jpg",
+        "Utricularia at karakund 7.jpg",
+        "Utricularia at karakund 8.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_nelumbifolia.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reticulata_1386.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reticulata_1599.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_at_karakund_7.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_at_karakund_8.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [],
+      "genus_fallback": false
+    },
+    "utricularia-reniformis-giant": {
+      "latin": "Utricularia reniformis",
+      "filenames": [
+        "Utricularia reniformis 2017-05-31 2298.jpg",
+        "Utricularia reniformis 2017-05-31 2293.jpg",
+        "Utricularia reniformis 2017-05-31 2296.jpg",
+        "Utricularia reniformis 2017-05-31 2295.jpg",
+        "Utricularia reniformis 2017-05-31 2294.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reniformis_2017-05-31_2298.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reniformis_2017-05-31_2293.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reniformis_2017-05-31_2296.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reniformis_2017-05-31_2295.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_reniformis_2017-05-31_2294.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Utricularia_reniformis_2017-05-31_2298.jpg/1280px-Utricularia_reniformis_2017-05-31_2298.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Utricularia_reniformis_2017-05-31_2293.jpg/1280px-Utricularia_reniformis_2017-05-31_2293.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Utricularia_reniformis_2017-05-31_2296.jpg/1280px-Utricularia_reniformis_2017-05-31_2296.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Utricularia_reniformis_2017-05-31_2295.jpg/1280px-Utricularia_reniformis_2017-05-31_2295.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Utricularia_reniformis_2017-05-31_2294.jpg/1280px-Utricularia_reniformis_2017-05-31_2294.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "utricularia-sandersonii": {
+      "latin": "Utricularia sandersonii",
+      "filenames": [
+        "Utricularia sandersonii flower.jpg",
+        "Utricularia sandersonii-IMG 0259.jpg",
+        "Utricularia sandersonii (12558936044).jpg",
+        "Utricularia sandersonii leaves.jpg",
+        "Utricularia sandersonii GotBot 2016.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_sandersonii_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_sandersonii-IMG_0259.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_sandersonii_(12558936044).jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_sandersonii_leaves.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Utricularia_sandersonii_GotBot_2016.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Utricularia_sandersonii_flower.jpg/1280px-Utricularia_sandersonii_flower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Utricularia_sandersonii-IMG_0259.jpg/1280px-Utricularia_sandersonii-IMG_0259.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Utricularia_sandersonii_%2812558936044%29.jpg/1280px-Utricularia_sandersonii_%2812558936044%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Utricularia_sandersonii_leaves.jpg/1280px-Utricularia_sandersonii_leaves.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Utricularia_sandersonii_GotBot_2016.jpg/1280px-Utricularia_sandersonii_GotBot_2016.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      ],
+      "genus_fallback": false
+    },
+    "byblis-guehoi": {
+      "latin": "Byblis guehoi",
+      "filenames": [
+        "Byblis gigantea - Flickr - Kevin Thiele.jpg",
+        "Byblis filifolia flower.jpg",
+        "Byblis filifolia detail.jpg",
+        "Byblis filifolia.jpg",
+        "Byblis filifolia1.jpg"
+      ],
+      "urls": [
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_gigantea_-_Flickr_-_Kevin_Thiele.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia_flower.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia_detail.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia.jpg?width=1024",
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Byblis_filifolia1.jpg?width=1024"
+      ],
+      "verified_thumb_urls": [],
+      "genus_fallback": false
+    }
+  }
+}

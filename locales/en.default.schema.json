@@ -231,9 +231,6 @@
         "about_page": "About page (footer link)"
       }
     },
-    "main_account": {
-      "name": "Customer account"
-    },
     "collection_banner": {
       "name": "Collection banner",
       "settings": {

@@ -37,19 +37,21 @@
   endif
 
   assign quick_privacy_url = blank
-  if shop.privacy_policy != blank
-    assign quick_privacy_url = shop.privacy_policy.url
+  if pages.privacy != blank
+    assign quick_privacy_url = pages.privacy.url
   elsif pages['privacy-policy'] != blank
     assign quick_privacy_url = pages['privacy-policy'].url
+  elsif shop.privacy_policy != blank
+    assign quick_privacy_url = shop.privacy_policy.url
   endif
 
   assign quick_refund_url = blank
-  if shop.refund_policy != blank
-    assign quick_refund_url = shop.refund_policy.url
+  if pages.refund != blank
+    assign quick_refund_url = pages.refund.url
   elsif pages['refund-policy'] != blank
     assign quick_refund_url = pages['refund-policy'].url
-  elsif pages.refund != blank
-    assign quick_refund_url = pages.refund.url
+  elsif shop.refund_policy != blank
+    assign quick_refund_url = shop.refund_policy.url
   endif
 -%}
 

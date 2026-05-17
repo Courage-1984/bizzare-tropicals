@@ -1,93 +1,345 @@
 {
-    "drosera-capensis": [
-        "Drosera_capensis_bend.JPG",
-        "Drosera capensis (carnivorous-plant-142084).jpg",
-        "Drosera capensis leaf.jpg",
-        "Drosera capensis 2.jpg",
-        "Drosera capensis Luc Viatour.jpg"
-    ],
-    "nepenthes-edwardsiana": [
-        "Nepenthes edwardsiana Macfarlane illustration.jpg",
-        "Nepenthes edwardsiana entire ASR 052007 tambu.jpg",
-        "Nepenthes edwardsiana ASR 052007 tambu.jpg",
-        "N.edwardsiana IP.jpg",
-        "Nepenthes edwardsiana - Transactions of the Linnean Society of London (1859).jpg"
-    ],
-    "nepenthes-burbidgeae": [
-        "Nepenthes burbidgeae.jpg",
-        "Nepenthes burbidgeae 066.jpg",
-        "Pig Hill Kinabalu N. burbidgeae.jpg",
-        "Nepenthes burbidgeae.png",
-        "Pig Hill Kinabalu N. burbidgeae site two 2.jpg"
-    ],
-    "nepenthes-bicalcarata": [
-        "Nepenthes bicalcarata.jpg",
-        "Nepenthesbicalcarata1.jpg",
-        "Nepenthes bicalcarata (cultivated1).jpg",
-        "Nepenthes bicalcarata Macfarlane illustration.jpg",
-        "Nepenthes bicalcarata Kebun Raya Bogor.jpg"
-    ],
-    "pinguicula-aphrodite": [
-        "Pinguicula 'Aphrodite'.jpg",
-        "Pinguicula 'Aphrodite' 1.jpg",
-        "Pinguicula 'Aphrodite' 2.jpg",
-        "Pinguicula 'Aphrodite' flower.jpg",
-        "Pinguicula 'Aphrodite' habit.jpg"
-    ],
-    "heliamphora-minor": [
-        "Heliamphora minor Auyan-tepui.jpg",
-        "Heliamphora minor2.jpg",
-        "Heliamphora minor - Atlanta Botanical Garden.JPG",
-        "Heliamphora minor kz01.jpg",
-        "Heliamphora minor var minor.jpg"
-    ],
-    "cephalotus-follicularis": [
-        "Cephalotus follicularis 0001.JPG",
-        "Cephalotus_follicularis_002.jpg",
-        "Cephalotus follicularis 01.jpg",
-        "Cephalotus follicularis Hennern 3.jpg",
-        "Cephalotus follicularis001.jpg"
-    ],
-    "utricularia-alpina": [
-        "Utricularia alpina.jpg",
-        "Utricularia alpina traps Darwiniana.jpg",
-        "Utricularia alpina cultivated flower.jpg",
-        "Utricularia alpina kz01.jpg",
-        "Utricularia alpina flower closeup.jpg"
-    ],
-    "darlingtonia-californica": [
-        "Darlingtonia californica, by Mary Vaux Walcott.jpg",
-        "Darlingtonia Macfarlane illustration.jpg",
-        "Darlingtonia californica.jpg",
-        "Darlingtonia californica 3.jpg",
-        "Darlingtonia californica ne1.JPG"
-    ],
-    "byblis-liniflora": [
-        "Byblis liniflora 3 flowering.jpg",
-        "ByblisLinifloraFlora.JPG",
-        "ByblisLinifloraHabitus.JPG",
-        "Byblis liniflora capsule1.JPG",
-        "Byblis liniflora capsule2.JPG"
-    ],
-    "drosophyllum-lusitanicum": [
-        "Drosophyllum_lusitanicum_a.JPG",
-        "Drosophyllum_lusitanicum_ne.jpg",
-        "Drosophyllum lusitanicum kz06.jpg",
-        "Drosophyllum lusitanicum kz03.jpg",
-        "Drosophyllum lusitanicum kz01.jpg"
-    ],
-    "sarracenia-flava": [
-        "Sarracenia_flava.JPG",
-        "Sarracenia flava (19317814192).jpg",
-        "Sarracenia flava 2zz.jpg",
-        "Sarracenia_flava_001.jpg",
-        "Sarraceniaceae Sarracenia flava 3.jpg"
-    ],
-    "dionaea-muscipula": [
-        "01 Venusfliegenfalle.jpg",
-        "Dionaea muscipula.jpg",
-        "Dionaea muscipula 1.jpg",
-        "Dionaea muscipula 001.JPG",
-        "Dionaea_muscipula_2.jpg"
-    ]
+  "byblis-aquatica": [
+    "ByblisAquaticaCapsula.jpg",
+    "ByblisAquaticaFlora.jpg",
+    "ByblisAquaticaSeedling.jpg",
+    "ByblisAquaticaHabitus.jpg",
+    "Byblis gigantea - Flickr - Kevin Thiele.jpg"
+  ],
+  "byblis-filifolia": [
+    "Byblis filifolia flower.jpg",
+    "Byblis filifolia detail.jpg",
+    "Byblis filifolia.jpg",
+    "Byblis filifolia1.jpg",
+    "Byblis filifolia flower1.jpg"
+  ],
+  "byblis-gigantea": [
+    "Byblis gigantea - Flickr - Kevin Thiele.jpg",
+    "ByblisGigantea.jpg",
+    "(Byblis gigantea in Cannington, Australia) - DPLA - 07e12c2c6093bbe8cbcc62b082ecc4e8.jpg",
+    "(Byblis gigantea in Cannington, Australia) - DPLA - 181ca2a17510c96136ea471f818c48e3.jpg",
+    "(Byblis gigantea in Cannington, Australia) - DPLA - 04d9440b94793c581ed4953b7476f480.jpg"
+  ],
+  "byblis-liniflora": [
+    "Byblis liniflora 3 flowering.jpg",
+    "ByblisLinifloraFlora.JPG",
+    "ByblisLinifloraHabitus.JPG",
+    "Byblis liniflora capsule1.JPG",
+    "Byblis liniflora capsule2.JPG"
+  ],
+  "cephalotus-follicularis": [
+    "Cephalotus follicularis 0001.JPG",
+    "Cephalotus follicularis 002.jpg",
+    "Cephalotus follicularis 01.jpg",
+    "Cephalotus follicularis Hennern 3.jpg",
+    "Cephalotus follicularis001.jpg"
+  ],
+  "darlingtonia-californica": [
+    "Darlingtonia californica, by Mary Vaux Walcott.jpg",
+    "Darlingtonia Macfarlane illustration.jpg",
+    "Darlingtonia californica.jpg",
+    "Darlingtonia californica 3.jpg",
+    "Darlingtonia californica ne1.JPG"
+  ],
+  "dionaea-muscipula": [
+    "01 Venusfliegenfalle.jpg",
+    "Dionaea muscipula.jpg",
+    "Dionaea muscipula 1.jpg",
+    "Dionaea muscipula 001.JPG",
+    "Dionaea muscipula 2.jpg"
+  ],
+  "drosera-aliciae": [
+    "Alice Sundew - Drosera aliciae (40046905595).jpg",
+    "Alice Sundew - Drosera aliciae (40046912215).jpg",
+    "Alice Sundew - Drosera aliciae (40232713724).jpg",
+    "Drosera aliciae kz02.jpg",
+    "Drosera aliciae kz03.jpg"
+  ],
+  "drosera-anglica": [
+    "Drosera anglica Sundew (39333653521).jpg",
+    "Lange zonnedauw - English sundew - Drosera anglica.jpg",
+    "English sundew (Drosera anglica) (8200403593).jpg",
+    "Drosera anglica 15-p.bot-dros.angli-10.jpg",
+    "Drosera anglica 15-p.bot-dros.angli-11.jpg"
+  ],
+  "drosera-capensis": [
+    "Drosera capensis bend.JPG",
+    "Drosera capensis (carnivorous-plant-142084).jpg",
+    "Drosera capensis leaf.jpg",
+    "Drosera capensis 2.jpg",
+    "Drosera capensis Luc Viatour.jpg"
+  ],
+  "drosera-filiformis": [
+    "Drosera filiformis var. tracyii.jpg",
+    "Drosera filiformis closeup 2.jpg",
+    "Drosera filiformis closeup 4.jpg",
+    "Drosera filiformis closeup 1.jpg",
+    "Drosera filiformis closeup 3.jpg"
+  ],
+  "drosera-meristocaulis": [
+    "Drosera meristocaulis.jpg",
+    "DroseraMeristocaulis.jpg",
+    "Bl\u00fchender rundbl\u00e4ttriger Sonnentau (Drosera rotundifolia).jpg",
+    "Drosera rotundifolia TK 2023-07-08 9.jpg",
+    "Ronde zonnedauw - round-leaved sundew - Drosera rotundifolia.jpg"
+  ],
+  "drosera-regia": [
+    "Drosera regia - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04338.JPG",
+    "Drosera regia - open and closed flowers without spider web.jpg",
+    "Drosera Regia - Flickr - incidencematrix.jpg",
+    "20210620 Hortus botanicus Leiden - Drosera regia .jpg",
+    "20210620 Hortus botanicus Leiden - Drosera regia v2.jpg"
+  ],
+  "drosera-spatulata": [
+    "Drosera spatulata 1.jpg",
+    "Drosera spatulata flower.jpg",
+    "Drosera spatulata (23441069360).jpg",
+    "Spoon-leaved Sundew - Drosera spatulata (40952594791).jpg",
+    "Spoon-leaved Sundew - Drosera spatulata (40245309344).jpg"
+  ],
+  "drosophyllum-lusitanicum": [
+    "Drosophyllum lusitanicum a.JPG",
+    "Drosophyllum lusitanicum ne.jpg",
+    "Drosophyllum lusitanicum kz06.jpg",
+    "Drosophyllum lusitanicum kz03.jpg",
+    "Drosophyllum lusitanicum kz01.jpg"
+  ],
+  "heliamphora-heterodoxa": [
+    "Heliamphora heterodoxa x minor Jard\u00edn bot\u00e1nico de Valencia (2).JPG",
+    "Heliamphora heterodoxa x minor Jard\u00edn bot\u00e1nico de Valencia (1).JPG",
+    "Heliamphora heterodoxa \u00d7 minori in Jardin des Plantes de Toulouse 02.jpg",
+    "Heliamphora heterodoxa \u00d7 minori in Jardin des Plantes de Toulouse 01.jpg",
+    "Heliamphora minor x heterodoxa.jpg"
+  ],
+  "heliamphora-minor": [
+    "Heliamphora minor Auyan-tepui.jpg",
+    "Heliamphora minor2.jpg",
+    "Heliamphora minor - Atlanta Botanical Garden.JPG",
+    "Heliamphora minor kz01.jpg",
+    "Heliamphora minor var minor.jpg"
+  ],
+  "heliamphora-nutans": [
+    "Heliamphora nutans 1.jpg",
+    "Heliamphora nutans-IMG 0453.jpg",
+    "Heliamphora nutans-IMG 0452.jpg",
+    "Heliamphora nutans - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04339.JPG",
+    "Heliamphora nutans (Habitus) edit.jpg"
+  ],
+  "heliamphora-pulchella": [
+    "Heliamphora Pulchella (23508095812).jpg",
+    "Heliamphora Pulchella (23508103422).jpg",
+    "Heliamphora pulchella, exhibition in Botanical garden Brno.JPG",
+    "Heliamphora Pulchella (23508099002).jpg",
+    "Heliamphora pulchella (2), exhibition in Botanical garden Brno.JPG"
+  ],
+  "heliamphora-tatei": [
+    "Heliamphora tatei aerial roots.JPG",
+    "Heliamphora tatei hairs.JPG",
+    "Heliamphora tateii juvenile.JPG",
+    "Heliamphora tatei.JPG",
+    "Heliamhora tatei juvenile pitcher.JPG"
+  ],
+  "nepenthes-alata": [
+    "Caryophyllales - Nepenthes alata - 1.jpg",
+    "Nepenthes alata Kannukasvi Kanntaime liik C IMG 5303.JPG",
+    "Nepenthes alata (3).JPG",
+    "Caryophyllales - Nepenthes alata - 5.jpg",
+    "Nepenthes alata waxy zone.jpg"
+  ],
+  "nepenthes-ampullaria": [
+    "Nepenthes ampullaria 1.jpg",
+    "Nepenthes ampullaria (Bogor botanical park).jpg",
+    "Pitcher Plant (Nepenthes ampullaria) (14136485484).jpg",
+    "Nepenthes ampullaria Sarawak P1100345 03.jpg",
+    "Nepenthes ampullaria botanical illustration (1824).jpg"
+  ],
+  "nepenthes-bicalcarata": [
+    "Nepenthes bicalcarata.jpg",
+    "Nepenthesbicalcarata1.jpg",
+    "Nepenthes bicalcarata (cultivated1).jpg",
+    "Nepenthes bicalcarata Macfarlane illustration.jpg",
+    "Nepenthes bicalcarata Kebun Raya Bogor.jpg"
+  ],
+  "nepenthes-burbidgeae": [
+    "Nepenthes burbidgeae.jpg",
+    "Nepenthes burbidgeae 066.jpg",
+    "Pig Hill Kinabalu N. burbidgeae.jpg",
+    "Nepenthes burbidgeae.png",
+    "Pig Hill Kinabalu N. burbidgeae site two 2.jpg"
+  ],
+  "nepenthes-edwardsiana": [
+    "Nepenthes edwardsiana Macfarlane illustration.jpg",
+    "Nepenthes edwardsiana entire ASR 052007 tambu.jpg",
+    "Nepenthes edwardsiana ASR 052007 tambu.jpg",
+    "N.edwardsiana IP.jpg",
+    "Nepenthes edwardsiana - Transactions of the Linnean Society of London (1859).jpg"
+  ],
+  "nepenthes-hamata": [
+    "Nepenthes hamata teeth.jpg",
+    "Nepenthes spathulata x hamata 2015-10-03 5924b.jpg",
+    "Nepenthes spathulata x hamata 2015-10-03 5923.jpg",
+    "Nepenthes spathulata x hamata 2015-10-03 5925.jpg",
+    "Nepenthes spathulata x hamata 2015-10-03 5926.jpg"
+  ],
+  "nepenthes-lowii": [
+    "Nepenthes Lowii (13991706846).jpg",
+    "Nepenthes lowii Life in the forests of the Far East.png",
+    "Nepenthes lowii - Transactions of the Linnean Society of London (1859).jpg",
+    "Nepenthes lowii Macfarlane illustration.jpg",
+    "Nepenthes lowii.jpg"
+  ],
+  "nepenthes-macrophylla": [
+    "Nepenthes macrophylla 22748.jpg",
+    "Nepenthes macrophylla.jpg",
+    "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg",
+    "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg",
+    "Pitcher Plant - Nepenthes - \"Monkey Cup\".jpg"
+  ],
+  "nepenthes-rafflesiana": [
+    "Nepenthes rafflesiana in the greenhouse of Higashiyama Botanical Garden - 1.jpg",
+    "Nepenthes rafflesiana in cultivation - front view.jpg",
+    "Nepenthes rafflesiana in the greenhouse of Higashiyama Botanical Garden - 2.jpg",
+    "Nepenthes rafflesiana in cultivation - side view.jpg",
+    "Nepenthes rafflesiana botanical illustration (1824).jpg"
+  ],
+  "nepenthes-rajah": [
+    "2008-1-1 cultivated Nepenthes rajah (279).jpg",
+    "Nepenthes rajah - Curtis\u2019s Botanical Magazine (1905).jpg",
+    "Nepenthes rajah Life in the forests of the Far East.png",
+    "Nepenthes rajah 41 cm pitcher.jpg",
+    "Nepenthes rajah - Transactions of the Linnean Society of London (1859).jpg"
+  ],
+  "nepenthes-truncata": [
+    "Nepenthes truncata pitcher.jpg",
+    "Nepenthes truncata 1.jpg",
+    "Nepenthes truncata - Lyman Plant House, Smith College - DSC02006.jpg",
+    "Nepenthes truncata dark peristome.jpg",
+    "Nepenthes truncata plant.jpg"
+  ],
+  "nepenthes-veitchii": [
+    "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg",
+    "Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg",
+    "Nepenthes veitchii x maxima.jpg",
+    "Nepenthes veitchii (22309086385).jpg",
+    "Nepenthes veitchii (22121194850).jpg"
+  ],
+  "pinguicula-moctezumae": [
+    "Pinguicula 'Aphrodite'.jpg",
+    "Pinguicula 'Aphrodite' 1.jpg",
+    "Pinguicula 'Aphrodite' 2.jpg",
+    "\u6355\u87f2\u5807\u5c6c Pinguicula 'Aphrodite' -\u4e0a\u6d77\u690d\u7269\u5712 Shanghai Botanical Garden- (17317722492).jpg",
+    "Pinguicula moctezumae, exhibition in Botanical garden Brno.JPG"
+  ],
+  "pinguicula-emarginata": [
+    "Pinguicula emarginata-IMG 0256.jpg",
+    "Pinguicula emarginata GotBot 2015 003.JPG",
+    "Pinguicula emarginata in Sakuya Konohana Kan, Osaka.jpg",
+    "Pinguicula emarginata flower in Sakuya Konohana Kan, Osaka.jpg",
+    "Pinguicula emarginata GotBot 2015 002.JPG"
+  ],
+  "pinguicula-gigantea": [
+    "Pinguicula gigantea - Orto botanico - Rome, Italy - DSC09940.jpg",
+    "Pinguicula gigantea in Jardin des Plantes de Toulouse 01.jpg",
+    "Pinguicula gigantea in Jardin des Plantes de Toulouse 02.jpg",
+    "Pinguicula gigantea (2), exhibition in Botanical garden Brno.JPG",
+    "Pinguicula gigantea kz01.jpg"
+  ],
+  "pinguicula-john": [
+    "Pinguicula vulgaris01(js).jpg",
+    "Pinguicula vulgaris flower (side view) - Keila.jpg",
+    "Pinguicula vulgaris flower (front view) - Keila.jpg",
+    "Pinguicula esseriana 02.jpg",
+    "Common butterwort (Pinguicula vulgaris).jpg"
+  ],
+  "pinguicula-moranensis": [
+    "Pinguicula moranensis flower.jpg",
+    "Pinguicula moranensis - Orto botanico - Rome, Italy - DSC09933.jpg",
+    "Pinguicula moranensis - Orto botanico - Rome, Italy - DSC09935.jpg",
+    "Pinguicula moranensis tree.png",
+    "Pinguicula Moranensis (15057446518).jpg"
+  ],
+  "sarracenia-alabamensis": [
+    "Sarracenia flower.jpg",
+    "Sarracenia alabamensis ssp. alabamensis imported from iNaturalist photo 174154943 on 14 April 2025.jpg",
+    "Sarracenia alabamensis ssp. wherryi (6081337228).jpg",
+    "Sarracenia alabamensis ssp. alabamensis imported from iNaturalist photo 174155990 on 14 April 2025.jpg",
+    "Sarracenia alabamensis x oreophila (5815542368).jpg"
+  ],
+  "sarracenia-flava": [
+    "Sarracenia flava.JPG",
+    "Sarracenia flava (19317814192).jpg",
+    "Sarracenia flava 2zz.jpg",
+    "Sarracenia flava 001.jpg",
+    "Sarraceniaceae Sarracenia flava 3.jpg"
+  ],
+  "sarracenia-leucophylla": [
+    "Sarracenia leucophylla - G\u00f6ttingen.jpg",
+    "Sarracenia leucophylla plants.jpg",
+    "Sarracenia leucophylla Palmengarten Frankfurt (Main).jpg",
+    "Sarracenia leucophylla at the Brooklyn Botanic Garden (81396).jpg",
+    "Sarracenia leucophylla (9146975804).jpg"
+  ],
+  "sarracenia-minor": [
+    "Hooded Pitcherplant (Sarracenia minor) by Mary Vaux Walcott-saam1970.355.589.jpg",
+    "20220605 Hortus Botanicus 07 - Sarracenia minor x flava.jpg",
+    "Sarracenia minor kz1.jpg",
+    "Sarraceniaceae - Sarracenia minor-001.JPG",
+    "Sarracenia minor (9920263856).jpg"
+  ],
+  "sarracenia-purpurea": [
+    "Sarracenia purpurea Flowers.JPG",
+    "Purple Pitcher Plant (Sarracenia purpurea) (9240775311).jpg",
+    "Purple Pitcher Plant (Sarracenia purpurea) (9467171169).jpg",
+    "Sarracenia purpurea Vertical.JPG",
+    "WLE2019 - Frasne-Bouverans - Sarracenia purpurea 05.jpg"
+  ],
+  "utricularia-alpina": [
+    "Utricularia alpina.jpg",
+    "Utricularia alpina traps Darwiniana.jpg",
+    "Utricularia alpina cultivated flower.jpg",
+    "UtriculariaAlpinaInflorescence.jpg",
+    "UtriculariaAlpinaFlora.jpg"
+  ],
+  "utricularia-bisquamata": [
+    "20210620 Hortus botanicus Leiden - Utricularia bisquamata (overview).jpg",
+    "20210620 Hortus botanicus Leiden - Utricularia bisquamata.jpg",
+    "Utricularia bisquamata leaves.jpg",
+    "Utricularia bisquamata habitus.jpg",
+    "Utricularia bisquamata.jpg"
+  ],
+  "utricularia-livida": [
+    "Utricularia livida flower.jpg",
+    "Utricularia livida E.Mey. (AM AK304513-1).jpg",
+    "Utricularia livida1.jpg",
+    "Utricularia livida flower cut.JPG",
+    "Utricularia livida E.Mey. (AM AK304513-3).jpg"
+  ],
+  "utricularia-nelumbifolia": [
+    "Utricularia nelumbifolia.jpg",
+    "Utricularia reticulata 1386.jpg",
+    "Utricularia reticulata 1599.jpg",
+    "Utricularia at karakund 7.jpg",
+    "Utricularia at karakund 8.jpg"
+  ],
+  "utricularia-reniformis": [
+    "Utricularia reniformis 2017-05-31 2298.jpg",
+    "Utricularia reniformis 2017-05-31 2293.jpg",
+    "Utricularia reniformis 2017-05-31 2296.jpg",
+    "Utricularia reniformis 2017-05-31 2295.jpg",
+    "Utricularia reniformis 2017-05-31 2294.jpg"
+  ],
+  "utricularia-sandersonii": [
+    "Utricularia sandersonii flower.jpg",
+    "Utricularia sandersonii-IMG 0259.jpg",
+    "Utricularia sandersonii (12558936044).jpg",
+    "Utricularia sandersonii leaves.jpg",
+    "Utricularia sandersonii GotBot 2016.jpg"
+  ],
+  "byblis-guehoi": [
+    "Byblis gigantea - Flickr - Kevin Thiele.jpg",
+    "Byblis filifolia flower.jpg",
+    "Byblis filifolia detail.jpg",
+    "Byblis filifolia.jpg",
+    "Byblis filifolia1.jpg"
+  ]
 }

@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-policy-page",
+      "settings": {
+        "fallback_title": "Refund policy",
+        "intro": "Our approach to returns, replacements, and refunds for living plants and growing supplies.",
+        "default_body": "<p>Because we sell living carnivorous plants, we handle issues case by case with the health of the specimen as the priority. Please read this policy before ordering.</p><ul><li><strong>Transit damage:</strong> Contact us within 48 hours of delivery with clear photos of the plant and packaging. We will offer a replacement, credit, or refund where appropriate.</li><li><strong>Incorrect item:</strong> If we sent the wrong plant or size, notify us within 7 days and we will correct the order at no extra shipping cost where possible.</li><li><strong>Change of mind:</strong> Living plants cannot be returned once dispatched due to biosecurity and stress. Growing supplies in unopened resaleable condition may be eligible for return — contact us first.</li><li><strong>Cancellations:</strong> Orders may be cancelled before dispatch. After dispatch, standard transit rules apply.</li><li><strong>Refunds:</strong> Approved refunds are returned to the original payment method within 5–10 business days.</li></ul><p>Email <a href=\"mailto:sales@bizarretropicals.com\">sales@bizarretropicals.com</a> or use our <a href=\"/pages/contact\">contact page</a> with your order number.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

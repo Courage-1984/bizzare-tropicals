@@ -1,0 +1,755 @@
+
+HANDLE                                   | STATUS       | DETAIL
+------------------------------------------------------------------------------------------
+
+byblis-aquatica (Byblis aquatica)
+  + seed OK: ByblisAquaticaCapsula.jpg
+  + seed OK: ByblisAquaticaFlora.jpg
+  + seed OK: ByblisAquaticaSeedling.jpg
+  + seed OK: ByblisAquaticaHabitus.jpg
+byblis-aquatica                          | INCOMPLETE   | 4/5
+
+byblis-filifolia-large (Byblis filifolia)
+  + seed OK: Byblis filifolia flower.jpg
+  + seed OK: Byblis filifolia detail.jpg
+  + seed OK: Byblis filifolia.jpg
+  + seed OK: Byblis filifolia1.jpg
+  + seed OK: Byblis filifolia flower1.jpg
+byblis-filifolia-large                   | COMPLETE     | 5/5
+
+byblis-gigantea (Byblis gigantea)
+  - seed fail: Byblis gigantea 1.jpg
+  - seed fail: Byblis gigantea flower.jpg
+  + found: Byblis gigantea - Flickr - Kevin Thiele.jpg
+  + found: ByblisGigantea.jpg
+  + found: (Byblis gigantea in Cannington, Australia) - DPLA - 07e12c2c6093bbe8cbcc62b082ecc4e8.jpg
+  + found: (Byblis gigantea in Cannington, Australia) - DPLA - 181ca2a17510c96136ea471f818c48e3.jpg
+  + found: (Byblis gigantea in Cannington, Australia) - DPLA - 04d9440b94793c581ed4953b7476f480.jpg
+byblis-gigantea                          | COMPLETE     | 5/5
+
+byblis-guehoi (Byblis guehoi)
+  - seed fail: Byblis guehoi 1.jpg
+  - seed fail: Byblis flower.jpg
+byblis-guehoi                            | INCOMPLETE   | 0/5
+
+byblis-liniflora (Byblis liniflora)
+  + seed OK: Byblis liniflora 3 flowering.jpg
+  + seed OK: ByblisLinifloraFlora.JPG
+  + seed OK: ByblisLinifloraHabitus.JPG
+  + seed OK: Byblis liniflora capsule1.JPG
+  + seed OK: Byblis liniflora capsule2.JPG
+byblis-liniflora                         | COMPLETE     | 5/5
+
+byblis-liniflora-rainbow (Byblis liniflora)
+  - seed fail: Byblis liniflora.jpg
+  - seed fail: Byblis liniflora macro.jpg
+  - seed fail: Byblis liniflora flower.jpg
+  - seed fail: Byblis liniflora sunlight.jpg
+  - seed fail: Byblis liniflora pot.jpg
+  + found: ByblisLinifloraHabitus.JPG
+  + found: Byblis liniflora capsule2.JPG
+  + found: Byblis liniflora capsule3.JPG
+  + found: Byblis liniflora capsule1.JPG
+  + found: Byblis liniflora 3 flowering.jpg
+byblis-liniflora-rainbow                 | COMPLETE     | 5/5
+
+cephalotus-follicularis (Cephalotus follicularis)
+  + seed OK: Cephalotus follicularis 0001.JPG
+  + seed OK: Cephalotus follicularis 002.jpg
+  + seed OK: Cephalotus follicularis 01.jpg
+  + seed OK: Cephalotus follicularis Hennern 3.jpg
+  + seed OK: Cephalotus follicularis001.jpg
+cephalotus-follicularis                  | COMPLETE     | 5/5
+
+cephalotus-follicularis-eden-black (Cephalotus follicularis)
+  - seed fail: Cephalotus follicularis clump.jpg
+  - seed fail: Cephalotus follicularis black.jpg
+  + found: Cephalotus follicularis 01.jpg
+  + found: Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg
+  + found: Cephalotus follicularis Hennern 4.jpg
+  + found: Cephalotus follicularis Hennern 2.jpg
+  + found: Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg
+cephalotus-follicularis-eden-black       | COMPLETE     | 5/5
+
+cephalotus-follicularis-hummers-giant (Cephalotus follicularis)
+  - seed fail: Cephalotus follicularis pitcher.jpg
+  - seed fail: Cephalotus follicularis clump.jpg
+  - seed fail: Cephalotus red.jpg
+  - seed fail: Cephalotus lid.jpg
+  - seed fail: Cephalotus habitat.jpg
+  + found: Cephalotus follicularis 01.jpg
+  + found: Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg
+  + found: Cephalotus follicularis Hennern 4.jpg
+  + found: Cephalotus follicularis Hennern 2.jpg
+  + found: Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg
+cephalotus-follicularis-hummers-giant    | COMPLETE     | 5/5
+
+cephalotus-follicularis-squat (Cephalotus follicularis)
+  - seed fail: Cephalotus follicularis pitcher.jpg
+  - seed fail: Cephalotus follicularis 1.jpg
+  + found: Cephalotus follicularis 01.jpg
+  + found: Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg
+  + found: Cephalotus follicularis Hennern 4.jpg
+  + found: Cephalotus follicularis Hennern 2.jpg
+  + found: Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg
+cephalotus-follicularis-squat            | COMPLETE     | 5/5
+
+cephalotus-follicularis-standard (Cephalotus follicularis)
+  - seed fail: Cephalotus follicularis 1.jpg
+  - seed fail: Cephalotus follicularis pitcher.jpg
+  + found: Cephalotus follicularis 01.jpg
+  + found: Cephalotus follicularis in Sakuya Konohana Kan, Osaka.jpg
+  + found: Cephalotus follicularis Hennern 4.jpg
+  + found: Cephalotus follicularis Hennern 2.jpg
+  + found: Cephalotus follicularis - California Carnivores - Sarah Stierch.jpg
+cephalotus-follicularis-standard         | COMPLETE     | 5/5
+
+darlingtonia-californica (Darlingtonia californica)
+  + seed OK: Darlingtonia californica, by Mary Vaux Walcott.jpg
+  + seed OK: Darlingtonia Macfarlane illustration.jpg
+  + seed OK: Darlingtonia californica.jpg
+  + seed OK: Darlingtonia californica 3.jpg
+  + seed OK: Darlingtonia californica ne1.JPG
+darlingtonia-californica                 | COMPLETE     | 5/5
+
+darlingtonia-californica-coastal (Darlingtonia californica)
+  - seed fail: Darlingtonia californica cobra.jpg
+  - seed fail: Darlingtonia californica 1.jpg
+  + found: Darlingtonia californica Torr - par Mickael Schauli.jpg
+  + found: Darlingtonia californica - par Mickael Schauli.jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg
+  + found: Darlingtonia Californica (14007752361).jpg
+darlingtonia-californica-coastal         | COMPLETE     | 5/5
+
+darlingtonia-californica-cobra (Darlingtonia californica)
+  - seed fail: Darlingtonia californica cobra.jpg
+  - seed fail: Darlingtonia californica windows.jpg
+  - seed fail: Darlingtonia californica fishtail.jpg
+  - seed fail: Darlingtonia californica habitat.jpg
+  - seed fail: Darlingtonia californica new.jpg
+  + found: Darlingtonia californica Torr - par Mickael Schauli.jpg
+  + found: Darlingtonia californica - par Mickael Schauli.jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg
+  + found: Darlingtonia Californica (14007752361).jpg
+darlingtonia-californica-cobra           | COMPLETE     | 5/5
+
+darlingtonia-californica-red (Darlingtonia californica)
+  - seed fail: Darlingtonia californica 1.jpg
+  - seed fail: Darlingtonia californica red.jpg
+  + found: Darlingtonia californica Torr - par Mickael Schauli.jpg
+  + found: Darlingtonia californica - par Mickael Schauli.jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg
+  + found: Darlingtonia Californica (14007752361).jpg
+darlingtonia-californica-red             | COMPLETE     | 5/5
+
+darlingtonia-californica-standard (Darlingtonia californica)
+  - seed fail: Darlingtonia californica 1.jpg
+  - seed fail: Darlingtonia californica cobra.jpg
+  + found: Darlingtonia californica Torr - par Mickael Schauli.jpg
+  + found: Darlingtonia californica - par Mickael Schauli.jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (3) (5898133348).jpg
+  + found: 0101a - PITCHER-PLANT, DALINGTONIA (Darlingtonia californica) (6-21-11) near florence, lane co, or - (4) (5898140266).jpg
+  + found: Darlingtonia Californica (14007752361).jpg
+darlingtonia-californica-standard        | COMPLETE     | 5/5
+
+dionaea-muscipula (Dionaea muscipula)
+  + seed OK: 01 Venusfliegenfalle.jpg
+  + seed OK: Dionaea muscipula.jpg
+  + seed OK: Dionaea muscipula 1.jpg
+  + seed OK: Dionaea muscipula 001.JPG
+  + seed OK: Dionaea muscipula 2.jpg
+dionaea-muscipula                        | COMPLETE     | 5/5
+
+dionaea-muscipula-akai-ryu (Dionaea muscipula)
+  + seed OK: Dionaea muscipula 3.jpg
+  - seed fail: Dionaea muscipula red dragon.jpg
+  + found: Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg
+  + found: 2012-07-27 15-29-54-Dionaea muscipula.jpg
+  + found: Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg
+  + found: Dionaea muscipula 34zz.jpg
+dionaea-muscipula-akai-ryu               | COMPLETE     | 5/5
+
+dionaea-muscipula-alien (Dionaea muscipula)
+  - seed fail: Dionaea muscipula Alien 1.jpg
+  - seed fail: Dionaea trap.jpg
+  + found: Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg
+  + found: 2012-07-27 15-29-54-Dionaea muscipula.jpg
+  + found: Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg
+  + found: Dionaea muscipula 34zz.jpg
+  + found: Venus flytrap (Dionaea muscipula) Zagreb Botanical Garden 1060.jpg
+dionaea-muscipula-alien                  | COMPLETE     | 5/5
+
+dionaea-muscipula-b52 (Dionaea muscipula)
+  - seed fail: Venus Flytrap B52.jpg
+  - seed fail: Dionaea muscipula trigger.jpg
+  - seed fail: Dionaea muscipula red.jpg
+  - seed fail: Dionaea muscipula flower.jpg
+  - seed fail: Dionaea muscipula rosette.jpg
+  + found: Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg
+  + found: 2012-07-27 15-29-54-Dionaea muscipula.jpg
+  + found: Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg
+  + found: Dionaea muscipula 34zz.jpg
+  + found: Venus flytrap (Dionaea muscipula) Zagreb Botanical Garden 1060.jpg
+dionaea-muscipula-b52                    | COMPLETE     | 5/5
+
+dionaea-muscipula-king-henry (Dionaea muscipula)
+  + seed OK: Dionaea muscipula 1.jpg
+  + seed OK: Dionaea muscipula trap.jpg
+  + found: Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg
+  + found: 2012-07-27 15-29-54-Dionaea muscipula.jpg
+  + found: Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg
+dionaea-muscipula-king-henry             | COMPLETE     | 5/5
+
+dionaea-muscipula-sawtooth (Dionaea muscipula)
+  - seed fail: Dionaea muscipula sawtooth.jpg
+  + seed OK: Dionaea muscipula 1.jpg
+  + found: Venus Flytrap - Dionaea muscipula, Green Swamp, Supply, North Carolina, October 18, 2021 (51693075042).jpg
+  + found: 2012-07-27 15-29-54-Dionaea muscipula.jpg
+  + found: Dionaea muscipula - Orto botanico - Rome, Italy - DSC09968.jpg
+  + found: Dionaea muscipula 34zz.jpg
+dionaea-muscipula-sawtooth               | COMPLETE     | 5/5
+
+drosera-aliciae (Drosera aliciae)
+  - seed fail: Drosera aliciae 1.jpg
+  - seed fail: Drosera aliciae flower.jpg
+  + found: Alice Sundew - Drosera aliciae (40046905595).jpg
+  + found: Alice Sundew - Drosera aliciae (40046912215).jpg
+  + found: Alice Sundew - Drosera aliciae (40232713724).jpg
+  + found: Drosera aliciae kz02.jpg
+  + found: Drosera aliciae kz03.jpg
+drosera-aliciae                          | COMPLETE     | 5/5
+
+drosera-anglica (Drosera anglica)
+  - seed fail: Drosera anglica 1.jpg
+  - seed fail: Drosera anglica dew.jpg
+  + found: Drosera anglica Sundew (39333653521).jpg
+  + found: Lange zonnedauw - English sundew - Drosera anglica.jpg
+  + found: English sundew (Drosera anglica) (8200403593).jpg
+  + found: Drosera anglica 15-p.bot-dros.angli-10.jpg
+  + found: Drosera anglica 15-p.bot-dros.angli-11.jpg
+drosera-anglica                          | COMPLETE     | 5/5
+
+drosera-capensis (Drosera capensis)
+  + seed OK: Drosera capensis bend.JPG
+  + seed OK: Drosera capensis (carnivorous-plant-142084).jpg
+  + seed OK: Drosera capensis leaf.jpg
+  + seed OK: Drosera capensis 2.jpg
+  + seed OK: Drosera capensis Luc Viatour.jpg
+drosera-capensis                         | COMPLETE     | 5/5
+
+drosera-capensis-typical (Drosera capensis)
+  + seed OK: Drosera capensis bend.JPG
+  - seed fail: Drosera capensis macro.jpg
+  - seed fail: Drosera capensis leaf.JPG
+  - seed fail: Drosera capensis white flower.jpg
+  - seed fail: Drosera capensis in habitat.jpg
+  + found: Cape Sundew - Drosera capensis (39142412240).jpg
+  + found: Cape Sundew - Drosera capensis (39142410090).jpg
+  + found: Cape Sundew - Drosera capensis (39142407930).jpg
+  + found: Drosera capensis Luc Viatour.jpg
+drosera-capensis-typical                 | COMPLETE     | 5/5
+
+drosera-filiformis (Drosera filiformis)
+  - seed fail: Drosera filiformis 1.jpg
+  - seed fail: Drosera filiformis flower.jpg
+  + found: Drosera filiformis var. tracyii.jpg
+  + found: Drosera filiformis closeup 2.jpg
+  + found: Drosera filiformis closeup 4.jpg
+  + found: Drosera filiformis closeup 1.jpg
+  + found: Drosera filiformis closeup 3.jpg
+drosera-filiformis                       | COMPLETE     | 5/5
+
+drosera-meristocaulis (Drosera meristocaulis)
+  - seed fail: Drosera meristocaulis 1.jpg
+  - seed fail: Drosera habitat.jpg
+  + found: Drosera meristocaulis.jpg
+  + found: DroseraMeristocaulis.jpg
+drosera-meristocaulis                    | INCOMPLETE   | 2/5
+
+drosera-regia-giant (Drosera regia)
+  - seed fail: Drosera regia 1.jpg
+  - seed fail: Drosera regia dew.jpg
+  + found: Drosera regia - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04338.JPG
+  + found: Drosera regia - open and closed flowers without spider web.jpg
+  + found: Drosera Regia - Flickr - incidencematrix.jpg
+  + found: 20210620 Hortus botanicus Leiden - Drosera regia .jpg
+  + found: 20210620 Hortus botanicus Leiden - Drosera regia v2.jpg
+drosera-regia-giant                      | COMPLETE     | 5/5
+
+drosera-spatulata-spoon (Drosera spatulata)
+  + seed OK: Drosera spatulata 1.jpg
+  + seed OK: Drosera spatulata flower.jpg
+  + found: Drosera spatulata (23441069360).jpg
+  + found: Spoon-leaved Sundew - Drosera spatulata (40952594791).jpg
+  + found: Spoon-leaved Sundew - Drosera spatulata (40245309344).jpg
+drosera-spatulata-spoon                  | COMPLETE     | 5/5
+
+drosophyllum-lusitanicum (Drosophyllum lusitanicum)
+  + seed OK: Drosophyllum lusitanicum a.JPG
+  + seed OK: Drosophyllum lusitanicum ne.jpg
+  + seed OK: Drosophyllum lusitanicum kz06.jpg
+  + seed OK: Drosophyllum lusitanicum kz03.jpg
+  + seed OK: Drosophyllum lusitanicum kz01.jpg
+drosophyllum-lusitanicum                 | COMPLETE     | 5/5
+
+drosophyllum-lusitanicum-dewy-pine (Drosophyllum lusitanicum)
+  - seed fail: Drosophyllum lusitanicum macro.jpg
+  - seed fail: Drosophyllum lusitanicum flower.jpg
+  - seed fail: Drosophyllum lusitanicum glands.jpg
+  - seed fail: Drosophyllum lusitanicum plant.jpg
+  - seed fail: Drosophyllum habitat.jpg
+  + found: Drosophyllum lusitanicum kz12.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum kz09.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-4-21 SierraMadrona.jpg
+drosophyllum-lusitanicum-dewy-pine       | COMPLETE     | 5/5
+
+drosophyllum-lusitanicum-spain (Drosophyllum lusitanicum)
+  - seed fail: Drosophyllum lusitanicum 1.jpg
+  - seed fail: Drosophyllum lusitanicum plant.jpg
+  + found: Drosophyllum lusitanicum kz12.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum Plantas 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum kz09.jpg
+drosophyllum-lusitanicum-spain           | COMPLETE     | 5/5
+
+drosophyllum-lusitanicum-specimen (Drosophyllum lusitanicum)
+  - seed fail: Drosophyllum lusitanicum 1.jpg
+  - seed fail: Drosophyllum lusitanicum plant.jpg
+  + found: Drosophyllum lusitanicum kz12.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum kz09.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-4-21 SierraMadrona.jpg
+drosophyllum-lusitanicum-specimen        | COMPLETE     | 5/5
+
+drosophyllum-lusitanicum-starter (Drosophyllum lusitanicum)
+  - seed fail: Drosophyllum lusitanicum 1.jpg
+  - seed fail: Drosophyllum lusitanicum plant.jpg
+  + found: Drosophyllum lusitanicum kz12.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum Habitus 2011-5-22 SierraMadrona.jpg
+  + found: Drosophyllum lusitanicum kz09.jpg
+  + found: Drosophyllum lusitanicum Habitat 2011-4-21 SierraMadrona.jpg
+drosophyllum-lusitanicum-starter         | COMPLETE     | 5/5
+
+heliamphora-heterodoxa (Heliamphora heterodoxa)
+  - seed fail: Heliamphora heterodoxa 1.jpg
+  - seed fail: Heliamphora pitcher.jpg
+  + found: Heliamphora heterodoxa x minor Jard├¡n bot├ínico de Valencia (2).JPG
+  + found: Heliamphora heterodoxa x minor Jard├¡n bot├ínico de Valencia (1).JPG
+  + found: Heliamphora heterodoxa ├ù minori in Jardin des Plantes de Toulouse 02.jpg
+  + found: Heliamphora heterodoxa ├ù minori in Jardin des Plantes de Toulouse 01.jpg
+  + found: Heliamphora minor x heterodoxa.jpg
+heliamphora-heterodoxa                   | COMPLETE     | 5/5
+
+heliamphora-minor (Heliamphora minor)
+  + seed OK: Heliamphora minor Auyan-tepui.jpg
+  + seed OK: Heliamphora minor2.jpg
+  + seed OK: Heliamphora minor - Atlanta Botanical Garden.JPG
+  + seed OK: Heliamphora minor kz01.jpg
+  + seed OK: Heliamphora minor var minor.jpg
+heliamphora-minor                        | COMPLETE     | 5/5
+
+heliamphora-minor-auyan-tepui (Heliamphora minor)
+  - seed fail: Heliamphora minor Auyan.jpg
+  - seed fail: Heliamphora minor spoon.jpg
+  - seed fail: Heliamphora minor new.jpg
+  - seed fail: Heliamphora minor drawing.jpg
+  - seed fail: Auyan Tepui landscape.jpg
+  + found: Heliamphora heterodoxa x minor Jard├¡n bot├ínico de Valencia (2).JPG
+  + found: Heliamphora heterodoxa x minor Jard├¡n bot├ínico de Valencia (1).JPG
+  + found: Heliamphora minor x heterodoxa.jpg
+  + found: Heliamphora minor - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04340.JPG
+  + found: Heliamphora minor1.jpg
+heliamphora-minor-auyan-tepui            | COMPLETE     | 5/5
+
+heliamphora-nutans (Heliamphora nutans)
+  + seed OK: Heliamphora nutans 1.jpg
+  - seed fail: Heliamphora nutans flower.jpg
+  + found: Heliamphora nutans-IMG 0453.jpg
+  + found: Heliamphora nutans-IMG 0452.jpg
+  + found: Heliamphora nutans - Botanischer Garten Braunschweig - Braunschweig, Germany - DSC04339.JPG
+  + found: Heliamphora nutans (Habitus) edit.jpg
+heliamphora-nutans                       | COMPLETE     | 5/5
+
+heliamphora-pulchella-tepui (Heliamphora pulchella)
+  - seed fail: Heliamphora pulchella 1.jpg
+  - seed fail: Heliamphora pulchella pitcher.jpg
+  + found: Heliamphora Pulchella (23508095812).jpg
+  + found: Heliamphora Pulchella (23508103422).jpg
+  + found: Heliamphora pulchella, exhibition in Botanical garden Brno.JPG
+  + found: Heliamphora Pulchella (23508099002).jpg
+  + found: Heliamphora pulchella (2), exhibition in Botanical garden Brno.JPG
+heliamphora-pulchella-tepui              | COMPLETE     | 5/5
+
+heliamphora-tatei (Heliamphora tatei)
+  - seed fail: Heliamphora tatei pitcher.jpg
+  - seed fail: Heliamphora tatei 1.jpg
+  + found: Heliamphora tatei aerial roots.JPG
+  + found: Heliamphora tatei hairs.JPG
+  + found: Heliamphora tateii juvenile.JPG
+  + found: Heliamphora tatei.JPG
+heliamphora-tatei                        | INCOMPLETE   | 4/5
+
+nepenthes-alata (Nepenthes alata)
+  - seed fail: Nepenthes alata pitcher.jpg
+  - seed fail: Nepenthes alata 1.jpg
+  + found: Caryophyllales - Nepenthes alata - 1.jpg
+  + found: Nepenthes alata Kannukasvi Kanntaime liik C IMG 5303.JPG
+  + found: Nepenthes alata (3).JPG
+  + found: Caryophyllales - Nepenthes alata - 5.jpg
+  + found: Nepenthes alata waxy zone.jpg
+nepenthes-alata                          | COMPLETE     | 5/5
+
+nepenthes-ampullaria (Nepenthes ampullaria)
+  + seed OK: Nepenthes ampullaria 1.jpg
+  - seed fail: Nepenthes ampullaria basal.jpg
+  + found: Nepenthes ampullaria (Bogor botanical park).jpg
+  + found: Pitcher Plant (Nepenthes ampullaria) (14136485484).jpg
+  + found: Nepenthes ampullaria Sarawak P1100345 03.jpg
+  + found: Nepenthes ampullaria botanical illustration (1824).jpg
+nepenthes-ampullaria                     | COMPLETE     | 5/5
+
+nepenthes-bicalcarata (Nepenthes bicalcarata)
+  + seed OK: Nepenthes bicalcarata.jpg
+  + seed OK: Nepenthesbicalcarata1.jpg
+  + seed OK: Nepenthes bicalcarata (cultivated1).jpg
+  + seed OK: Nepenthes bicalcarata Macfarlane illustration.jpg
+  + seed OK: Nepenthes bicalcarata Kebun Raya Bogor.jpg
+nepenthes-bicalcarata                    | COMPLETE     | 5/5
+
+nepenthes-bicalcarata-lowland (Nepenthes bicalcarata)
+  - seed fail: Nepenthes bicalcarata fangs.jpg
+  - seed fail: Nepenthes bicalcarata red.jpg
+  - seed fail: Bicalcarata tendril.jpg
+  - seed fail: Bicalcarata domatia.jpg
+  - seed fail: Nepenthes bicalcarata giant.jpg
+  + found: Nepenthes bicalcarata, Camponotus schmitzi and fly larvae.png
+  + found: Nepenthes bicalcarata-2-JNTBGRI-palode-kerala-India.jpg
+  + found: Nepenthes bicalcarata-1-JNTBGRI-palode-kerala-India.jpg
+  + found: Nepenthes bicalcarata-3-JNTBGRI-palode-kerala-India.jpg
+  + found: Nepenthesbicalcarata8.jpg
+nepenthes-bicalcarata-lowland            | COMPLETE     | 5/5
+
+nepenthes-burbidgeae (Nepenthes burbidgeae)
+  + seed OK: Nepenthes burbidgeae.jpg
+  + seed OK: Nepenthes burbidgeae 066.jpg
+  + seed OK: Pig Hill Kinabalu N. burbidgeae.jpg
+  + seed OK: Nepenthes burbidgeae.png
+  + seed OK: Pig Hill Kinabalu N. burbidgeae site two 2.jpg
+nepenthes-burbidgeae                     | COMPLETE     | 5/5
+
+nepenthes-burbidgeae-intermediate (Nepenthes burbidgeae)
+  - seed fail: Nepenthes burbidgeae pitcher.jpg
+  - seed fail: Nepenthes burbidgeae marbled.jpg
+  - seed fail: Nepenthes burbidgeae upper.jpg
+  - seed fail: Burbidgeae peristome.jpg
+  - seed fail: Nepenthes burbidgeae plant.jpg
+  + found: Nepenthes burbidgeae.png
+  + found: Nepenthes burbidgeae x Nepenthes fusca.jpg
+  + found: Nepenthes burbidgeae.jpg
+  + found: Nepenthes burbidgeae 066.jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg
+nepenthes-burbidgeae-intermediate        | COMPLETE     | 5/5
+
+nepenthes-burbidgeae-x-edwardsiana (Nepenthes burbidgeae x edwardsiana)
+  - seed fail: Nepenthes hybrid pitcher.jpg
+  - seed fail: Nepenthes edwardsiana teeth.jpg
+  + found: Nepenthes burbidgeae.png
+  + found: Nepenthes burbidgeae x Nepenthes fusca.jpg
+  + found: Nepenthes burbidgeae.jpg
+  + found: Nepenthes burbidgeae 066.jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg
+nepenthes-burbidgeae-x-edwardsiana       | COMPLETE     | 5/5
+
+nepenthes-edwardsiana (Nepenthes edwardsiana)
+  + seed OK: Nepenthes edwardsiana Macfarlane illustration.jpg
+  + seed OK: Nepenthes edwardsiana entire ASR 052007 tambu.jpg
+  + seed OK: Nepenthes edwardsiana ASR 052007 tambu.jpg
+  + seed OK: N.edwardsiana IP.jpg
+  + seed OK: Nepenthes edwardsiana - Transactions of the Linnean Society of London (1859).jpg
+nepenthes-edwardsiana                    | COMPLETE     | 5/5
+
+nepenthes-edwardsiana-highland (Nepenthes edwardsiana)
+  - seed fail: Nepenthes edwardsiana pitcher.jpg
+  - seed fail: Nepenthes edwardsiana peristome.jpg
+  - seed fail: Nepenthes edwardsiana lower.jpg
+  - seed fail: Edwardsiana in situ.jpg
+  - seed fail: Nepenthes edwardsiana lid.jpg
+  + found: Nepenthes edwardsiana Life in the forests of the Far East.png
+  + found: Nepenthes edwardsiana - Transactions of the Linnean Society of London (1859).jpg
+  + found: Nepenthes edwardsiana Macfarlane illustration.jpg
+  + found: Nepenthes edwardsiana ASR 052007 tambu.jpg
+  + found: Nepenthes edwardsiana entire ASR 052007 tambu.jpg
+nepenthes-edwardsiana-highland           | COMPLETE     | 5/5
+
+nepenthes-hamata (Nepenthes hamata)
+  - seed fail: Nepenthes hamata pitcher.jpg
+  + seed OK: Nepenthes hamata teeth.jpg
+  + found: Nepenthes spathulata x hamata 2015-10-03 5924b.jpg
+  + found: Nepenthes spathulata x hamata 2015-10-03 5923.jpg
+  + found: Nepenthes spathulata x hamata 2015-10-03 5925.jpg
+  + found: Nepenthes spathulata x hamata 2015-10-03 5926.jpg
+nepenthes-hamata                         | COMPLETE     | 5/5
+
+nepenthes-lowii-highland (Nepenthes lowii)
+  - seed fail: Nepenthes lowii upper.jpg
+  - seed fail: Nepenthes lowii 1.jpg
+  + found: Nepenthes Lowii (13991706846).jpg
+  + found: Nepenthes lowii Life in the forests of the Far East.png
+  + found: Nepenthes lowii - Transactions of the Linnean Society of London (1859).jpg
+  + found: Nepenthes lowii Macfarlane illustration.jpg
+  + found: Nepenthes lowii.jpg
+nepenthes-lowii-highland                 | COMPLETE     | 5/5
+
+nepenthes-macrophylla (Nepenthes macrophylla)
+  - seed fail: Nepenthes macrophylla pitcher.jpg
+  - seed fail: Nepenthes macrophylla lid.jpg
+  + found: Nepenthes macrophylla 22748.jpg
+  + found: Nepenthes macrophylla.jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg
+  + found: Pitcher Plant - Nepenthes - "Monkey Cup".jpg
+nepenthes-macrophylla                    | COMPLETE     | 5/5
+
+nepenthes-macrophylla-trusmadi (Nepenthes macrophylla)
+  - seed fail: Nepenthes macrophylla pitcher.jpg
+  - seed fail: Nepenthes macrophylla lid.jpg
+  + found: Nepenthes macrophylla 22748.jpg
+  + found: Nepenthes macrophylla.jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg
+  + found: Pitcher Plant - Nepenthes - "Monkey Cup".jpg
+nepenthes-macrophylla-trusmadi           | COMPLETE     | 5/5
+
+nepenthes-rafflesiana-spotted (Nepenthes rafflesiana)
+  - seed fail: Nepenthes rafflesiana pitcher.jpg
+  - seed fail: Nepenthes rafflesiana 1.jpg
+  + found: Nepenthes rafflesiana in the greenhouse of Higashiyama Botanical Garden - 1.jpg
+  + found: Nepenthes rafflesiana in cultivation - front view.jpg
+  + found: Nepenthes rafflesiana in the greenhouse of Higashiyama Botanical Garden - 2.jpg
+  + found: Nepenthes rafflesiana in cultivation - side view.jpg
+  + found: Nepenthes rafflesiana botanical illustration (1824).jpg
+nepenthes-rafflesiana-spotted            | COMPLETE     | 5/5
+
+nepenthes-rajah (Nepenthes rajah)
+  - seed fail: Nepenthes rajah pitcher.jpg
+  - seed fail: Nepenthes rajah 1.jpg
+  + found: 2008-1-1 cultivated Nepenthes rajah (279).jpg
+  + found: Nepenthes rajah - CurtisΓÇÖs Botanical Magazine (1905).jpg
+  + found: Nepenthes rajah Life in the forests of the Far East.png
+  + found: Nepenthes rajah 41 cm pitcher.jpg
+  + found: Nepenthes rajah - Transactions of the Linnean Society of London (1859).jpg
+nepenthes-rajah                          | COMPLETE     | 5/5
+
+nepenthes-truncata-giant (Nepenthes truncata)
+  + seed OK: Nepenthes truncata pitcher.jpg
+  + seed OK: Nepenthes truncata 1.jpg
+  + found: Nepenthes truncata - Lyman Plant House, Smith College - DSC02006.jpg
+  + found: Nepenthes truncata dark peristome.jpg
+  + found: Nepenthes truncata plant.jpg
+nepenthes-truncata-giant                 | COMPLETE     | 5/5
+
+nepenthes-veitchii (Nepenthes veitchii)
+  - seed fail: Nepenthes veitchii 1.jpg
+  - seed fail: Nepenthes veitchii peristome.jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49359429783).jpg
+  + found: Pitcher Plant (Nepenthaceae) Nepenthes Veitchii Pink (49360096312).jpg
+  + found: Nepenthes veitchii x maxima.jpg
+  + found: Nepenthes veitchii (22309086385).jpg
+  + found: Nepenthes veitchii (22121194850).jpg
+nepenthes-veitchii                       | COMPLETE     | 5/5
+
+pinguicula-aphrodite (Pinguicula (moctezumae x agnata))
+  + seed OK: Pinguicula 'Aphrodite'.jpg
+  + seed OK: Pinguicula 'Aphrodite' 1.jpg
+  + seed OK: Pinguicula 'Aphrodite' 2.jpg
+  - seed fail: Pinguicula 'Aphrodite' flower.jpg
+  - seed fail: Pinguicula 'Aphrodite' habit.jpg
+  + found: µìòΦƒ▓σáçσ▒¼ Pinguicula 'Aphrodite' -Σ╕èµ╡╖µñìτë⌐σ£Æ Shanghai Botanical Garden- (17317722492).jpg
+pinguicula-aphrodite                     | INCOMPLETE   | 4/5
+
+pinguicula-emarginata (Pinguicula emarginata)
+  - seed fail: Pinguicula emarginata flower.jpg
+  - seed fail: Pinguicula emarginata 1.jpg
+  + found: Pinguicula emarginata-IMG 0256.jpg
+  + found: Pinguicula emarginata GotBot 2015 003.JPG
+  + found: Pinguicula emarginata in Sakuya Konohana Kan, Osaka.jpg
+  + found: Pinguicula emarginata flower in Sakuya Konohana Kan, Osaka.jpg
+  + found: Pinguicula emarginata GotBot 2015 002.JPG
+pinguicula-emarginata                    | COMPLETE     | 5/5
+
+pinguicula-gigantea-giant (Pinguicula gigantea)
+  - seed fail: Pinguicula gigantea 1.jpg
+  - seed fail: Pinguicula gigantea flower.jpg
+  + found: Pinguicula gigantea - Orto botanico - Rome, Italy - DSC09940.jpg
+  + found: Pinguicula gigantea in Jardin des Plantes de Toulouse 01.jpg
+  + found: Pinguicula gigantea in Jardin des Plantes de Toulouse 02.jpg
+  + found: Pinguicula gigantea (2), exhibition in Botanical garden Brno.JPG
+  + found: Pinguicula gigantea kz01.jpg
+pinguicula-gigantea-giant                | COMPLETE     | 5/5
+
+pinguicula-john-rizzi (Pinguicula 'John Rizzi')
+  - seed fail: Pinguicula John Rizzi 1.jpg
+  - seed fail: Pinguicula flower.jpg
+  + found: Pinguicula vulgaris01(js).jpg
+  + found: Pinguicula vulgaris flower (side view) - Keila.jpg
+  + found: Pinguicula vulgaris flower (front view) - Keila.jpg
+  + found: Pinguicula esseriana 02.jpg
+  + found: Common butterwort (Pinguicula vulgaris).jpg
+pinguicula-john-rizzi                    | COMPLETE     | 5/5
+
+pinguicula-moranensis (Pinguicula moranensis)
+  - seed fail: Pinguicula moranensis 1.jpg
+  + seed OK: Pinguicula moranensis flower.jpg
+  + found: Pinguicula moranensis - Orto botanico - Rome, Italy - DSC09933.jpg
+  + found: Pinguicula moranensis - Orto botanico - Rome, Italy - DSC09935.jpg
+  + found: Pinguicula moranensis tree.png
+  + found: Pinguicula Moranensis (15057446518).jpg
+pinguicula-moranensis                    | COMPLETE     | 5/5
+
+sarracenia-alabamensis (Sarracenia alabamensis)
+  - seed fail: Sarracenia alabamensis pitcher.jpg
+  + seed OK: Sarracenia flower.jpg
+  + found: Sarracenia alabamensis ssp. alabamensis imported from iNaturalist photo 174154943 on 14 April 2025.jpg
+  + found: Sarracenia alabamensis ssp. wherryi (6081337228).jpg
+  + found: Sarracenia alabamensis ssp. alabamensis imported from iNaturalist photo 174155990 on 14 April 2025.jpg
+  + found: Sarracenia alabamensis x oreophila (5815542368).jpg
+sarracenia-alabamensis                   | COMPLETE     | 5/5
+
+sarracenia-flava (Sarracenia flava)
+  + seed OK: Sarracenia flava.JPG
+  + seed OK: Sarracenia flava (19317814192).jpg
+  + seed OK: Sarracenia flava 2zz.jpg
+  + seed OK: Sarracenia flava 001.jpg
+  + seed OK: Sarraceniaceae Sarracenia flava 3.jpg
+sarracenia-flava                         | COMPLETE     | 5/5
+
+sarracenia-flava-maxima (Sarracenia flava)
+  - seed fail: Sarracenia flava maxima.jpg
+  - seed fail: Sarracenia flava throat.jpg
+  - seed fail: Sarracenia flava lid.jpg
+  - seed fail: Sarracenia flava flower.jpg
+  - seed fail: Sarracenia flava bog.jpg
+  + found: Bad Rappenau - Salinenpark - Mustergarten - Sarracenia flava var. ornata 05.jpg
+  + found: Sarracenia flava - Orto botanico - Rome, Italy - DSC09965.jpg
+  + found: Yellow pitcherplant (Sarracenia flava) (41144091621).jpg
+  + found: Sarracenia flava 2 - G├╢ttingen.jpg
+  + found: Sarracenia flava 1 - G├╢ttingen.jpg
+sarracenia-flava-maxima                  | COMPLETE     | 5/5
+
+sarracenia-leucophylla (Sarracenia leucophylla)
+  - seed fail: Sarracenia leucophylla 1.jpg
+  - seed fail: Sarracenia leucophylla autumn.jpg
+  + found: Sarracenia leucophylla - G├╢ttingen.jpg
+  + found: Sarracenia leucophylla plants.jpg
+  + found: Sarracenia leucophylla Palmengarten Frankfurt (Main).jpg
+  + found: Sarracenia leucophylla at the Brooklyn Botanic Garden (81396).jpg
+  + found: Sarracenia leucophylla (9146975804).jpg
+sarracenia-leucophylla                   | COMPLETE     | 5/5
+
+sarracenia-minor-hooded (Sarracenia minor)
+  - seed fail: Sarracenia minor pitcher.jpg
+  - seed fail: Sarracenia minor 1.jpg
+  + found: Hooded Pitcherplant (Sarracenia minor) by Mary Vaux Walcott-saam1970.355.589.jpg
+  + found: 20220605 Hortus Botanicus 07 - Sarracenia minor x flava.jpg
+  + found: Sarracenia minor kz1.jpg
+  + found: Sarraceniaceae - Sarracenia minor-001.JPG
+  + found: Sarracenia minor (9920263856).jpg
+sarracenia-minor-hooded                  | COMPLETE     | 5/5
+
+sarracenia-purpurea-northern (Sarracenia purpurea)
+  - seed fail: Sarracenia purpurea 1.jpg
+  - seed fail: Sarracenia purpurea pitcher.jpg
+  + found: Sarracenia purpurea Flowers.JPG
+  + found: Purple Pitcher Plant (Sarracenia purpurea) (9240775311).jpg
+  + found: Purple Pitcher Plant (Sarracenia purpurea) (9467171169).jpg
+  + found: Sarracenia purpurea Vertical.JPG
+  + found: WLE2019 - Frasne-Bouverans - Sarracenia purpurea 05.jpg
+sarracenia-purpurea-northern             | COMPLETE     | 5/5
+
+sarracenia-purpurea-venosa (Sarracenia purpurea subsp. venosa)
+  - seed fail: Sarracenia purpurea 1.jpg
+  - seed fail: Sarracenia pitcher.jpg
+  + found: Sarracenia purpurea Flowers.JPG
+  + found: Purple Pitcher Plant (Sarracenia purpurea) (9240775311).jpg
+  + found: Purple Pitcher Plant (Sarracenia purpurea) (9467171169).jpg
+  + found: Sarracenia purpurea Vertical.JPG
+  + found: Sarracenia purpurea venosa 15.jpg
+sarracenia-purpurea-venosa               | COMPLETE     | 5/5
+
+utricularia-alpina (Utricularia alpina)
+  + seed OK: Utricularia alpina.jpg
+  + seed OK: Utricularia alpina traps Darwiniana.jpg
+  + seed OK: Utricularia alpina cultivated flower.jpg
+  - seed fail: Utricularia alpina kz01.jpg
+  - seed fail: Utricularia alpina flower closeup.jpg
+  + found: UtriculariaAlpinaInflorescence.jpg
+  + found: UtriculariaAlpinaFlora.jpg
+utricularia-alpina                       | COMPLETE     | 5/5
+
+utricularia-alpina-epiphytic (Utricularia alpina)
+  - seed fail: Utricularia alpina flower.jpg
+  - seed fail: Utricularia bladders.jpg
+  - seed fail: Utricularia alpina pot.jpg
+  - seed fail: Utricularia alpina leaves.jpg
+  - seed fail: Epiphytic utricularia.jpg
+  + found: Utricularia alpina.jpg
+  + found: UtriculariaAlpinaInflorescence.jpg
+  + found: Utricularia alpina traps Darwiniana.jpg
+  + found: UtriculariaAlpinaFlora.jpg
+  + found: Utricularia alpina cultivated flower.jpg
+utricularia-alpina-epiphytic             | COMPLETE     | 5/5
+
+utricularia-bisquamata (Utricularia bisquamata)
+  - seed fail: Utricularia bisquamata flower.jpg
+  - seed fail: Utricularia bisquamata 1.jpg
+  + found: 20210620 Hortus botanicus Leiden - Utricularia bisquamata (overview).jpg
+  + found: 20210620 Hortus botanicus Leiden - Utricularia bisquamata.jpg
+  + found: Utricularia bisquamata leaves.jpg
+  + found: Utricularia bisquamata habitus.jpg
+  + found: Utricularia bisquamata.jpg
+utricularia-bisquamata                   | COMPLETE     | 5/5
+
+utricularia-livida-lilac (Utricularia livida)
+  + seed OK: Utricularia livida flower.jpg
+  - seed fail: Utricularia livida 1.jpg
+  + found: Utricularia livida E.Mey. (AM AK304513-1).jpg
+  + found: Utricularia livida1.jpg
+  + found: Utricularia livida flower cut.JPG
+  + found: Utricularia livida E.Mey. (AM AK304513-3).jpg
+utricularia-livida-lilac                 | COMPLETE     | 5/5
+
+utricularia-nelumbifolia (Utricularia nelumbifolia)
+  - seed fail: Utricularia nelumbifolia leaf.jpg
+  - seed fail: Utricularia flower.jpg
+  + found: Utricularia nelumbifolia.jpg
+utricularia-nelumbifolia                 | INCOMPLETE   | 1/5
+
+utricularia-reniformis-giant (Utricularia reniformis)
+  - seed fail: Utricularia reniformis leaf.jpg
+  - seed fail: Utricularia flower.jpg
+  + found: Utricularia reniformis 2017-05-31 2298.jpg
+  + found: Utricularia reniformis 2017-05-31 2293.jpg
+  + found: Utricularia reniformis 2017-05-31 2296.jpg
+  + found: Utricularia reniformis 2017-05-31 2295.jpg
+  + found: Utricularia reniformis 2017-05-31 2294.jpg
+utricularia-reniformis-giant             | COMPLETE     | 5/5
+
+utricularia-sandersonii (Utricularia sandersonii)
+  - seed fail: Utricularia sandersonii 1.jpg
+  + seed OK: Utricularia sandersonii flower.jpg
+  + found: Utricularia sandersonii-IMG 0259.jpg
+  + found: Utricularia sandersonii (12558936044).jpg
+  + found: Utricularia sandersonii leaves.jpg
+  + found: Utricularia sandersonii GotBot 2016.jpg
+utricularia-sandersonii                  | COMPLETE     | 5/5
+------------------------------------------------------------------------------------------
+DONE: 71/77 products at 5/5 images.
+Wrote: verified_images.json, master_links_export.json, botanical_links_report.json, updated CSV

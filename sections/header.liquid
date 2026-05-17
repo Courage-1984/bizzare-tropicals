@@ -62,7 +62,7 @@
       {%- if shop.customer_accounts_enabled -%}
         <a
           class="site-header__icon-link"
-          href="{{ routes.account_url }}"
+          href="{% render 'customer-account-link-url' %}"
           aria-label="{{ 'header.account' | t }}"
         >
           <span class="site-header__icon" aria-hidden="true">
