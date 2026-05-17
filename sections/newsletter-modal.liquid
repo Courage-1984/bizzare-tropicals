@@ -68,6 +68,7 @@
 
           {%- form 'customer', class: 'newsletter-modal__form', id: 'newsletter-modal-form' -%}
             <input type="hidden" name="contact[tags]" value="newsletter, field-notes">
+            <input type="hidden" name="customer[accepts_marketing]" value="true">
 
             <div class="newsletter-modal__field">
               <label class="visually-hidden" for="newsletter-modal-email-{{ section.id }}">

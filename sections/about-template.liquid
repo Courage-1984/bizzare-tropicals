@@ -5,7 +5,6 @@
   assign split_heading = section.settings.split_heading
   assign split_text = section.settings.split_text
   assign image_position = section.settings.image_position
-  assign conservatory_heading = section.settings.conservatory_heading
   assign lab_heading = section.settings.lab_heading
   assign lab_text = section.settings.lab_text
   assign lab_image = section.settings.lab_image
@@ -23,7 +22,6 @@
   if placeholder_curator contains 'Luther_Burbank'
     assign placeholder_curator = 'https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200'
   endif
-  assign default_pillar_placeholder = section.settings.default_pillar_placeholder | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200'
   assign use_split_image = false
   assign use_lab_image = false
   assign use_curator_image = false
@@ -181,84 +179,6 @@
     </div>
   </section>
 
-  {%- if section.blocks.size > 0 -%}
-    <section class="about-page__conservatory" aria-labelledby="about-conservatory-heading-{{ section.id }}">
-      <h2 id="about-conservatory-heading-{{ section.id }}" class="about-page__conservatory-title">
-        {{ section.settings.conservatory_heading | default: 'The conservatory' | escape }}
-      </h2>
-
-      <ul class="about-page__plates" role="list" data-reveal-stagger>
-        {%- for block in section.blocks -%}
-          {%- unless block.type == 'scientific_plate' -%}
-            {%- continue -%}
-          {%- endunless -%}
-
-          {%- liquid
-            assign plate_image = block.settings.image
-            assign plate_heading = block.settings.heading | default: 'Scientific plate'
-            assign plate_text = block.settings.text
-            assign plate_ref = block.settings.ref_id
-            assign plate_placeholder = block.settings.placeholder_image | default: default_pillar_placeholder
-            assign use_plate_image = false
-
-            if plate_image != blank and plate_image.width > 0
-              assign use_plate_image = true
-            endif
-
-            if plate_ref == blank
-              case forloop.index
-                when 1
-                  assign plate_ref = 'REF. QC-01'
-                when 2
-                  assign plate_ref = 'REF. SS-02'
-                else
-                  assign plate_ref = 'REF. EC-03'
-              endcase
-            endif
-          -%}
-
-          <li class="about-page__plates-item reveal-up" {{ block.shopify_attributes }} role="listitem">
-            <article class="about-page__plate">
-              <div class="about-page__plate__media">
-                <span class="about-page__plate__ref" aria-hidden="true">{{ plate_ref | escape }}</span>
-                {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
-                {%- if use_plate_image -%}
-                  {{
-                    plate_image
-                    | image_url: width: 600, height: 750, crop: 'center'
-                    | image_tag:
-                      class: 'about-page__plate__image',
-                      widths: '300, 450, 600',
-                      sizes: '(min-width: 750px) 30vw, 88vw',
-                      loading: 'lazy',
-                      alt: plate_heading
-                  }}
-                {%- elsif plate_placeholder != blank -%}
-                  <img
-                    class="about-page__plate__image about-page__plate__image--fallback"
-                    src="{{ plate_placeholder }}"
-                    alt="{{ plate_heading | escape }}"
-                    width="600"
-                    height="750"
-                    loading="lazy"
-                    decoding="async"
-                  >
-                {%- endif -%}
-              </div>
-
-              <div class="about-page__plate__body">
-                <h3 class="about-page__plate__title">{{ plate_heading | escape }}</h3>
-
-                {%- if plate_text != blank -%}
-                  <p class="about-page__plate__text">{{ plate_text | escape }}</p>
-                {%- endif -%}
-              </div>
-            </article>
-          </li>
-        {%- endfor -%}
-      </ul>
-    </section>
-  {%- endif -%}
 </article>
 
 {% stylesheet %}
@@ -266,7 +186,7 @@
     --about-block-gap: 3rem;
     width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
     margin-inline: auto;
-    padding-block: var(--space-3xl) var(--space-4xl);
+    padding-block: var(--space-3xl) var(--space-2xl);
   }
 
   .about-page__hero {
@@ -363,93 +283,6 @@
     aspect-ratio: 4 / 5;
   }
 
-  /* Conservatory — botanical index plates */
-  .about-page__plate {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-    background-color: rgb(255 255 255 / 0.35);
-    border: 1px solid var(--color-forest-green-dark);
-    box-shadow: 1px 2px 0 rgb(10 24 18 / 0.06);
-    transition:
-      box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .about-page__plates-item:hover .about-page__plate {
-    box-shadow: 2px 6px 16px rgb(10 24 18 / 0.1);
-    transform: translate3d(0, -2px, 0);
-  }
-
-  .about-page__plate__media {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    background-color: rgb(10 24 18 / 0.04);
-  }
-
-  .about-page__plate__image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .about-page__plates-item:hover .about-page__plate__image {
-    transform: scale3d(1.02, 1.02, 1);
-  }
-
-  .about-page__plate__ref {
-    position: absolute;
-    top: var(--space-xs);
-    right: var(--space-xs);
-    z-index: 1;
-    padding: 0.2rem 0.45rem;
-    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
-    font-size: 0.625rem;
-    font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: 0.08em;
-    color: var(--color-forest-green-dark);
-    opacity: 0.6;
-    background-color: rgb(245 243 238 / 0.92);
-    border: 0.5px solid rgb(10 24 18 / 0.12);
-    pointer-events: none;
-  }
-
-  .about-page__plate__body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: var(--space-sm);
-    padding: var(--space-md) var(--space-lg) var(--space-lg);
-    text-align: left;
-  }
-
-  .about-page__plate__title {
-    margin: 0;
-    font-family: var(--font-family-serif);
-    font-size: 1.25rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--line-height-tight);
-    letter-spacing: 0.01em;
-    color: var(--color-forest-green-dark);
-  }
-
-  .about-page__plate__text {
-    margin: 0;
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-forest-green-dark);
-    opacity: 0.88;
-  }
 
   .about-page__split-heading {
     margin: 0 0 var(--about-block-gap);
@@ -602,46 +435,6 @@
     opacity: 0.85;
   }
 
-  .about-page__conservatory {
-    padding: var(--space-2xl);
-    background-color: var(--color-parchment);
-    border: 1px solid var(--color-forest-green-dark);
-    border-radius: var(--radius-lg);
-    box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
-  }
-
-  .about-page__conservatory-title {
-    margin: 0 0 var(--about-block-gap);
-    font-family: var(--font-family-serif);
-    font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
-    font-style: italic;
-    font-weight: 400;
-    line-height: var(--line-height-tight);
-    text-align: center;
-    color: var(--color-forest-green-dark);
-    text-wrap: balance;
-  }
-
-  .about-page__plates {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .about-page__plates-item {
-    min-width: 0;
-  }
-
-  @media (min-width: 750px) {
-    .about-page__plates {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-lg);
-      align-items: stretch;
-    }
-  }
 
   @media (min-width: 990px) {
     .about-page__split {
@@ -691,16 +484,12 @@
     .about-page__arch-frame,
     .about-page__frame,
     .about-page__laboratory-image,
-    .about-page__curator-image,
-    .about-page__plate,
-    .about-page__plate__image {
+    .about-page__curator-image {
       transition: none;
     }
 
     .about-page__frame--organic:hover .about-page__laboratory-image,
-    .about-page__frame--circle:hover .about-page__curator-image,
-    .about-page__plates-item:hover .about-page__plate,
-    .about-page__plates-item:hover .about-page__plate__image {
+    .about-page__frame--circle:hover .about-page__curator-image {
       transform: none;
     }
   }
@@ -860,95 +649,10 @@
       "label": "t:sections.about_template.settings.curator_signature",
       "default": "Jaco Van Den Berg"
     },
-    {
-      "type": "text",
-      "id": "default_pillar_placeholder",
-      "label": "t:sections.about_template.settings.default_pillar_placeholder",
-      "info": "t:sections.about_template.settings.placeholder_image_info",
-      "default": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.about_template.settings.conservatory_header"
-    },
-    {
-      "type": "text",
-      "id": "conservatory_heading",
-      "label": "t:sections.about_template.settings.conservatory_heading",
-      "default": "The conservatory"
-    }
-  ],
-  "max_blocks": 6,
-  "blocks": [
-    {
-      "type": "scientific_plate",
-      "name": "t:sections.about_template.blocks.scientific_plate.name",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "t:sections.about_template.blocks.scientific_plate.settings.image"
-        },
-        {
-          "type": "text",
-          "id": "ref_id",
-          "label": "t:sections.about_template.blocks.scientific_plate.settings.ref_id",
-          "info": "t:sections.about_template.blocks.scientific_plate.settings.ref_id_info",
-          "default": "REF. QC-01"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "t:sections.about_template.blocks.scientific_plate.settings.heading",
-          "default": "Quality control"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "t:sections.about_template.blocks.scientific_plate.settings.text",
-          "default": "Describe your process."
-        },
-        {
-          "type": "text",
-          "id": "placeholder_image",
-          "label": "t:sections.about_template.blocks.scientific_plate.settings.placeholder_image",
-          "info": "t:sections.about_template.settings.placeholder_image_info"
-        }
-      ]
-    }
   ],
   "presets": [
     {
-      "name": "t:sections.about_template.name",
-      "blocks": [
-        {
-          "type": "scientific_plate",
-          "settings": {
-            "heading": "Quality control",
-            "ref_id": "REF. QC-01",
-            "text": "Every plant is inspected for pests, vigour, and true-to-name characteristics before it is listed.",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=600"
-          }
-        },
-        {
-          "type": "scientific_plate",
-          "settings": {
-            "heading": "Specialized soil",
-            "ref_id": "REF. SS-02",
-            "text": "We blend peat, perlite, and mineral components matched to each genus — never generic potting mix.",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/PerliteUSGOV.jpg?width=600"
-          }
-        },
-        {
-          "type": "scientific_plate",
-          "settings": {
-            "heading": "Expert care",
-            "ref_id": "REF. EC-03",
-            "text": "Integrated genus guides, difficulty ratings, and seasonal dormancy notes ship with every order.",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=600"
-          }
-        }
-      ]
+      "name": "t:sections.about_template.name"
     }
   ]
 }

@@ -1,0 +1,121 @@
+{% doc %}
+  Search overlay suggested matches — rotating rows of three live products.
+
+  @param {section} section - search-overlay section (collection + timing settings)
+{% enddoc %}
+
+{%- liquid
+  assign pool_limit = section.settings.suggested_pool_size | default: 24
+  assign rotate_seconds = section.settings.suggested_rotate_seconds | default: 5
+  assign suggested_collection = section.settings.suggested_collection
+
+  if suggested_collection != blank and suggested_collection.products_count > 0
+    assign suggested_products = suggested_collection.products | sort: 'created_at' | reverse
+  elsif collections.all != blank and collections.all.products_count > 0
+    assign suggested_collection = collections.all
+    assign suggested_products = collections.all.products | sort: 'created_at' | reverse
+  endif
+
+  assign has_products = false
+  if suggested_products.size >= 3
+    assign has_products = true
+  endif
+-%}
+
+{%- if has_products -%}
+  <script type="application/json" data-suggested-products-json>
+    [
+      {%- for product in suggested_products limit: pool_limit -%}
+        {%- liquid
+          assign card_image = product.featured_media.preview_image | default: product.featured_image
+          assign card_latin = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name | default: product.title
+          assign card_image_url = ''
+          if card_image != blank
+            assign card_image_url = card_image | image_url: width: 400
+          endif
+        -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        {
+          "title": {{ product.title | json }},
+          "url": {{ product.url | json }},
+          "latinName": {{ card_latin | json }},
+          "imageUrl": {{ card_image_url | json }}
+        }
+      {%- endfor -%}
+    ]
+  </script>
+
+  <div
+    class="search-overlay__suggested-rotator"
+    data-search-suggested-rotator
+    data-rotate-interval="{{ rotate_seconds | times: 1000 }}"
+    data-rotate-pause="{{ rotate_seconds | minus: 2 | at_least: 2 | times: 1000 }}"
+  >
+    <div class="search-overlay__suggested-viewport" data-suggested-viewport>
+      <div class="search-overlay__suggested-track" data-suggested-track>
+        <ul
+          class="search-overlay__suggested-row search-overlay__trending"
+          data-suggested-row="a"
+          role="list"
+        ></ul>
+        <ul
+          class="search-overlay__suggested-row search-overlay__trending"
+          data-suggested-row="b"
+          role="list"
+          aria-hidden="true"
+        ></ul>
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  <ul class="search-overlay__trending" role="list" data-search-suggested-static>
+    <li class="search-overlay__trending-item" role="listitem">
+      <a class="search-overlay__trending-link" href="{{ routes.all_products_collection_url }}">
+        <span class="search-overlay__trending-media">
+          <img
+            class="search-overlay__trending-image"
+            src="https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=400"
+            alt=""
+            width="400"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          >
+        </span>
+        <span class="search-overlay__trending-label"><em>Nepenthes ventricosa</em></span>
+      </a>
+    </li>
+    <li class="search-overlay__trending-item" role="listitem">
+      <a class="search-overlay__trending-link" href="{{ routes.all_products_collection_url }}">
+        <span class="search-overlay__trending-media">
+          <img
+            class="search-overlay__trending-image"
+            src="https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=400"
+            alt=""
+            width="400"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          >
+        </span>
+        <span class="search-overlay__trending-label"><em>Drosera capensis</em></span>
+      </a>
+    </li>
+    <li class="search-overlay__trending-item" role="listitem">
+      <a class="search-overlay__trending-link" href="{{ routes.all_products_collection_url }}">
+        <span class="search-overlay__trending-media">
+          <img
+            class="search-overlay__trending-image"
+            src="https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=400"
+            alt=""
+            width="400"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          >
+        </span>
+        <span class="search-overlay__trending-label"><em>Dionaea muscipula</em></span>
+      </a>
+    </li>
+  </ul>
+{%- endif -%}

@@ -181,6 +181,7 @@
 
         {%- form 'customer', class: 'site-footer__newsletter-form', id: 'footer-newsletter' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="hidden" name="customer[accepts_marketing]" value="true">
 
           <div class="site-footer__newsletter-field">
             <label class="visually-hidden" for="footer-newsletter-email-{{ section.id }}">

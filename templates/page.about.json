@@ -19,8 +19,77 @@
         "curator_heading": "A message from Jaco Van Den Berg.",
         "curator_placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200",
         "curator_signature": "Jaco Van Den Berg",
-        "curator_text": "<p>I have spent years studying and growing carnivorous genera across South Africa — from windowsill Drosera to climate-controlled Nepenthes. What began as a collector's obsession became a nursery built on science, patience, and respect for these plants in the wild.</p><p>At Bizarre Tropicals, every species we list reflects hands-on culture: the humidity, the dormancy timing, the substrate that actually works on a Gauteng bench. If you are building a collection, I want you to succeed — not just make a purchase.</p>",
-        "conservatory_heading": "The conservatory"
+        "curator_text": "<p>I have spent years studying and growing carnivorous genera across South Africa — from windowsill Drosera to climate-controlled Nepenthes. What began as a collector's obsession became a nursery built on science, patience, and respect for these plants in the wild.</p><p>At Bizarre Tropicals, every species we list reflects hands-on culture: the humidity, the dormancy timing, the substrate that actually works on a Gauteng bench. If you are building a collection, I want you to succeed — not just make a purchase.</p>"
+      }
+    },
+    "trophy_hall": {
+      "type": "about-trophy-case",
+      "settings": {
+        "overline": "Show bench",
+        "heading": "Award-winning specimens",
+        "subheading": "Living trophies from carnivorous plant shows — specimens we have exhibited and the classes they won on the bench.",
+        "footnote": "Upload show photos of each winning plant and link to the cultivar in your catalog when available."
+      },
+      "blocks": {
+        "trophy_1": {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Nepenthes × 'Genting Highland'",
+            "botanical_name": "Nepenthes (ventricosa × sibuyanensis)",
+            "award_class": "Best Nepenthes — open division",
+            "show_name": "Cape carnivorous plant expo",
+            "year": "2024",
+            "genus": "nepenthes",
+            "tier": "gold",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa.jpg?width=600"
+          }
+        },
+        "trophy_2": {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Sarracenia 'Judith Hindle'",
+            "botanical_name": "Sarracenia (leucophylla × purpurea) × purpurea",
+            "award_class": "Best Sarracenia — species hybrid",
+            "show_name": "Johannesburg CPS bench show",
+            "year": "2023",
+            "genus": "sarracenia",
+            "tier": "gold",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=600"
+          }
+        },
+        "trophy_3": {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Drosera capensis 'Alba'",
+            "botanical_name": "Drosera capensis",
+            "award_class": "Best Drosera — novice class",
+            "show_name": "Pretoria carnivorous plant day",
+            "year": "2022",
+            "genus": "drosera",
+            "tier": "silver",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=600"
+          }
+        },
+        "trophy_4": {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Dionaea muscipula 'B52'",
+            "botanical_name": "Dionaea muscipula",
+            "award_class": "Judges' choice — Venus flytrap",
+            "show_name": "Durban tropical plant fair",
+            "year": "2023",
+            "genus": "dionaea",
+            "tier": "laurel",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=600"
+          }
+        }
+      },
+      "block_order": ["trophy_1", "trophy_2", "trophy_3", "trophy_4"]
+    },
+    "conservatory": {
+      "type": "about-conservatory",
+      "settings": {
+        "heading": "The conservatory"
       },
       "blocks": {
         "plate_quality": {
@@ -51,14 +120,8 @@
           }
         }
       },
-      "block_order": [
-        "plate_quality",
-        "plate_soil",
-        "plate_care"
-      ]
+      "block_order": ["plate_quality", "plate_soil", "plate_care"]
     }
   },
-  "order": [
-    "about"
-  ]
+  "order": ["about", "trophy_hall", "conservatory"]
 }

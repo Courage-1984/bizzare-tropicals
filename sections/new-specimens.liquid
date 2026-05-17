@@ -224,7 +224,7 @@
     padding: var(--space-xs) var(--page-margin) var(--space-md);
     list-style: none;
     overflow-x: auto;
-    overscroll-behavior-x: contain;
+    overscroll-behavior-x: none;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
@@ -328,6 +328,14 @@
     line-height: 1.15;
   }
 
+
+  @media (min-width: 750px) {
+    /* Prevent wheel scroll from hijacking vertical page scroll on desktop */
+    .new-specimens__tray {
+      overflow-x: hidden;
+      scroll-snap-type: none;
+    }
+  }
 
   @media (min-width: 990px) {
     .new-specimens__nav {

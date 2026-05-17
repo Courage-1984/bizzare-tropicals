@@ -167,13 +167,29 @@
       "submit": "Send message",
       "detail_address": "Address",
       "detail_email": "Email",
+      "detail_hours": "Hours",
       "detail_phone": "Phone / WhatsApp",
+      "quick_links_label": "Quick contact",
+      "quick_email": "Email us",
+      "quick_phone": "WhatsApp",
+      "quick_visit": "Visit",
+      "specimen_tag": "Living collection",
+      "faq_overline": "Before you write",
       "social_facebook": "Facebook",
       "social_instagram": "Instagram"
     },
     "about_template": {
       "hero_overline": "Our story",
       "lab_overline": "The laboratory"
+    },
+    "about_trophy_case": {
+      "row_label": "Award-winning carnivorous plant specimens",
+      "specimen_tag": "Show specimen",
+      "show_year_label": "Show year",
+      "medal_gold": "Gold",
+      "medal_silver": "Silver",
+      "medal_bronze": "Bronze",
+      "medal_laurel": "Judges' choice"
     },
     "newsletter_modal": {
       "close": "Close newsletter signup",

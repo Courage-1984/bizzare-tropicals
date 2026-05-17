@@ -17,7 +17,7 @@
       "newsletter-modal": {
         "type": "newsletter-modal",
         "settings": {
-          "enable_modal": false,
+          "enable_modal": true,
           "trigger_mode": "either",
           "delay_seconds": 5,
           "cookie_days": 7,

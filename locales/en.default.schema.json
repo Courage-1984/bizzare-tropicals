@@ -106,6 +106,11 @@
     },
     "search_overlay": {
       "name": "Search overlay",
+      "settings": {
+        "suggested_collection": "Suggested products collection",
+        "suggested_pool_size": "Suggested products pool size",
+        "suggested_rotate_seconds": "Seconds between suggested rotations"
+      },
       "blocks": {
         "genus_link": {
           "name": "Genus quick link",
@@ -375,7 +380,13 @@
     "contact_template": {
       "name": "Contact page",
       "settings": {
+        "hero_header": "Hero",
+        "hero_overline": "Hero overline",
+        "hero_background_image": "Hero background image",
+        "hero_placeholder_image": "Hero placeholder image URL",
+        "hero_placeholder_image_info": "Shown when no hero image is uploaded.",
         "display_header": "Display options",
+        "show_quick_links": "Show quick contact cards",
         "show_faq": "Show FAQ",
         "show_social_links": "Show social links",
         "enable_sticky_sidebar": "Sticky sidebar on desktop",
@@ -383,19 +394,19 @@
         "form_heading": "Page heading",
         "form_intro": "Introduction",
         "form_subheading": "Form heading",
+        "form_card_note": "Form helper note",
         "panel_header": "Conservatory panel",
         "panel_heading": "Panel heading",
         "panel_intro": "Panel introduction",
         "panel_image": "Panel image",
         "placeholder_panel_image": "Placeholder panel image URL",
         "placeholder_panel_image_info": "Used when no panel image is uploaded.",
-        "image_position": "Image position",
-        "image_position_top": "Above text",
-        "image_position_bottom": "Below text",
         "contact_address": "Address",
         "contact_email": "Email",
         "contact_hours": "Hours",
         "contact_phone": "Phone",
+        "whatsapp_url": "WhatsApp link",
+        "whatsapp_url_info": "Optional. Makes phone quick-link and sidebar phone clickable.",
         "faq_header": "FAQ",
         "faq_heading": "FAQ heading",
         "social_header": "Social",
@@ -413,6 +424,55 @@
             "answer": "Answer"
           }
         }
+      }
+    },
+    "about_trophy_case": {
+      "name": "About — show bench trophies",
+      "settings": {
+        "overline": "Overline",
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "footnote": "Footnote"
+      },
+      "blocks": {
+        "trophy": {
+          "name": "Show-winning specimen",
+          "settings": {
+            "specimen_name": "Cultivar or trade name",
+            "botanical_name": "Botanical / hybrid formula",
+            "award_class": "Class won",
+            "show_name": "Show or society event",
+            "year": "Show year",
+            "genus": "Genus",
+            "genus_nepenthes": "Nepenthes",
+            "genus_drosera": "Drosera",
+            "genus_sarracenia": "Sarracenia",
+            "genus_dionaea": "Dionaea (Venus flytrap)",
+            "genus_cephalotus": "Cephalotus",
+            "genus_pinguicula": "Pinguicula",
+            "genus_other": "Other genus",
+            "tier": "Medal or placement",
+            "tier_gold": "Gold medal",
+            "tier_silver": "Silver medal",
+            "tier_bronze": "Bronze medal",
+            "tier_laurel": "Judges' choice / special",
+            "image": "Show bench photo",
+            "image_info": "Photo of the exhibited plant on the bench or in judging.",
+            "placeholder_image": "Placeholder photo URL",
+            "placeholder_image_info": "Used until a show photo is uploaded.",
+            "monogram": "Fallback letter",
+            "monogram_info": "Only shown when no photo is set. Defaults from genus.",
+            "link": "Catalog link",
+            "link_info": "Optional link to the product or collection for this cultivar."
+          }
+        }
+      }
+    },
+    "about_conservatory": {
+      "name": "About — conservatory plates",
+      "settings": {
+        "heading": "Section heading",
+        "default_pillar_placeholder": "Default plate placeholder URL"
       }
     },
     "about_template": {

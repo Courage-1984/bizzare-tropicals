@@ -931,6 +931,11 @@
     animation-play-state: paused;
   }
 
+  .main-product__gallery-stage.is-zoom-active .main-product__gallery-slide.is-active .main-product__gallery-stage-image,
+  .main-product__gallery-stage.is-magnified .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+    animation: none;
+  }
+
   @keyframes main-product-gallery-ken-burns {
     from {
       transform: scale(1);
@@ -1086,10 +1091,6 @@
 
   .main-product__gallery-stage.is-magnified .main-product__gallery-zoom {
     cursor: zoom-out;
-  }
-
-  .main-product__gallery-stage.is-magnified .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
-    animation: none;
   }
 
   .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
@@ -2009,7 +2010,7 @@
       var hoverZoom = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       var zoomInLabel = gallery.dataset.labelZoomIn || 'Zoom image';
       var zoomOutLabel = gallery.dataset.labelZoomOut || 'Exit zoom';
-      var hoverScale = 1.38;
+      var hoverScale = 1.58;
       var magnifiedScale = 3.15;
       var targetScale = 1;
       var currentScale = 1;
@@ -2082,15 +2083,39 @@
         startZoomMotion();
       }
 
-      if (zoomBtn) {
-        zoomBtn.addEventListener('click', function () {
-          isMagnified = !isMagnified;
-          stage.classList.toggle('is-magnified', isMagnified);
+      function toggleMagnify() {
+        isMagnified = !isMagnified;
+        stage.classList.toggle('is-magnified', isMagnified);
+        if (zoomBtn) {
           zoomBtn.setAttribute('aria-pressed', isMagnified ? 'true' : 'false');
           zoomBtn.setAttribute('aria-label', isMagnified ? zoomOutLabel : zoomInLabel);
-          startZoomMotion();
+        }
+        startZoomMotion();
+      }
+
+      function activeSlideHasZoomableImage() {
+        var activeSlide = stage.querySelector('[data-gallery-slide].is-active');
+        return Boolean(
+          activeSlide && activeSlide.querySelector('.main-product__gallery-stage-image')
+        );
+      }
+
+      if (zoomBtn) {
+        zoomBtn.addEventListener('click', function (event) {
+          event.stopPropagation();
+          toggleMagnify();
         });
       }
+
+      stage.addEventListener('click', function (event) {
+        if (event.target.closest('button')) {
+          return;
+        }
+        if (!activeSlideHasZoomableImage()) {
+          return;
+        }
+        toggleMagnify();
+      });
 
       stage.addEventListener('mousemove', setPointerTarget);
 

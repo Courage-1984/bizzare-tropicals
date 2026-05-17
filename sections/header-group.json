@@ -180,7 +180,11 @@
         "pinguicula",
         "heliamphora"
       ],
-      "settings": {}
+      "settings": {
+        "suggested_collection": "all",
+        "suggested_pool_size": 24,
+        "suggested_rotate_seconds": 5
+      }
     }
   },
   "order": [

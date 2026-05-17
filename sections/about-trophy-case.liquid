@@ -1,0 +1,957 @@
+{%- liquid
+  assign hall_overline = section.settings.overline
+  assign hall_heading = section.settings.heading
+  assign hall_subheading = section.settings.subheading
+  assign trophy_count = 0
+
+  for block in section.blocks
+    if block.type == 'trophy'
+      assign trophy_count = trophy_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if trophy_count > 0 -%}
+  <section
+    class="trophy-hall full-width"
+    data-trophy-hall
+    aria-labelledby="trophy-hall-heading-{{ section.id }}"
+    {{ section.shopify_attributes }}
+  >
+    <div class="trophy-hall__atmosphere" aria-hidden="true">
+      <span class="trophy-hall__aurora trophy-hall__aurora--a"></span>
+      <span class="trophy-hall__aurora trophy-hall__aurora--b"></span>
+      <span class="trophy-hall__grain"></span>
+      <span class="trophy-hall__vignette"></span>
+    </div>
+
+    <div class="trophy-hall__inner">
+      <header class="trophy-hall__header reveal-up">
+        {%- if hall_overline != blank -%}
+          <p class="trophy-hall__overline">{{ hall_overline | escape }}</p>
+        {%- endif -%}
+        <h2 id="trophy-hall-heading-{{ section.id }}" class="trophy-hall__title">
+          {{ hall_heading | default: 'Show bench champions' | escape }}
+        </h2>
+        {%- if hall_subheading != blank -%}
+          <p class="trophy-hall__lede">{{ hall_subheading | escape }}</p>
+        {%- endif -%}
+      </header>
+
+      <div class="trophy-hall__stage reveal-up" data-trophy-stage>
+        <div class="trophy-hall__pedestal" aria-hidden="true">
+          <span class="trophy-hall__pedestal-glow"></span>
+          <span class="trophy-hall__pedestal-line"></span>
+        </div>
+
+        <ul
+          class="trophy-hall__row"
+          role="list"
+          data-trophy-track
+          data-reveal-stagger
+          aria-label="{{ 'sections.about_trophy_case.row_label' | t }}"
+        >
+          {%- for block in section.blocks -%}
+            {%- unless block.type == 'trophy' -%}
+              {%- continue -%}
+            {%- endunless -%}
+
+            {%- liquid
+              assign specimen_name = block.settings.specimen_name | default: block.settings.title
+              assign botanical_name = block.settings.botanical_name
+              assign award_class = block.settings.award_class | default: block.settings.subtitle
+              assign show_name = block.settings.show_name
+              assign trophy_year = block.settings.year
+              assign trophy_tier = block.settings.tier | default: 'gold'
+              assign trophy_genus = block.settings.genus | default: 'other'
+              assign trophy_link = block.settings.link
+              assign trophy_image = block.settings.image
+              assign trophy_placeholder = block.settings.placeholder_image
+              assign trophy_monogram = block.settings.monogram
+              assign use_trophy_image = false
+              assign medal_label_key = 'sections.about_trophy_case.medal_' | append: trophy_tier
+
+              if trophy_image != blank and trophy_image.width > 0
+                assign use_trophy_image = true
+              endif
+
+              if trophy_monogram == blank
+                case trophy_genus
+                  when 'nepenthes'
+                    assign trophy_monogram = 'N'
+                  when 'drosera'
+                    assign trophy_monogram = 'D'
+                  when 'sarracenia'
+                    assign trophy_monogram = 'S'
+                  when 'dionaea'
+                    assign trophy_monogram = 'V'
+                  when 'cephalotus'
+                    assign trophy_monogram = 'C'
+                  when 'pinguicula'
+                    assign trophy_monogram = 'P'
+                  else
+                    if specimen_name != blank
+                      assign trophy_monogram = specimen_name | slice: 0, 1
+                    endif
+                endcase
+              endif
+            -%}
+
+            <li
+              class="trophy-hall__item reveal-up{% if forloop.first %} is-spotlight{% endif %}"
+              data-trophy-item
+              {{ block.shopify_attributes }}
+            >
+              {%- capture medallion_inner -%}
+                <div class="trophy-hall__medallion trophy-hall__medallion--{{ trophy_tier }} trophy-hall__medallion--genus-{{ trophy_genus }}">
+                  <span class="trophy-hall__specimen-tag">{{ 'sections.about_trophy_case.specimen_tag' | t }}</span>
+                  <svg class="trophy-hall__laurel" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+                    <path d="M60 8c-8 14-22 22-38 24 6 18 20 32 38 38 18-6 32-20 38-38-16-2-30-10-38-24z" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.55"/>
+                    <path d="M18 58c10-6 22-8 34-6-4 12-4 26 2 38-14-8-24-20-36-32z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+                    <path d="M102 58c-10-6-22-8-34-6 4 12 4 26-2 38 14-8 24-20 36-32z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+                  </svg>
+
+                  <div class="trophy-hall__seal-ring" aria-hidden="true"></div>
+
+                  <div class="trophy-hall__seal">
+                    {%- if use_trophy_image -%}
+                      {{
+                        trophy_image
+                        | image_url: width: 320, height: 320, crop: 'center'
+                        | image_tag:
+                          class: 'trophy-hall__seal-image',
+                          widths: '120, 180, 240, 320',
+                          sizes: '7.5rem',
+                          loading: 'lazy',
+                          alt: specimen_name
+                      }}
+                    {%- elsif trophy_placeholder != blank -%}
+                      <img
+                        class="trophy-hall__seal-image trophy-hall__seal-image--fallback"
+                        src="{{ trophy_placeholder }}"
+                        alt="{{ specimen_name | escape }}"
+                        width="320"
+                        height="320"
+                        loading="lazy"
+                        decoding="async"
+                      >
+                    {%- elsif trophy_monogram != blank -%}
+                      <span class="trophy-hall__monogram" aria-hidden="true">{{ trophy_monogram | escape }}</span>
+                    {%- endif -%}
+                  </div>
+
+                  <span class="trophy-hall__tier-badge">{{ medal_label_key | t }}</span>
+
+                  <div class="trophy-hall__caption">
+                    {%- if specimen_name != blank -%}
+                      <h3 class="trophy-hall__item-title">{{ specimen_name | escape }}</h3>
+                    {%- endif -%}
+                    {%- if botanical_name != blank -%}
+                      <p class="trophy-hall__item-latin">{{ botanical_name | escape }}</p>
+                    {%- endif -%}
+                    {%- if award_class != blank -%}
+                      <p class="trophy-hall__item-award">{{ award_class | escape }}</p>
+                    {%- endif -%}
+                    {%- if show_name != blank -%}
+                      <p class="trophy-hall__item-show">{{ show_name | escape }}</p>
+                    {%- endif -%}
+                    {%- if trophy_year != blank -%}
+                      <p class="trophy-hall__item-year">
+                        <span class="trophy-hall__item-year-label">{{ 'sections.about_trophy_case.show_year_label' | t }}</span>
+                        {{ trophy_year | escape }}
+                      </p>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endcapture -%}
+
+              {%- if trophy_link != blank -%}
+                <a class="trophy-hall__link" href="{{ trophy_link }}" data-trophy-tilt>
+                  {{ medallion_inner }}
+                </a>
+              {%- else -%}
+                <div class="trophy-hall__link trophy-hall__link--static" data-trophy-tilt>
+                  {{ medallion_inner }}
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <span class="trophy-hall__sweep" aria-hidden="true"></span>
+      </div>
+
+      {%- if section.settings.footnote != blank -%}
+        <p class="trophy-hall__footnote reveal-up">{{ section.settings.footnote | escape }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  .trophy-hall {
+    --trophy-gold: #d4af37;
+    --trophy-gold-soft: #f0e6c8;
+    --trophy-gold-dim: rgb(212 175 55 / 0.35);
+    --trophy-ink: #050d0a;
+    --trophy-mid: #0f2419;
+    --trophy-glow: rgb(212 175 55 / 0.22);
+    position: relative;
+    overflow: hidden;
+    margin-block: var(--space-4xl);
+    padding-block: clamp(4rem, 10vw, 7rem);
+    color: var(--trophy-gold-soft);
+    isolation: isolate;
+  }
+
+  .trophy-hall__atmosphere {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 0%, rgb(45 90 69 / 0.35), transparent 70%),
+      linear-gradient(168deg, var(--trophy-ink) 0%, var(--trophy-mid) 48%, #142e24 100%);
+  }
+
+  .trophy-hall__aurora {
+    position: absolute;
+    width: 70%;
+    height: 55%;
+    border-radius: 50%;
+    filter: blur(72px);
+    opacity: 0.45;
+    animation: trophy-aurora 18s ease-in-out infinite alternate;
+  }
+
+  .trophy-hall__aurora--a {
+    top: -12%;
+    left: 8%;
+    background: rgb(45 90 69 / 0.55);
+  }
+
+  .trophy-hall__aurora--b {
+    right: 5%;
+    bottom: -8%;
+    background: rgb(212 175 55 / 0.18);
+    animation-delay: -6s;
+    animation-duration: 22s;
+  }
+
+  .trophy-hall__grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.14;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .trophy-hall__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 80% at 50% 50%, transparent 35%, rgb(5 13 10 / 0.75) 100%);
+  }
+
+  .trophy-hall__inner {
+    position: relative;
+    z-index: 1;
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .trophy-hall__header {
+    max-width: 38rem;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    text-align: center;
+  }
+
+  .trophy-hall__overline {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--trophy-gold);
+  }
+
+  .trophy-hall__title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: clamp(2rem, 4.5vw + 0.5rem, 3.25rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--trophy-gold-soft);
+    text-wrap: balance;
+    text-shadow: 0 0 40px var(--trophy-glow);
+  }
+
+  .trophy-hall__lede {
+    margin: 0;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: rgb(240 230 200 / 0.72);
+    text-wrap: pretty;
+  }
+
+  .trophy-hall__stage {
+    position: relative;
+    padding-block: var(--space-2xl) var(--space-xl);
+  }
+
+  .trophy-hall__pedestal {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    z-index: 0;
+    width: min(92%, 56rem);
+    height: 4rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .trophy-hall__pedestal-glow {
+    position: absolute;
+    inset: 0 10% auto;
+    height: 100%;
+    background: radial-gradient(ellipse 70% 100% at 50% 100%, var(--trophy-glow), transparent 70%);
+    animation: trophy-pulse 5s ease-in-out infinite;
+  }
+
+  .trophy-hall__pedestal-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.75rem;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--trophy-gold-dim) 18%,
+      var(--trophy-gold) 50%,
+      var(--trophy-gold-dim) 82%,
+      transparent
+    );
+    opacity: 0.85;
+  }
+
+  .trophy-hall__sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 42%,
+      rgb(255 255 255 / 0.04) 50%,
+      transparent 58%
+    );
+    background-size: 220% 100%;
+    animation: trophy-sweep 9s ease-in-out infinite;
+  }
+
+  .trophy-hall__row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    margin: 0;
+    padding: 0 var(--space-xs) var(--space-lg);
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page-margin);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .trophy-hall__row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trophy-hall__item {
+    flex: 0 0 min(78vw, 16.5rem);
+    scroll-snap-align: center;
+    transition:
+      transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+      filter 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+      opacity 0.65s ease;
+    transform-style: preserve-3d;
+    perspective: 900px;
+  }
+
+  .trophy-hall__item:not(.is-spotlight) {
+    opacity: 0.72;
+    filter: saturate(0.85);
+  }
+
+  .trophy-hall__item.is-spotlight {
+    opacity: 1;
+    filter: none;
+    transform: translateY(-0.35rem) scale(1.04);
+  }
+
+  .trophy-hall__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transform-style: preserve-3d;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .trophy-hall__link:focus-visible {
+    outline: 2px solid var(--trophy-gold);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+  }
+
+  .trophy-hall__medallion {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-xl) var(--space-md) var(--space-lg);
+    text-align: center;
+    background: linear-gradient(165deg, rgb(255 255 255 / 0.07) 0%, rgb(255 255 255 / 0.02) 100%);
+    border: 1px solid rgb(212 175 55 / 0.28);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 24px 48px rgb(0 0 0 / 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(12px);
+    transition:
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .trophy-hall__item.is-spotlight .trophy-hall__medallion {
+    border-color: rgb(212 175 55 / 0.55);
+    box-shadow:
+      0 28px 56px rgb(0 0 0 / 0.45),
+      0 0 48px var(--trophy-glow),
+      inset 0 1px 0 rgb(255 255 255 / 0.18);
+  }
+
+  .trophy-hall__medallion--gold {
+    --trophy-accent: var(--trophy-gold);
+  }
+
+  .trophy-hall__medallion--silver {
+    --trophy-accent: #b8c4bc;
+  }
+
+  .trophy-hall__medallion--bronze {
+    --trophy-accent: #a67c52;
+  }
+
+  .trophy-hall__medallion--laurel {
+    --trophy-accent: #7fa88a;
+  }
+
+  .trophy-hall__medallion--genus-nepenthes {
+    --trophy-accent: #8fbf9a;
+  }
+
+  .trophy-hall__medallion--genus-drosera {
+    --trophy-accent: #c97b8a;
+  }
+
+  .trophy-hall__medallion--genus-sarracenia {
+    --trophy-accent: #b8864a;
+  }
+
+  .trophy-hall__medallion--genus-dionaea {
+    --trophy-accent: #9f6b8f;
+  }
+
+  .trophy-hall__specimen-tag {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    z-index: 2;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(240 230 200 / 0.75);
+    border: 1px solid rgb(212 175 55 / 0.22);
+    border-radius: 999px;
+    background-color: rgb(5 13 10 / 0.45);
+  }
+
+  .trophy-hall__seal-image--fallback {
+    object-fit: cover;
+  }
+
+  .trophy-hall__laurel {
+    position: absolute;
+    top: var(--space-sm);
+    left: 50%;
+    width: 5.5rem;
+    height: 5.5rem;
+    color: var(--trophy-accent);
+    transform: translateX(-50%);
+    animation: trophy-laurel 8s ease-in-out infinite;
+  }
+
+  .trophy-hall__seal-ring {
+    position: absolute;
+    top: 2.75rem;
+    left: 50%;
+    width: 6.25rem;
+    height: 6.25rem;
+    border: 1px solid var(--trophy-accent);
+    border-radius: 50%;
+    opacity: 0.45;
+    transform: translateX(-50%);
+    animation: trophy-ring 6s linear infinite;
+  }
+
+  .trophy-hall__seal {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    margin-block: var(--space-md) var(--space-lg);
+    overflow: hidden;
+    background: radial-gradient(circle at 35% 28%, rgb(255 255 255 / 0.14), rgb(0 0 0 / 0.35));
+    border: 1px solid rgb(212 175 55 / 0.35);
+    border-radius: 50%;
+    box-shadow: inset 0 0 24px rgb(0 0 0 / 0.35);
+  }
+
+  .trophy-hall__seal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .trophy-hall__monogram {
+    font-family: var(--font-family-serif);
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--trophy-accent);
+    text-transform: uppercase;
+  }
+
+  .trophy-hall__tier-badge {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    padding: 0.15rem 0.4rem;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--trophy-accent);
+    border: 1px solid rgb(212 175 55 / 0.25);
+    border-radius: 999px;
+    opacity: 0.85;
+  }
+
+  .trophy-hall__caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .trophy-hall__item-title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: 1.0625rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--trophy-gold-soft);
+    text-wrap: balance;
+  }
+
+  .trophy-hall__item-latin {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-xs);
+    font-style: italic;
+    line-height: var(--line-height-relaxed);
+    color: rgb(240 230 200 / 0.72);
+  }
+
+  .trophy-hall__item-award {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    line-height: var(--line-height-relaxed);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--trophy-gold);
+  }
+
+  .trophy-hall__item-show {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-relaxed);
+    color: rgb(240 230 200 / 0.58);
+  }
+
+  .trophy-hall__item-year {
+    margin: var(--space-xs) 0 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--trophy-gold);
+  }
+
+  .trophy-hall__item-year-label {
+    margin-inline-end: 0.35em;
+    opacity: 0.7;
+  }
+
+  .trophy-hall__footnote {
+    margin: var(--space-2xl) auto 0;
+    max-width: 32rem;
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-relaxed);
+    text-align: center;
+    color: rgb(240 230 200 / 0.45);
+    font-style: italic;
+  }
+
+  @media (min-width: 990px) {
+    .trophy-hall__row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: var(--space-xl);
+      overflow: visible;
+      padding-inline: 0;
+      scroll-snap-type: none;
+    }
+
+    .trophy-hall__item {
+      flex: none;
+      scroll-snap-align: unset;
+    }
+  }
+
+  @keyframes trophy-aurora {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    100% {
+      transform: translate3d(4%, 6%, 0) scale(1.08);
+    }
+  }
+
+  @keyframes trophy-sweep {
+    0%,
+    100% {
+      background-position: 220% 0;
+    }
+
+    50% {
+      background-position: -20% 0;
+    }
+  }
+
+  @keyframes trophy-pulse {
+    0%,
+    100% {
+      opacity: 0.65;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes trophy-laurel {
+    0%,
+    100% {
+      transform: translateX(-50%) rotate(-2deg);
+    }
+
+    50% {
+      transform: translateX(-50%) rotate(2deg);
+    }
+  }
+
+  @keyframes trophy-ring {
+    to {
+      transform: translateX(-50%) rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trophy-hall__aurora,
+    .trophy-hall__sweep,
+    .trophy-hall__pedestal-glow,
+    .trophy-hall__laurel,
+    .trophy-hall__seal-ring {
+      animation: none;
+    }
+
+    .trophy-hall__item,
+    .trophy-hall__item.is-spotlight {
+      transform: none;
+      transition: none;
+    }
+
+    .trophy-hall__link {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function initTrophyHall() {
+    var root = document.querySelector('[data-trophy-hall]');
+    if (!root) return;
+
+    var items = root.querySelectorAll('[data-trophy-item]');
+    if (!items.length) return;
+
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var spotlightIndex = 0;
+    var spotlightTimer = null;
+
+    function setSpotlight(index) {
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.toggle('is-spotlight', i === index);
+      }
+      spotlightIndex = index;
+    }
+
+    function advanceSpotlight() {
+      var next = (spotlightIndex + 1) % items.length;
+      setSpotlight(next);
+    }
+
+    if (!reducedMotion && items.length > 1) {
+      spotlightTimer = window.setInterval(advanceSpotlight, 4200);
+      root.addEventListener('mouseenter', function () {
+        if (spotlightTimer) {
+          window.clearInterval(spotlightTimer);
+          spotlightTimer = null;
+        }
+      }, { once: false });
+
+      root.addEventListener('mouseleave', function () {
+        if (!spotlightTimer) {
+          spotlightTimer = window.setInterval(advanceSpotlight, 4200);
+        }
+      });
+    }
+
+    items.forEach(function (item, index) {
+      item.addEventListener('focusin', function () {
+        setSpotlight(index);
+      });
+
+      var tiltTarget = item.querySelector('[data-trophy-tilt]');
+      if (!tiltTarget || reducedMotion) return;
+
+      item.addEventListener('mousemove', function (event) {
+        var rect = item.getBoundingClientRect();
+        var x = (event.clientX - rect.left) / rect.width - 0.5;
+        var y = (event.clientY - rect.top) / rect.height - 0.5;
+        tiltTarget.style.transform =
+          'perspective(900px) rotateY(' + (x * 14).toFixed(2) + 'deg) rotateX(' + (-y * 10).toFixed(2) + 'deg) translateZ(12px)';
+      });
+
+      item.addEventListener('mouseleave', function () {
+        tiltTarget.style.transform = '';
+      });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.about_trophy_case.name",
+  "tag": "section",
+  "class": "about-trophy-case-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "overline",
+      "label": "t:sections.about_trophy_case.settings.overline",
+      "default": "Show bench"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.about_trophy_case.settings.heading",
+      "default": "Award-winning specimens"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:sections.about_trophy_case.settings.subheading",
+      "default": "Living trophies from carnivorous plant shows — the specimens we have exhibited and the classes they won."
+    },
+    {
+      "type": "text",
+      "id": "footnote",
+      "label": "t:sections.about_trophy_case.settings.footnote",
+      "default": "Upload show photos of each winning plant and link to the cultivar in your catalog when available."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trophy",
+      "name": "t:sections.about_trophy_case.blocks.trophy.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "specimen_name",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.specimen_name",
+          "default": "Nepenthes × 'Genting Highland'"
+        },
+        {
+          "type": "text",
+          "id": "botanical_name",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.botanical_name",
+          "default": "Nepenthes (ventricosa × sibuyanensis)"
+        },
+        {
+          "type": "text",
+          "id": "award_class",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.award_class",
+          "default": "Best Nepenthes — open division"
+        },
+        {
+          "type": "text",
+          "id": "show_name",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.show_name",
+          "default": "Cape carnivorous plant expo"
+        },
+        {
+          "type": "text",
+          "id": "year",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.year",
+          "default": "2024"
+        },
+        {
+          "type": "select",
+          "id": "genus",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus",
+          "default": "nepenthes",
+          "options": [
+            { "value": "nepenthes", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_nepenthes" },
+            { "value": "drosera", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_drosera" },
+            { "value": "sarracenia", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_sarracenia" },
+            { "value": "dionaea", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_dionaea" },
+            { "value": "cephalotus", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_cephalotus" },
+            { "value": "pinguicula", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_pinguicula" },
+            { "value": "other", "label": "t:sections.about_trophy_case.blocks.trophy.settings.genus_other" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "tier",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.tier",
+          "default": "gold",
+          "options": [
+            { "value": "gold", "label": "t:sections.about_trophy_case.blocks.trophy.settings.tier_gold" },
+            { "value": "silver", "label": "t:sections.about_trophy_case.blocks.trophy.settings.tier_silver" },
+            { "value": "bronze", "label": "t:sections.about_trophy_case.blocks.trophy.settings.tier_bronze" },
+            { "value": "laurel", "label": "t:sections.about_trophy_case.blocks.trophy.settings.tier_laurel" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.image",
+          "info": "t:sections.about_trophy_case.blocks.trophy.settings.image_info"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_image",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.placeholder_image",
+          "info": "t:sections.about_trophy_case.blocks.trophy.settings.placeholder_image_info"
+        },
+        {
+          "type": "text",
+          "id": "monogram",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.monogram",
+          "info": "t:sections.about_trophy_case.blocks.trophy.settings.monogram_info"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.about_trophy_case.blocks.trophy.settings.link",
+          "info": "t:sections.about_trophy_case.blocks.trophy.settings.link_info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.about_trophy_case.name",
+      "blocks": [
+        {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Nepenthes × 'Genting Highland'",
+            "botanical_name": "Nepenthes (ventricosa × sibuyanensis)",
+            "award_class": "Best Nepenthes — open division",
+            "show_name": "Cape carnivorous plant expo",
+            "year": "2024",
+            "genus": "nepenthes",
+            "tier": "gold",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa.jpg?width=600"
+          }
+        },
+        {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Sarracenia 'Judith Hindle'",
+            "botanical_name": "Sarracenia (leucophylla × purpurea) × purpurea",
+            "award_class": "Best Sarracenia — species hybrid",
+            "show_name": "Johannesburg CPS bench show",
+            "year": "2023",
+            "genus": "sarracenia",
+            "tier": "gold",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=600"
+          }
+        },
+        {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Drosera capensis 'Alba'",
+            "botanical_name": "Drosera capensis",
+            "award_class": "Best Drosera — novice class",
+            "show_name": "Pretoria carnivorous plant day",
+            "year": "2022",
+            "genus": "drosera",
+            "tier": "silver",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=600"
+          }
+        },
+        {
+          "type": "trophy",
+          "settings": {
+            "specimen_name": "Dionaea muscipula 'B52'",
+            "botanical_name": "Dionaea muscipula",
+            "award_class": "Judges' choice — Venus flytrap",
+            "show_name": "Durban tropical plant fair",
+            "year": "2023",
+            "genus": "dionaea",
+            "tier": "laurel",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Venus_Flytrap_showing_trigger_hairs.jpg?width=600"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
