@@ -66,6 +66,8 @@ LATIN_COL = "Latin Name (product.metafields.custom.latin_name)"
 IMAGE_COL = "Product image URL"
 HANDLE_COL = "URL handle"
 POS_COL = "Image position"
+OPTION1_VALUE_COL = "Option1 value"
+VARIANT_IMAGE_COL = "Variant image URL"
 CATEGORY_COL = "Product category"
 # Shopify Standard Product Taxonomy (2024-10) — "Live Plants" is not a valid node.
 SHOPIFY_PRODUCT_CATEGORY = (
@@ -283,6 +285,94 @@ def normalize_product_categories(
     return changed
 
 
+def _blank_image_row(
+    fieldnames: list[str], handle: str, category: str, url: str, position: int
+) -> dict[str, str]:
+    """Shopify import row: handle + category + one product gallery image."""
+    row = {col: "" for col in fieldnames}
+    row[HANDLE_COL] = handle
+    row[CATEGORY_COL] = category
+    row[IMAGE_COL] = url
+    row[POS_COL] = str(position)
+    return row
+
+
+def ensure_csv_five_gallery_images(
+    csv_path: Path = MERGED_CSV,
+    verified_path: Path = VERIFIED_JSON,
+) -> tuple[int, int]:
+    """
+    Ensure every product has five product-gallery images in the CSV.
+
+    Shopify treats images on variant rows as variant media; additional product
+    images must be on rows with no Option1 value. Uses verified_images.json.
+    """
+    if not verified_path.exists():
+        raise FileNotFoundError(f"Missing {verified_path}")
+
+    with verified_path.open(encoding="utf-8") as fh:
+        verified: dict[str, list[str]] = json.load(fh)
+
+    blocks = _read_product_blocks(csv_path)
+    if not blocks:
+        return 0, 0
+
+    with csv_path.open(encoding="utf-8-sig", newline="") as fh:
+        fieldnames = list(csv.DictReader(fh).fieldnames or [])
+
+    new_rows: list[dict[str, str]] = []
+    fixed_handles = 0
+    missing_verified: list[str] = []
+
+    for handle, block in blocks:
+        urls = [u.strip() for u in verified.get(handle, []) if u and u.strip()]
+        if len(urls) < TARGET_IMAGES:
+            missing_verified.append(handle)
+            new_rows.extend(block)
+            continue
+
+        urls = urls[:TARGET_IMAGES]
+        primary = block[0]
+        category = (primary.get(CATEGORY_COL) or "").strip() or SHOPIFY_PRODUCT_CATEGORY
+
+        variant_rows: list[dict[str, str]] = []
+        for row in block[1:]:
+            if (row.get(OPTION1_VALUE_COL) or "").strip():
+                row[IMAGE_COL] = ""
+                row[POS_COL] = ""
+                row[VARIANT_IMAGE_COL] = ""
+                variant_rows.append(row)
+
+        primary[IMAGE_COL] = urls[0]
+        primary[POS_COL] = "1"
+        primary[VARIANT_IMAGE_COL] = ""
+
+        rebuilt = [primary, *variant_rows]
+        for position, url in enumerate(urls[1:], start=2):
+            rebuilt.append(
+                _blank_image_row(fieldnames, handle, category, url, position)
+            )
+
+        fixed_handles += 1
+        new_rows.extend(rebuilt)
+
+    with csv_path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(new_rows)
+
+    if missing_verified:
+        log(
+            f"Warning: {len(missing_verified)} handles lack {TARGET_IMAGES} verified URLs"
+        )
+
+    log(
+        f"Gallery fix: {fixed_handles} products -> 5 images each "
+        f"({len(new_rows)} total rows in {csv_path.name})"
+    )
+    return fixed_handles, len(new_rows)
+
+
 def fix_csv_product_categories(csv_path: Path = MERGED_CSV) -> int:
     with csv_path.open(encoding="utf-8-sig", newline="") as fh:
         reader = csv.DictReader(fh)
@@ -339,6 +429,9 @@ def merge_original_csvs(
         writer = csv.DictWriter(fh, fieldnames=all_columns, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(final_rows)
+
+    if VERIFIED_JSON.exists():
+        ensure_csv_five_gallery_images(output_path)
 
     log(
         f"Merged {len(paths)} files -> {output_path} "
@@ -1039,6 +1132,11 @@ def main() -> int:
         action="store_true",
         help="Normalize Product category to Shopify taxonomy in --csv",
     )
+    parser.add_argument(
+        "--fix-gallery",
+        action="store_true",
+        help="Ensure 5 product gallery images per handle (verified_images.json)",
+    )
     parser.add_argument("--skip-merge", action="store_true", help="Skip merge step")
     parser.add_argument(
         "--limit", type=int, default=None, help="Process first N handles only"
@@ -1063,6 +1161,9 @@ def main() -> int:
 
     if args.fix_categories:
         fix_csv_product_categories(args.csv)
+        return 0
+    if args.fix_gallery:
+        ensure_csv_five_gallery_images(args.csv)
         return 0
     if args.merge_only:
         merge_original_csvs()

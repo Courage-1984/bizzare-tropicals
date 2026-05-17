@@ -67,7 +67,7 @@
   .cart-drawer {
     position: fixed;
     inset: 0;
-    z-index: calc(var(--z-drawer) + 10);
+    z-index: var(--z-cart-drawer, 1100);
     pointer-events: none;
     visibility: hidden;
   }

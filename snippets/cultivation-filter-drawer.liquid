@@ -157,17 +157,27 @@
       <div
         class="cultivation-filter__toolbar"
         data-cultivation-filter-toolbar
-        {% if active_filter_count == 0 %}
+        {% if active_filter_count == 0 and collection.handle == 'all' %}
           hidden
         {% endif %}
       >
-        <button
-          type="button"
-          class="cultivation-filter__reset-all"
-          data-cultivation-filter-clear
-        >
-          {{ 'sections.main_collection_product_grid.filter_reset_all' | t }}
-        </button>
+        {%- unless collection.handle == 'all' -%}
+          <a
+            class="cultivation-filter__reset-all cultivation-filter__reset-all--link"
+            href="{{ routes.all_products_collection_url }}"
+          >
+            {{ 'sections.main_collection_product_grid.view_all_products' | t }}
+          </a>
+        {%- endunless -%}
+        {%- if active_filter_count > 0 -%}
+          <button
+            type="button"
+            class="cultivation-filter__reset-all"
+            data-cultivation-filter-clear
+          >
+            {{ 'sections.main_collection_product_grid.filter_reset_all' | t }}
+          </button>
+        {%- endif -%}
       </div>
 
       <form

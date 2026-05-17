@@ -1,0 +1,176 @@
+{% doc %}
+  Search overlay browse rows — genus collections + product common names in opposing infinite marquees.
+
+  @example
+  {% render 'search-overlay-browse-marquees' %}
+{% enddoc %}
+
+{%- liquid
+  assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories' | split: ','
+  assign genus_order = 'dionaea,sarracenia,nepenthes,drosera,pinguicula,cephalotus,heliamphora,utricularia,darlingtonia,byblis,drossophyllum,other' | split: ','
+  assign rendered_genus_handles = ''
+  assign genus_count = 0
+  assign common_count = 0
+  assign seen_common_keys = '|'
+-%}
+
+{%- capture genus_marquee_items -%}
+  {%- for genus_handle in genus_order -%}
+    {%- assign genus_collection = collections[genus_handle] -%}
+    {%- if genus_collection == blank or genus_collection.products_count == 0 -%}
+      {%- continue -%}
+    {%- endif -%}
+    {%- assign genus_count = genus_count | plus: 1 -%}
+    {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_handle | append: ',' -%}
+    <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
+      <span class="search-marquee__chip-label">{{ genus_collection.title | escape }}</span>
+    </a>
+  {%- endfor -%}
+
+  {%- for genus_collection in collections -%}
+    {%- liquid
+      assign skip_genus = false
+      assign genus_needle = ',' | append: genus_collection.handle | append: ','
+      assign genus_haystack = ',' | append: rendered_genus_handles
+      if genus_haystack contains genus_needle
+        assign skip_genus = true
+      endif
+      for excluded_handle in excluded_handles
+        if genus_collection.handle == excluded_handle
+          assign skip_genus = true
+          break
+        endif
+      endfor
+      if genus_collection.handle contains '-'
+        assign skip_genus = true
+      endif
+    -%}
+    {%- if skip_genus or genus_collection.products_count == 0 -%}
+      {%- continue -%}
+    {%- endif -%}
+    {%- assign genus_count = genus_count | plus: 1 -%}
+    {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_collection.handle | append: ',' -%}
+    <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
+      <span class="search-marquee__chip-label">{{ genus_collection.title | escape }}</span>
+    </a>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture common_marquee_items -%}
+  {%- for genus_handle in genus_order -%}
+    {%- assign genus_collection = collections[genus_handle] -%}
+    {%- if genus_collection == blank or genus_collection.products_count == 0 -%}
+      {%- continue -%}
+    {%- endif -%}
+    {%- for product in genus_collection.products limit: 4 -%}
+      {%- liquid
+        assign common_raw = product.metafields.custom.common_name.value | default: product.metafields.custom.common_name
+        assign common_label = common_raw | strip
+        if common_label == blank
+          assign common_label = product.title | strip
+        endif
+        if common_label == blank
+          continue
+        endif
+        assign common_key = common_label | downcase | handleize
+        assign common_needle = '|' | append: common_key | append: '|'
+        if seen_common_keys contains common_needle
+          continue
+        endif
+        assign seen_common_keys = seen_common_keys | append: common_key | append: '|'
+        assign common_count = common_count | plus: 1
+      -%}
+      <a class="search-marquee__chip search-marquee__chip--common link-underline-grow" href="{{ product.url }}">
+        <span class="search-marquee__chip-label">{{ common_label | escape }}</span>
+      </a>
+    {%- endfor -%}
+  {%- endfor -%}
+
+  {%- for genus_collection in collections -%}
+    {%- liquid
+      assign skip_genus = false
+      assign genus_needle = ',' | append: genus_collection.handle | append: ','
+      assign genus_haystack = ',' | append: rendered_genus_handles
+      if genus_haystack contains genus_needle
+        assign skip_genus = true
+      endif
+      for excluded_handle in excluded_handles
+        if genus_collection.handle == excluded_handle
+          assign skip_genus = true
+          break
+        endif
+      endfor
+      if genus_collection.handle contains '-'
+        assign skip_genus = true
+      endif
+    -%}
+    {%- if skip_genus or genus_collection.products_count == 0 -%}
+      {%- continue -%}
+    {%- endif -%}
+    {%- for product in genus_collection.products limit: 3 -%}
+      {%- liquid
+        assign common_raw = product.metafields.custom.common_name.value | default: product.metafields.custom.common_name
+        assign common_label = common_raw | strip
+        if common_label == blank
+          assign common_label = product.title | strip
+        endif
+        if common_label == blank
+          continue
+        endif
+        assign common_key = common_label | downcase | handleize
+        assign common_needle = '|' | append: common_key | append: '|'
+        if seen_common_keys contains common_needle
+          continue
+        endif
+        assign seen_common_keys = seen_common_keys | append: common_key | append: '|'
+        assign common_count = common_count | plus: 1
+      -%}
+      <a class="search-marquee__chip search-marquee__chip--common link-underline-grow" href="{{ product.url }}">
+        <span class="search-marquee__chip-label">{{ common_label | escape }}</span>
+      </a>
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign genus_marquee_stripped = genus_marquee_items | strip -%}
+{%- assign common_marquee_stripped = common_marquee_items | strip -%}
+
+{%- if genus_marquee_stripped != blank or common_marquee_stripped != blank -%}
+  <nav
+    class="search-overlay__browse search-overlay__reveal"
+    data-search-browse
+    aria-label="{{ 'sections.search_overlay.browse_label' | t }}"
+  >
+    <p class="search-overlay__browse-heading">{{ 'sections.search_overlay.quick_links' | t }}</p>
+
+    {%- if genus_marquee_stripped != blank -%}
+      <div class="search-marquee search-marquee--genus" data-search-marquee>
+        <div class="search-marquee__viewport">
+          <div class="search-marquee__track search-marquee__track--ltr">
+            <div class="search-marquee__group">
+              {{ genus_marquee_items }}
+            </div>
+            <div class="search-marquee__group" aria-hidden="true">
+              {{ genus_marquee_items }}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if common_marquee_stripped != blank -%}
+      <div class="search-marquee search-marquee--common" data-search-marquee>
+        <div class="search-marquee__viewport">
+          <div class="search-marquee__track search-marquee__track--rtl">
+            <div class="search-marquee__group">
+              {{ common_marquee_items }}
+            </div>
+            <div class="search-marquee__group" aria-hidden="true">
+              {{ common_marquee_items }}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

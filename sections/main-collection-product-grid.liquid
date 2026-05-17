@@ -35,24 +35,35 @@
       {%- endif -%}
     </div>
 
-    <button
-      type="button"
-      class="collection-grid-section__filter-trigger"
-      data-cultivation-filter-open
-      aria-expanded="false"
-      aria-controls="cultivation-filter-drawer-{{ section.id }}"
-    >
-      <span class="collection-grid-section__filter-trigger-label">
-        {{ 'sections.main_collection_product_grid.filter_trigger' | t }}
-      </span>
-      {%- if active_filter_count > 0 -%}
-        <span class="collection-grid-section__filter-badge" data-cultivation-filter-badge aria-hidden="true">
-          {{- active_filter_count -}}
+    <div class="collection-grid-section__actions">
+      {%- unless collection.handle == 'all' -%}
+        <a
+          class="collection-grid-section__reset-link link-underline-grow"
+          href="{{ routes.all_products_collection_url }}"
+          data-collection-reset-view
+        >
+          {{ 'sections.main_collection_product_grid.view_all_products' | t }}
+        </a>
+      {%- endunless -%}
+      <button
+        type="button"
+        class="collection-grid-section__filter-trigger"
+        data-cultivation-filter-open
+        aria-expanded="false"
+        aria-controls="cultivation-filter-drawer-{{ section.id }}"
+      >
+        <span class="collection-grid-section__filter-trigger-label">
+          {{ 'sections.main_collection_product_grid.filter_trigger' | t }}
         </span>
-      {%- else -%}
-        <span class="collection-grid-section__filter-badge" data-cultivation-filter-badge hidden aria-hidden="true">0</span>
-      {%- endif -%}
-    </button>
+        {%- if active_filter_count > 0 -%}
+          <span class="collection-grid-section__filter-badge" data-cultivation-filter-badge aria-hidden="true">
+            {{- active_filter_count -}}
+          </span>
+        {%- else -%}
+          <span class="collection-grid-section__filter-badge" data-cultivation-filter-badge hidden aria-hidden="true">0</span>
+        {%- endif -%}
+      </button>
+    </div>
   </header>
 
   {% render 'cultivation-filter-drawer', collection: collection, section_id: section.id %}
@@ -149,6 +160,39 @@
     margin: var(--space-2xs) 0 0;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+  }
+
+  .collection-grid-section__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-sm) var(--space-md);
+  }
+
+  .collection-grid-section__reset-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-md);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-forest-green-dark);
+    background-color: rgb(10 24 18 / 0.04);
+    border: 1px solid rgb(10 24 18 / 0.22);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .collection-grid-section__reset-link:hover {
+    background-color: rgb(10 24 18 / 0.08);
+    border-color: var(--color-forest-green-dark);
   }
 
   .collection-grid-section__filter-trigger {

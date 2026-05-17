@@ -1,0 +1,445 @@
+{% doc %}
+  Cinematic PDP gallery — viewport-fit hero stage, vertical thumb rail, crossfade + autoplay.
+
+  @param {boolean} use_live_product - Whether a live product is rendered
+  @param {boolean} has_gallery - Live product has media/images
+  @param {boolean} show_mock_gallery - Use mock URL slides
+  @param {array} [gallery_media] - product.media or product.images
+  @param {array} [verified_gallery_urls] - Verified Commons URLs when Shopify has fewer images
+  @param {number} [gallery_supplement_count] - Extra slides from verified_gallery_urls
+  @param {array} [mock_gallery_urls] - Mock image URL list
+  @param {string} display_title - Product title for alt text
+  @param {string} latin_name - Latin name for mock alt
+  @param {product} [product] - Live product (wax seal, ids)
+  @param {string} mock_img_1 - Fallback botanical image URL
+  @param {string} [section_id] - Section id for unique aria ids
+
+  @example
+  {% render 'product-gallery-cinema',
+    use_live_product: use_live_product,
+    has_gallery: has_gallery,
+    show_mock_gallery: show_mock_gallery,
+    gallery_media: gallery_media,
+    mock_gallery_urls: mock_gallery_urls,
+    display_title: display_title,
+    latin_name: latin_name,
+    product: product,
+    mock_img_1: mock_img_1,
+    section_id: section.id
+  %}
+{% enddoc %}
+
+{%- liquid
+  assign cinema_section_id = section_id | default: 'pdp'
+  assign gallery_slide_count = 0
+  assign cinema_specimen_id = '#BT-LOG-PREVIEW'
+  assign gallery_supplement_count = gallery_supplement_count | default: 0 | plus: 0
+
+  if verified_gallery_urls == blank
+    assign verified_gallery_urls = '' | split: '|'
+  endif
+
+  if product != blank and product.id != blank
+    assign id_string = product.id | append: ''
+    assign id_size = id_string | size
+    assign id_start = id_size | minus: 4
+    if id_start < 0
+      assign id_start = 0
+    endif
+    assign cinema_specimen_suffix = id_string | slice: id_start, 4
+    assign cinema_specimen_id = '#BT-LOG-' | append: cinema_specimen_suffix
+  endif
+
+  if use_live_product and has_gallery
+    assign gallery_slide_count = gallery_media.size | plus: gallery_supplement_count
+    if gallery_slide_count == 0
+      if verified_gallery_urls.size > 0
+        assign gallery_slide_count = verified_gallery_urls.size
+      endif
+    endif
+  elsif show_mock_gallery
+    assign gallery_slide_count = mock_gallery_urls.size
+  else
+    assign gallery_slide_count = 1
+  endif
+
+  assign gallery_autoplay = false
+  if gallery_slide_count > 1
+    assign gallery_autoplay = true
+  endif
+-%}
+
+<div
+  class="main-product__gallery product__media"
+  data-product-gallery-cinema
+  data-gallery-count="{{ gallery_slide_count }}"
+  data-gallery-media-source="{% if use_live_product and has_gallery %}{% if gallery_supplement_count > 0 %}live-verified{% else %}live{% endif %}{% elsif show_mock_gallery %}mock{% else %}fallback{% endif %}"
+  data-gallery-autoplay="{% if gallery_autoplay %}true{% else %}false{% endif %}"
+  data-label-zoom-in="{{ 'products.main.gallery_zoom' | t | escape }}"
+  data-label-zoom-out="{{ 'products.main.gallery_zoom_out' | t | escape }}"
+>
+  <div class="main-product__gallery-cinema" data-gallery-cinema>
+    {%- if gallery_slide_count > 1 -%}
+      <div
+        class="main-product__gallery-rail"
+        data-gallery-rail
+        role="tablist"
+        aria-label="{{ 'products.main.gallery_thumbnails' | t }}"
+      >
+        {%- if use_live_product and has_gallery -%}
+          {%- for media in gallery_media -%}
+            {%- liquid
+              assign thumb_image = media.preview_image | default: media
+              assign thumb_alt = display_title | append: ' — ' | append: cinema_specimen_id
+              if media.alt != blank
+                assign thumb_alt = media.alt
+              endif
+            -%}
+            <button
+              type="button"
+              class="main-product__gallery-thumb{% if forloop.first %} is-active{% endif %}"
+              data-gallery-thumb
+              data-gallery-index="{{ forloop.index0 }}"
+              role="tab"
+              id="gallery-tab-{{ cinema_section_id }}-{{ forloop.index }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="gallery-panel-{{ cinema_section_id }}-{{ forloop.index }}"
+              aria-label="{{ 'products.main.gallery_go_to_image' | t: index: forloop.index }}"
+            >
+              {%- if thumb_image != blank -%}
+                {{
+                  thumb_image
+                  | image_url: width: 160, height: 200, crop: 'center'
+                  | image_tag:
+                    class: 'main-product__gallery-thumb-image',
+                    widths: '80, 120, 160',
+                    sizes: '72px',
+                    loading: 'lazy',
+                    alt: ''
+                }}
+              {%- endif -%}
+              <span class="main-product__gallery-thumb-frame" aria-hidden="true"></span>
+            </button>
+          {%- endfor -%}
+          {%- if gallery_supplement_count > 0 -%}
+            {%- for extra_url in verified_gallery_urls offset: gallery_media.size -%}
+              {%- liquid
+                assign supplement_index = gallery_media.size | plus: forloop.index0
+                assign supplement_tab = forloop.index | plus: gallery_media.size
+              -%}
+              <button
+                type="button"
+                class="main-product__gallery-thumb"
+                data-gallery-thumb
+                data-gallery-index="{{ supplement_index }}"
+                role="tab"
+                id="gallery-tab-{{ cinema_section_id }}-{{ supplement_tab }}"
+                aria-selected="false"
+                aria-controls="gallery-panel-{{ cinema_section_id }}-{{ supplement_tab }}"
+                aria-label="{{ 'products.main.gallery_go_to_image' | t: index: supplement_tab }}"
+              >
+                {%- if extra_url != blank -%}
+                  <img
+                    class="main-product__gallery-thumb-image"
+                    src="{{ extra_url }}"
+                    alt=""
+                    width="80"
+                    height="100"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {%- endif -%}
+                <span class="main-product__gallery-thumb-frame" aria-hidden="true"></span>
+              </button>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- elsif show_mock_gallery -%}
+          {%- for mock_src in mock_gallery_urls -%}
+            <button
+              type="button"
+              class="main-product__gallery-thumb{% if forloop.first %} is-active{% endif %}"
+              data-gallery-thumb
+              data-gallery-index="{{ forloop.index0 }}"
+              role="tab"
+              id="gallery-tab-{{ cinema_section_id }}-{{ forloop.index }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="gallery-panel-{{ cinema_section_id }}-{{ forloop.index }}"
+              aria-label="{{ 'products.main.gallery_go_to_image' | t: index: forloop.index }}"
+            >
+              {%- if mock_src != blank -%}
+                <img
+                  class="main-product__gallery-thumb-image"
+                  src="{{ mock_src }}"
+                  alt=""
+                  width="80"
+                  height="100"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {%- endif -%}
+              <span class="main-product__gallery-thumb-frame" aria-hidden="true"></span>
+            </button>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="main-product__gallery-stage" data-gallery-stage>
+      {%- if product != blank -%}
+        {% render 'wax-seal-badge', product_item: product %}
+      {%- endif -%}
+
+      <div class="main-product__gallery-slides" data-gallery-slides>
+        {%- if use_live_product and has_gallery -%}
+          {%- for media in gallery_media -%}
+            {%- liquid
+              assign slide_loading = 'lazy'
+              assign slide_fetch_high = false
+              if forloop.first
+                assign slide_loading = 'eager'
+                assign slide_fetch_high = true
+              endif
+              assign slide_image = media.preview_image | default: media
+              assign slide_alt = display_title | append: ' — ' | append: cinema_specimen_id
+              if media.alt != blank
+                assign slide_alt = media.alt
+              endif
+            -%}
+            <figure
+              class="main-product__gallery-slide{% if forloop.first %} is-active{% endif %}"
+              data-gallery-slide
+              data-gallery-index="{{ forloop.index0 }}"
+              role="tabpanel"
+              id="gallery-panel-{{ cinema_section_id }}-{{ forloop.index }}"
+              aria-labelledby="gallery-tab-{{ cinema_section_id }}-{{ forloop.index }}"
+              {% unless forloop.first %}
+                hidden
+              {% endunless %}
+            >
+              {%- if media.media_type == 'video' -%}
+                {{
+                  media
+                  | media_tag:
+                    class: 'main-product__gallery-stage-media main-product__gallery-stage-media--video',
+                    image_size: '1600x',
+                    autoplay: false,
+                    loop: true,
+                    controls: true,
+                    muted: true,
+                    preload: 'metadata'
+                }}
+              {%- elsif media.media_type == 'model' -%}
+                {{
+                  media
+                  | media_tag:
+                    class: 'main-product__gallery-stage-media main-product__gallery-stage-media--model',
+                    image_size: '1600x'
+                }}
+              {%- elsif slide_image != blank -%}
+                {%- if slide_fetch_high -%}
+                  {{
+                    slide_image
+                    | image_url: width: 2000
+                    | image_tag:
+                      class: 'main-product__gallery-stage-image',
+                      widths: '600, 900, 1200, 1600, 2000',
+                      sizes: '(min-width: 990px) min(62vw, 960px), 94vw',
+                      loading: slide_loading,
+                      fetchpriority: 'high',
+                      alt: slide_alt
+                  }}
+                {%- else -%}
+                  {{
+                    slide_image
+                    | image_url: width: 2000
+                    | image_tag:
+                      class: 'main-product__gallery-stage-image',
+                      widths: '600, 900, 1200, 1600, 2000',
+                      sizes: '(min-width: 990px) min(62vw, 960px), 94vw',
+                      loading: slide_loading,
+                      alt: slide_alt
+                  }}
+                {%- endif -%}
+              {%- else -%}
+                {% render 'botanical-product-image',
+                  fallback_url: mock_img_1,
+                  product_title: display_title,
+                  specimen_id: cinema_specimen_id,
+                  css_class: 'main-product__gallery-stage-image',
+                  sizes: '(min-width: 990px) min(62vw, 960px), 94vw',
+                  loading: slide_loading,
+                  fetchpriority: slide_fetch_high
+                %}
+              {%- endif -%}
+            </figure>
+          {%- endfor -%}
+          {%- if gallery_supplement_count > 0 -%}
+            {%- for extra_url in verified_gallery_urls offset: gallery_media.size -%}
+              {%- liquid
+                assign supplement_index = gallery_media.size | plus: forloop.index0
+                assign supplement_tab = forloop.index | plus: gallery_media.size
+                assign slide_loading = 'lazy'
+                assign slide_fetch_high = false
+                if gallery_media.size == 0
+                  if forloop.first
+                    assign slide_loading = 'eager'
+                    assign slide_fetch_high = true
+                  endif
+                endif
+                assign slide_alt = display_title | append: ' — ' | append: cinema_specimen_id
+              -%}
+              <figure
+                class="main-product__gallery-slide{% if gallery_media.size == 0 and forloop.first %} is-active{% endif %}"
+                data-gallery-slide
+                data-gallery-index="{{ supplement_index }}"
+                role="tabpanel"
+                id="gallery-panel-{{ cinema_section_id }}-{{ supplement_tab }}"
+                aria-labelledby="gallery-tab-{{ cinema_section_id }}-{{ supplement_tab }}"
+                {% unless gallery_media.size == 0 and forloop.first %}
+                  hidden
+                {% endunless %}
+              >
+                {%- if extra_url != blank -%}
+                  <img
+                    class="main-product__gallery-stage-image main-product__gallery-stage-image--fallback"
+                    src="{{ extra_url }}"
+                    alt="{{ slide_alt | escape }}"
+                    width="1200"
+                    height="1500"
+                    loading="{{ slide_loading }}"
+                    {% if slide_fetch_high %}
+                      fetchpriority="high"
+                    {% endif %}
+                    decoding="async"
+                  >
+                {%- endif -%}
+              </figure>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- elsif show_mock_gallery -%}
+          {%- for mock_src in mock_gallery_urls -%}
+            {%- liquid
+              assign mock_loading = 'lazy'
+              if forloop.first
+                assign mock_loading = 'eager'
+              endif
+            -%}
+            <figure
+              class="main-product__gallery-slide{% if forloop.first %} is-active{% endif %}"
+              data-gallery-slide
+              data-gallery-index="{{ forloop.index0 }}"
+              role="tabpanel"
+              id="gallery-panel-{{ cinema_section_id }}-{{ forloop.index }}"
+              {% if gallery_slide_count > 1 %}
+                aria-labelledby="gallery-tab-{{ cinema_section_id }}-{{ forloop.index }}"
+              {% endif %}
+              {% unless forloop.first %}
+                hidden
+              {% endunless %}
+            >
+              {%- if mock_src != blank -%}
+                <img
+                  class="main-product__gallery-stage-image main-product__gallery-stage-image--fallback"
+                  src="{{ mock_src }}"
+                  alt="{% if forloop.index == 2 %}{{ latin_name | escape }}{% else %}{{ display_title | escape }}{% endif %}"
+                  width="1200"
+                  height="1500"
+                  {% if forloop.first %}
+                    loading="eager"
+                    fetchpriority="high"
+                  {% else %}
+                    loading="{{ mock_loading }}"
+                  {% endif %}
+                  decoding="async"
+                >
+              {%- else -%}
+                {% render 'botanical-product-image',
+                  fallback_url: mock_img_1,
+                  product_title: display_title,
+                  specimen_id: cinema_specimen_id,
+                  css_class: 'main-product__gallery-stage-image',
+                  sizes: '(min-width: 990px) min(62vw, 960px), 94vw',
+                  loading: mock_loading,
+                  fetchpriority: forloop.first
+                %}
+              {%- endif -%}
+            </figure>
+          {%- endfor -%}
+        {%- else -%}
+          <figure
+            class="main-product__gallery-slide is-active"
+            data-gallery-slide
+            data-gallery-index="0"
+          >
+            {% render 'botanical-product-image',
+              fallback_url: mock_img_1,
+              product_title: display_title,
+              specimen_id: cinema_specimen_id,
+              css_class: 'main-product__gallery-stage-image',
+              sizes: '(min-width: 990px) min(62vw, 960px), 94vw',
+              loading: 'eager',
+              fetchpriority: 'high'
+            %}
+          </figure>
+        {%- endif -%}
+      </div>
+
+      <div class="main-product__gallery-stage-vignette" aria-hidden="true"></div>
+
+      <button
+        type="button"
+        class="main-product__gallery-zoom"
+        data-gallery-zoom-toggle
+        aria-label="{{ 'products.main.gallery_zoom' | t }}"
+        aria-pressed="false"
+      >
+        <svg class="main-product__gallery-zoom-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="4.75" stroke="currentColor" stroke-width="1.15"/>
+          <path d="M12 12 16.5 16.5" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/>
+          <path d="M8.5 6.25v4.5M6.25 8.5h4.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/>
+        </svg>
+      </button>
+
+      {%- if gallery_slide_count > 1 -%}
+        <div class="main-product__gallery-nav" data-gallery-nav>
+          <button
+            type="button"
+            class="main-product__gallery-arrow main-product__gallery-arrow--prev"
+            data-gallery-prev
+            aria-label="{{ 'products.main.gallery_prev' | t }}"
+          >
+            <svg class="main-product__gallery-arrow-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M12.5 4.5 7 10l5.5 5.5" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4.5 10c1.2-1.8 2.2-3.4 2.5-5.2M4.5 10c1.1 1.7 2 3.3 2.4 5.1" stroke="currentColor" stroke-width="0.65" stroke-linecap="round" opacity="0.55"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="main-product__gallery-arrow main-product__gallery-arrow--next"
+            data-gallery-next
+            aria-label="{{ 'products.main.gallery_next' | t }}"
+          >
+            <svg class="main-product__gallery-arrow-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M7.5 4.5 13 10l-5.5 5.5" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.5 10c-1.2-1.8-2.2-3.4-2.5-5.2M15.5 10c-1.1 1.7-2 3.3-2.4 5.1" stroke="currentColor" stroke-width="0.65" stroke-linecap="round" opacity="0.55"/>
+            </svg>
+          </button>
+        </div>
+      {%- endif -%}
+
+      {%- if gallery_autoplay -%}
+        <div
+          class="main-product__gallery-progress"
+          data-gallery-progress
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-label="{{ 'products.main.gallery_autoplay_progress' | t }}"
+        >
+          <span class="main-product__gallery-progress-bar" data-gallery-progress-bar></span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

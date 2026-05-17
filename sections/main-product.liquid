@@ -4,7 +4,9 @@
   endcomment
   assign force_mock = false
   if request.design_mode
-    assign force_mock = true
+    if product == blank or product.id == blank
+      assign force_mock = true
+    endif
   endif
 
   assign mock_title = section.settings.mock_title | default: 'Nepenthes edwardsiana'
@@ -45,6 +47,9 @@
 
   assign has_gallery = false
   assign show_mock_gallery = true
+  assign verified_gallery_urls = '' | split: '|'
+  assign gallery_supplement_count = 0
+  assign gallery_media = '' | split: '|'
 
   if force_mock
     assign use_live_product = false
@@ -77,11 +82,34 @@
     assign product_description = product.description | default: mock_description
     assign current_variant = product.selected_or_first_available_variant
 
+    comment
+      Use the fullest image set — CSV/import sometimes leaves product.media smaller than product.images.
+    endcomment
     assign gallery_media = product.media
+    if product.images.size > gallery_media.size
+      assign gallery_media = product.images
+    endif
     if gallery_media.size == 0 and product.images.size > 0
       assign gallery_media = product.images
     endif
+    assign verified_gallery_urls = '' | split: '|'
+    capture verified_gallery_raw
+      render 'verified-gallery-urls', product_handle: product.handle
+    endcapture
+    assign verified_gallery_raw = verified_gallery_raw | strip
+    if verified_gallery_raw != blank
+      assign verified_gallery_urls = verified_gallery_raw | split: '###BT###'
+    endif
+
+    assign gallery_supplement_count = 0
+    if verified_gallery_urls.size > gallery_media.size
+      assign gallery_supplement_count = verified_gallery_urls.size | minus: gallery_media.size
+    endif
+
     if gallery_media.size > 0
+      assign has_gallery = true
+      assign show_mock_gallery = false
+    elsif verified_gallery_urls.size > 0
       assign has_gallery = true
       assign show_mock_gallery = false
     else
@@ -328,8 +356,26 @@
   if spec_light_raw != blank
     assign show_technical_deep_dive = true
   endif
+  if temperature_group != blank
+    assign show_technical_deep_dive = true
+  endif
+  assign spec_temp_group_display = temp_group_label
   if request.design_mode
     assign show_technical_deep_dive = true
+    if spec_temp_group_display == blank
+      assign spec_temp_group_display = 'products.main.temperature_groups.highland' | t
+    endif
+  endif
+
+  assign show_care_instructions = false
+  if has_care_guide
+    assign show_care_instructions = true
+  endif
+  if section.settings.care_fallback != blank
+    assign show_care_instructions = true
+  endif
+  if request.design_mode
+    assign show_care_instructions = true
   endif
 -%}
 
@@ -344,136 +390,20 @@
   {{ section.shopify_attributes }}
 >
   <div class="main-product__layout">
-    <div class="main-product__gallery product__media" data-product-gallery>
-      <div class="main-product__gallery-inner">
-      {%- if use_live_product and has_gallery -%}
-        {%- for media in gallery_media -%}
-          <div class="product__media-item main-product__gallery-frame{% if forloop.first %} main-product__gallery-frame--featured{% else %} main-product__gallery-frame--thumb{% endif %}">
-            {%- if forloop.first -%}
-              {% render 'wax-seal-badge', product_item: product %}
-            {%- endif -%}
-              {%- liquid
-                assign gallery_loading = 'lazy'
-                assign gallery_fetch_high = false
-                if forloop.first
-                  assign gallery_loading = 'eager'
-                  assign gallery_fetch_high = true
-                endif
-                assign gallery_image = media.preview_image | default: media
-                assign gallery_img_width = gallery_image.width | default: 1600
-                assign gallery_img_height = gallery_image.height | default: 2000
-                assign id_string = product.id | append: ''
-                assign id_size = id_string | size
-                assign id_start = id_size | minus: 4
-                if id_start < 0
-                  assign id_start = 0
-                endif
-                assign gallery_specimen_suffix = id_string | slice: id_start, 4
-                assign gallery_specimen_id = '#BT-LOG-' | append: gallery_specimen_suffix
-                assign gallery_alt = display_title | append: ' — ' | append: gallery_specimen_id
-                if media.alt != blank
-                  assign gallery_alt = media.alt
-                endif
-              -%}
-              {%- if gallery_image != blank -%}
-                {%- if gallery_fetch_high -%}
-                  {{
-                    gallery_image
-                    | image_url: width: 1600, height: 2000, crop: 'center'
-                    | image_tag:
-                      class: 'main-product__gallery-image',
-                      widths: '600, 900, 1200, 1600',
-                      sizes: '(min-width: 990px) 48vw, 100vw',
-                      loading: gallery_loading,
-                      fetchpriority: 'high',
-                      width: gallery_img_width,
-                      height: gallery_img_height,
-                      alt: gallery_alt
-                  }}
-                {%- else -%}
-                  {{
-                    gallery_image
-                    | image_url: width: 1600, height: 2000, crop: 'center'
-                    | image_tag:
-                      class: 'main-product__gallery-image',
-                      widths: '600, 900, 1200, 1600',
-                      sizes: '(min-width: 990px) 48vw, 100vw',
-                      loading: gallery_loading,
-                      width: gallery_img_width,
-                      height: gallery_img_height,
-                      alt: gallery_alt
-                  }}
-                {%- endif -%}
-              {%- else -%}
-                {% render 'botanical-product-image',
-                  fallback_url: mock_img_1,
-                  product_title: display_title,
-                  specimen_id: gallery_specimen_id,
-                  css_class: 'main-product__gallery-image',
-                  sizes: '(min-width: 990px) 48vw, 100vw',
-                  loading: gallery_loading,
-                  fetchpriority: gallery_fetch_high | default: false
-                %}
-              {%- endif -%}
-          </div>
-        {%- endfor -%}
-      {%- elsif show_mock_gallery -%}
-        {%- comment -%} Mock image engine — 3-slide gallery when live media is empty or in preview mode {%- endcomment -%}
-        {%- for mock_src in mock_gallery_urls -%}
-          <div class="product__media-item main-product__gallery-frame{% if forloop.first %} main-product__gallery-frame--featured{% else %} main-product__gallery-frame--thumb{% endif %}">
-            {%- if forloop.first -%}
-              {% render 'wax-seal-badge', product_item: product %}
-            {%- endif -%}
-            {%- if mock_src != blank -%}
-              <img
-                class="main-product__gallery-image main-product__gallery-image--fallback"
-                src="{{ mock_src }}"
-                alt="{% if forloop.index == 2 %}{{ latin_name | escape }}{% else %}{{ display_title | escape }}{% endif %}"
-                width="800"
-                height="1000"
-                {% if forloop.first %}
-                  loading="eager"
-                  fetchpriority="high"
-                {% else %}
-                  loading="lazy"
-                {% endif %}
-                decoding="async"
-              >
-            {%- else -%}
-              {%- liquid
-                assign mock_slide_loading = 'lazy'
-                if forloop.first
-                  assign mock_slide_loading = 'eager'
-                endif
-              -%}
-              {% render 'botanical-product-image',
-                fallback_url: mock_img_1,
-                product_title: display_title,
-                specimen_id: '#BT-LOG-PREVIEW',
-                css_class: 'main-product__gallery-image',
-                sizes: '(min-width: 990px) 48vw, 100vw',
-                loading: mock_slide_loading,
-                fetchpriority: forloop.first
-              %}
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      {%- else -%}
-        <div class="product__media-item main-product__gallery-frame main-product__gallery-frame--featured">
-          {% render 'wax-seal-badge', product_item: product %}
-          {% render 'botanical-product-image',
-            fallback_url: mock_img_1,
-            product_title: display_title,
-            specimen_id: '#BT-LOG-PREVIEW',
-            css_class: 'main-product__gallery-image',
-            sizes: '(min-width: 990px) 48vw, 100vw',
-            loading: 'eager',
-            fetchpriority: 'high'
-          %}
-        </div>
-      {%- endif -%}
-      </div>
-    </div>
+    {% render 'product-gallery-cinema',
+      use_live_product: use_live_product,
+      has_gallery: has_gallery,
+      show_mock_gallery: show_mock_gallery,
+      gallery_media: gallery_media,
+      verified_gallery_urls: verified_gallery_urls,
+      gallery_supplement_count: gallery_supplement_count,
+      mock_gallery_urls: mock_gallery_urls,
+      display_title: display_title,
+      latin_name: latin_name,
+      product: product,
+      mock_img_1: mock_img_1,
+      section_id: section.id
+    %}
 
     <div class="main-product__dossier" data-product-dossier>
       <header class="main-product__header">
@@ -656,20 +586,6 @@
       <div class="main-product__accordions" aria-label="{{ 'products.main.accordions_label' | t }}">
         <details data-pdp-accordion>
           <summary class="pdp-accordion-title" aria-expanded="false">
-            {{ 'products.main.accordion_care_title' | t }}
-            <span class="icon-plus" aria-hidden="true">+</span>
-          </summary>
-          <div class="pdp-accordion-content">
-            {%- if has_care_guide -%}
-              {{ product.metafields.custom.care_guide | metafield_tag }}
-            {%- else -%}
-              {%- assign care_fallback_text = section.settings.care_fallback | default: 'High humidity and RO water required. Maintain bright, diffused light and use reverse-osmosis or rainwater only. Do not fertilize the substrate directly.' -%}
-              <p>{{ care_fallback_text }}</p>
-            {%- endif -%}
-          </div>
-        </details>
-        <details data-pdp-accordion>
-          <summary class="pdp-accordion-title" aria-expanded="false">
             {{ 'products.main.accordion_lineage_title' | t }}
             <span class="icon-plus" aria-hidden="true">+</span>
           </summary>
@@ -795,7 +711,37 @@
             <dd class="main-product__tech-value">{{ spec_light_display | escape }}</dd>
           </div>
         {%- endif -%}
+        {%- if temperature_group != blank or request.design_mode -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_temperature' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_temp_group_display | escape }}</dd>
+          </div>
+        {%- endif -%}
       </dl>
+    </section>
+  {%- endif -%}
+
+  {%- if show_care_instructions -%}
+    <section
+      class="main-product__deep-dive main-product__care-instructions"
+      aria-labelledby="main-product-care-{{ section.id }}"
+    >
+      <header class="main-product__deep-dive-header">
+        <p class="main-product__deep-dive-eyebrow">{{ 'products.main.care_instructions_heading' | t }}</p>
+        <h2 id="main-product-care-{{ section.id }}" class="main-product__deep-dive-title">
+          {{ display_title | escape }}
+        </h2>
+        <p class="main-product__deep-dive-subtitle">{{ 'products.main.care_instructions_subheading' | t }}</p>
+      </header>
+
+      <div class="main-product__care-body rte">
+        {%- if has_care_guide -%}
+          {{ product.metafields.custom.care_guide | metafield_tag }}
+        {%- else -%}
+          {%- assign care_fallback_text = section.settings.care_fallback | default: 'High humidity and RO water required. Maintain bright, diffused light and use reverse-osmosis or rainwater only. Do not fertilize the substrate directly.' -%}
+          {{ care_fallback_text }}
+        {%- endif -%}
+      </div>
     </section>
   {%- endif -%}
 
@@ -827,46 +773,338 @@
     overflow: visible;
   }
 
-  /* Gallery — shared frame + image (Field Guide specimen plates) */
-  .product__media-item.main-product__gallery-frame {
-    position: relative;
-    margin: 0;
-    overflow: hidden;
-    aspect-ratio: 4 / 5;
-    background: var(--color-parchment);
-    border: 1px solid var(--color-forest-green-dark);
-    border-radius: 4px;
-    box-shadow: var(--shadow-md);
-  }
-
-  .main-product__gallery-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: center center;
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .main-product__gallery-frame:hover .main-product__gallery-image {
-    transform: scale(1.04);
-  }
-
+  /* Cinematic PDP gallery — viewport-fit stage + vertical thumb rail */
   .main-product__gallery.product__media {
     width: 100%;
     min-width: 0;
   }
 
-  .main-product__gallery-inner {
+  .main-product__gallery-cinema {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: auto 1fr;
     gap: 0.75rem;
+    align-items: stretch;
     width: 100%;
   }
 
-  .main-product__gallery-frame--featured {
-    grid-column: 1 / -1;
+  .main-product__gallery-cinema:not(:has(.main-product__gallery-rail)) {
+    grid-template-columns: 1fr;
+  }
+
+  .main-product__gallery-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 5.25rem;
+    flex-shrink: 0;
+    max-height: min(82vh, calc(100svh - var(--header-height, 4rem) - 6rem));
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(10 24 18 / 0.28) transparent;
+  }
+
+  .main-product__gallery-thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--color-parchment);
+    border: 1px solid rgb(10 24 18 / 0.22);
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgb(10 24 18 / 0.06);
+    transition:
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.45s ease;
+    opacity: 0.72;
+  }
+
+  .main-product__gallery-thumb:hover,
+  .main-product__gallery-thumb:focus-visible {
+    opacity: 1;
+    border-color: var(--color-forest-green-dark);
+    transform: translateY(-1px);
+  }
+
+  .main-product__gallery-thumb.is-active {
+    opacity: 1;
+    border-color: var(--color-forest-green-dark);
+    box-shadow: 0 4px 14px rgb(10 24 18 / 0.14);
+  }
+
+  .main-product__gallery-thumb-frame {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 2px solid transparent;
+    border-radius: 2px;
+    transition: border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .main-product__gallery-thumb.is-active .main-product__gallery-thumb-frame {
+    border-color: rgb(247 244 237 / 0.35);
+  }
+
+  .main-product__gallery-thumb-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .main-product__gallery-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --gallery-stage-pad: clamp(1rem, 2vw, 1.5rem);
+    min-height: min(62vh, 26rem);
+    max-height: min(84vh, calc(100svh - var(--header-height, 4rem) - 3.5rem));
+    padding: var(--gallery-stage-pad);
+    overflow: hidden;
+    background: linear-gradient(165deg, rgb(247 244 237 / 0.98) 0%, rgb(235 228 214 / 0.92) 100%);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: 4px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .main-product__gallery-stage .wax-seal-badge {
+    position: absolute;
+    top: -0.25rem;
+    inset-inline-end: -0.25rem;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .main-product__gallery-slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: min(58vh, 24rem);
+    max-height: inherit;
+  }
+
+  .main-product__gallery-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.035);
+    transition:
+      opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 1.15s;
+    pointer-events: none;
+  }
+
+  .main-product__gallery-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition:
+      opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+    animation: main-product-gallery-ken-burns 7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .main-product__gallery.is-gallery-paused .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+    animation-play-state: paused;
+  }
+
+  @keyframes main-product-gallery-ken-burns {
+    from {
+      transform: scale(1);
+    }
+
+    to {
+      transform: scale(1.045);
+    }
+  }
+
+  .main-product__gallery-stage-image,
+  .main-product__gallery-stage-media {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    margin: auto;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .main-product__gallery-nav {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: clamp(0.35rem, 1.2vw, 0.85rem);
+    pointer-events: none;
+  }
+
+  .main-product__gallery-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.625rem;
+    height: 2.625rem;
+    padding: 0;
+    pointer-events: auto;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background: rgb(247 244 237 / 0.9);
+    border: 1px solid rgb(10 24 18 / 0.18);
+    border-radius: 50%;
+    box-shadow: 0 2px 12px rgb(10 24 18 / 0.1);
+    backdrop-filter: blur(10px);
+    opacity: 0.82;
+    transform: translate3d(0, 0, 0);
+    transition:
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .main-product__gallery-arrow--prev {
+    margin-inline-start: 0.15rem;
+  }
+
+  .main-product__gallery-arrow--next {
+    margin-inline-end: 0.15rem;
+  }
+
+  .main-product__gallery-arrow-icon {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .main-product__gallery-stage:hover .main-product__gallery-arrow,
+  .main-product__gallery-arrow:focus-visible {
+    opacity: 1;
+    border-color: rgb(10 24 18 / 0.32);
+    box-shadow: 0 4px 18px rgb(10 24 18 / 0.14);
+  }
+
+  .main-product__gallery-arrow--prev:hover,
+  .main-product__gallery-arrow--prev:focus-visible {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  .main-product__gallery-arrow--next:hover,
+  .main-product__gallery-arrow--next:focus-visible {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  .main-product__gallery-stage-media--video,
+  .main-product__gallery-stage-media--model {
+    width: 100%;
+    max-height: inherit;
+  }
+
+  .main-product__gallery-stage-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 85% 70% at 50% 45%, transparent 55%, rgb(10 24 18 / 0.12) 100%);
+    opacity: 0.85;
+    z-index: 2;
+  }
+
+  .main-product__gallery-progress {
+    position: absolute;
+    inset-inline: var(--gallery-stage-pad, var(--space-md));
+    bottom: var(--gallery-stage-pad, var(--space-sm));
+    z-index: 3;
+    height: 2px;
+    overflow: hidden;
+    background: rgb(10 24 18 / 0.12);
+    border-radius: 1px;
+  }
+
+  .main-product__gallery-progress-bar {
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: var(--color-forest-green-dark);
+    border-radius: inherit;
+  }
+
+  .main-product__gallery-zoom {
+    position: absolute;
+    inset-block-end: var(--gallery-stage-pad, var(--space-md));
+    inset-inline-end: var(--gallery-stage-pad, var(--space-md));
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: zoom-in;
+    color: var(--color-forest-green-dark);
+    background: rgb(247 244 237 / 0.92);
+    border: 1px solid rgb(10 24 18 / 0.2);
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgb(10 24 18 / 0.1);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition:
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.35s ease,
+      border-color 0.35s ease;
+  }
+
+  .main-product__gallery-stage:hover .main-product__gallery-zoom,
+  .main-product__gallery-zoom:focus-visible,
+  .main-product__gallery-stage.is-magnified .main-product__gallery-zoom {
+    opacity: 1;
+  }
+
+  .main-product__gallery-stage.is-magnified .main-product__gallery-zoom {
+    cursor: zoom-out;
+  }
+
+  .main-product__gallery-stage.is-magnified .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+    animation: none;
+  }
+
+  .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+    transform: scale(var(--zoom-scale, 1));
+    transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .main-product__gallery-stage.is-magnified {
+    cursor: zoom-out;
+  }
+
+  .main-product__gallery-stage.is-zoom-active:not(.is-magnified) {
+    cursor: zoom-in;
   }
 
   .specimen-snapshot {
@@ -1291,6 +1529,21 @@
     color: var(--color-text-muted);
   }
 
+  .main-product__care-instructions .main-product__care-body {
+    max-width: 72ch;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__care-instructions .main-product__care-body :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+  }
+
+  .main-product__care-instructions .main-product__care-body :is(ul, ol) {
+    padding-inline-start: 1.25rem;
+  }
+
   .main-product__tech-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -1336,47 +1589,50 @@
     }
   }
 
-  /* Mobile — horizontal snap-scroll gallery + sticky purchase */
+  /* Mobile — cinema stage + horizontal thumb rail + sticky purchase */
   @media (max-width: 989px) {
     .main-product__gallery.product__media {
       width: 100%;
       min-width: 0;
       margin-inline: calc(-1 * max(var(--page-margin), 1.25rem));
-      padding-inline: 0;
+      padding-inline: max(var(--page-margin), 1.25rem);
     }
 
-    .main-product__gallery-inner {
-      display: flex;
+    .main-product__gallery-cinema {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+      gap: 0.65rem;
+    }
+
+    .main-product__gallery-rail {
       flex-direction: row;
-      gap: 0.75rem;
-      padding-inline: max(var(--page-margin), 1.25rem);
-      padding-bottom: 0.75rem;
+      order: 2;
+      width: 100%;
+      max-height: none;
       overflow-x: auto;
       overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      padding-block-end: 2px;
+      scroll-snap-type: x proximity;
     }
 
-    .main-product__gallery-inner::-webkit-scrollbar {
-      display: none;
+    .main-product__gallery-thumb {
+      flex: 0 0 3.75rem;
+      width: 3.75rem;
+      scroll-snap-align: start;
     }
 
-    .product__media-item.main-product__gallery-frame {
-      flex: 0 0 min(85vw, 22rem);
-      width: auto;
-      scroll-snap-align: center;
+    .main-product__gallery-stage {
+      order: 1;
+      min-height: min(58vh, calc(100svh - var(--header-height, 4rem) - 12rem));
+      max-height: min(72vh, calc(100svh - var(--header-height, 4rem) - 10rem));
     }
 
-    .main-product__gallery-frame--featured,
-    .main-product__gallery-frame--thumb {
-      grid-column: auto;
+    .main-product__gallery-slides {
+      min-height: min(54vh, calc(100svh - var(--header-height, 4rem) - 14rem));
     }
 
-    .main-product__gallery-frame:hover .main-product__gallery-image {
-      transform: none;
+    .main-product__gallery-arrow {
+      opacity: 0.92;
     }
 
     .specimen-snapshot__list {
@@ -1401,14 +1657,14 @@
   @media (min-width: 990px) {
     .main-product__layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 4rem;
+      grid-template-columns: minmax(0, 1.38fr) minmax(0, 0.62fr);
+      gap: clamp(2.5rem, 4vw, 4rem);
       align-items: start;
     }
 
     .main-product__gallery.product__media {
       position: sticky;
-      top: 2rem;
+      top: calc(var(--header-height, 4rem) + 1.25rem);
       height: max-content;
       width: 100%;
       min-width: 0;
@@ -1417,18 +1673,17 @@
       overflow: visible;
     }
 
-    .main-product__gallery-inner {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.75rem;
+    .main-product__gallery-stage {
+      min-height: min(76vh, calc(100svh - var(--header-height, 4rem) - 4rem));
+      max-height: min(86vh, calc(100svh - var(--header-height, 4rem) - 2.5rem));
     }
 
-    .main-product__gallery-frame--featured {
-      grid-column: 1 / -1;
+    .main-product__gallery-slides {
+      min-height: min(72vh, calc(100svh - var(--header-height, 4rem) - 6rem));
     }
 
-    .product__media-item.main-product__gallery-frame {
-      width: 100%;
+    .main-product__gallery-rail {
+      max-height: min(84vh, calc(100svh - var(--header-height, 4rem) - 4rem));
     }
 
     .specimen-snapshot__list {
@@ -1545,8 +1800,19 @@
       transform: none;
     }
 
-    .main-product__gallery-frame:hover .main-product__gallery-image {
+    .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+      animation: none;
+    }
+
+    .main-product__gallery-arrow:hover,
+    .main-product__gallery-arrow:focus-visible {
       transform: none;
+    }
+
+    .main-product__gallery-slide.is-active .main-product__gallery-stage-image {
+      transform: none;
+      transition: none;
+      will-change: auto;
     }
 
     .main-product__accordions details[open] .icon-plus {
@@ -1726,6 +1992,297 @@
       }
     }
 
+
+    var GALLERY_INTERVAL_MS = 6000;
+
+    function prefersReducedMotion() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function initGalleryZoom(gallery) {
+      var stage = gallery.querySelector('[data-gallery-stage]');
+      var zoomBtn = gallery.querySelector('[data-gallery-zoom-toggle]');
+      if (!stage) {
+        return;
+      }
+
+      var hoverZoom = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var zoomInLabel = gallery.dataset.labelZoomIn || 'Zoom image';
+      var zoomOutLabel = gallery.dataset.labelZoomOut || 'Exit zoom';
+      var hoverScale = 1.38;
+      var magnifiedScale = 3.15;
+      var targetScale = 1;
+      var currentScale = 1;
+      var targetX = 50;
+      var targetY = 50;
+      var currentX = 50;
+      var currentY = 50;
+      var isMagnified = false;
+      var isHovering = false;
+      var motionFrame = null;
+
+      function lerp(start, end, amount) {
+        return start + (end - start) * amount;
+      }
+
+      function applyZoomVars() {
+        stage.style.setProperty('--zoom-scale', String(currentScale));
+        stage.style.setProperty('--zoom-x', currentX + '%');
+        stage.style.setProperty('--zoom-y', currentY + '%');
+      }
+
+      function resolveTargetScale() {
+        if (isMagnified) {
+          return magnifiedScale;
+        }
+        if (isHovering && hoverZoom) {
+          return hoverScale;
+        }
+        return 1;
+      }
+
+      function tickZoomMotion() {
+        targetScale = resolveTargetScale();
+        currentScale = lerp(currentScale, targetScale, 0.1);
+        currentX = lerp(currentX, targetX, 0.14);
+        currentY = lerp(currentY, targetY, 0.14);
+        applyZoomVars();
+
+        var scaleSettled = Math.abs(currentScale - targetScale) < 0.002;
+        var xSettled = Math.abs(currentX - targetX) < 0.05;
+        var ySettled = Math.abs(currentY - targetY) < 0.05;
+
+        if (scaleSettled && xSettled && ySettled) {
+          currentScale = targetScale;
+          currentX = targetX;
+          currentY = targetY;
+          applyZoomVars();
+          motionFrame = null;
+          return;
+        }
+
+        motionFrame = window.requestAnimationFrame(tickZoomMotion);
+      }
+
+      function startZoomMotion() {
+        if (motionFrame) {
+          return;
+        }
+        motionFrame = window.requestAnimationFrame(tickZoomMotion);
+      }
+
+      function setPointerTarget(event) {
+        var rect = stage.getBoundingClientRect();
+        if (!rect.width || !rect.height) {
+          return;
+        }
+
+        targetX = Math.max(8, Math.min(92, ((event.clientX - rect.left) / rect.width) * 100));
+        targetY = Math.max(8, Math.min(92, ((event.clientY - rect.top) / rect.height) * 100));
+        startZoomMotion();
+      }
+
+      if (zoomBtn) {
+        zoomBtn.addEventListener('click', function () {
+          isMagnified = !isMagnified;
+          stage.classList.toggle('is-magnified', isMagnified);
+          zoomBtn.setAttribute('aria-pressed', isMagnified ? 'true' : 'false');
+          zoomBtn.setAttribute('aria-label', isMagnified ? zoomOutLabel : zoomInLabel);
+          startZoomMotion();
+        });
+      }
+
+      stage.addEventListener('mousemove', setPointerTarget);
+
+      if (hoverZoom) {
+        stage.addEventListener('mouseenter', function () {
+          isHovering = true;
+          stage.classList.add('is-zoom-active');
+          startZoomMotion();
+        });
+        stage.addEventListener('mouseleave', function () {
+          isHovering = false;
+          stage.classList.remove('is-zoom-active');
+          startZoomMotion();
+        });
+      }
+
+      applyZoomVars();
+    }
+
+    function initProductGalleryCinema(gallery) {
+      if (!gallery || gallery.dataset.galleryCinemaInit === 'true') {
+        return;
+      }
+
+      initGalleryZoom(gallery);
+
+      var count = parseInt(gallery.dataset.galleryCount, 10) || 0;
+      if (count < 2) {
+        gallery.dataset.galleryCinemaInit = 'true';
+        return;
+      }
+
+      var autoplayEnabled = gallery.dataset.galleryAutoplay === 'true';
+      var slides = gallery.querySelectorAll('[data-gallery-slide]');
+      var thumbs = gallery.querySelectorAll('[data-gallery-thumb]');
+      var prevBtn = gallery.querySelector('[data-gallery-prev]');
+      var nextBtn = gallery.querySelector('[data-gallery-next]');
+      var progressBar = gallery.querySelector('[data-gallery-progress-bar]');
+      var progressEl = gallery.querySelector('[data-gallery-progress]');
+      var current = 0;
+      var isPaused = false;
+      var progressElapsed = 0;
+      var progressFrame = null;
+      var lastProgressTick = 0;
+
+      function renderProgress() {
+        if (!progressBar) {
+          return;
+        }
+
+        var pct = Math.min(100, (progressElapsed / GALLERY_INTERVAL_MS) * 100);
+        progressBar.style.transition = 'none';
+        progressBar.style.width = pct + '%';
+
+        if (progressEl) {
+          progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+        }
+      }
+
+      function clearProgressLoop() {
+        if (progressFrame) {
+          cancelAnimationFrame(progressFrame);
+          progressFrame = null;
+        }
+      }
+
+      function progressLoop(now) {
+        if (isPaused || !autoplayEnabled) {
+          return;
+        }
+
+        if (!lastProgressTick) {
+          lastProgressTick = now;
+        }
+
+        var delta = now - lastProgressTick;
+        lastProgressTick = now;
+        progressElapsed += delta;
+        renderProgress();
+
+        if (progressElapsed >= GALLERY_INTERVAL_MS) {
+          progressElapsed = 0;
+          lastProgressTick = 0;
+          goTo(current + 1);
+          return;
+        }
+
+        progressFrame = requestAnimationFrame(progressLoop);
+      }
+
+      function startProgressLoop() {
+        clearProgressLoop();
+        if (isPaused || !autoplayEnabled || prefersReducedMotion() || document.hidden) {
+          return;
+        }
+
+        lastProgressTick = 0;
+        progressFrame = requestAnimationFrame(progressLoop);
+      }
+
+      function pauseAutoplay() {
+        if (isPaused) {
+          return;
+        }
+
+        isPaused = true;
+        gallery.classList.add('is-gallery-paused');
+        clearProgressLoop();
+      }
+
+      function resumeAutoplay() {
+        if (!isPaused) {
+          return;
+        }
+
+        isPaused = false;
+        gallery.classList.remove('is-gallery-paused');
+
+        if (!autoplayEnabled || prefersReducedMotion() || document.hidden) {
+          return;
+        }
+
+        startProgressLoop();
+      }
+
+      function goTo(index) {
+        index = ((index % count) + count) % count;
+        current = index;
+
+        slides.forEach(function (slide, slideIndex) {
+          var active = slideIndex === index;
+          slide.classList.toggle('is-active', active);
+          slide.hidden = !active;
+        });
+
+        thumbs.forEach(function (thumb, thumbIndex) {
+          var thumbActive = thumbIndex === index;
+          thumb.classList.toggle('is-active', thumbActive);
+          thumb.setAttribute('aria-selected', thumbActive ? 'true' : 'false');
+        });
+
+        progressElapsed = 0;
+        lastProgressTick = 0;
+        renderProgress();
+
+        if (!isPaused && autoplayEnabled) {
+          startProgressLoop();
+        }
+      }
+
+      thumbs.forEach(function (thumb) {
+        thumb.addEventListener('click', function () {
+          var index = parseInt(thumb.dataset.galleryIndex, 10) || 0;
+          goTo(index);
+        });
+      });
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function () {
+          goTo(current - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+          goTo(current + 1);
+        });
+      }
+
+      gallery.addEventListener('mouseenter', pauseAutoplay);
+      gallery.addEventListener('mouseleave', resumeAutoplay);
+      gallery.addEventListener('focusin', pauseAutoplay);
+      gallery.addEventListener('focusout', function (event) {
+        if (!gallery.contains(event.relatedTarget)) {
+          resumeAutoplay();
+        }
+      });
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          pauseAutoplay();
+        } else if (gallery.isConnected) {
+          resumeAutoplay();
+        }
+      });
+
+      goTo(0);
+      isPaused = false;
+      startProgressLoop();
+      gallery.dataset.galleryCinemaInit = 'true';
+    }
+
     function initMainProduct(root) {
       if (!root || root.dataset.mainProductInitialized === 'true') {
         return;
@@ -1775,12 +2332,15 @@
         details.addEventListener('toggle', syncExpanded);
       });
 
+      root.querySelectorAll('[data-product-gallery-cinema]').forEach(initProductGalleryCinema);
+
       root.dataset.mainProductInitialized = 'true';
     }
 
     function initAll(scope) {
       var context = scope || document;
       context.querySelectorAll('[data-main-product]').forEach(initMainProduct);
+      context.querySelectorAll('[data-product-gallery-cinema]').forEach(initProductGalleryCinema);
     }
 
     if (document.readyState === 'loading') {

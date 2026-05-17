@@ -391,7 +391,7 @@ html[data-announcement-dismissed] [data-announcement-bar],
   top: var(--announcement-bar-height, 0px);
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: var(--z-site-chrome, 1000);
   width: 100%;
 }
 
@@ -797,10 +797,17 @@ p:empty {
 
 /* Reset all — top of drawer; visible only when filters are active (Liquid hidden attr) */
 .cultivation-filter__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
   flex-shrink: 0;
   margin-block-end: var(--space-md);
   padding-block-end: var(--space-md);
   border-block-end: 1px solid var(--color-border);
+}
+
+.cultivation-filter__reset-all--link {
+  text-decoration: none;
 }
 
 .cultivation-filter__toolbar[hidden] {
