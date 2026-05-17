@@ -1,0 +1,358 @@
+{% doc %}
+  Ledger tray card for the New Specimen section — batch ID, date logged, optional sale seal.
+
+  @param {product} [product_item] - Product to render; omit for theme preview placeholders
+  @param {number} ledger_index - One-based index for batch numbering
+  @param {number} [card_index] - Zero-based index for preview placeholder cycling
+  @param {string} [sizes] - Responsive image sizes attribute
+{% enddoc %}
+
+{%- liquid
+  assign use_live_product = false
+  if product_item != blank
+    assign use_live_product = true
+  endif
+
+  assign image_sizes = sizes | default: '(min-width: 990px) 22vw, 66vw'
+  assign on_sale = false
+  assign use_shopify_image = false
+  assign difficulty = 0
+
+  if use_live_product
+    assign card_product = product_item
+    assign card_url = card_product.url
+    assign product_image = card_product.featured_media.preview_image | default: card_product.featured_image
+
+    if product_image != blank
+      if product_image.width > 0
+        assign use_shopify_image = true
+      endif
+    endif
+
+    assign genus_handle = card_product.metafields.custom.genus.value | default: card_product.metafields.custom.genus
+    assign latin_name = card_product.metafields.custom.latin_name.value | default: card_product.metafields.custom.latin_name
+    assign difficulty_raw = card_product.metafields.custom.difficulty.value | default: card_product.metafields.custom.difficulty
+    assign difficulty = difficulty_raw | plus: 0
+
+    case genus_handle
+      when 'dionaea'
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=1200'
+      when 'sarracenia'
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_((leucophylla_x_flava)_x_(purpurea_montana_x_flava))_x_%27Judith_Hindle%27_(5065614694).jpg?width=1200'
+      when 'nepenthes'
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200'
+      when 'pinguicula'
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Pinguicula_moranensis_0zz.jpg?width=1200'
+      when 'cephalotus'
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Albany_Pitcher_Plant_Oxford_Botanic_Garden.jpg?width=1200'
+      else
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_aliciae2_ies.jpg?width=1200'
+    endcase
+
+    assign card_title = card_product.title
+
+    assign logged_at = card_product.published_at
+    if logged_at == blank
+      assign logged_at = card_product.created_at
+    endif
+    assign date_logged_display = card_product.published_at | date: '%d %b %Y'
+    if card_product.published_at == blank
+      assign date_logged_display = card_product.created_at | date: '%d %b %Y'
+    endif
+    assign batch_year = logged_at | date: '%Y'
+    assign batch_seq = ledger_index | default: 1
+    if batch_seq < 10
+      assign batch_suffix = '0' | append: batch_seq
+    else
+      assign batch_suffix = batch_seq | append: ''
+    endif
+    assign batch_number = '#BT-' | append: batch_year | append: '-' | append: batch_suffix
+
+    if card_product.compare_at_price > card_product.price
+      assign on_sale = true
+    endif
+
+    assign id_string = card_product.id | append: ''
+    assign id_size = id_string | size
+    assign id_start = id_size | minus: 4
+    if id_start < 0
+      assign id_start = 0
+    endif
+    assign specimen_id_suffix = id_string | slice: id_start, 4
+  else
+    assign preview_slot = card_index | default: ledger_index | default: 1 | minus: 1 | modulo: 4
+    assign preview_id_string = preview_slot | plus: 2401 | append: ''
+    assign preview_id_size = preview_id_string | size
+    assign preview_id_start = preview_id_size | minus: 4
+    if preview_id_start < 0
+      assign preview_id_start = 0
+    endif
+    assign specimen_id_suffix = preview_id_string | slice: preview_id_start, 4
+    assign card_url = '#'
+    assign logged_at = 'now'
+    assign date_logged_display = 'now' | date: '%d %b %Y'
+    assign batch_number = '#BT-PREVIEW'
+    assign use_shopify_image = false
+
+    case preview_slot
+      when 0
+        assign latin_name = 'Nepenthes edwardsiana'
+        assign card_title = 'Highland pitcher'
+        assign difficulty = 5
+        assign mock_price_cents = 125000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa_(14238410874).jpg?width=1200'
+      when 1
+        assign latin_name = 'Drosera capensis'
+        assign card_title = 'Cape sundew'
+        assign difficulty = 2
+        assign mock_price_cents = 15000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200'
+      when 2
+        assign latin_name = 'Sarracenia flava'
+        assign card_title = 'Yellow trumpet'
+        assign difficulty = 2
+        assign mock_price_cents = 35000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_(leucophylla_x_purpurea)_x_purpurea_(5065620220).jpg?width=1200'
+      else
+        assign latin_name = 'Cephalotus follicularis'
+        assign card_title = 'Albany pitcher'
+        assign difficulty = 5
+        assign mock_price_cents = 95000
+        assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Cephalotus_follicularis_Hennern_3.jpg?width=1200'
+    endcase
+
+  endif
+
+  assign specimen_id = '#BT-LOG-' | append: specimen_id_suffix
+-%}
+
+<article class="specimen-ledger-card product-card{% unless use_live_product %} product-card--mock{% endunless %}">
+  <p class="specimen-ledger-card__specimen-id">
+    <span class="visually-hidden">{{ 'sections.new_specimens.specimen_id' | t }}</span>
+    {{- specimen_id | escape -}}
+  </p>
+
+  <a class="specimen-ledger-card__link product-card__link" href="{{ card_url }}">
+    <span class="specimen-ledger-card__media product-card__media">
+      {%- if on_sale -%}
+        <span class="specimen-ledger-card__seal product-card__badge product-card__badge--wax product-card__badge--wax-special" aria-hidden="true">
+          <span class="product-card__badge-text">{{ 'sections.new_specimens.special_seal' | t }}</span>
+        </span>
+      {%- else -%}
+        <span class="specimen-ledger-card__batch" aria-label="{{ 'sections.new_specimens.batch_label' | t: number: batch_number }}">
+          {{ batch_number | escape }}
+        </span>
+      {%- endif -%}
+
+      {% render 'botanical-product-image',
+        use_shopify_image: use_shopify_image,
+        product_image: product_image,
+        fallback_url: placeholder_url,
+        product_title: card_title | default: latin_name,
+        specimen_id: specimen_id,
+        sizes: image_sizes,
+        css_class: 'product-card__image'
+      %}
+
+      <span
+        class="specimen-ledger-card__date"
+        aria-label="{{ 'sections.new_specimens.date_logged' | t }} {{ date_logged_display | escape }}"
+      >
+        <span class="specimen-ledger-card__date-stamp">
+          <span class="specimen-ledger-card__date-label">{{ 'sections.new_specimens.date_logged' | t }}</span>
+          <time datetime="{{ logged_at | date: '%Y-%m-%d' }}">{{ date_logged_display | escape }}</time>
+        </span>
+      </span>
+    </span>
+
+    <span class="specimen-ledger-card__body product-card__body">
+      {%- if difficulty > 0 -%}
+        <span
+          class="product-card__difficulty difficulty-pips"
+          role="img"
+          aria-label="{{ 'products.card.difficulty_label' | t: level: difficulty, max: 5 }}"
+        >
+          {%- for pip in (1..5) -%}
+            <span
+              class="difficulty-pip{% if pip <= difficulty %} difficulty-pip--filled{% endif %}"
+              aria-hidden="true"
+            ></span>
+          {%- endfor -%}
+        </span>
+      {%- endif -%}
+
+      <h3 class="product-card__title">
+        {%- if use_live_product -%}
+          {{- card_product.title | escape -}}
+        {%- else -%}
+          {{- card_title | escape -}}
+        {%- endif -%}
+      </h3>
+
+      {%- if latin_name != blank -%}
+        <span class="product-card__latin">
+          <em>{{ latin_name | escape }}</em>
+        </span>
+      {%- endif -%}
+
+      <span class="product-card__price">
+        {%- if use_live_product -%}
+          {%- if on_sale -%}
+            <span class="visually-hidden">{{ 'products.card.price_sale' | t }}</span>
+            <span class="product-card__price-sale">{% render 'zar-price', amount_cents: card_product.price %}</span>
+            <span class="visually-hidden">{{ 'products.card.price_regular' | t }}</span>
+            <s class="product-card__price-compare">{% render 'zar-price', amount_cents: card_product.compare_at_price %}</s>
+          {%- else -%}
+            <span class="product-card__price-regular">{% render 'zar-price', amount_cents: card_product.price %}</span>
+          {%- endif -%}
+        {%- else -%}
+          <span class="product-card__price-regular">{% render 'zar-price', amount_cents: mock_price_cents %}</span>
+        {%- endif -%}
+      </span>
+    </span>
+  </a>
+</article>
+
+{% stylesheet %}
+  .specimen-ledger-card {
+    --ledger-card-padding: var(--space-md);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--color-surface-elevated);
+    border: 1px solid rgb(18 22 20 / 0.1);
+    clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 0 100%);
+    box-shadow: 1px 2px 0 rgb(10 24 18 / 0.06);
+    transition:
+      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      box-shadow 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .specimen-ledger-card__link {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .specimen-ledger-card__specimen-id {
+    margin: 0;
+    padding: var(--space-xs) var(--ledger-card-padding);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #061410;
+    border-block-end: 0.5px solid rgb(10 24 18 / 0.1);
+  }
+
+  .specimen-ledger-card__link:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  .specimen-ledger-card:focus-within {
+    box-shadow:
+      0 0 0 2px var(--color-parchment),
+      0 0 0 4px var(--color-focus);
+  }
+
+  .specimen-ledger-card__media {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .specimen-ledger-card__media .product-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .specimen-ledger-card__batch {
+    position: absolute;
+    z-index: 3;
+    margin: 0;
+    padding: 0.2rem 0.45rem;
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-forest-green-dark);
+    background-color: rgb(247 244 237 / 0.92);
+    border: 1px solid rgb(10 24 18 / 0.15);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .specimen-ledger-card__date {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .specimen-ledger-card__date-stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin: 0;
+    padding: 0.2rem 0.3rem 0.15rem;
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.5rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f7f4ed;
+    background-color: #0a1812;
+    border-top: 1px solid rgb(247 244 237 / 0.22);
+    border-right: 1px solid rgb(247 244 237 / 0.22);
+  }
+
+  .specimen-ledger-card__date-label {
+    margin: 0;
+    padding: 0;
+    font-size: 0.4375rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    color: #e8e4d9;
+  }
+
+  .specimen-ledger-card__date time {
+    margin: 0;
+    padding: 0;
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .specimen-ledger-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding: var(--space-md) var(--ledger-card-padding);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .specimen-ledger-card {
+      transition: none;
+    }
+  }
+{% endstylesheet %}

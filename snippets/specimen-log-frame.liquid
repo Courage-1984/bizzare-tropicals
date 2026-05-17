@@ -1,0 +1,26 @@
+{% doc %}
+  Opens or closes the vintage laboratory "Specimen Log" double-border frame.
+
+  @param {string} [tag] - Wrapper element tag (default: div)
+  @param {string} [class] - Additional CSS classes on the frame
+  @param {boolean} [close] - When true, outputs the closing tag only
+
+  @example
+  {% render 'specimen-log-frame', class: 'my-block' %}
+    …content…
+  {% render 'specimen-log-frame', close: true %}
+{% enddoc %}
+
+{%- liquid
+  assign frame_tag = tag | default: 'div'
+  assign frame_class = 'specimen-log-frame'
+  if class != blank
+    assign frame_class = frame_class | append: ' ' | append: class
+  endif
+-%}
+
+{%- if close -%}
+  </{{ frame_tag }}>
+{%- else -%}
+  <{{ frame_tag }} class="{{ frame_class }}">
+{%- endif -%}

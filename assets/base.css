@@ -553,6 +553,17 @@ p:empty {
   transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.product-card__link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.product-card:focus-within {
+  box-shadow:
+    0 0 0 2px var(--color-parchment),
+    0 0 0 4px var(--color-focus);
+}
+
 .product-card:hover .product-card__link {
   opacity: 1;
 }

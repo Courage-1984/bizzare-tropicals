@@ -7,23 +7,23 @@
     assign force_mock = true
   endif
 
-  assign mock_title = 'Nepenthes edwardsiana'
+  assign mock_title = section.settings.mock_title | default: 'Nepenthes edwardsiana'
   assign mock_price = 450000
-  assign mock_latin_name = 'N. edwardsiana (Highland)'
+  assign mock_latin_name = section.settings.mock_latin_name | default: 'N. edwardsiana (Highland)'
   assign mock_inventory = 3
   assign mock_tags = 'Rare'
-  assign mock_description = '<ul><li><strong>LIGHT:</strong> Bright, indirect light.</li><li><strong>WATER:</strong> Reverse osmosis only. Keep sphagnum moist.</li><li><strong>HUMIDITY:</strong> 70-90% ambient required.</li><li><strong>TEMPERATURE:</strong> Highland (Day: 25°C, Night: 12°C).</li></ul>'
+  assign mock_description = section.settings.mock_description | default: '<ul><li><strong>LIGHT:</strong> Bright, indirect light.</li><li><strong>WATER:</strong> Reverse osmosis only. Keep sphagnum moist.</li><li><strong>HUMIDITY:</strong> 70-90% ambient required.</li><li><strong>TEMPERATURE:</strong> Highland (Day: 25°C, Night: 12°C).</li></ul>'
   assign mock_difficulty = 4
   assign mock_temperature_group = 'highland'
   assign mock_trap_type = 'pitfall'
   assign mock_dormancy_required = false
 
   comment
-    Mock gallery — high-res Wikimedia specimens when product.media is empty (Field Guide preview).
+    Mock gallery — Unsplash fallbacks when product.media is empty (Field Guide preview).
   endcomment
-  assign mock_img_1 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Nepenthes_edwardsiana_pitcher.jpg/800px-Nepenthes_edwardsiana_pitcher.jpg'
-  assign mock_img_2 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Nepenthes_villosa_pitcher.jpg/800px-Nepenthes_villosa_pitcher.jpg'
-  assign mock_img_3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Nepenthes_rajah_pitcher.jpg/800px-Nepenthes_rajah_pitcher.jpg'
+  assign mock_img_1 = section.settings.mock_image_1 | default: 'https://images.unsplash.com/photo-1593691509543-c55fb37b3ce0?w=800&q=80&auto=format&fit=crop'
+  assign mock_img_2 = section.settings.mock_image_2 | default: 'https://images.unsplash.com/photo-1466781783364-869c525ede59?w=800&q=80&auto=format&fit=crop'
+  assign mock_img_3 = section.settings.mock_image_3 | default: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80&auto=format&fit=crop'
   assign mock_gallery_urls = mock_img_1 | append: '|' | append: mock_img_2 | append: '|' | append: mock_img_3 | split: '|'
 
   unless force_mock
@@ -182,6 +182,49 @@
       endif
     endif
   endif
+
+  comment
+    Specimen technical schema — metafields with demo fallbacks (placeholder-images.md).
+  endcomment
+  assign fallback_origin = 'Mount Kinabalu, Borneo'
+  assign fallback_altitude = '1,500m - 2,500m'
+  assign fallback_humidity = '75%'
+  assign fallback_temp_range = '12°C - 26°C'
+  assign fallback_substrate = 'Live Sphagnum/Perlite 50/50'
+  assign fallback_clone_id = 'BE-3672'
+  assign fallback_growth_rate = 'Slow/Moderate'
+  assign fallback_light_intensity = '10,000 - 15,000 Lux'
+
+  assign spec_origin_raw = ''
+  assign spec_altitude_raw = ''
+  assign spec_humidity_raw = ''
+  assign spec_temp_range_raw = ''
+  assign spec_substrate_raw = ''
+  assign spec_clone_raw = ''
+  assign spec_growth_raw = ''
+  assign spec_light_raw = ''
+
+  if use_live_product
+    assign spec_origin_raw = product.metafields.custom.origin_location.value | default: product.metafields.custom.origin_location | default: '' | strip
+    assign spec_altitude_raw = product.metafields.custom.origin_altitude.value | default: product.metafields.custom.origin_altitude | default: '' | strip
+    assign spec_humidity_raw = product.metafields.custom.humidity_min.value | default: product.metafields.custom.humidity_min | default: '' | strip
+    assign spec_temp_range_raw = product.metafields.custom.temp_range.value | default: product.metafields.custom.temp_range | default: '' | strip
+    assign spec_substrate_raw = product.metafields.custom.potting_media.value | default: product.metafields.custom.potting_media | default: '' | strip
+    assign spec_clone_raw = product.metafields.custom.clonotype_code.value | default: product.metafields.custom.clonotype_code | default: '' | strip
+    assign spec_growth_raw = product.metafields.custom.growth_speed.value | default: product.metafields.custom.growth_speed | default: '' | strip
+    assign spec_light_raw = product.metafields.custom.lux_requirements.value | default: product.metafields.custom.lux_requirements | default: '' | strip
+  endif
+
+  assign spec_origin_display = spec_origin_raw | default: fallback_origin
+  assign spec_altitude_display = spec_altitude_raw | default: fallback_altitude
+  assign spec_humidity_display = spec_humidity_raw | default: fallback_humidity
+  assign spec_temp_range_display = spec_temp_range_raw | default: fallback_temp_range
+  assign spec_substrate_display = spec_substrate_raw | default: fallback_substrate
+  assign spec_clone_display = spec_clone_raw | default: fallback_clone_id
+  assign spec_growth_display = spec_growth_raw | default: fallback_growth_rate
+  assign spec_light_display = spec_light_raw | default: fallback_light_intensity
+
+  assign show_technical_deep_dive = true
 -%}
 
 <article
@@ -204,23 +247,67 @@
             {%- endif -%}
               {%- liquid
                 assign gallery_loading = 'lazy'
-                assign gallery_priority = 'auto'
+                assign gallery_fetch_high = false
                 if forloop.first
                   assign gallery_loading = 'eager'
-                  assign gallery_priority = 'high'
+                  assign gallery_fetch_high = true
+                endif
+                assign gallery_image = media.preview_image | default: media
+                assign gallery_img_width = gallery_image.width | default: 1600
+                assign gallery_img_height = gallery_image.height | default: 2000
+                assign id_string = product.id | append: ''
+                assign id_size = id_string | size
+                assign id_start = id_size | minus: 4
+                if id_start < 0
+                  assign id_start = 0
+                endif
+                assign gallery_specimen_suffix = id_string | slice: id_start, 4
+                assign gallery_specimen_id = '#BT-LOG-' | append: gallery_specimen_suffix
+                assign gallery_alt = display_title | append: ' — ' | append: gallery_specimen_id
+                if media.alt != blank
+                  assign gallery_alt = media.alt
                 endif
               -%}
-              {{
-                media
-                | image_url: width: 1600, height: 2000, crop: 'center'
-                | image_tag:
-                  class: 'main-product__gallery-image',
-                  widths: '600, 900, 1200, 1600',
+              {%- if gallery_image != blank -%}
+                {%- if gallery_fetch_high -%}
+                  {{
+                    gallery_image
+                    | image_url: width: 1600, height: 2000, crop: 'center'
+                    | image_tag:
+                      class: 'main-product__gallery-image',
+                      widths: '600, 900, 1200, 1600',
+                      sizes: '(min-width: 990px) 48vw, 100vw',
+                      loading: gallery_loading,
+                      fetchpriority: 'high',
+                      width: gallery_img_width,
+                      height: gallery_img_height,
+                      alt: gallery_alt
+                  }}
+                {%- else -%}
+                  {{
+                    gallery_image
+                    | image_url: width: 1600, height: 2000, crop: 'center'
+                    | image_tag:
+                      class: 'main-product__gallery-image',
+                      widths: '600, 900, 1200, 1600',
+                      sizes: '(min-width: 990px) 48vw, 100vw',
+                      loading: gallery_loading,
+                      width: gallery_img_width,
+                      height: gallery_img_height,
+                      alt: gallery_alt
+                  }}
+                {%- endif -%}
+              {%- else -%}
+                {% render 'botanical-product-image',
+                  fallback_url: mock_img_1,
+                  product_title: display_title,
+                  specimen_id: gallery_specimen_id,
+                  css_class: 'main-product__gallery-image',
                   sizes: '(min-width: 990px) 48vw, 100vw',
                   loading: gallery_loading,
-                  fetchpriority: gallery_priority,
-                  alt: media.alt | default: display_title
-              }}
+                  fetchpriority: gallery_fetch_high | default: false
+                %}
+              {%- endif -%}
           </div>
         {%- endfor -%}
       {%- elsif show_mock_gallery -%}
@@ -230,22 +317,53 @@
             {%- if forloop.first -%}
               {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
             {%- endif -%}
-            <img
-              class="main-product__gallery-image main-product__gallery-image--fallback"
-              src="{{ mock_src }}"
-              alt="{% if forloop.index == 2 %}{{ latin_name | escape }}{% else %}{{ display_title | escape }}{% endif %}"
-              width="800"
-              height="1000"
-              {% if forloop.first %}
-                loading="eager"
-                fetchpriority="high"
-              {% else %}
-                loading="lazy"
-              {% endif %}
-              decoding="async"
-            >
+            {%- if mock_src != blank -%}
+              <img
+                class="main-product__gallery-image main-product__gallery-image--fallback"
+                src="{{ mock_src }}"
+                alt="{% if forloop.index == 2 %}{{ latin_name | escape }}{% else %}{{ display_title | escape }}{% endif %}"
+                width="800"
+                height="1000"
+                {% if forloop.first %}
+                  loading="eager"
+                  fetchpriority="high"
+                {% else %}
+                  loading="lazy"
+                {% endif %}
+                decoding="async"
+              >
+            {%- else -%}
+              {%- liquid
+                assign mock_slide_loading = 'lazy'
+                if forloop.first
+                  assign mock_slide_loading = 'eager'
+                endif
+              -%}
+              {% render 'botanical-product-image',
+                fallback_url: mock_img_1,
+                product_title: display_title,
+                specimen_id: '#BT-LOG-PREVIEW',
+                css_class: 'main-product__gallery-image',
+                sizes: '(min-width: 990px) 48vw, 100vw',
+                loading: mock_slide_loading,
+                fetchpriority: forloop.first
+              %}
+            {%- endif -%}
           </div>
         {%- endfor -%}
+      {%- else -%}
+        <div class="product__media-item main-product__gallery-frame">
+          {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
+          {% render 'botanical-product-image',
+            fallback_url: mock_img_1,
+            product_title: display_title,
+            specimen_id: '#BT-LOG-PREVIEW',
+            css_class: 'main-product__gallery-image',
+            sizes: '(min-width: 990px) 48vw, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high'
+          %}
+        </div>
       {%- endif -%}
     </div>
 
@@ -411,8 +529,8 @@
       {%- endif -%}
 
       <div class="main-product__accordions" aria-label="{{ 'products.main.accordions_label' | t }}">
-        <details>
-          <summary class="pdp-accordion-title">
+        <details data-pdp-accordion>
+          <summary class="pdp-accordion-title" aria-expanded="false">
             {{ 'products.main.accordion_care_title' | t }}
             <span class="icon-plus" aria-hidden="true">+</span>
           </summary>
@@ -420,43 +538,55 @@
             {%- if has_care_guide -%}
               {{ product.metafields.custom.care_guide | metafield_tag }}
             {%- else -%}
-              <p>{{ 'products.main.accordion_care_fallback' | t }}</p>
+              {%- assign care_fallback_text = section.settings.care_fallback | default: 'High humidity and RO water required. Maintain bright, diffused light and use reverse-osmosis or rainwater only. Do not fertilize the substrate directly.' -%}
+              <p>{{ care_fallback_text }}</p>
             {%- endif -%}
           </div>
         </details>
-        <details>
-          <summary class="pdp-accordion-title">
+        <details data-pdp-accordion>
+          <summary class="pdp-accordion-title" aria-expanded="false">
             {{ 'products.main.accordion_lineage_title' | t }}
             <span class="icon-plus" aria-hidden="true">+</span>
           </summary>
           <div class="pdp-accordion-content">
-            <p>{{ 'products.main.accordion_lineage_body' | t }}</p>
+            <p>{{ section.settings.accordion_lineage_body | default: 'Cultivated via tissue culture from ethically sourced mother stock. Zero wild poaching. Acclimated to ambient humidity prior to dispatch.' }}</p>
           </div>
         </details>
-        <details>
-          <summary class="pdp-accordion-title">
+        <details data-pdp-accordion>
+          <summary class="pdp-accordion-title" aria-expanded="false">
             {{ 'products.main.accordion_arrival_title' | t }}
             <span class="icon-plus" aria-hidden="true">+</span>
           </summary>
           <div class="pdp-accordion-content">
-            <p>{{ 'products.main.accordion_arrival_body' | t }}</p>
+            <p>{{ section.settings.accordion_arrival_body | default: 'Shipped via specialized botanical courier. Specimen is hand-packed in long-fiber sphagnum moss and insulated against temperature fluctuations.' }}</p>
           </div>
         </details>
       </div>
 
-      <div class="main-product__origin" aria-labelledby="main-product-origin-{{ section.id }}">
-        <span class="main-product__origin-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M2 12h20"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
-        </span>
-        <p id="main-product-origin-{{ section.id }}" class="main-product__origin-text">
-          <span class="visually-hidden">{{ 'products.main.origin_heading' | t }}:</span>
-          {{ 'products.main.origin_text' | t }}
-        </p>
-      </div>
+      {%- liquid
+        assign origin_narrative = section.settings.origin_text | default: 'Cultivated in Gauteng from ethically propagated stock.'
+        assign origin_display = spec_origin_display
+        if spec_origin_raw == blank and origin_narrative != blank
+          assign origin_display = origin_narrative
+        elsif spec_origin_raw != blank and origin_narrative != blank
+          assign origin_display = spec_origin_display | append: '. ' | append: origin_narrative
+        endif
+      -%}
+      {%- if spec_origin_raw != blank or request.design_mode or spec_origin_display != blank -%}
+        <div class="main-product__origin" aria-labelledby="main-product-origin-{{ section.id }}">
+          <span class="main-product__origin-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </span>
+          <p id="main-product-origin-{{ section.id }}" class="main-product__origin-text">
+            <span class="visually-hidden">{{ 'products.main.origin_heading' | t }}:</span>
+            {{ origin_display | escape }}
+          </p>
+        </div>
+      {%- endif -%}
 
       {%- if use_live_product -%}
         <script type="application/json" data-main-product-variants>
@@ -526,6 +656,81 @@
       </section>
     </div>
   </div>
+
+  {%- if show_technical_deep_dive -%}
+    <section
+      class="main-product__deep-dive"
+      aria-labelledby="main-product-technical-{{ section.id }}"
+    >
+      <header class="main-product__deep-dive-header">
+        <p class="main-product__deep-dive-eyebrow">{{ 'products.main.technical_data_heading' | t }}</p>
+        <h2 id="main-product-technical-{{ section.id }}" class="main-product__deep-dive-title">
+          {{ display_title | escape }}
+        </h2>
+        <p class="main-product__deep-dive-subtitle">{{ 'products.main.technical_data_subheading' | t }}</p>
+      </header>
+
+      <dl class="main-product__tech-grid">
+        {%- if spec_origin_raw != blank or request.design_mode or spec_origin_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_origin' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_origin_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_altitude_raw != blank or request.design_mode or spec_altitude_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_altitude' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_altitude_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_humidity_raw != blank or request.design_mode or spec_humidity_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_humidity' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_humidity_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_temp_range_raw != blank or request.design_mode or spec_temp_range_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_temperature_range' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_temp_range_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_substrate_raw != blank or request.design_mode or spec_substrate_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_substrate' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_substrate_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_clone_raw != blank or request.design_mode or spec_clone_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_clone_id' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_clone_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_growth_raw != blank or request.design_mode or spec_growth_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_growth_rate' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_growth_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if spec_light_raw != blank or request.design_mode or spec_light_display != blank -%}
+          <div class="main-product__tech-cell">
+            <dt class="main-product__tech-label">{{ 'products.main.spec_light_intensity' | t }}</dt>
+            <dd class="main-product__tech-value">{{ spec_light_display | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    </section>
+  {%- endif -%}
+
+  {%- if use_live_product -%}
+    {% render 'product-structured-data',
+      product: product,
+      difficulty: difficulty,
+      origin_value: spec_origin_display,
+      clonotype_value: spec_clone_display
+    %}
+  {%- endif -%}
 </article>
 
 {% stylesheet %}
@@ -562,6 +767,7 @@
     display: block;
     width: 100%;
     height: 100%;
+    aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: center center;
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
@@ -887,6 +1093,95 @@
     }
   }
 
+  /* Technical data sheet — below-the-fold deep dive */
+  .main-product__deep-dive {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin: var(--space-3xl) auto 0;
+    padding: var(--space-xl) var(--space-lg);
+    background-color: var(--color-parchment);
+    border: 0.5px solid var(--color-forest-green-dark);
+    border-radius: 4px;
+    box-shadow: 1px 2px 0 rgb(10 24 18 / 0.06);
+  }
+
+  .main-product__deep-dive-header {
+    margin-block-end: var(--space-lg);
+    padding-block-end: var(--space-md);
+    border-block-end: 0.5px solid rgb(10 24 18 / 0.2);
+  }
+
+  .main-product__deep-dive-eyebrow {
+    margin: 0 0 var(--space-xs);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .main-product__deep-dive-title {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.35rem, 2vw + 0.35rem, 1.75rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__deep-dive-subtitle {
+    margin: 0;
+    max-width: 52ch;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .main-product__tech-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0;
+    overflow: hidden;
+    border: 0.5px solid var(--color-forest-green-dark);
+    border-radius: 2px;
+  }
+
+  .main-product__tech-cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: var(--space-md) var(--space-lg);
+    border: 0.5px solid rgb(10 24 18 / 0.2);
+    background-color: rgb(247 244 237 / 0.65);
+  }
+
+  .main-product__tech-label {
+    margin: 0;
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .main-product__tech-value {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 750px) {
+    .main-product__tech-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   /* Mobile — horizontal snap-scroll gallery */
   @media (max-width: 989px) {
     .main-product__gallery.product__media {
@@ -1011,6 +1306,11 @@
     font-family: var(--font-heading);
     font-size: 1.1rem;
     color: var(--color-forest-green-dark);
+  }
+
+  .main-product__accordions summary:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
   }
 
   .main-product__accordions summary::-webkit-details-marker {
@@ -1271,6 +1571,21 @@
         }
       }
 
+      var accordions = root.querySelectorAll('[data-pdp-accordion]');
+      accordions.forEach(function (details) {
+        var summary = details.querySelector('summary');
+        if (!summary) {
+          return;
+        }
+
+        function syncExpanded() {
+          summary.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+        }
+
+        syncExpanded();
+        details.addEventListener('toggle', syncExpanded);
+      });
+
       root.dataset.mainProductInitialized = 'true';
     }
 
@@ -1301,6 +1616,79 @@
   "disabled_on": {
     "groups": ["header", "footer"]
   },
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main_product.settings.preview_header"
+    },
+    {
+      "type": "text",
+      "id": "mock_title",
+      "label": "t:sections.main_product.settings.mock_title",
+      "default": "Nepenthes edwardsiana"
+    },
+    {
+      "type": "text",
+      "id": "mock_latin_name",
+      "label": "t:sections.main_product.settings.mock_latin_name",
+      "default": "N. edwardsiana (Highland)"
+    },
+    {
+      "type": "html",
+      "id": "mock_description",
+      "label": "t:sections.main_product.settings.mock_description",
+      "default": "<ul><li><strong>LIGHT:</strong> Bright, indirect light.</li><li><strong>WATER:</strong> Reverse osmosis only. Keep sphagnum moist.</li><li><strong>HUMIDITY:</strong> 70-90% ambient required.</li><li><strong>TEMPERATURE:</strong> Highland (Day: 25°C, Night: 12°C).</li></ul>"
+    },
+    {
+      "type": "text",
+      "id": "mock_image_1",
+      "label": "t:sections.main_product.settings.mock_image_1",
+      "info": "t:sections.main_product.settings.mock_image_info",
+      "default": "https://images.unsplash.com/photo-1593691509543-c55fb37b3ce0?w=800&q=80&auto=format&fit=crop"
+    },
+    {
+      "type": "text",
+      "id": "mock_image_2",
+      "label": "t:sections.main_product.settings.mock_image_2",
+      "info": "t:sections.main_product.settings.mock_image_info",
+      "default": "https://images.unsplash.com/photo-1466781783364-869c525ede59?w=800&q=80&auto=format&fit=crop"
+    },
+    {
+      "type": "text",
+      "id": "mock_image_3",
+      "label": "t:sections.main_product.settings.mock_image_3",
+      "info": "t:sections.main_product.settings.mock_image_info",
+      "default": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80&auto=format&fit=crop"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main_product.settings.accordions_header"
+    },
+    {
+      "type": "textarea",
+      "id": "care_fallback",
+      "label": "t:sections.main_product.settings.care_fallback",
+      "info": "t:sections.main_product.settings.care_fallback_info",
+      "default": "High humidity and RO water required. Maintain bright, diffused light and use reverse-osmosis or rainwater only. Do not fertilize the substrate directly."
+    },
+    {
+      "type": "textarea",
+      "id": "accordion_lineage_body",
+      "label": "t:sections.main_product.settings.accordion_lineage_body",
+      "default": "Cultivated via tissue culture from ethically sourced mother stock. Zero wild poaching. Acclimated to ambient humidity prior to dispatch."
+    },
+    {
+      "type": "textarea",
+      "id": "accordion_arrival_body",
+      "label": "t:sections.main_product.settings.accordion_arrival_body",
+      "default": "Shipped via specialized botanical courier. Specimen is hand-packed in long-fiber sphagnum moss and insulated against temperature fluctuations."
+    },
+    {
+      "type": "textarea",
+      "id": "origin_text",
+      "label": "t:sections.main_product.settings.origin_text",
+      "default": "Endemic to the montane rainforests of Mount Kinabalu, Borneo. Cultivated in Gauteng."
+    }
+  ]
 }
 {% endschema %}

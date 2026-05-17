@@ -1,0 +1,117 @@
+{% doc %}
+  Expanded Schema.org Product JSON-LD with botanical metafields as additionalProperty.
+
+  @param {product} product - Live product object
+  @param {number} difficulty - Difficulty level (1–5)
+  @param {string} origin_value - Origin / provenance display value
+  @param {string} clonotype_value - Clonotype / clone ID display value
+
+  @example
+  {% render 'product-structured-data',
+    product: product,
+    difficulty: difficulty,
+    origin_value: spec_origin_display,
+    clonotype_value: spec_clone_display
+  %}
+{% enddoc %}
+
+{%- if product != blank and product.id != blank -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign schema_description = product.description | strip_html | strip | truncate: 5000
+  assign schema_latin = product.metafields.custom.latin_name.value | default: product.metafields.custom.latin_name | strip
+
+  assign difficulty_display = ''
+  if difficulty != blank
+    assign difficulty_num = difficulty | plus: 0
+    if difficulty_num > 0
+      assign difficulty_display = difficulty_num | append: '/5'
+    endif
+  endif
+
+  assign origin_display = origin_value | strip
+  assign clonotype_display = clonotype_value | strip
+
+  assign has_additional = false
+  if difficulty_display != blank
+    assign has_additional = true
+  endif
+  if origin_display != blank
+    assign has_additional = true
+  endif
+  if clonotype_display != blank
+    assign has_additional = true
+  endif
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  {%- if schema_latin != blank -%}
+  "alternateName": {{ schema_latin | json }},
+  {%- endif -%}
+  "description": {{ schema_description | default: product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  {%- if product.featured_image -%}
+  "image": [
+    {{ product.featured_image | image_url: width: 1200 | json }}
+    {%- for media in product.media limit: 8 -%}
+      {%- if media.preview_image -%}
+      ,{{ media.preview_image | image_url: width: 1200 | json }}
+      {%- endif -%}
+    {%- endfor -%}
+  ],
+  {%- endif -%}
+  {%- if variant.sku != blank -%}
+  "sku": {{ variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Brand",
+    "name": {{ shop.name | json }}
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": {{ shop.url | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ variant.price | divided_by: 100.0 | json }},
+    "availability": {%- if variant.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+  {%- if has_additional -%}
+  ,
+  "additionalProperty": [
+    {%- assign prop_first = true -%}
+    {%- if difficulty_display != blank -%}
+      {%- unless prop_first -%},{%- endunless -%}
+      {
+        "@type": "PropertyValue",
+        "name": {{ 'products.schema.difficulty' | t | json }},
+        "value": {{ difficulty_display | json }}
+      }
+      {%- assign prop_first = false -%}
+    {%- endif -%}
+    {%- if origin_display != blank -%}
+      {%- unless prop_first -%},{%- endunless -%}
+      {
+        "@type": "PropertyValue",
+        "name": {{ 'products.schema.origin' | t | json }},
+        "value": {{ origin_display | json }}
+      }
+      {%- assign prop_first = false -%}
+    {%- endif -%}
+    {%- if clonotype_display != blank -%}
+      {%- unless prop_first -%},{%- endunless -%}
+      {
+        "@type": "PropertyValue",
+        "name": {{ 'products.schema.clonotype' | t | json }},
+        "value": {{ clonotype_display | json }}
+      }
+      {%- assign prop_first = false -%}
+    {%- endif -%}
+  ]
+  {%- endif -%}
+}
+</script>
+{%- endif -%}

@@ -1,5 +1,5 @@
 {% doc %}
-  Slide-out cultivation filter drawer using Shopify storefront filters (facets).
+  Collection facet filters — availability, price (ZAR), genus, difficulty, and cultivation metafields.
 
   @param {collection} collection - The current collection
   @param {string} section_id - Section id for AJAX re-render
@@ -9,30 +9,47 @@
   assign drawer_id = 'cultivation-filter-drawer-' | append: section_id
   assign form_id = 'cultivation-facet-form-' | append: section_id
   assign active_filter_count = 0
+  assign catalog_filters_shown = 0
 
   for filter in collection.filters
     assign param_downcase = filter.param_name | downcase
     assign label_downcase = filter.label | downcase
-    assign is_cultivation_filter = false
+    assign is_catalog_filter = false
 
-    if param_downcase contains 'custom.genus' or label_downcase contains 'genus'
-      assign is_cultivation_filter = true
+    if filter.type == 'price_range'
+      assign is_catalog_filter = true
+    endif
+
+    if param_downcase contains 'availability' or label_downcase contains 'availability' or label_downcase contains 'stock'
+      assign is_catalog_filter = true
+    endif
+
+    if param_downcase contains 'custom.genus' or label_downcase contains 'genus' or param_downcase contains 'product_type' or label_downcase contains 'type'
+      assign is_catalog_filter = true
     endif
 
     if param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty'
-      assign is_cultivation_filter = true
+      assign is_catalog_filter = true
     endif
 
     if param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
-      assign is_cultivation_filter = true
+      assign is_catalog_filter = true
     endif
 
     if param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
-      assign is_cultivation_filter = true
+      assign is_catalog_filter = true
     endif
 
-    if is_cultivation_filter
-      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    if is_catalog_filter
+      assign catalog_filters_shown = catalog_filters_shown | plus: 1
+
+      if filter.type == 'price_range'
+        if filter.min_value.value != blank or filter.max_value.value != blank
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+      else
+        assign active_filter_count = active_filter_count | plus: filter.active_values.size
+      endif
     endif
   endfor
 -%}
@@ -84,45 +101,67 @@
         action="{{ collection.url }}"
         method="get"
       >
-        {%- assign cultivation_filters_shown = 0 -%}
+        {%- assign filters_rendered = 0 -%}
 
         {%- for filter in collection.filters -%}
           {%- liquid
             assign param_downcase = filter.param_name | downcase
             assign label_downcase = filter.label | downcase
-            assign is_cultivation_filter = false
+            assign is_catalog_filter = false
             assign filter_group_key = ''
 
-            if param_downcase contains 'custom.genus' or label_downcase contains 'genus'
-              assign is_cultivation_filter = true
-              assign filter_group_key = 'genus'
+            if filter.type == 'price_range'
+              assign is_catalog_filter = true
+              assign filter_group_key = 'price'
+            endif
+
+            if param_downcase contains 'availability' or label_downcase contains 'availability' or label_downcase contains 'stock'
+              assign is_catalog_filter = true
+              assign filter_group_key = 'availability'
+            endif
+
+            if param_downcase contains 'custom.genus' or label_downcase contains 'genus' or param_downcase contains 'product_type' or label_downcase contains 'type'
+              assign is_catalog_filter = true
+              if filter_group_key == blank
+                assign filter_group_key = 'genus'
+              endif
             endif
 
             if param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty'
-              assign is_cultivation_filter = true
-              assign filter_group_key = 'difficulty'
+              assign is_catalog_filter = true
+              if filter_group_key == blank
+                assign filter_group_key = 'difficulty'
+              endif
             endif
 
             if param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
-              assign is_cultivation_filter = true
-              assign filter_group_key = 'temperature'
+              assign is_catalog_filter = true
+              if filter_group_key == blank
+                assign filter_group_key = 'temperature'
+              endif
             endif
 
             if param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
-              assign is_cultivation_filter = true
-              assign filter_group_key = 'trap_type'
+              assign is_catalog_filter = true
+              if filter_group_key == blank
+                assign filter_group_key = 'trap_type'
+              endif
             endif
           -%}
 
-          {%- unless is_cultivation_filter -%}
+          {%- unless is_catalog_filter -%}
             {%- continue -%}
           {%- endunless -%}
 
-          {%- assign cultivation_filters_shown = cultivation_filters_shown | plus: 1 -%}
+          {%- assign filters_rendered = filters_rendered | plus: 1 -%}
 
           <fieldset class="cultivation-filter__group" data-filter-group="{{ filter_group_key }}">
             <legend class="cultivation-filter__group-label">
               {%- case filter_group_key -%}
+                {%- when 'availability' -%}
+                  {{ 'sections.main_collection_product_grid.filter_availability' | t }}
+                {%- when 'price' -%}
+                  {{ 'sections.main_collection_product_grid.filter_price' | t }}
                 {%- when 'genus' -%}
                   {{ 'sections.main_collection_product_grid.filter_genus' | t }}
                 {%- when 'difficulty' -%}
@@ -136,70 +175,189 @@
               {%- endcase -%}
             </legend>
 
-            <ul class="cultivation-filter__values" role="list">
-              {%- for filter_value in filter.values -%}
-                {%- liquid
-                  assign display_label = filter_value.label
+            {%- if filter.type == 'price_range' -%}
+              <div class="cultivation-filter__price-range">
+                <label class="cultivation-filter__price-field">
+                  <span class="cultivation-filter__price-label">{{ 'sections.main_collection_product_grid.filter_price_min' | t }}</span>
+                  <input
+                    type="number"
+                    class="cultivation-filter__price-input"
+                    name="{{ filter.min_value.param_name }}"
+                    value="{{ filter.min_value.value }}"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="0"
+                    data-cultivation-facet-input
+                    data-cultivation-price-input
+                  >
+                </label>
+                <span class="cultivation-filter__price-sep" aria-hidden="true">—</span>
+                <label class="cultivation-filter__price-field">
+                  <span class="cultivation-filter__price-label">{{ 'sections.main_collection_product_grid.filter_price_max' | t }}</span>
+                  <input
+                    type="number"
+                    class="cultivation-filter__price-input"
+                    name="{{ filter.max_value.param_name }}"
+                    value="{{ filter.max_value.value }}"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="99999"
+                    data-cultivation-facet-input
+                    data-cultivation-price-input
+                  >
+                </label>
+              </div>
+            {%- else -%}
+              <ul class="cultivation-filter__values" role="list">
+                {%- for filter_value in filter.values -%}
+                  {%- liquid
+                    assign display_label = filter_value.label
 
-                  if filter_group_key == 'difficulty'
-                    unless display_label contains '/'
-                      assign difficulty_value = filter_value.value | default: filter_value.label
-                      assign display_label = difficulty_value | append: '/5'
-                    endunless
-                  endif
+                    if filter_group_key == 'difficulty'
+                      unless display_label contains '/'
+                        assign difficulty_value = filter_value.value | default: filter_value.label
+                        assign display_label = difficulty_value | append: '/5'
+                      endunless
+                    endif
 
-                  if filter_group_key == 'temperature'
-                    assign display_label = filter_value.label | capitalize
-                  endif
+                    if filter_group_key == 'temperature'
+                      assign display_label = filter_value.label | capitalize
+                    endif
 
-                  if filter_group_key == 'trap_type'
-                    assign trap_key = filter_value.label | downcase
-                    case trap_key
-                      when 'snap'
-                        assign display_label = 'sections.main_collection_product_grid.trap_snap' | t
-                      when 'pitfall'
-                        assign display_label = 'sections.main_collection_product_grid.trap_pitfall' | t
-                      when 'flypaper'
-                        assign display_label = 'sections.main_collection_product_grid.trap_flypaper' | t
-                      when 'suction'
-                        assign display_label = 'sections.main_collection_product_grid.trap_suction' | t
-                      when 'lobster-pot'
-                        assign display_label = 'sections.main_collection_product_grid.trap_lobster_pot' | t
-                    endcase
-                  endif
+                    if filter_group_key == 'trap_type'
+                      assign trap_key = filter_value.label | downcase
+                      case trap_key
+                        when 'snap'
+                          assign display_label = 'sections.main_collection_product_grid.trap_snap' | t
+                        when 'pitfall'
+                          assign display_label = 'sections.main_collection_product_grid.trap_pitfall' | t
+                        when 'flypaper'
+                          assign display_label = 'sections.main_collection_product_grid.trap_flypaper' | t
+                        when 'suction'
+                          assign display_label = 'sections.main_collection_product_grid.trap_suction' | t
+                        when 'lobster-pot'
+                          assign display_label = 'sections.main_collection_product_grid.trap_lobster_pot' | t
+                      endcase
+                    endif
 
-                  if filter_group_key == 'genus'
-                    assign display_label = filter_value.label | capitalize
-                  endif
-                -%}
+                    if filter_group_key == 'genus'
+                      assign display_label = filter_value.label | capitalize
+                    endif
 
-                <li class="cultivation-filter__value" role="listitem">
-                  <label class="cultivation-filter__option{% if filter_value.count == 0 and filter_value.active == false %} cultivation-filter__option--disabled{% endif %}">
-                    <input
-                      type="checkbox"
-                      name="{{ filter_value.param_name }}"
-                      value="{{ filter_value.value }}"
-                      {% if filter_value.active %}
-                        checked
-                      {% endif %}
-                      {% if filter_value.count == 0 and filter_value.active == false %}
-                        disabled
-                      {% endif %}
-                      data-cultivation-facet-input
-                    >
-                    <span class="cultivation-filter__option-label">{{ display_label | escape }}</span>
-                    <span class="cultivation-filter__option-count" aria-hidden="true">{{ filter_value.count }}</span>
-                  </label>
-                </li>
-              {%- endfor -%}
-            </ul>
+                    if filter_group_key == 'availability'
+                      assign avail_key = filter_value.label | downcase
+                      if avail_key contains 'out' or avail_key contains '0'
+                        assign display_label = 'sections.main_collection_product_grid.availability_cultivating' | t
+                      else
+                        assign display_label = 'sections.main_collection_product_grid.availability_in_stock' | t
+                      endif
+                    endif
+                  -%}
+
+                  <li class="cultivation-filter__value" role="listitem">
+                    <label class="cultivation-filter__option{% if filter_value.count == 0 and filter_value.active == false %} cultivation-filter__option--disabled{% endif %}">
+                      <input
+                        type="checkbox"
+                        name="{{ filter_value.param_name }}"
+                        value="{{ filter_value.value }}"
+                        {% if filter_value.active %}
+                          checked
+                        {% endif %}
+                        {% if filter_value.count == 0 and filter_value.active == false %}
+                          disabled
+                        {% endif %}
+                        data-cultivation-facet-input
+                      >
+                      <span class="cultivation-filter__option-label">{{ display_label | escape }}</span>
+                      <span class="cultivation-filter__option-count" aria-hidden="true">{{ filter_value.count }}</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
           </fieldset>
         {%- endfor -%}
 
-        {%- if cultivation_filters_shown == 0 -%}
-          <p class="cultivation-filter__empty">
-            {{ 'sections.main_collection_product_grid.filter_empty' | t }}
-          </p>
+        {%- if filters_rendered == 0 -%}
+          {%- if request.design_mode and collection.filters.size == 0 -%}
+            <p class="cultivation-filter__preview-note">
+              {{ 'sections.main_collection_product_grid.filter_preview_note' | t }}
+            </p>
+
+            <fieldset class="cultivation-filter__group cultivation-filter__group--preview" data-filter-group="genus">
+              <legend class="cultivation-filter__group-label">
+                {{ 'sections.main_collection_product_grid.filter_genus' | t }}
+              </legend>
+              <ul class="cultivation-filter__values" role="list">
+                <li class="cultivation-filter__value" role="listitem">
+                  <label class="cultivation-filter__option">
+                    <input type="checkbox" disabled data-cultivation-facet-input>
+                    <span class="cultivation-filter__option-label">Drosera</span>
+                    <span class="cultivation-filter__option-count" aria-hidden="true">—</span>
+                  </label>
+                </li>
+                <li class="cultivation-filter__value" role="listitem">
+                  <label class="cultivation-filter__option">
+                    <input type="checkbox" disabled data-cultivation-facet-input>
+                    <span class="cultivation-filter__option-label">Nepenthes</span>
+                    <span class="cultivation-filter__option-count" aria-hidden="true">—</span>
+                  </label>
+                </li>
+                <li class="cultivation-filter__value" role="listitem">
+                  <label class="cultivation-filter__option">
+                    <input type="checkbox" disabled data-cultivation-facet-input>
+                    <span class="cultivation-filter__option-label">Sarracenia</span>
+                    <span class="cultivation-filter__option-count" aria-hidden="true">—</span>
+                  </label>
+                </li>
+              </ul>
+            </fieldset>
+
+            <fieldset class="cultivation-filter__group cultivation-filter__group--preview" data-filter-group="difficulty">
+              <legend class="cultivation-filter__group-label">
+                {{ 'sections.main_collection_product_grid.filter_difficulty' | t }}
+              </legend>
+              <ul class="cultivation-filter__values" role="list">
+                {%- for level in (1..5) -%}
+                  <li class="cultivation-filter__value" role="listitem">
+                    <label class="cultivation-filter__option">
+                      <input type="checkbox" disabled data-cultivation-facet-input>
+                      <span class="cultivation-filter__option-label">{{ level }}/5</span>
+                      <span class="cultivation-filter__option-count" aria-hidden="true">—</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </fieldset>
+
+            <fieldset class="cultivation-filter__group cultivation-filter__group--preview" data-filter-group="temperature">
+              <legend class="cultivation-filter__group-label">
+                {{ 'sections.main_collection_product_grid.filter_temperature' | t }}
+              </legend>
+              <ul class="cultivation-filter__values" role="list">
+                <li class="cultivation-filter__value" role="listitem">
+                  <label class="cultivation-filter__option">
+                    <input type="checkbox" disabled data-cultivation-facet-input>
+                    <span class="cultivation-filter__option-label">Highland</span>
+                    <span class="cultivation-filter__option-count" aria-hidden="true">—</span>
+                  </label>
+                </li>
+                <li class="cultivation-filter__value" role="listitem">
+                  <label class="cultivation-filter__option">
+                    <input type="checkbox" disabled data-cultivation-facet-input>
+                    <span class="cultivation-filter__option-label">Lowland</span>
+                    <span class="cultivation-filter__option-count" aria-hidden="true">—</span>
+                  </label>
+                </li>
+              </ul>
+            </fieldset>
+          {%- else -%}
+            <p class="cultivation-filter__empty">
+              {{ 'sections.main_collection_product_grid.filter_empty' | t }}
+            </p>
+          {%- endif -%}
         {%- endif -%}
       </form>
     </div>
@@ -221,3 +379,347 @@
     </footer>
   </aside>
 </div>
+
+{% stylesheet %}
+  .cultivation-filter {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 5);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .cultivation-filter.is-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .cultivation-filter__overlay {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgb(10 24 18 / 0.68);
+    backdrop-filter: blur(6px);
+    border: 0;
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter.is-open .cultivation-filter__overlay {
+    opacity: 1;
+  }
+
+  .cultivation-filter__panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 22rem);
+    max-width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    background-color: var(--color-parchment);
+    border-inline-end: 1px solid var(--color-forest-green-dark);
+    box-shadow: 8px 0 32px rgb(10 24 18 / 0.18);
+    transform: translate3d(-100%, 0, 0);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+
+  .cultivation-filter.is-open .cultivation-filter__panel {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .cultivation-filter__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-shrink: 0;
+    padding: var(--space-lg) var(--space-xl);
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .cultivation-filter__title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    transition:
+      background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      border-color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter__close:hover {
+    background-color: var(--color-surface);
+    border-color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__close-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .cultivation-filter__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-lg) var(--space-xl);
+  }
+
+  .cultivation-filter__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .cultivation-filter__group {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .cultivation-filter__group-label {
+    margin: 0 0 var(--space-md);
+    padding: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__values {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cultivation-filter__value + .cultivation-filter__value {
+    margin-block-start: var(--space-xs);
+  }
+
+  .cultivation-filter__option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter__option:hover {
+    background-color: rgb(10 24 18 / 0.04);
+  }
+
+  .cultivation-filter__option--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .cultivation-filter__option input {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__option-label {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__option-count {
+    font-size: var(--font-size-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter__empty,
+  .cultivation-filter__preview-note {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter__preview-note {
+    font-style: italic;
+  }
+
+  .cultivation-filter__group--preview .cultivation-filter__option {
+    opacity: 0.92;
+  }
+
+  .cultivation-filter__footer {
+    flex-shrink: 0;
+    padding: var(--space-lg) var(--space-xl) var(--space-xl);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .cultivation-filter__clear {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background: transparent;
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cultivation-filter__clear:hover:not(:disabled) {
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green-dark);
+  }
+
+  .cultivation-filter__clear:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .cultivation-filter__active {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-xs);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter--busy .cultivation-filter__form {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .cultivation-filter__price-range {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-sm);
+  }
+
+  .cultivation-filter__price-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    flex: 1 1 6rem;
+    min-width: 5rem;
+  }
+
+  .cultivation-filter__price-label {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cultivation-filter__price-input {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+    font-variant-numeric: tabular-nums;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface-elevated);
+  }
+
+  .cultivation-filter__price-sep {
+    padding-block-end: 0.65rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 990px) {
+    .cultivation-filter {
+      position: static;
+      visibility: visible;
+      pointer-events: auto;
+      margin-block-end: var(--space-xl);
+    }
+
+    .cultivation-filter__overlay,
+    .cultivation-filter__close,
+    .cultivation-filter__footer {
+      display: none;
+    }
+
+    .cultivation-filter__panel {
+      position: static;
+      width: 100%;
+      height: auto;
+      max-height: none;
+      transform: none;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .cultivation-filter__header {
+      display: none;
+    }
+
+    .cultivation-filter__body {
+      overflow: visible;
+      padding: 0;
+    }
+
+    .cultivation-filter__form {
+      flex-flow: row wrap;
+      align-items: flex-start;
+      gap: var(--space-lg) var(--space-2xl);
+      padding: var(--space-lg) var(--space-xl);
+      background-color: var(--color-parchment);
+      border: 1px solid var(--color-forest-green-dark);
+      border-radius: var(--radius-md);
+    }
+
+    .cultivation-filter__group {
+      flex: 1 1 10rem;
+      min-width: min(100%, 12rem);
+    }
+
+    .cultivation-filter__values {
+      max-height: 12rem;
+      overflow-y: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cultivation-filter__overlay,
+    .cultivation-filter__panel,
+    .cultivation-filter__option,
+    .cultivation-filter__clear {
+      transition: none;
+    }
+  }
+{% endstylesheet %}

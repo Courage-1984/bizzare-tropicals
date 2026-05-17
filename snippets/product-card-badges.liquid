@@ -63,14 +63,14 @@
   <ul class="product-card__badges" aria-label="{{ 'products.card.badges_label' | t }}">
     {%- if show_rare -%}
       <li class="product-card__badges-item">
-        <span class="product-card__badge product-card__badge--wax product-card__badge--wax-rare">
+        <span class="product-card__badge product-card__badge--wax product-card__badge--wax-rare" aria-hidden="true">
           <span class="product-card__badge-text">{{ 'products.card.badge_rare' | t }}</span>
         </span>
       </li>
     {%- endif -%}
     {%- if show_easy -%}
       <li class="product-card__badges-item">
-        <span class="product-card__badge product-card__badge--wax product-card__badge--wax-easy">
+        <span class="product-card__badge product-card__badge--wax product-card__badge--wax-easy" aria-hidden="true">
           <span class="product-card__badge-text">{{ 'products.card.badge_easy' | t }}</span>
         </span>
       </li>

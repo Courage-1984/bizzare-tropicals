@@ -28,8 +28,9 @@ Social URLs and contact details are configured in the **Footer** section (not gl
 
 ### Homepage layout
 
-- [ ] **Hero slider:** **Theme Editor → Home page → Homepage hero** (`homepage-hero.liquid`, max **5** slide blocks). Per slide: upload botanical **macro** imagery, set bespoke **Heading**, **Subheading**, **Button label**, and **Button link**. Tune **Overlay opacity** for text contrast.
+- [ ] **Home slider:** **Theme Editor → Home page → Home slider** (`home-slider.liquid`, max **5** slide blocks). Per slide: upload botanical **macro** imagery, set **Heading**, **Subheading**, **Button label**, and **Button link** (or **Placeholder image URL** for demo). Tune **Overlay opacity** for text contrast. Ken Burns + crossfade run automatically on the storefront.
 - [ ] **Featured collection:** **Theme Editor → Home page → Featured collection** (`featured-collection.liquid`). Select a **Featured** (or equivalent) collection for the dark-gradient carousel; set product count, heading, subheading, and view-all label.
+- [ ] **New specimen ledger:** **Theme Editor → Home page → New specimen ledger** (`new-specimens.liquid`) — select the **New Arrivals** collection (or equivalent), edit heading/subheading, and set **Maximum products** (tray scroll).
 - [ ] **Featured specimen:** **Theme Editor → Home page → Featured specimen** — see **§6.2**.
 - [ ] **Conservatory standards:** **Theme Editor → Home page → Conservatory standards** — see **§6.3**.
 - [ ] **Genus shortcuts:** Confirm each **Shop by genus** card points to the correct collection handle.
@@ -38,7 +39,7 @@ Social URLs and contact details are configured in the **Footer** section (not gl
 
 The **Collection banner** (`main-collection-banner.liquid`) renders the **Anatomy of a Predator** hero: dark `#121614` backdrop, centered collection title, fixed-size illustration frame, and anchored scientific callouts (desktop only).
 
-- [ ] **Catalog hero:** Merchants can upload an **Illustration image** per collection in **Theme Editor → Collection template → Collection banner** (`illustration_image` image picker). Use a transparent PNG anatomy drawing for best results; a default pitcher photo is used until an image is uploaded.
+- [ ] **Catalog hero:** **Theme Editor → Collection template → Collection banner** — upload **Illustration image** (transparent PNG) or rely on **Fallback background image URL** (vintage botanical default). Hero is constrained to the fold (`80vh` / `min-height: 500px`). Edit anatomy callouts in the sidebar.
 - [ ] Enter an optional collection **Description** below the illustration (plain prose; not the dossier bullet grid).
 - [ ] Collection **Title** comes from **Products → Collections**; it appears as the visible heading and as the large background serif watermark.
 
@@ -99,6 +100,7 @@ The **Collection banner** (`main-collection-banner.liquid`) renders the **Anatom
 
 - [ ] **About** — Page created; template **`about`** (`page.about.json`).
 - [ ] **Contact** — Handle `contact`; template **`contact`** (`page.contact.json`).
+- [ ] **404 page:** **Theme Editor → 404 → 404 page** (`main-404.liquid`) — edit **Heading**, **Message**, **Button label**, and **Button link** (default CTA: `/collections/all`).
 - [ ] **Care overview (optional):** `/pages/care-overview` for footer “Care” link.
 
 ---
@@ -127,7 +129,7 @@ Create in **Settings → Custom data → Products**, namespace **`custom`**. Key
 - [ ] **`custom.temperature_group`** — Single line text
 - [ ] **`custom.trap_type`** — Single line text
 - [ ] **`custom.dormancy_required`** — True or false
-- [ ] **`custom.care_guide`** — **Rich text** — Populates the **Botanical husbandry** accordion on the product page. Leave blank to show theme fallback husbandry copy (preview/mock products always use the fallback).
+- [ ] **`custom.care_guide`** — **Rich text** — Populates the **Botanical husbandry** accordion on the product page. Leave blank to show **Botanical husbandry fallback** from **Theme Editor → Product template → Product information** (`care_fallback` setting in `main-product.liquid`).
 
 ### 4.3 Allowed values
 
@@ -230,12 +232,13 @@ Use **Online Store → Themes → Customize** to control homepage, header, and A
 ## 9. Apps and discovery (required for catalog filters)
 
 - [ ] **Search & Discovery** — enable **Storefront filters** on collection pages for:
-  - `custom.genus` (label: **Genus**)
+  - **Availability** (in stock / out of stock)
+  - **Price**
+  - `custom.genus` or **Product type** (label: **Genus**)
   - `custom.difficulty` (label: **Difficulty**)
-  - `custom.temperature_group` (label: **Temperature**)
-  - `custom.trap_type` (label: **Trap type**)
-- [ ] Optional additional filters: price, availability, dormancy (`custom.dormancy_required`).
-- [ ] **Collection product grid** (`main-collection-product-grid.liquid`) — **Filter by cultivation** opens a left slide-out drawer; filters apply via AJAX without a full page reload.
+  - `custom.temperature_group` (label: **Temperature**) — optional
+  - `custom.trap_type` (label: **Trap type**) — optional
+- [ ] **Collection product grid** (`main-collection-product-grid.liquid`) — desktop **filter bar** above the grid; mobile slide-out drawer. Filters apply via AJAX. **Load more specimens** button replaces numbered pagination.
 - [ ] **Shopify Inbox** (optional, Phase 1).
 
 ---
@@ -251,6 +254,36 @@ Use **Online Store → Themes → Customize** to control homepage, header, and A
 - [ ] Announcement bar, search overlay, Field Notes modal (if enabled).
 - [ ] Product badges: `Rare`, `In-House`, difficulty **1**.
 - [ ] Mobile: dossier single column; hero and carousels usable.
+
+---
+
+## 10.1 Order fulfillment vibe
+
+Post-purchase trust cues are split between **checkout** (thank-you page) and the **customer order** template. Use these steps so physical unboxing matches the digital “laboratory receipt” tone.
+
+### Lab certificate in every shipment
+
+- [ ] **Printable insert:** After each order is packed, print the customer’s **order status** page (account → order) or save as PDF. The theme renders a **Specimen Log** frame with **SPECIMEN ACQUISITION COMPLETE**, line items, and the Head Curator signature (`sections/main-order.liquid`, `templates/customers/order.json`).
+- [ ] **Fold and pack:** Slip the printout (or a branded duplicate) inside the box with the specimens so buyers see the same terminology as the website.
+- [ ] **Checkout thank-you (Shopify Plus):** If the store uses **`layout/checkout.liquid`**, the thank-you step shows the same header and signature above/below Shopify’s native receipt. Non-Plus stores rely on the order status page + packing insert; checkout UI cannot be fully themed without Plus or Checkout Extensibility.
+
+### Specimen ID on the order timeline
+
+- [ ] **Admin → Orders → [order] → Timeline:** Add a staff note when packing, e.g. `Specimen ID: #BT-LOG-4821` (match the ledger format from the New specimen tray: `#BT-LOG-` + last four digits of the product ID, or your internal batch code).
+- [ ] **Optional metafield:** For repeat collectors, store a `custom.specimen_dispatch_id` on the order (Settings → Custom data → Orders) and reference it in packing notes and WhatsApp updates.
+
+### Laboratory certificate (Theme Editor)
+
+- [ ] **Theme Editor → Orders** (`templates/order.liquid` + `sections/main-order.liquid`) — customize certificate title and curator signature. The `order` template type does **not** support JSON; use this Liquid template for editor preview.
+- [ ] **Live customer orders** still use `templates/customers/order.json` (same section).
+
+### Cart drawer dispatch protocol
+
+- [ ] Confirm the **Botanical dispatch** dashed box appears above **Checkout** in the cart drawer (`snippets/cart-drawer-dispatch.liquid`) — Monday dispatch and sphagnum packing copy should match your real fulfillment schedule. Edit strings in **`locales/en.default.json`** under `cart.drawer.dispatch_*` if the schedule changes.
+
+### Terminology consistency
+
+- [ ] Order references use **ORDER NO.** (checkout strings in `locales/en.default.json` under `shopify.checkout`, plus order status section). Do not rename Shopify’s underlying order name/handle — only the visible label.
 
 ---
 
@@ -272,7 +305,9 @@ Complete when moving the theme to the **official** production Shopify store:
 
 Modular sections — add, hide, or reorder without code:
 
-- [ ] **Homepage hero** — slides, placeholders, overlay opacity.
+- [ ] **Home slider** — slides, placeholder URLs, overlay opacity (`home-slider.liquid`).
+- [ ] **New specimen ledger** — collection, copy, product limit (`new-specimens.liquid`).
+- [ ] **Product information (PDP)** — mock gallery URLs, **Botanical husbandry fallback**, lineage/arrival/origin copy (`main-product.liquid`).
 - [ ] **Genus shortcuts** — collection per card, placeholders.
 - [ ] **Featured collection** — collection, copy, count, gradient colors.
 - [ ] **Collection banner** (`main-collection-banner.liquid`) — **Illustration image** upload (`illustration_image`), collection **Title**, optional **Description**.
@@ -284,4 +319,4 @@ Modular sections — add, hide, or reorder without code:
 
 ---
 
-*Last aligned with theme files: `assets/theme.js`, `assets/nepenthes-anatomy.svg`, `sections/main-collection-banner.liquid`, `sections/main-product.liquid`, `snippets/wax-seal-badge.liquid`, `locales/en.default.json`, `locales/en.default.schema.json`, `.cursor/context/admin-checklist.md`.*
+*Last aligned with theme files: `sections/main-404.liquid`, `sections/main-order.liquid`, `templates/order.liquid`, `layout/checkout.liquid`, `snippets/cart-drawer-dispatch.liquid`, `sections/new-specimens.liquid`, `snippets/specimen-ledger-card.liquid`, `sections/main-collection-banner.liquid`, `sections/main-collection-product-grid.liquid`, `snippets/cultivation-filter-drawer.liquid`, `templates/index.json`, `templates/customers/order.json`, `locales/en.default.json`, `locales/en.default.schema.json`.*

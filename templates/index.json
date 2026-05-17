@@ -1,7 +1,7 @@
 {
   "sections": {
     "homepage_hero": {
-      "type": "homepage-hero",
+      "type": "home-slider",
       "settings": {
         "overlay_opacity": 50
       },
@@ -155,6 +155,15 @@
         "genus_utricularia"
       ]
     },
+    "new_specimens": {
+      "type": "new-specimens",
+      "settings": {
+        "heading": "NEWLY CATALOGED",
+        "subheading": "Fresh arrivals from the propagation lab.",
+        "products_to_show": 12,
+        "view_all_label": "View full ledger"
+      }
+    },
     "featured_specimen": {
       "type": "featured-specimen",
       "settings": {
@@ -215,6 +224,7 @@
   "order": [
     "homepage_hero",
     "genus_shortcuts",
+    "new_specimens",
     "featured_specimen",
     "conservatory_standards",
     "featured_collection"

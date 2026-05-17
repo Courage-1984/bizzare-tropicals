@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-order",
+      "settings": {
+        "certificate_title": "SPECIMEN ACQUISITION COMPLETE",
+        "curator_name": "Jaco van den Berg",
+        "curator_title": "Head Curator, Bizarre Tropicals"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

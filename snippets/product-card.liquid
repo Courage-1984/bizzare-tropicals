@@ -53,10 +53,6 @@
     endcase
 
     assign card_title = card_product.title
-    assign image_alt = card_title
-    if latin_name != blank
-      assign image_alt = latin_name
-    endif
   else
     assign use_shopify_image = false
     assign mock_slot = card_index | default: 0 | modulo: 11
@@ -130,12 +126,34 @@
         assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_capensis_bend.JPG?width=1200'
     endcase
 
-    assign image_alt = latin_name
     assign card_url = '#'
+    assign preview_id_string = mock_slot | plus: 2401 | append: ''
+    assign preview_id_size = preview_id_string | size
+    assign preview_id_start = preview_id_size | minus: 4
+    if preview_id_start < 0
+      assign preview_id_start = 0
+    endif
+    assign specimen_id_suffix = preview_id_string | slice: preview_id_start, 4
+  endif
+
+  assign specimen_id = '#BT-LOG-' | append: specimen_id_suffix
+  if use_live_product
+    assign id_string = card_product.id | append: ''
+    assign id_size = id_string | size
+    assign id_start = id_size | minus: 4
+    if id_start < 0
+      assign id_start = 0
+    endif
+    assign specimen_id_suffix = id_string | slice: id_start, 4
+    assign specimen_id = '#BT-LOG-' | append: specimen_id_suffix
   endif
 -%}
 
 <article class="product-card{% unless use_live_product %} product-card--mock{% endunless %}">
+  <p class="product-card__specimen-id">
+    <span class="visually-hidden">{{ 'products.card.specimen_id' | t }}</span>
+    {{- specimen_id | escape -}}
+  </p>
   {%- if use_live_product -%}
     {%- render 'product-card-badges', product_item: product_item -%}
   {%- else -%}
@@ -147,28 +165,15 @@
   <a class="product-card__link" href="{{ card_url }}">
     <span class="product-card__media">
       {%- comment -%} TODO: replace placeholder image before launch — see placeholder-images.md {%- endcomment -%}
-      {%- if use_live_product and use_shopify_image -%}
-        {{
-          product_image
-          | image_url: width: 800, height: 1000, crop: 'center'
-          | image_tag:
-            class: 'product-card__image',
-            widths: '400, 600, 800',
-            sizes: image_sizes,
-            loading: 'lazy',
-            alt: image_alt
-        }}
-      {%- else -%}
-        <img
-          class="product-card__image product-card__image--fallback"
-          src="{{ placeholder_url }}"
-          alt="{{ image_alt }}"
-          width="800"
-          height="1000"
-          loading="lazy"
-          decoding="async"
-        >
-      {%- endif -%}
+      {% render 'botanical-product-image',
+        use_shopify_image: use_shopify_image,
+        product_image: product_image,
+        fallback_url: placeholder_url,
+        product_title: card_title,
+        specimen_id: specimen_id,
+        sizes: image_sizes,
+        css_class: 'product-card__image'
+      %}
     </span>
 
     <span class="product-card__body">
@@ -212,3 +217,17 @@
     </span>
   </a>
 </article>
+
+{% stylesheet %}
+  .product-card__specimen-id {
+    margin: 0;
+    padding: var(--space-xs) var(--space-md);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #061410;
+    border-block-end: 0.5px solid rgb(10 24 18 / 0.1);
+  }
+{% endstylesheet %}

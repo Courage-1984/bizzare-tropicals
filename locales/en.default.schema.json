@@ -36,6 +36,28 @@
     "typography": "Typography"
   },
   "sections": {
+    "home_slider": {
+      "name": "Home slider",
+      "settings": {
+        "overlay_opacity": "Overlay opacity",
+        "default_placeholder_image": "Default placeholder image URL",
+        "default_placeholder_image_info": "Used when a slide has no image. Wikimedia Commons URLs from placeholder-images.md are fine for development."
+      },
+      "blocks": {
+        "slide": {
+          "name": "Slide",
+          "settings": {
+            "image": "Image",
+            "placeholder_image": "Placeholder image URL",
+            "placeholder_image_info": "Overrides the section default for this slide only.",
+            "heading": "Heading",
+            "subheading": "Subheading",
+            "button_label": "Button label",
+            "button_link": "Button link"
+          }
+        }
+      }
+    },
     "homepage_hero": {
       "name": "Homepage hero",
       "settings": {
@@ -123,6 +145,18 @@
         }
       }
     },
+    "new_specimens": {
+      "name": "New specimen ledger",
+      "settings": {
+        "collection": "Collection",
+        "collection_info": "Choose the collection that powers the horizontal ledger tray on the homepage.",
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "products_to_show": "Maximum products",
+        "products_to_show_info": "How many specimens appear in the scrollable tray (4–24).",
+        "view_all_label": "View all label"
+      }
+    },
     "featured_collection": {
       "name": "Featured collection",
       "settings": {
@@ -192,7 +226,14 @@
       "settings": {
         "anatomy_header": "Anatomy illustration",
         "illustration_image": "Illustration image",
-        "illustration_image_info": "Transparent PNG of a plant anatomy drawing. Recommended size 800×1000px or larger."
+        "illustration_image_info": "Transparent PNG of a plant anatomy drawing. Recommended size 800×1000px or larger.",
+        "fallback_illustration_url": "Fallback background image URL",
+        "fallback_illustration_url_info": "Used when no illustration is uploaded. Vintage botanical Unsplash or CDN URL.",
+        "callouts_header": "Scientific callouts",
+        "callout_rim": "Rim callout",
+        "callout_wax": "Waxy zone callout",
+        "callout_pool": "Digestive pool callout",
+        "placeholder_upload_text": "Placeholder upload prompt"
       }
     },
     "collection_hero": {
@@ -205,7 +246,42 @@
       }
     },
     "main_product": {
-      "name": "Product information"
+      "name": "Product information",
+      "settings": {
+        "preview_header": "Preview and mock gallery",
+        "mock_title": "Mock product title",
+        "mock_latin_name": "Mock Latin name",
+        "mock_description": "Mock cultivation description",
+        "mock_image_1": "Mock gallery image 1 URL",
+        "mock_image_2": "Mock gallery image 2 URL",
+        "mock_image_3": "Mock gallery image 3 URL",
+        "mock_image_info": "Used when the product has no media. Unsplash or Shopify CDN URLs recommended.",
+        "accordions_header": "Accordions and copy",
+        "care_fallback": "Botanical husbandry fallback",
+        "care_fallback_info": "Shown when the custom.care_guide metafield is empty.",
+        "accordion_lineage_body": "Lineage accordion body",
+        "accordion_arrival_body": "Live arrival accordion body",
+        "origin_text": "Specimen origin text"
+      }
+    },
+    "main_404": {
+      "name": "404 page",
+      "settings": {
+        "heading": "Heading",
+        "subtext": "Subtext",
+        "message": "Supporting message",
+        "message_info": "Optional line below the subtext. Leave blank to hide.",
+        "cta_label": "Button label",
+        "cta_link": "Button link"
+      }
+    },
+    "main_order": {
+      "name": "Laboratory certificate",
+      "settings": {
+        "certificate_title": "Certificate title",
+        "curator_name": "Curator name",
+        "curator_title": "Curator title"
+      }
     },
     "cart_drawer": {
       "name": "Cart drawer"

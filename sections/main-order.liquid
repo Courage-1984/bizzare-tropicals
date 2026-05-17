@@ -1,0 +1,390 @@
+{% comment %} Registered for Theme Editor Preview {% endcomment %}
+{%- liquid
+  assign cert_title = section.settings.certificate_title | default: 'SPECIMEN ACQUISITION COMPLETE'
+  assign curator_name = section.settings.curator_name | default: 'Jaco van den Berg'
+  assign curator_title = section.settings.curator_title | default: 'Head Curator, Bizarre Tropicals'
+  assign use_live_order = false
+  if order != blank and order.line_items.size > 0
+    assign use_live_order = true
+  endif
+
+  if use_live_order
+    assign display_order_no = order.name
+    assign display_date = order.created_at | date: '%d %B %Y'
+    assign display_date_iso = order.created_at | date: '%Y-%m-%d'
+    if order.fulfillment_status == 'fulfilled'
+      assign display_status = 'DISPATCH COMPLETE'
+    elsif order.cancelled
+      assign display_status = 'ACQUISITION CANCELLED'
+    else
+      assign display_status = 'DISPATCH PENDING'
+    endif
+  else
+    assign display_order_no = '#BT-1001'
+    assign display_date = 'now' | date: '%d %B %Y'
+    assign display_date_iso = 'now' | date: '%Y-%m-%d'
+    assign display_status = 'DISPATCH PENDING'
+  endif
+
+  assign watermark_logo = settings.logo
+-%}
+
+<section
+  class="main-order full-width"
+  aria-labelledby="main-order-heading-{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="main-order__stage">
+    <article class="main-order__certificate">
+      <div class="main-order__watermark" aria-hidden="true">
+        {%- if watermark_logo != blank -%}
+          {{
+            watermark_logo
+            | image_url: width: 480
+            | image_tag:
+              class: 'main-order__watermark-image',
+              widths: '240, 360, 480',
+              sizes: '320px',
+              loading: 'lazy',
+              alt: ''
+          }}
+        {%- else -%}
+          <span class="main-order__watermark-svg">{{ 'icon-botanical-watermark.svg' | inline_asset_content }}</span>
+        {%- endif -%}
+      </div>
+
+      <header class="main-order__header">
+        <p class="main-order__overline">{{ 'sections.order_status.overline' | t }}</p>
+        <h1 id="main-order-heading-{{ section.id }}" class="main-order__title">
+          {{- cert_title | escape -}}
+        </h1>
+      </header>
+
+      <dl class="main-order__registry">
+        <div class="main-order__registry-row">
+          <dt>{{ 'sections.order_status.order_no' | t }}</dt>
+          <dd>{{ display_order_no | escape }}</dd>
+        </div>
+        <div class="main-order__registry-row">
+          <dt>{{ 'sections.order_status.date_label' | t }}</dt>
+          <dd><time datetime="{{ display_date_iso }}">{{ display_date | escape }}</time></dd>
+        </div>
+        <div class="main-order__registry-row">
+          <dt>{{ 'sections.order_status.status_label' | t }}</dt>
+          <dd class="main-order__status">{{ display_status | escape }}</dd>
+        </div>
+      </dl>
+
+      <table class="main-order__lines">
+        <caption class="visually-hidden">{{ 'sections.order_status.line_items_caption' | t }}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ 'sections.order_status.column_specimen' | t }}</th>
+            <th scope="col">{{ 'sections.order_status.column_qty' | t }}</th>
+            <th scope="col">{{ 'sections.order_status.column_total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- if use_live_order -%}
+            {%- for line_item in order.line_items -%}
+              <tr>
+                <td>
+                  <a href="{{ line_item.url }}">{{ line_item.title | escape }}</a>
+                  {%- unless line_item.variant.title == 'Default Title' -%}
+                    <span class="main-order__variant">{{ line_item.variant.title | escape }}</span>
+                  {%- endunless -%}
+                </td>
+                <td>{{ line_item.quantity }}</td>
+                <td>{{ line_item.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          {%- else -%}
+            <tr>
+              <td>
+                <span class="main-order__specimen-name">{{ 'sections.order_status.preview_specimen_1' | t }}</span>
+                <span class="main-order__variant">{{ 'sections.order_status.preview_variant' | t }}</span>
+              </td>
+              <td>1</td>
+              <td>R 450,00</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="main-order__specimen-name">{{ 'sections.order_status.preview_specimen_2' | t }}</span>
+              </td>
+              <td>2</td>
+              <td>R 280,00</td>
+            </tr>
+          {%- endif -%}
+        </tbody>
+        {%- if use_live_order -%}
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="2">{{ 'sections.order_status.subtotal' | t }}</th>
+              <td>{{ order.subtotal_price | money }}</td>
+            </tr>
+            {%- if order.shipping_price > 0 -%}
+              <tr>
+                <th scope="row" colspan="2">{{ 'sections.order_status.shipping' | t }}</th>
+                <td>{{ order.shipping_price | money }}</td>
+              </tr>
+            {%- endif -%}
+            <tr class="main-order__total-row">
+              <th scope="row" colspan="2">{{ 'sections.order_status.total' | t }}</th>
+              <td>{{ order.total_price | money }}</td>
+            </tr>
+          </tfoot>
+        {%- else -%}
+          <tfoot>
+            <tr class="main-order__total-row">
+              <th scope="row" colspan="2">{{ 'sections.order_status.total' | t }}</th>
+              <td>R 730,00</td>
+            </tr>
+          </tfoot>
+        {%- endif -%}
+      </table>
+
+      <footer class="main-order__signature">
+        <p class="main-order__signature-name">{{ curator_name | escape }}</p>
+        <p class="main-order__signature-title">{{ curator_title | escape }}</p>
+      </footer>
+    </article>
+  </div>
+</section>
+
+{% stylesheet %}
+  .main-order-section.shopify-section {
+    display: block;
+    grid-template-columns: none;
+  }
+
+  .main-order-section.shopify-section > * {
+    grid-column: auto;
+  }
+
+  .main-order {
+    padding: var(--space-3xl) var(--page-margin);
+    background-color: rgb(10 24 18 / 0.04);
+  }
+
+  .main-order__stage {
+    display: flex;
+    justify-content: center;
+  }
+
+  .main-order__certificate {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    padding: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    overflow: hidden;
+    color: var(--color-forest-green-dark);
+    background-color: var(--color-parchment);
+    border: 3px solid var(--color-forest-green-dark);
+    box-shadow: 0 0 0 3px var(--color-forest-green-dark);
+  }
+
+  .main-order__watermark {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  .main-order__watermark-image,
+  .main-order__watermark-svg {
+    width: min(55%, 18rem);
+    max-height: 70%;
+    object-fit: contain;
+  }
+
+  .main-order__watermark-svg svg {
+    width: 100%;
+    height: auto;
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-order__header,
+  .main-order__registry,
+  .main-order__lines,
+  .main-order__signature {
+    position: relative;
+    z-index: 1;
+  }
+
+  .main-order__overline {
+    margin: 0 0 var(--space-sm);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-align: center;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .main-order__title {
+    margin: 0 0 var(--space-2xl);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.625rem, 3.5vw + 0.5rem, 2.375rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.14em;
+    text-align: center;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .main-order__registry {
+    display: grid;
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-2xl);
+    padding: var(--space-md) 0;
+    border-block: 1px solid rgb(10 24 18 / 0.12);
+  }
+
+  .main-order__registry-row {
+    display: grid;
+    grid-template-columns: minmax(6rem, 8rem) minmax(0, 1fr);
+    gap: var(--space-md);
+    align-items: baseline;
+    margin: 0;
+  }
+
+  .main-order__registry dt {
+    margin: 0;
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .main-order__registry dd {
+    margin: 0;
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .main-order__status {
+    color: var(--color-accent);
+  }
+
+  .main-order__lines {
+    width: 100%;
+    margin-block-end: var(--space-xl);
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .main-order__lines th,
+  .main-order__lines td {
+    padding: var(--space-sm) var(--space-xs);
+    text-align: left;
+    border-block-end: 1px solid rgb(10 24 18 / 0.1);
+    vertical-align: top;
+  }
+
+  .main-order__lines thead th {
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .main-order__lines tbody td:last-child,
+  .main-order__lines tfoot td {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .main-order__lines tfoot th {
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .main-order__total-row th,
+  .main-order__total-row td {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    border-block-end: 0;
+    padding-block-start: var(--space-md);
+  }
+
+  .main-order__specimen-name {
+    font-weight: 600;
+  }
+
+  .main-order__variant {
+    display: block;
+    margin-block-start: var(--space-2xs);
+    font-size: var(--font-size-xs);
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  .main-order__lines a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .main-order__signature {
+    margin-block-start: 3rem;
+    padding-block-start: var(--space-md);
+    border-block-start: 1px solid var(--color-forest-green-dark);
+    width: 12.5rem;
+  }
+
+  .main-order__signature-name {
+    margin: 0;
+    font-family: 'Brush Script MT', 'Segoe Script', 'Snell Roundhand', cursive;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-order__signature-title {
+    margin: var(--space-2xs) 0 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_order.name",
+  "tag": "section",
+  "class": "main-order-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "certificate_title",
+      "label": "t:sections.main_order.settings.certificate_title",
+      "default": "SPECIMEN ACQUISITION COMPLETE"
+    },
+    {
+      "type": "text",
+      "id": "curator_name",
+      "label": "t:sections.main_order.settings.curator_name",
+      "default": "Jaco van den Berg"
+    },
+    {
+      "type": "text",
+      "id": "curator_title",
+      "label": "t:sections.main_order.settings.curator_title",
+      "default": "Head Curator, Bizarre Tropicals"
+    }
+  ]
+}
+{% endschema %}

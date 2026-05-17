@@ -1,0 +1,129 @@
+{% doc %}
+  Product or gallery image with Shopify media, botanical URL fallback, or branded SVG placeholder.
+
+  @param {image} [product_image] - Shopify image object when available
+  @param {boolean} [use_shopify_image] - When true, render product_image
+  @param {string} [fallback_url] - External botanical image URL (Unsplash / Commons)
+  @param {string} [image_alt] - Accessible alt text (overridden when product_title + specimen_id are set)
+  @param {string} [product_title] - Product title for Image Search alt text
+  @param {string} [specimen_id] - Specimen log ID (e.g. #BT-LOG-3672)
+  @param {string} [sizes] - Responsive sizes attribute
+  @param {string} [css_class] - Image class (default: product-card__image)
+  @param {string} [loading] - lazy or eager (default: lazy)
+  @param {string} [fetchpriority] - high only for LCP candidates; omit otherwise
+
+  @example
+  {% render 'botanical-product-image',
+    use_shopify_image: true,
+    product_image: product.featured_image,
+    image_alt: product.title
+  %}
+{% enddoc %}
+
+{%- liquid
+  assign img_class = css_class | default: 'product-card__image'
+  assign img_loading = loading | default: 'lazy'
+  assign img_sizes = sizes | default: '(min-width: 990px) 22vw, 46vw'
+  assign brand_placeholder_url = 'https://images.unsplash.com/photo-1593691509543-c55fb37b3ce0?w=1200&q=80&auto=format&fit=crop'
+  assign resolved_fallback = fallback_url | default: brand_placeholder_url
+  assign img_width = 800
+  assign img_height = 1000
+
+  if product_image != blank
+    if product_image.width > 0
+      assign img_width = product_image.width
+    endif
+    if product_image.height > 0
+      assign img_height = product_image.height
+    endif
+  endif
+
+  assign resolved_alt = image_alt | default: product_title | default: ''
+  if product_title != blank and specimen_id != blank
+    assign resolved_alt = product_title | append: ' — ' | append: specimen_id
+  elsif product_title != blank
+    assign resolved_alt = product_title
+  endif
+
+  assign use_fetchpriority = false
+  if fetchpriority == 'high' or fetchpriority == true
+    assign use_fetchpriority = true
+  endif
+-%}
+
+{%- if use_shopify_image and product_image != blank -%}
+  {%- if use_fetchpriority -%}
+    {{
+      product_image
+      | image_url: width: 800, height: 1000, crop: 'center'
+      | image_tag:
+        class: img_class,
+        widths: '400, 600, 800, 1200',
+        sizes: img_sizes,
+        loading: img_loading,
+        fetchpriority: 'high',
+        width: img_width,
+        height: img_height,
+        alt: resolved_alt
+    }}
+  {%- else -%}
+    {{
+      product_image
+      | image_url: width: 800, height: 1000, crop: 'center'
+      | image_tag:
+        class: img_class,
+        widths: '400, 600, 800, 1200',
+        sizes: img_sizes,
+        loading: img_loading,
+        width: img_width,
+        height: img_height,
+        alt: resolved_alt
+    }}
+  {%- endif -%}
+{%- elsif resolved_fallback != blank -%}
+  <img
+    class="{{ img_class }} product-card__image--fallback"
+    src="{{ resolved_fallback }}"
+    alt="{{ resolved_alt | escape }}"
+    width="{{ img_width }}"
+    height="{{ img_height }}"
+    style="aspect-ratio: {{ img_width }} / {{ img_height }};"
+    loading="{{ img_loading }}"
+    {% if use_fetchpriority %}
+      fetchpriority="high"
+    {% endif %}
+    decoding="async"
+  >
+{%- else -%}
+  <span
+    class="botanical-product-image__placeholder"
+    role="img"
+    aria-label="{{ image_alt | escape }}"
+  >
+    {{ 'product-1' | placeholder_svg_tag: class: 'product-card__image product-card__image--placeholder' }}
+  </span>
+{%- endif -%}
+
+{% stylesheet %}
+  .botanical-product-image__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 12rem;
+    background-color: var(--color-parchment);
+  }
+
+  .botanical-product-image__placeholder svg,
+  .product-card__image--placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.35) saturate(0.65) hue-rotate(95deg) brightness(0.92);
+  }
+
+  :is(.product-card__image, .product-card__image--fallback) {
+    aspect-ratio: 4 / 5;
+  }
+{% endstylesheet %}

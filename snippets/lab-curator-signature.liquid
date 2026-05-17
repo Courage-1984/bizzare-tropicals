@@ -1,0 +1,13 @@
+{% doc %}
+  Head curator signature block for laboratory receipt / order confirmation layouts.
+
+  @param {string} [class] - Optional wrapper class
+
+  @example
+  {% render 'lab-curator-signature' %}
+{% enddoc %}
+
+<div class="lab-signature{% if class != blank %} {{ class }}{% endif %}">
+  <p class="lab-signature__name">{{ 'sections.order_status.signature_name' | t }}</p>
+  <p class="lab-signature__title">{{ 'sections.order_status.signature_title' | t }}</p>
+</div>

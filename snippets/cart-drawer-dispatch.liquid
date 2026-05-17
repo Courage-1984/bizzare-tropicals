@@ -1,0 +1,18 @@
+{% doc %}
+  Botanical dispatch protocol notice for the cart drawer footer.
+
+  @example
+  {% render 'cart-drawer-dispatch' %}
+{% enddoc %}
+
+<aside class="cart-drawer__dispatch" aria-label="{{ 'cart.drawer.dispatch_label' | t }}">
+  <span class="cart-drawer__dispatch-stamp" aria-hidden="true">{{ 'cart.drawer.dispatch_stamp' | t }}</span>
+  <div class="cart-drawer__dispatch-icon" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+      <rect x="4" y="9" width="20" height="14" rx="1" stroke="currentColor" stroke-width="1.25"/>
+      <path d="M4 12h20M8 9V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+      <path d="M10 16h8M10 19h5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+    </svg>
+  </div>
+  <p class="cart-drawer__dispatch-text">{{ 'cart.drawer.dispatch_protocol' | t }}</p>
+</aside>

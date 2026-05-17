@@ -6,15 +6,11 @@
 
   assign active_filter_count = 0
   for filter in collection.filters
-    assign param_downcase = filter.param_name | downcase
-    assign label_downcase = filter.label | downcase
-    if param_downcase contains 'custom.genus' or label_downcase contains 'genus'
-      assign active_filter_count = active_filter_count | plus: filter.active_values.size
-    elsif param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty'
-      assign active_filter_count = active_filter_count | plus: filter.active_values.size
-    elsif param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
-      assign active_filter_count = active_filter_count | plus: filter.active_values.size
-    elsif param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
+    if filter.type == 'price_range'
+      if filter.min_value.value != blank or filter.max_value.value != blank
+        assign active_filter_count = active_filter_count | plus: 1
+      endif
+    else
       assign active_filter_count = active_filter_count | plus: filter.active_values.size
     endif
   endfor
@@ -64,7 +60,7 @@
   <div id="CollectionProductGrid-{{ section.id }}" data-collection-product-grid>
     {%- paginate collection.products by 24 -%}
       {%- if collection.products.size > 0 -%}
-        <ul class="collection-grid collection-grid--bento" role="list" data-reveal-stagger>
+        <ul class="collection-grid collection-grid--bento" role="list" data-collection-grid-list data-reveal-stagger>
           {%- for product in collection.products -%}
             <li class="collection-grid__item reveal-up" role="listitem">
               {% render 'product-card',
@@ -76,20 +72,33 @@
           {%- endfor -%}
         </ul>
 
-        {%- if paginate.pages > 1 -%}
-          <nav class="collection-pagination" aria-label="{{ 'sections.main_collection_product_grid.pagination' | t }}">
-            {{ paginate | default_pagination }}
-          </nav>
+        {%- if paginate.next -%}
+          <div class="collection-load-more" data-collection-load-more-wrap>
+            <button
+              type="button"
+              class="collection-load-more__button collection-load-more__button--field-guide"
+              data-collection-load-more
+              data-next-url="{{ paginate.next.url }}"
+            >
+              {{ 'sections.main_collection_product_grid.load_more' | t }}
+            </button>
+          </div>
+        {%- else -%}
+          <div class="collection-load-more" data-collection-load-more-wrap hidden></div>
         {%- endif -%}
       {%- else -%}
-        <p class="collection-grid-section__empty">
-          {{ 'sections.main_collection_product_grid.empty' | t }}
-        </p>
+        {%- unless request.design_mode -%}
+          <p class="collection-grid-section__empty">
+            {{ 'sections.main_collection_product_grid.empty' | t }}
+          </p>
+        {%- endunless -%}
         <ul
           class="collection-grid collection-grid--bento collection-grid--preview"
           role="list"
           aria-label="{{ 'sections.main_collection_product_grid.preview_label' | t }}"
-          hidden
+          {% unless request.design_mode %}
+            hidden
+          {% endunless %}
         >
           {%- for i in (1..12) -%}
             <li class="collection-grid__item reveal-up" role="listitem">
@@ -154,9 +163,9 @@
     border: 1px solid var(--color-forest-green-dark);
     border-radius: var(--radius-sm);
     transition:
-      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .collection-grid-section__filter-trigger:hover {
@@ -178,7 +187,7 @@
     color: var(--color-parchment);
     background-color: var(--color-forest-green-dark);
     border-radius: var(--radius-full);
-    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .collection-grid-section__filter-trigger:hover .collection-grid-section__filter-badge {
@@ -195,239 +204,10 @@
   .collection-grid-section--busy [data-collection-product-grid] {
     opacity: 0.55;
     pointer-events: none;
-    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  /* Cultivation filter drawer */
-  .cultivation-filter {
-    position: fixed;
-    inset: 0;
-    z-index: calc(var(--z-drawer) + 5);
-    pointer-events: none;
-    visibility: hidden;
-  }
-
-  .cultivation-filter.is-open {
-    pointer-events: auto;
-    visibility: visible;
-  }
-
-  .cultivation-filter__overlay {
-    position: absolute;
-    inset: 0;
-    padding: 0;
-    cursor: pointer;
-    background-color: rgb(10 24 18 / 0.68);
-    backdrop-filter: blur(6px);
-    border: 0;
-    opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .cultivation-filter.is-open .cultivation-filter__overlay {
-    opacity: 1;
-  }
-
-  .cultivation-filter__panel {
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    display: flex;
-    flex-direction: column;
-    width: min(100%, 22rem);
-    max-width: 100%;
-    height: 100%;
-    max-height: 100dvh;
-    background-color: var(--color-parchment);
-    border-inline-end: 1px solid var(--color-forest-green-dark);
-    box-shadow: 8px 0 32px rgb(10 24 18 / 0.18);
-    transform: translate3d(-100%, 0, 0);
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
-  }
-
-  .cultivation-filter.is-open .cultivation-filter__panel {
-    transform: translate3d(0, 0, 0);
-  }
-
-  .cultivation-filter__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
-    flex-shrink: 0;
-    padding: var(--space-lg) var(--space-xl);
-    border-block-end: 1px solid var(--color-border);
-  }
-
-  .cultivation-filter__title {
-    margin: 0;
-    font-family: var(--font-family-serif);
-    font-size: var(--font-size-md);
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-forest-green-dark);
-  }
-
-  .cultivation-filter__close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0;
-    cursor: pointer;
-    color: var(--color-forest-green-dark);
-    background: transparent;
-    border: 1px solid var(--color-border-strong);
-    border-radius: var(--radius-md);
-    transition:
-      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .cultivation-filter__close:hover {
-    background-color: var(--color-surface);
-    border-color: var(--color-forest-green-dark);
-  }
-
-  .cultivation-filter__close-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-  }
-
-  .cultivation-filter__body {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: var(--space-lg) var(--space-xl);
-  }
-
-  .cultivation-filter__form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-  }
-
-  .cultivation-filter__group {
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-
-  .cultivation-filter__group-label {
-    margin: 0 0 var(--space-md);
-    padding: 0;
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-forest-green-dark);
-  }
-
-  .cultivation-filter__values {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .cultivation-filter__value + .cultivation-filter__value {
-    margin-block-start: var(--space-xs);
-  }
-
-  .cultivation-filter__option {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-xs) var(--space-sm);
-    cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .cultivation-filter__option:hover {
-    background-color: rgb(10 24 18 / 0.04);
-  }
-
-  .cultivation-filter__option--disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  .cultivation-filter__option input {
-    flex-shrink: 0;
-    width: 1rem;
-    height: 1rem;
-    accent-color: var(--color-forest-green-dark);
-  }
-
-  .cultivation-filter__option-label {
-    flex: 1;
-    font-size: var(--font-size-sm);
-    color: var(--color-forest-green-dark);
-  }
-
-  .cultivation-filter__option-count {
-    font-size: var(--font-size-xs);
-    font-variant-numeric: tabular-nums;
-    color: var(--color-text-muted);
-  }
-
-  .cultivation-filter__empty {
-    margin: 0;
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-text-muted);
-  }
-
-  .cultivation-filter__footer {
-    flex-shrink: 0;
-    padding: var(--space-lg) var(--space-xl) var(--space-xl);
-    border-block-start: 1px solid var(--color-border);
-  }
-
-  .cultivation-filter__clear {
-    width: 100%;
-    min-height: 2.75rem;
-    padding: var(--space-sm) var(--space-lg);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    color: var(--color-forest-green-dark);
-    background: transparent;
-    border: 1px solid var(--color-forest-green-dark);
-    border-radius: var(--radius-sm);
-    transition:
-      background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .cultivation-filter__clear:hover:not(:disabled) {
-    color: var(--color-text-inverse);
-    background-color: var(--color-forest-green-dark);
-  }
-
-  .cultivation-filter__clear:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  .cultivation-filter__active {
-    margin: var(--space-sm) 0 0;
-    font-size: var(--font-size-xs);
-    text-align: center;
-    color: var(--color-text-muted);
-  }
-
-  .cultivation-filter--busy .cultivation-filter__form {
-    opacity: 0.55;
-    pointer-events: none;
-  }
+  /* Cultivation filter drawer — styles live in snippets/cultivation-filter-drawer.liquid */
 
   .collection-grid {
     display: grid;
@@ -457,46 +237,50 @@
     aspect-ratio: 16 / 9;
   }
 
-  .collection-pagination {
+  .collection-load-more {
+    display: flex;
+    justify-content: center;
     margin-block-start: var(--space-2xl);
   }
 
-  .collection-pagination :is(.pagination, nav) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-xs);
-  }
-
-  .collection-pagination a,
-  .collection-pagination span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
-    padding: var(--space-xs) var(--space-sm);
-    font-size: var(--font-size-sm);
-    text-decoration: none;
-    border: 1px solid var(--color-border);
+  .collection-load-more__button {
+    min-height: 3rem;
+    padding: var(--space-sm) var(--space-2xl);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
     border-radius: var(--radius-sm);
     transition:
-      color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      border-color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  .collection-pagination a:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
+  .collection-load-more__button--field-guide {
+    color: var(--color-forest-green-dark);
+    background-color: transparent;
+    border: 1px solid var(--color-forest-green-dark);
   }
 
-  .collection-pagination .current,
-  .collection-pagination [aria-current='page'] {
-    font-weight: 600;
-    color: var(--color-text-inverse);
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
+  .collection-load-more__button--field-guide:hover:not(:disabled) {
+    color: var(--color-parchment);
+    background-color: var(--color-forest-green-dark);
+    transform: translate3d(0, -2px, 0);
+  }
+
+  .collection-load-more__button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  @media (min-width: 990px) {
+    .collection-grid-section__filter-trigger {
+      display: none;
+    }
   }
 
   @media (min-width: 750px) {
@@ -533,13 +317,13 @@
   @media (prefers-reduced-motion: reduce) {
     .collection-grid-section__filter-trigger,
     .collection-grid-section__filter-badge,
-    .cultivation-filter__overlay,
-    .cultivation-filter__panel,
-    .cultivation-filter__option,
-    .cultivation-filter__clear,
-    .collection-pagination a,
+    .collection-load-more__button,
     .collection-grid-section--busy [data-collection-product-grid] {
       transition: none;
+    }
+
+    .collection-load-more__button:hover:not(:disabled) {
+      transform: none;
     }
 
     .collection-grid-section__filter-trigger:hover {
@@ -717,6 +501,24 @@
 
       drawer.dataset.cultivationFilterBound = 'true';
 
+      function syncFilterPresentation() {
+        var isDesktop = false;
+        try {
+          isDesktop = window.matchMedia('(min-width: 990px)').matches;
+        } catch (error) {
+          isDesktop = false;
+        }
+
+        if (isDesktop) {
+          drawer.setAttribute('aria-hidden', 'false');
+          drawer.classList.remove('is-open');
+        } else if (!drawer.classList.contains('is-open')) {
+          drawer.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      syncFilterPresentation();
+
       var overlay = drawer.querySelector('[data-cultivation-filter-overlay]');
       var closeButtons = drawer.querySelectorAll('[data-cultivation-filter-close]');
       var clearButton = drawer.querySelector('[data-cultivation-filter-clear]');
@@ -750,14 +552,108 @@
         });
       });
 
+      var priceInputs = drawer.querySelectorAll('[data-cultivation-price-input]');
+      var priceDebounceTimer = null;
+
+      priceInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+          submitFacetForm(form, section);
+        });
+
+        input.addEventListener('input', function () {
+          if (priceDebounceTimer) {
+            clearTimeout(priceDebounceTimer);
+          }
+
+          priceDebounceTimer = setTimeout(function () {
+            submitFacetForm(form, section);
+          }, 500);
+        });
+      });
+
       if (clearButton) {
         clearButton.addEventListener('click', function () {
           inputs.forEach(function (input) {
-            input.checked = false;
+            if (input.type === 'checkbox') {
+              input.checked = false;
+            } else if (input.type === 'number') {
+              input.value = '';
+            }
           });
           submitFacetForm(form, section);
         });
       }
+
+      bindLoadMore(section);
+    }
+
+    function bindLoadMore(section) {
+      var button = section.querySelector('[data-collection-load-more]');
+      if (!button || button.dataset.loadMoreBound === 'true') {
+        return;
+      }
+
+      button.dataset.loadMoreBound = 'true';
+
+      button.addEventListener('click', function () {
+        loadMoreProducts(section, button);
+      });
+    }
+
+    function loadMoreProducts(section, button) {
+      var nextUrl = button.getAttribute('data-next-url');
+      var sectionId = section.dataset.sectionId;
+
+      if (!nextUrl || !sectionId || button.disabled) {
+        return;
+      }
+
+      button.disabled = true;
+
+      var url = new URL(nextUrl, window.location.origin);
+      url.searchParams.set('section_id', sectionId);
+
+      fetch(url.toString(), {
+        credentials: 'same-origin',
+        headers: { Accept: 'text/html' },
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Collection grid: load more failed.');
+          }
+          return response.text();
+        })
+        .then(function (html) {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, 'text/html');
+          var incomingList = doc.querySelector('[data-collection-grid-list]');
+          var list = section.querySelector('[data-collection-grid-list]');
+
+          if (!incomingList || !list) {
+            return;
+          }
+
+          var newItems = incomingList.querySelectorAll('.collection-grid__item');
+          newItems.forEach(function (item) {
+            list.appendChild(item);
+          });
+
+          initCollectionReveal(list);
+
+          var incomingButton = doc.querySelector('[data-collection-load-more]');
+          var wrap = section.querySelector('[data-collection-load-more-wrap]');
+
+          if (incomingButton && incomingButton.getAttribute('data-next-url')) {
+            button.setAttribute('data-next-url', incomingButton.getAttribute('data-next-url'));
+            button.disabled = false;
+          } else if (wrap) {
+            wrap.hidden = true;
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+          button.disabled = false;
+        });
     }
 
     function initAll(scope) {

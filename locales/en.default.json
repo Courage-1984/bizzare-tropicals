@@ -1,5 +1,13 @@
 {
   "sections": {
+    "home_slider": {
+      "carousel_label": "Home slider",
+      "prev_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "slide_dots": "Choose slide",
+      "go_to_slide": "Go to slide {{ index }}",
+      "empty": "Add slides to build the home slider."
+    },
     "homepage_hero": {
       "carousel_label": "Homepage hero slideshow",
       "prev_slide": "Previous slide",
@@ -18,7 +26,9 @@
       "placeholder": "Search the collection...",
       "close": "Close search",
       "quick_links": "Quick links",
-      "no_results": "No matching plants or pages"
+      "suggested_matches": "Suggested matches",
+      "no_results": "No matching plants or pages",
+      "live_match": "Live match: {{ title }}"
     },
     "genus_shortcuts": {
       "shop_collection": "Shop collection",
@@ -53,21 +63,62 @@
         "feeding": "Do not fertilize. Catches own prey."
       }
     },
+    "new_specimens": {
+      "tray_label": "Newly cataloged specimens",
+      "batch_label": "Batch {{ number }}",
+      "date_logged": "Date logged",
+      "specimen_id": "Specimen ID",
+      "special_seal": "Special specimen",
+      "nav_prev": "Previous Specimen",
+      "nav_next": "Next Specimen"
+    },
+    "main_404": {
+      "heading_default": "404 — PAGE NOT FOUND",
+      "subtext_default": "Abandoned Greenhouse",
+      "cta_default": "Return to conservatory"
+    },
+    "order_status": {
+      "overline": "Conservatory dispatch ledger",
+      "title": "SPECIMEN ACQUISITION COMPLETE",
+      "order_no": "ORDER NO.",
+      "date_label": "DATE",
+      "status_label": "STATUS",
+      "preview_specimen_1": "Drosera capensis 'Alba'",
+      "preview_specimen_2": "Nepenthes ventricosa × ampullaria",
+      "preview_variant": "Medium — acclimated",
+      "line_items_caption": "Acquired specimens",
+      "column_specimen": "Specimen",
+      "column_qty": "Qty",
+      "column_total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Dispatch",
+      "total": "Ledger total",
+      "signature_name": "Jaco van den Berg",
+      "signature_title": "Head curator, Bizarre Tropicals"
+    },
     "main_collection_product_grid": {
       "product_count": "{{ count }} products",
       "pagination": "Collection pagination",
+      "load_more": "Load more specimens",
       "empty": "No products in this collection yet.",
       "preview_label": "Preview product grid",
-      "filter_trigger": "Filter by cultivation",
-      "filter_drawer_title": "Filter by cultivation",
-      "filter_drawer_close": "Close cultivation filters",
+      "filter_trigger": "Filter specimens",
+      "filter_drawer_title": "Filter specimens",
+      "filter_drawer_close": "Close filters",
+      "filter_availability": "Availability",
+      "filter_price": "Price (ZAR)",
+      "filter_price_min": "Min",
+      "filter_price_max": "Max",
       "filter_genus": "Genus",
       "filter_difficulty": "Difficulty",
       "filter_temperature": "Temperature",
       "filter_trap_type": "Trap type",
       "filter_clear": "Clear all filters",
       "filter_active_count": "{{ count }} filters active",
-      "filter_empty": "Configure storefront filters in Search & Discovery for genus, difficulty, temperature group, and trap type metafields.",
+      "filter_empty": "Enable storefront filters in Search & Discovery: availability, price, genus (or product type), difficulty, temperature, and trap type.",
+      "filter_preview_note": "Preview only — filters appear once products and Search & Discovery facets are configured.",
+      "availability_in_stock": "In stock",
+      "availability_cultivating": "Cultivating",
       "trap_snap": "Snap trap",
       "trap_pitfall": "Pitfall",
       "trap_flypaper": "Flypaper",
@@ -119,7 +170,13 @@
       "mock_difficulty": "Difficulty: 2/5",
       "difficulty_label": "Difficulty {{ level }} out of {{ max }}",
       "price_sale": "Sale price",
-      "price_regular": "Regular price"
+      "price_regular": "Regular price",
+      "specimen_id": "Specimen ID"
+    },
+    "schema": {
+      "difficulty": "Difficulty",
+      "origin": "Origin",
+      "clonotype": "Clonotype"
     },
     "main": {
       "mock_title": "Nepenthes bicalcarata",
@@ -140,6 +197,16 @@
       "variant_label": "Option",
       "preview_note": "Preview product — assign a product in the theme editor to enable checkout.",
       "field_data_heading": "Field data",
+      "technical_data_heading": "Technical data sheet",
+      "technical_data_subheading": "Environmental and propagation parameters recorded for this accession.",
+      "spec_origin": "Origin",
+      "spec_altitude": "Altitude",
+      "spec_humidity": "Humidity threshold",
+      "spec_temperature_range": "Temperature range",
+      "spec_substrate": "Substrate composition",
+      "spec_clone_id": "Clone ID",
+      "spec_growth_rate": "Growth rate",
+      "spec_light_intensity": "Light intensity",
       "spec_difficulty": "Difficulty",
       "spec_temperature": "Temperature group",
       "spec_trap": "Trap type",
@@ -217,7 +284,10 @@
       "quantity_decrease": "Decrease quantity for {{ product }}",
       "quantity_increase": "Increase quantity for {{ product }}",
       "price_sale": "Sale price",
-      "price_regular": "Regular price"
+      "price_regular": "Regular price",
+      "dispatch_label": "Botanical dispatch protocol",
+      "dispatch_stamp": "Approved",
+      "dispatch_protocol": "PROTOCOL: Specimens are hand-packed in laboratory-grade sphagnum and climate-controlled packaging. Dispatch occurs every Monday to ensure transit health."
     }
   },
   "customers": {
@@ -266,5 +336,18 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "shopify": {
+    "checkout": {
+      "order_summary": {
+        "order_number": "ORDER NO."
+      },
+      "thank_you": {
+        "order_number_label": "ORDER NO."
+      },
+      "general": {
+        "order_number": "ORDER NO."
+      }
+    }
   }
 }

@@ -1,6 +1,11 @@
 {%- liquid
   assign illustration_image = section.settings.illustration_image
   assign illustration_alt = illustration_image.alt | default: collection.title | escape
+  assign fallback_url = section.settings.fallback_illustration_url | default: 'https://i.imgur.com/8NisV2Z.jpg'
+  assign use_uploaded_image = false
+  if illustration_image != blank and illustration_image.width > 0
+    assign use_uploaded_image = true
+  endif
 -%}
 
 <section
@@ -8,46 +13,73 @@
   aria-labelledby="collection-anatomy-title-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
-  <div class="collection-anatomy__inner">
-    <h1 id="collection-anatomy-title-{{ section.id }}" class="collection-anatomy__title">
-      {{ collection.title | escape }}
-    </h1>
-
-    <div class="collection-anatomy__figure anatomy-hero-container">
-      {%- if illustration_image != blank -%}
+  <div class="collection-anatomy__hero">
+    <div class="collection-anatomy__media" aria-hidden="true">
+      {%- if use_uploaded_image -%}
         {{
           illustration_image
-          | image_url: width: 800
+          | image_url: width: 2400
           | image_tag:
-            class: 'anatomy-hero-img',
-            widths: '400, 600, 800',
-            sizes: '300px',
+            class: 'collection-anatomy__bg-image',
+            widths: '750, 1100, 1500, 2000, 2400',
+            sizes: '100vw',
             loading: 'eager',
             fetchpriority: 'high',
-            alt: illustration_alt
+            alt: ''
         }}
       {%- else -%}
-        <div class="anatomy-placeholder">
-          <p class="anatomy-placeholder__text">{{ 'sections.collection_banner.placeholder_upload' | t }}</p>
-        </div>
+        <img
+          class="collection-anatomy__bg-image collection-anatomy__bg-image--fallback"
+          src="{{ fallback_url | escape }}"
+          alt=""
+          width="2400"
+          height="1600"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
       {%- endif -%}
-
-      <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--rim">
-        {{ 'sections.collection_banner.callout_rim' | t }}
-      </p>
-      <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--wax">
-        {{ 'sections.collection_banner.callout_wax' | t }}
-      </p>
-      <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--pool">
-        {{ 'sections.collection_banner.callout_pool' | t }}
-      </p>
+      <div class="collection-anatomy__gradient"></div>
     </div>
 
-    {%- if collection.description != blank -%}
-      <div class="collection-anatomy__description rte">
-        {{ collection.description }}
+    <div class="collection-anatomy__content">
+      <h1 id="collection-anatomy-title-{{ section.id }}" class="collection-anatomy__title">
+        {{ collection.title | escape }}
+      </h1>
+
+      <div class="collection-anatomy__figure anatomy-hero-container">
+        {%- if use_uploaded_image -%}
+          {{
+            illustration_image
+            | image_url: width: 800
+            | image_tag:
+              class: 'anatomy-hero-img',
+              widths: '400, 600, 800',
+              sizes: 'min(300px, 40vw)',
+              loading: 'eager',
+              alt: illustration_alt
+          }}
+        {%- else -%}
+          <p class="anatomy-placeholder__text">{{ section.settings.placeholder_upload_text | default: 'Upload transparent PNG' }}</p>
+        {%- endif -%}
+
+        <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--rim">
+          {{ section.settings.callout_rim | default: 'Nectar-rich rim to lure prey.' }}
+        </p>
+        <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--wax">
+          {{ section.settings.callout_wax | default: 'Slippery waxy zone for capture.' }}
+        </p>
+        <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--pool">
+          {{ section.settings.callout_pool | default: 'Digestive enzyme pool at base.' }}
+        </p>
       </div>
-    {%- endif -%}
+
+      {%- if collection.description != blank -%}
+        <div class="collection-anatomy__description rte">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 </section>
 
@@ -62,26 +94,66 @@
   }
 
   .collection-anatomy {
-    padding: var(--space-3xl) var(--page-margin);
     color: var(--color-parchment);
     background-color: #121614;
   }
 
-  .collection-anatomy__inner {
+  .collection-anatomy__hero {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 80vh;
+    min-height: 500px;
+    max-height: 900px;
+    overflow: hidden;
+  }
+
+  .collection-anatomy__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .collection-anatomy__bg-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .collection-anatomy__gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgb(10 24 18 / 0.55) 0%,
+      rgb(10 24 18 / 0.78) 45%,
+      rgb(10 24 18 / 0.94) 100%
+    );
+  }
+
+  .collection-anatomy__content {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: var(--space-lg);
     width: 100%;
     max-width: 1200px;
-    min-height: 60vh;
-    margin: 0 auto;
+    padding: var(--space-2xl) var(--page-margin);
     text-align: center;
   }
 
   .collection-anatomy__title {
-    margin: 0 0 2rem;
+    margin: 0;
     font-family: var(--font-family-serif);
     font-size: clamp(2rem, 4vw + 0.5rem, 3.5rem);
     font-weight: 400;
@@ -89,6 +161,7 @@
     letter-spacing: var(--letter-spacing-tight);
     color: var(--color-parchment);
     text-wrap: balance;
+    text-shadow: 0 2px 24px rgb(0 0 0 / 0.45);
   }
 
   .anatomy-hero-container {
@@ -97,10 +170,9 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: min(100%, 32rem);
-    height: 60vh;
-    max-height: 600px;
-    margin: 2rem auto;
+    max-width: min(100%, 20rem);
+    height: min(28vh, 280px);
+    margin: 0 auto;
     overflow: visible;
   }
 
@@ -108,36 +180,26 @@
     position: relative;
     z-index: 2;
     display: block;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center center;
-    border-radius: 10px;
-  }
-
-  .anatomy-placeholder {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     height: 100%;
-    border: 1px dashed rgb(244 238 224 / 0.3);
-    border-radius: 10px;
-    color: var(--color-parchment);
+    object-fit: contain;
+    object-position: center center;
+    filter: drop-shadow(0 8px 24px rgb(0 0 0 / 0.35));
   }
 
   .anatomy-placeholder__text {
+    position: relative;
+    z-index: 2;
     margin: 0;
     padding: var(--space-md);
     font-family: var(--font-family-serif);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
+    color: rgb(247 244 237 / 0.65);
     text-align: center;
     text-wrap: balance;
+    border: 1px dashed rgb(244 238 224 / 0.25);
+    border-radius: 10px;
   }
 
   .collection-anatomy__callout {
@@ -154,6 +216,7 @@
     text-transform: uppercase;
     color: var(--color-parchment);
     text-align: start;
+    text-shadow: 0 1px 8px rgb(0 0 0 / 0.5);
   }
 
   .collection-anatomy__callout::before {
@@ -198,7 +261,7 @@
     font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
-    color: rgb(247 244 237 / 0.78);
+    color: rgb(247 244 237 / 0.82);
   }
 
   .collection-anatomy__description :is(p, ul, ol) {
@@ -210,14 +273,13 @@
   }
 
   @media (max-width: 749px) {
-    .collection-anatomy__inner {
-      min-height: auto;
+    .collection-anatomy__hero {
+      height: min(80vh, 640px);
+      min-height: 420px;
     }
 
     .anatomy-hero-container {
-      height: 50vh;
-      max-height: 420px;
-      margin-block: var(--space-2xl);
+      height: min(22vh, 200px);
     }
 
     .anatomy-callout,
@@ -242,6 +304,41 @@
       "id": "illustration_image",
       "label": "t:sections.collection_banner.settings.illustration_image",
       "info": "t:sections.collection_banner.settings.illustration_image_info"
+    },
+    {
+      "type": "text",
+      "id": "fallback_illustration_url",
+      "label": "t:sections.collection_banner.settings.fallback_illustration_url",
+      "info": "t:sections.collection_banner.settings.fallback_illustration_url_info",
+      "default": "https://i.imgur.com/8NisV2Z.jpg"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.collection_banner.settings.callouts_header"
+    },
+    {
+      "type": "text",
+      "id": "callout_rim",
+      "label": "t:sections.collection_banner.settings.callout_rim",
+      "default": "Nectar-rich rim to lure prey."
+    },
+    {
+      "type": "text",
+      "id": "callout_wax",
+      "label": "t:sections.collection_banner.settings.callout_wax",
+      "default": "Slippery waxy zone for capture."
+    },
+    {
+      "type": "text",
+      "id": "callout_pool",
+      "label": "t:sections.collection_banner.settings.callout_pool",
+      "default": "Digestive enzyme pool at base."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_upload_text",
+      "label": "t:sections.collection_banner.settings.placeholder_upload_text",
+      "default": "Upload transparent PNG"
     }
   ]
 }

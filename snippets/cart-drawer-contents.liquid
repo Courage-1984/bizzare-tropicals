@@ -98,6 +98,7 @@
         </span>
       </div>
       <p class="cart-drawer__shipping-note">{{ 'cart.drawer.shipping_note' | t }}</p>
+      {% render 'cart-drawer-dispatch' %}
       <a class="cart-drawer__checkout" href="/checkout">
         {{ 'cart.drawer.checkout' | t }}
       </a>

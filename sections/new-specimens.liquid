@@ -1,0 +1,505 @@
+{%- liquid
+  assign ledger_collection = section.settings.collection
+  assign products_limit = section.settings.products_to_show | default: 12
+  assign section_heading = section.settings.heading | default: 'NEWLY CATALOGED'
+  assign section_subheading = section.settings.subheading | default: 'Fresh arrivals from the propagation lab.'
+  assign show_real_products = false
+
+  if ledger_collection != blank
+    if ledger_collection.products.size > 0
+      assign show_real_products = true
+    endif
+  endif
+-%}
+
+<section
+  class="new-specimens full-width reveal-up"
+  aria-labelledby="new-specimens-heading-{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <header class="new-specimens__header">
+    <div class="new-specimens__intro">
+      <div class="new-specimens__title-row">
+        <h2 id="new-specimens-heading-{{ section.id }}" class="new-specimens__title font-serif">
+          {{ section_heading | escape }}
+        </h2>
+
+        <div class="new-specimens__nav" data-new-specimens-nav>
+          <button
+            type="button"
+            class="new-specimens__nav-btn"
+            data-new-specimens-prev
+            aria-label="{{ 'sections.new_specimens.nav_prev' | t }}"
+            disabled
+          >
+            <svg class="new-specimens__nav-icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M14 7 9 12l5 5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="new-specimens__nav-btn"
+            data-new-specimens-next
+            aria-label="{{ 'sections.new_specimens.nav_next' | t }}"
+          >
+            <svg class="new-specimens__nav-icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="m10 7 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {%- if section_subheading != blank -%}
+        <p class="new-specimens__subheading">{{ section_subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if show_real_products and ledger_collection.url != blank -%}
+      <a class="new-specimens__view-all link-underline-grow" href="{{ ledger_collection.url }}">
+        {{ section.settings.view_all_label | default: 'View ledger' | escape }}
+      </a>
+    {%- endif -%}
+  </header>
+
+  <div class="new-specimens__viewport">
+    <ul
+      class="new-specimens__tray"
+      role="list"
+      data-new-specimens-tray
+      data-reveal-stagger
+      aria-label="{{ 'sections.new_specimens.tray_label' | t }}"
+    >
+      {%- if show_real_products -%}
+        {%- for product in ledger_collection.products limit: products_limit -%}
+          <li class="new-specimens__item reveal-up" role="listitem">
+            {% render 'specimen-ledger-card',
+              product_item: product,
+              ledger_index: forloop.index,
+              sizes: '(min-width: 990px) 23vw, 66vw'
+            %}
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..8) -%}
+          <li class="new-specimens__item reveal-up" role="listitem">
+            {% render 'specimen-ledger-card',
+              card_index: forloop.index0,
+              ledger_index: forloop.index,
+              sizes: '(min-width: 990px) 23vw, 66vw'
+            %}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+
+  <div class="new-specimens__progress" aria-hidden="true">
+    <span class="new-specimens__progress-track">
+      <span class="new-specimens__progress-fill" data-new-specimens-progress style="--scroll-progress: 0;"></span>
+    </span>
+  </div>
+</section>
+
+{% stylesheet %}
+  .new-specimens-section.shopify-section {
+    display: block;
+    grid-template-columns: none;
+  }
+
+  .new-specimens-section.shopify-section > * {
+    grid-column: auto;
+  }
+
+  .new-specimens {
+    --new-specimens-border: rgb(225 218 200);
+    padding-block: var(--space-3xl);
+    background-color: var(--color-parchment);
+  }
+
+  .new-specimens__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-md) var(--space-xl);
+    width: 100%;
+    max-width: none;
+    margin: 0 0 var(--space-xl);
+    padding-inline: var(--page-margin);
+  }
+
+  .new-specimens__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    width: 100%;
+  }
+
+  .new-specimens__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--color-forest-green-dark);
+  }
+
+  .new-specimens__nav {
+    display: none;
+    align-items: center;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+  }
+
+  .new-specimens__nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-forest-green-dark);
+    background-color: transparent;
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: 50%;
+    transition:
+      opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      border-color 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .new-specimens__nav-btn:hover:not(:disabled) {
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .new-specimens__nav-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .new-specimens__nav-icon {
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .new-specimens__subheading {
+    margin: var(--space-sm) 0 0;
+    max-width: 32ch;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .new-specimens__view-all {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .new-specimens__view-all::after {
+    background-color: var(--color-forest-green-dark);
+  }
+
+  .new-specimens__viewport {
+    overflow: hidden;
+    border-block: 0.5px solid var(--new-specimens-border);
+  }
+
+  .new-specimens__tray {
+    display: flex;
+    gap: var(--space-lg);
+    margin: 0;
+    padding: var(--space-xs) var(--page-margin) var(--space-md);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .new-specimens__tray::-webkit-scrollbar {
+    display: none;
+  }
+
+  .new-specimens__item {
+    flex: 0 0 calc((100% - var(--space-lg)) / 1.5);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .new-specimens__progress {
+    padding: var(--space-md) var(--page-margin) 0;
+  }
+
+  .new-specimens__progress-track {
+    display: block;
+    width: 100%;
+    height: 2px;
+    overflow: hidden;
+    background-color: rgb(10 24 18 / 0.1);
+  }
+
+  .new-specimens__progress-fill {
+    display: block;
+    width: calc(var(--scroll-progress, 0) * 100%);
+    height: 100%;
+    background-color: var(--color-forest-green-dark);
+    transform-origin: left center;
+    transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .new-specimens .specimen-ledger-card:hover {
+    transform: translate3d(0, -3px, 0);
+    box-shadow: 2px 4px 0 rgb(10 24 18 / 0.1);
+  }
+
+  .new-specimens .specimen-ledger-card .product-card__title,
+  .new-specimens .specimen-ledger-card .product-card__latin,
+  .new-specimens .specimen-ledger-card .product-card__latin em,
+  .new-specimens .specimen-ledger-card .product-card__price,
+  .new-specimens .specimen-ledger-card .product-card__price-sale,
+  .new-specimens .specimen-ledger-card .product-card__price-compare,
+  .new-specimens .specimen-ledger-card .product-card__price-regular {
+    color: var(--color-forest-green-dark);
+  }
+
+  .new-specimens .specimen-ledger-card .product-card__price-compare {
+    opacity: 0.55;
+  }
+
+  .new-specimens .specimen-ledger-card {
+    --ledger-card-padding: var(--space-md);
+  }
+
+  .new-specimens .specimen-ledger-card__batch {
+    top: var(--space-sm);
+    inset-inline-start: var(--space-sm);
+  }
+
+  .specimen-ledger-card__seal {
+    --badge-wax-size: 4.25rem;
+    position: absolute;
+    top: -0.15rem;
+    inset-inline-start: -0.15rem;
+    z-index: 3;
+    display: inline-flex;
+    pointer-events: none;
+  }
+
+  .specimen-ledger-card__seal.product-card__badge--wax {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: var(--badge-wax-size);
+    height: var(--badge-wax-size);
+    padding: var(--space-sm);
+    color: var(--color-parchment);
+    border-radius: 41% 59% 40% 60% / 65% 42% 58% 35%;
+    border: 1px solid rgb(0 0 0 / 0.22);
+    box-shadow:
+      0 4px 10px rgb(0 0 0 / 0.3),
+      inset 2px 2px 4px rgb(255 255 255 / 0.2),
+      inset -2px -2px 4px rgb(0 0 0 / 0.4);
+    transform: rotate(-15deg);
+  }
+
+  .product-card__badge--wax-special {
+    background: radial-gradient(circle at 30% 30%, #cd6d3d 0%, #a0522d 45%, #7a3e1f 100%);
+    border-color: #5c2f14;
+  }
+
+  .product-card__badge--wax-special .product-card__badge-text {
+    max-width: 3rem;
+    font-size: 0.5rem;
+    line-height: 1.15;
+  }
+
+
+  @media (min-width: 990px) {
+    .new-specimens__nav {
+      display: inline-flex;
+    }
+
+    .new-specimens__item {
+      flex: 0 0 calc((100% - (var(--space-lg) * 3)) / 4);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .new-specimens .specimen-ledger-card:hover {
+      transform: none;
+    }
+
+    .new-specimens__progress-fill,
+    .new-specimens__nav-btn {
+      transition: none;
+    }
+
+    .new-specimens__nav-btn:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    'use strict';
+
+    function updateTrayProgress(tray) {
+      var section = tray.closest('.new-specimens');
+      if (!section) {
+        return;
+      }
+
+      var fill = section.querySelector('[data-new-specimens-progress]');
+      if (fill) {
+        var maxScroll = tray.scrollWidth - tray.clientWidth;
+        var progress = maxScroll > 0 ? tray.scrollLeft / maxScroll : 0;
+        fill.style.setProperty('--scroll-progress', String(progress));
+      }
+
+      var prevBtn = section.querySelector('[data-new-specimens-prev]');
+      var nextBtn = section.querySelector('[data-new-specimens-next]');
+      var atStart = tray.scrollLeft <= 1;
+      var atEnd = tray.scrollLeft + tray.clientWidth >= tray.scrollWidth - 1;
+
+      if (prevBtn) {
+        prevBtn.disabled = atStart;
+      }
+
+      if (nextBtn) {
+        nextBtn.disabled = atEnd;
+      }
+    }
+
+    function getTrayScrollStep(tray) {
+      var firstItem = tray.querySelector('.new-specimens__item');
+      if (!firstItem) {
+        return tray.clientWidth;
+      }
+
+      var gap = 0;
+      try {
+        gap = parseFloat(window.getComputedStyle(tray).columnGap || window.getComputedStyle(tray).gap) || 0;
+      } catch (error) {
+        gap = 0;
+      }
+
+      return firstItem.offsetWidth + gap;
+    }
+
+    function scrollTrayByCard(tray, direction) {
+      var step = getTrayScrollStep(tray) * direction;
+      tray.scrollBy({ left: step, behavior: 'smooth' });
+    }
+
+    function bindNewSpecimensTray(scope) {
+      var root = scope || document;
+      root.querySelectorAll('[data-new-specimens-tray]').forEach(function (tray) {
+        if (tray.dataset.newSpecimensTrayBound === 'true') {
+          return;
+        }
+
+        tray.dataset.newSpecimensTrayBound = 'true';
+
+        var section = tray.closest('.new-specimens');
+        var prevBtn = section ? section.querySelector('[data-new-specimens-prev]') : null;
+        var nextBtn = section ? section.querySelector('[data-new-specimens-next]') : null;
+
+        var onScroll = function () {
+          updateTrayProgress(tray);
+        };
+
+        tray.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function () {
+            scrollTrayByCard(tray, -1);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function () {
+            scrollTrayByCard(tray, 1);
+          });
+        }
+
+        updateTrayProgress(tray);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        bindNewSpecimensTray();
+      });
+    } else {
+      bindNewSpecimensTray();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      bindNewSpecimensTray(event.target);
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.new_specimens.name",
+  "tag": "section",
+  "class": "new-specimens-section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.new_specimens.settings.collection",
+      "info": "t:sections.new_specimens.settings.collection_info"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.new_specimens.settings.heading",
+      "default": "NEWLY CATALOGED"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.new_specimens.settings.subheading",
+      "default": "Fresh arrivals from the propagation lab."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "t:sections.new_specimens.settings.products_to_show",
+      "info": "t:sections.new_specimens.settings.products_to_show_info",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "t:sections.new_specimens.settings.view_all_label",
+      "default": "View full ledger"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.new_specimens.name",
+      "settings": {
+        "heading": "NEWLY CATALOGED",
+        "subheading": "Fresh arrivals from the propagation lab."
+      }
+    }
+  ]
+}
+{% endschema %}
