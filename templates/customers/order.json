@@ -10,13 +10,11 @@
 {
   "sections": {
     "main": {
-      "type": "main-404",
+      "type": "main-order",
       "settings": {
-        "heading": "404 - PAGE NOT FOUND",
-        "subtext": "Abandoned Greenhouse",
-        "message": "This coordinate in the conservatory appears to be uninhabited.",
-        "cta_label": "Return to conservatory",
-        "cta_link": "/collections/all"
+        "certificate_title": "SPECIMEN ACQUISITION COMPLETE",
+        "curator_name": "Jaco van den Berg",
+        "curator_title": "Head Curator, Bizarre Tropicals"
       }
     }
   },

@@ -1,8 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "collection_banner": {
       "type": "main-collection-banner",
-      "settings": {}
+      "settings": {
+        "illustration_image": "shopify://shop_images/test_catolog_hero.png",
+        "fallback_illustration_url": "https://i.imgur.com/8NisV2Z.jpg",
+        "callout_rim": "Nectar-rich rim to lure prey.",
+        "callout_wax": "Slippery waxy zone for capture.",
+        "callout_pool": "Digestive enzyme pool at base.",
+        "placeholder_upload_text": "Upload transparent PNG"
+      }
     },
     "main": {
       "type": "main-collection-product-grid",
