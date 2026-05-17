@@ -29,7 +29,10 @@
           }
         }
       },
-      "block_order": ["message-1", "message-2"],
+      "block_order": [
+        "message-1",
+        "message-2"
+      ],
       "settings": {
         "rotate_interval": 5
       }
@@ -112,7 +115,10 @@
         "mega_sarracenia",
         "mega_utricularia"
       ],
-      "settings": {}
+      "settings": {
+        "menu_desktop": "main-menu",
+        "menu_mobile": ""
+      }
     },
     "search-overlay": {
       "type": "search-overlay",
@@ -121,42 +127,48 @@
           "type": "genus_link",
           "settings": {
             "label": "Drosera",
-            "url": "/collections/drosera"
+            "url": "/collections/drosera",
+            "collection": ""
           }
         },
         "nepenthes": {
           "type": "genus_link",
           "settings": {
             "label": "Nepenthes",
-            "url": "/collections/nepenthes"
+            "url": "/collections/nepenthes",
+            "collection": ""
           }
         },
         "dionaea": {
           "type": "genus_link",
           "settings": {
             "label": "Dionaea",
-            "url": "/collections/dionaea"
+            "url": "/collections/dionaea",
+            "collection": ""
           }
         },
         "sarracenia": {
           "type": "genus_link",
           "settings": {
             "label": "Sarracenia",
-            "url": "/collections/sarracenia"
+            "url": "/collections/sarracenia",
+            "collection": ""
           }
         },
         "pinguicula": {
           "type": "genus_link",
           "settings": {
             "label": "Pinguicula",
-            "url": "/collections/pinguicula"
+            "url": "/collections/pinguicula",
+            "collection": ""
           }
         },
         "heliamphora": {
           "type": "genus_link",
           "settings": {
             "label": "Heliamphora",
-            "url": "/collections/heliamphora"
+            "url": "/collections/heliamphora",
+            "collection": ""
           }
         }
       },
@@ -171,5 +183,9 @@
       "settings": {}
     }
   },
-  "order": ["announcement-bar", "header", "search-overlay"]
+  "order": [
+    "announcement-bar",
+    "header",
+    "search-overlay"
+  ]
 }

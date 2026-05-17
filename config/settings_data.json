@@ -8,5 +8,25 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "sections": {
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      },
+      "newsletter-modal": {
+        "type": "newsletter-modal",
+        "settings": {
+          "enable_modal": false,
+          "trigger_mode": "either",
+          "delay_seconds": 5,
+          "cookie_days": 7,
+          "heading": "Join the Field Notes",
+          "subtext": "Receive exclusive updates on rare species drops and cultivation secrets from our conservatory.",
+          "button_label": "Join"
+        }
+      }
+    },
+    "content_for_index": []
+  }
 }
