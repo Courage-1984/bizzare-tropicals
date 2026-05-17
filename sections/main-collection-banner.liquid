@@ -1,10 +1,30 @@
 {%- liquid
   assign illustration_image = section.settings.illustration_image
-  assign illustration_alt = illustration_image.alt | default: collection.title | escape
+  assign hero_image = illustration_image
+  assign illustration_alt = collection.title | escape
   assign fallback_url = section.settings.fallback_illustration_url | default: 'https://i.imgur.com/8NisV2Z.jpg'
   assign use_uploaded_image = false
+  assign use_hero_figure = false
+
   if illustration_image != blank and illustration_image.width > 0
     assign use_uploaded_image = true
+    assign use_hero_figure = true
+    assign illustration_alt = illustration_image.alt | default: collection.title | escape
+  elsif collection.image != blank and collection.image.width > 0
+    assign hero_image = collection.image
+    assign use_uploaded_image = true
+    assign use_hero_figure = true
+    assign illustration_alt = collection.image.alt | default: collection.title | escape
+  elsif collection.products_count > 0
+    for product in collection.products
+      if product.featured_image != blank and product.featured_image.width > 0
+        assign hero_image = product.featured_image
+        assign use_uploaded_image = true
+        assign use_hero_figure = true
+        assign illustration_alt = product.featured_image.alt | default: product.title | default: collection.title | escape
+        break
+      endif
+    endfor
   endif
 -%}
 
@@ -17,7 +37,7 @@
     <div class="collection-anatomy__media" aria-hidden="true">
       {%- if use_uploaded_image -%}
         {{
-          illustration_image
+          hero_image
           | image_url: width: 2400
           | image_tag:
             class: 'collection-anatomy__bg-image',
@@ -48,9 +68,9 @@
       </h1>
 
       <div class="collection-anatomy__figure anatomy-hero-container">
-        {%- if use_uploaded_image -%}
+        {%- if use_hero_figure -%}
           {{
-            illustration_image
+            hero_image
             | image_url: width: 800
             | image_tag:
               class: 'anatomy-hero-img',

@@ -1,0 +1,218 @@
+<section
+  class="customer-login full-width"
+  aria-labelledby="customer-login-title-{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="customer-login__inner">
+    <header class="customer-login__header">
+      <h1 id="customer-login-title-{{ section.id }}" class="customer-login__title">
+        {{ 'customers.login.title' | t }}
+      </h1>
+    </header>
+
+    {%- form 'customer_login', class: 'customer-login__form' -%}
+      {%- if form.errors -%}
+        <div class="customer-login__errors" role="alert">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="customer-login__field">
+        <label class="customer-login__label" for="CustomerEmail-{{ section.id }}">
+          {{ 'customers.login.email' | t }}
+        </label>
+        <input
+          class="customer-login__input"
+          type="email"
+          id="CustomerEmail-{{ section.id }}"
+          name="customer[email]"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+          {% endif %}
+        >
+      </div>
+
+      {%- if form.password_needed -%}
+        <div class="customer-login__field">
+          <label class="customer-login__label" for="CustomerPassword-{{ section.id }}">
+            {{ 'customers.login.password' | t }}
+          </label>
+          <input
+            class="customer-login__input"
+            type="password"
+            id="CustomerPassword-{{ section.id }}"
+            name="customer[password]"
+            autocomplete="current-password"
+            required
+            {% if form.errors contains 'form' %}
+              aria-invalid="true"
+            {% endif %}
+          >
+        </div>
+
+        <p class="customer-login__recover">
+          <a class="customer-login__link link-underline-grow" href="{{ routes.account_recover_url }}">
+            {{ 'customers.login.forgot_password' | t }}
+          </a>
+        </p>
+      {%- endif -%}
+
+      <button type="submit" class="customer-login__submit">
+        {{ 'customers.login.submit' | t }}
+      </button>
+    {%- endform -%}
+
+    {%- if shop.checkout.guest_login -%}
+      <section class="customer-login__guest" aria-labelledby="customer-guest-title-{{ section.id }}">
+        <h2 id="customer-guest-title-{{ section.id }}" class="customer-login__guest-title">
+          {{ 'customers.login.guest_title' | t }}
+        </h2>
+        {%- form 'guest_login', class: 'customer-login__guest-form' -%}
+          <button type="submit" class="customer-login__guest-submit">
+            {{ 'customers.login.guest_continue' | t }}
+          </button>
+        {%- endform -%}
+      </section>
+    {%- endif -%}
+
+    <p class="customer-login__register">
+      <a class="customer-login__link link-underline-grow" href="{{ routes.account_register_url }}">
+        {{ 'customers.login.create_account' | t }}
+      </a>
+    </p>
+  </div>
+</section>
+
+{% stylesheet %}
+  .customer-login {
+    padding-block: var(--space-3xl) var(--space-4xl);
+    background-color: var(--color-parchment);
+  }
+
+  .customer-login__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    max-width: 28rem;
+    margin-inline: auto;
+  }
+
+  .customer-login__title {
+    margin: 0 0 var(--space-xl);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .customer-login__form,
+  .customer-login__guest-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .customer-login__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .customer-login__label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .customer-login__input {
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface-elevated);
+  }
+
+  .customer-login__errors {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    color: #8b2d2d;
+    background-color: rgb(139 45 45 / 0.08);
+    border: 1px solid rgb(139 45 45 / 0.25);
+    border-radius: var(--radius-sm);
+  }
+
+  .customer-login__recover,
+  .customer-login__register {
+    margin: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .customer-login__submit,
+  .customer-login__guest-submit {
+    min-height: 3rem;
+    margin-block-start: var(--space-sm);
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green-dark);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast);
+  }
+
+  .customer-login__submit:hover,
+  .customer-login__guest-submit:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .customer-login__guest {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .customer-login__guest-title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .customer-login__guest-submit {
+    color: var(--color-forest-green-dark);
+    background-color: transparent;
+  }
+
+  .customer-login__guest-submit:hover {
+    color: var(--color-text-inverse);
+  }
+
+  .customer-login__register {
+    margin-block-start: var(--space-xl);
+    text-align: center;
+  }
+
+  .customer-login__link {
+    color: var(--color-forest-green-dark);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_login.name",
+  "tag": "section",
+  "class": "customer-login-section",
+  "settings": []
+}
+{% endschema %}

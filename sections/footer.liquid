@@ -13,6 +13,44 @@
   if footer_phone == blank
     assign footer_phone = '+27 (WhatsApp Preferred)'
   endif
+
+  assign quick_home_url = routes.root_url
+  assign quick_shop_url = routes.all_products_collection_url
+
+  assign quick_about_url = blank
+  if pages.about != blank
+    assign quick_about_url = pages.about.url
+  elsif pages['about-us'] != blank
+    assign quick_about_url = pages['about-us'].url
+  endif
+
+  assign quick_contact_url = blank
+  if pages.contact != blank
+    assign quick_contact_url = pages.contact.url
+  endif
+
+  assign quick_shipping_url = blank
+  if pages.shipping != blank
+    assign quick_shipping_url = pages.shipping.url
+  elsif shop.shipping_policy != blank
+    assign quick_shipping_url = shop.shipping_policy.url
+  endif
+
+  assign quick_privacy_url = blank
+  if shop.privacy_policy != blank
+    assign quick_privacy_url = shop.privacy_policy.url
+  elsif pages['privacy-policy'] != blank
+    assign quick_privacy_url = pages['privacy-policy'].url
+  endif
+
+  assign quick_refund_url = blank
+  if shop.refund_policy != blank
+    assign quick_refund_url = shop.refund_policy.url
+  elsif pages['refund-policy'] != blank
+    assign quick_refund_url = pages['refund-policy'].url
+  elsif pages.refund != blank
+    assign quick_refund_url = pages.refund.url
+  endif
 -%}
 
 <div
@@ -82,24 +120,55 @@
 
       <div class="site-footer__column">
         <h2 class="site-footer__heading">{{ 'footer.quick_links' | t }}</h2>
-        {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
-          <nav aria-label="{{ 'footer.quick_links' | t }}">
-            <ul class="site-footer__link link-underline-grow-list" role="list">
-              {%- for link in section.settings.menu.links -%}
-                <li>
-                  <a class="site-footer__link link-underline-grow" href="{{ link.url }}">{{ link.title | escape }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        {%- else -%}
-          <ul class="site-footer__link link-underline-grow-list" role="list">
-            <li><a class="site-footer__link link-underline-grow" href="{{ routes.all_products_collection_url }}">{{ 'footer.link_shop' | t }}</a></li>
-            <li><a class="site-footer__link link-underline-grow" href="/pages/about">{{ 'footer.link_about' | t }}</a></li>
-            <li><a class="site-footer__link link-underline-grow" href="/pages/care-overview">{{ 'footer.link_care' | t }}</a></li>
-            <li><a class="site-footer__link link-underline-grow" href="/pages/contact">{{ 'footer.link_contact' | t }}</a></li>
+        <nav aria-label="{{ 'footer.quick_links' | t }}">
+          <ul class="site-footer__link-list" role="list">
+            <li>
+              <a class="site-footer__link link-underline-grow" href="{{ quick_home_url }}">
+                {{- 'footer.link_home' | t -}}
+              </a>
+            </li>
+            <li>
+              <a class="site-footer__link link-underline-grow" href="{{ quick_shop_url }}">
+                {{- 'footer.link_shop' | t -}}
+              </a>
+            </li>
+            {%- if quick_about_url != blank -%}
+              <li>
+                <a class="site-footer__link link-underline-grow" href="{{ quick_about_url }}">
+                  {{- 'footer.link_about' | t -}}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if quick_contact_url != blank -%}
+              <li>
+                <a class="site-footer__link link-underline-grow" href="{{ quick_contact_url }}">
+                  {{- 'footer.link_contact' | t -}}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if quick_shipping_url != blank -%}
+              <li>
+                <a class="site-footer__link link-underline-grow" href="{{ quick_shipping_url }}">
+                  {{- 'footer.link_shipping' | t -}}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if quick_privacy_url != blank -%}
+              <li>
+                <a class="site-footer__link link-underline-grow" href="{{ quick_privacy_url }}">
+                  {{- 'footer.link_privacy' | t -}}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if quick_refund_url != blank -%}
+              <li>
+                <a class="site-footer__link link-underline-grow" href="{{ quick_refund_url }}">
+                  {{- 'footer.link_refund' | t -}}
+                </a>
+              </li>
+            {%- endif -%}
           </ul>
-        {%- endif -%}
+        </nav>
       </div>
 
       <div class="site-footer__column">

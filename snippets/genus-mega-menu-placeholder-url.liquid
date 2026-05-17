@@ -1,0 +1,16 @@
+{% doc %}
+  Wikimedia Commons thumbnail URL for catalog mega menu (60px).
+
+  @param {string} genus_handle - Collection handle (e.g. drosera, nepenthes)
+  @param {number} [width] - Image width query (default: 60)
+{% enddoc %}
+
+{%- liquid
+  assign thumb_width = width | default: 60
+  capture hero_url
+    render 'hero-slide-placeholder-url', genus_handle: genus_handle
+  endcapture
+  assign hero_url = hero_url | strip
+  assign thumb_url = hero_url | replace: 'width=2400', 'width=' | append: thumb_width
+-%}
+{{- thumb_url -}}

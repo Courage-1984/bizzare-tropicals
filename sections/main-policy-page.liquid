@@ -1,0 +1,91 @@
+{%- liquid
+  assign page_title = page.title | default: section.settings.fallback_title
+  assign show_default = false
+  if page.content == blank
+    assign show_default = true
+  endif
+-%}
+
+<article class="policy-page full-width" {{ section.shopify_attributes }}>
+  <div class="policy-page__inner">
+    <header class="policy-page__header">
+      <h1 class="policy-page__title">{{ page_title | escape }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p class="policy-page__intro">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="policy-page__content rte">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- elsif show_default and section.settings.default_body != blank -%}
+        {{ section.settings.default_body }}
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .policy-page {
+    padding-block: var(--space-3xl) var(--space-4xl);
+    background-color: var(--color-parchment);
+  }
+
+  .policy-page__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    max-width: 42rem;
+    margin-inline: auto;
+  }
+
+  .policy-page__title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__intro {
+    margin: 0 0 var(--space-xl);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .policy-page__content :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__content li + li {
+    margin-block-start: var(--space-xs);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_policy_page.name",
+  "tag": "section",
+  "class": "policy-page-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "t:sections.main_policy_page.settings.fallback_title",
+      "default": "Policy"
+    },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "t:sections.main_policy_page.settings.intro"
+    },
+    {
+      "type": "html",
+      "id": "default_body",
+      "label": "t:sections.main_policy_page.settings.default_body",
+      "info": "t:sections.main_policy_page.settings.default_body_info"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,315 @@
+{% doc %}
+  Renders a single Search & Discovery collection filter group.
+
+  Uses filter_value.param_name and filter_value.value from Shopify so facet URLs match the app.
+
+  @param {filter} filter - A collection.filters entry
+  @param {string} zone - Render slot: difficulty | primary | technical
+{% enddoc %}
+
+{%- liquid
+  assign param_downcase = filter.param_name | downcase
+  assign label_downcase = filter.label | downcase
+  assign is_catalog_filter = false
+  assign filter_group_key = ''
+  assign is_technical_filter = false
+  assign should_render = false
+
+  if filter.type == 'price_range'
+    assign is_catalog_filter = true
+    assign filter_group_key = 'price'
+  endif
+
+  if param_downcase contains 'availability' or label_downcase contains 'availability' or label_downcase contains 'stock'
+    assign is_catalog_filter = true
+    assign filter_group_key = 'availability'
+  endif
+
+  if param_downcase contains 'custom.genus' or label_downcase contains 'genus' or param_downcase contains 'product_type' or label_downcase contains 'type'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'genus'
+    endif
+  endif
+
+  if param_downcase contains 'custom.difficulty' or label_downcase contains 'difficulty' or label_downcase contains 'level'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'difficulty'
+    endif
+  endif
+
+  if param_downcase contains 'custom.temperature_group' or label_downcase contains 'temperature'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'temperature'
+    endif
+    assign is_technical_filter = true
+  endif
+
+  if param_downcase contains 'custom.trap_type' or label_downcase contains 'trap'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'trap_type'
+    endif
+  endif
+
+  if param_downcase contains 'custom.latin_name' or label_downcase contains 'latin'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'latin_name'
+    endif
+  endif
+
+  if param_downcase contains 'custom.origin_location' or label_downcase contains 'origin'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'origin'
+    endif
+  endif
+
+  if param_downcase contains 'custom.humidity_min' or label_downcase contains 'humidity'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'humidity'
+    endif
+    assign is_technical_filter = true
+  endif
+
+  if param_downcase contains 'custom.lux_requirements' or label_downcase contains 'light' or label_downcase contains 'lux'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'light'
+    endif
+    assign is_technical_filter = true
+  endif
+
+  if param_downcase contains 'custom.growth_speed' or label_downcase contains 'growth'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'growth_speed'
+    endif
+    assign is_technical_filter = true
+  endif
+
+  if param_downcase contains 'custom.altitude' or label_downcase contains 'altitude'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'altitude'
+    endif
+    assign is_technical_filter = true
+  endif
+
+  if param_downcase contains 'custom.substrate' or label_downcase contains 'substrate' or label_downcase contains 'soil'
+    assign is_catalog_filter = true
+    if filter_group_key == blank
+      assign filter_group_key = 'substrate'
+    endif
+    assign is_technical_filter = true
+  endif
+
+  if is_catalog_filter
+    if zone == 'difficulty' and filter_group_key == 'difficulty'
+      assign should_render = true
+    endif
+    if zone == 'technical' and is_technical_filter
+      assign should_render = true
+    endif
+    if zone == 'primary'
+      if filter_group_key != 'difficulty'
+        if is_technical_filter == false
+          assign should_render = true
+        endif
+      endif
+    endif
+  endif
+-%}
+
+{%- if should_render -%}
+  {%- liquid
+    assign has_visible_values = false
+
+    if filter.type == 'price_range'
+      assign has_visible_values = true
+    else
+      for filter_value in filter.values
+        if filter_value.count > 0
+          assign has_visible_values = true
+          break
+        endif
+        if filter_value.active
+          assign has_visible_values = true
+          break
+        endif
+      endfor
+    endif
+  -%}
+
+  {%- if has_visible_values -%}
+    {%- liquid
+      assign group_extra_class = ''
+      assign values_list_class = 'cultivation-filter__values'
+      if filter_group_key == 'difficulty'
+        assign group_extra_class = 'cultivation-filter__group--difficulty-highlight cultivation-filter__group--difficulty-pills'
+        assign values_list_class = 'cultivation-filter__values cultivation-filter__values--pills'
+      endif
+      if zone == 'technical'
+        assign group_extra_class = group_extra_class | append: ' cultivation-filter__group--technical-nested'
+      endif
+    -%}
+
+    <fieldset
+      class="cultivation-filter__group {{ group_extra_class }}"
+      data-filter-group="{{ filter_group_key }}"
+      data-filter-param="{{ filter.param_name | escape }}"
+    >
+      <legend class="cultivation-filter__group-label">
+        {%- case filter_group_key -%}
+          {%- when 'availability' -%}
+            {{ 'sections.main_collection_product_grid.filter_availability' | t }}
+          {%- when 'price' -%}
+            {{ 'sections.main_collection_product_grid.filter_price' | t }}
+          {%- when 'genus' -%}
+            {{ 'sections.main_collection_product_grid.filter_genus' | t }}
+          {%- when 'difficulty' -%}
+            {{ 'sections.main_collection_product_grid.filter_difficulty' | t }}
+          {%- when 'temperature' -%}
+            {{ 'sections.main_collection_product_grid.filter_temperature' | t }}
+          {%- when 'trap_type' -%}
+            {{ 'sections.main_collection_product_grid.filter_trap_type' | t }}
+          {%- when 'latin_name' -%}
+            {{ 'sections.main_collection_product_grid.filter_latin_name' | t }}
+          {%- when 'origin' -%}
+            {{ 'sections.main_collection_product_grid.filter_origin' | t }}
+          {%- when 'humidity' -%}
+            {{ 'sections.main_collection_product_grid.filter_humidity' | t }}
+          {%- when 'light' -%}
+            {{ 'sections.main_collection_product_grid.filter_light' | t }}
+          {%- when 'growth_speed' -%}
+            {{ 'sections.main_collection_product_grid.filter_growth_speed' | t }}
+          {%- when 'altitude' -%}
+            {{ 'sections.main_collection_product_grid.filter_altitude' | t }}
+          {%- when 'substrate' -%}
+            {{ 'sections.main_collection_product_grid.filter_substrate' | t }}
+          {%- else -%}
+            {{ filter.label | escape }}
+        {%- endcase -%}
+      </legend>
+
+      {%- if filter.type == 'price_range' -%}
+        <div class="cultivation-filter__price-range">
+          <label class="cultivation-filter__price-field">
+            <span class="cultivation-filter__price-label">{{ 'sections.main_collection_product_grid.filter_price_min' | t }}</span>
+            <input
+              type="number"
+              class="cultivation-filter__price-input"
+              name="{{ filter.min_value.param_name }}"
+              value="{{ filter.min_value.value }}"
+              min="0"
+              step="1"
+              inputmode="numeric"
+              placeholder="0"
+              data-cultivation-facet-input
+              data-cultivation-price-input
+            >
+          </label>
+          <span class="cultivation-filter__price-sep" aria-hidden="true">—</span>
+          <label class="cultivation-filter__price-field">
+            <span class="cultivation-filter__price-label">{{ 'sections.main_collection_product_grid.filter_price_max' | t }}</span>
+            <input
+              type="number"
+              class="cultivation-filter__price-input"
+              name="{{ filter.max_value.param_name }}"
+              value="{{ filter.max_value.value }}"
+              min="0"
+              step="1"
+              inputmode="numeric"
+              placeholder="99999"
+              data-cultivation-facet-input
+              data-cultivation-price-input
+            >
+          </label>
+        </div>
+      {%- else -%}
+        <ul class="{{ values_list_class }}" role="list">
+          {%- for filter_value in filter.values -%}
+            {%- liquid
+              assign show_value = false
+              if filter_value.count > 0
+                assign show_value = true
+              endif
+              if filter_value.active
+                assign show_value = true
+              endif
+            -%}
+            {%- unless show_value -%}
+              {%- continue -%}
+            {%- endunless -%}
+
+            {%- liquid
+              assign display_label = filter_value.label
+
+              if filter_group_key == 'difficulty'
+                unless display_label contains '/'
+                  assign difficulty_value = filter_value.value | default: filter_value.label
+                  assign display_label = difficulty_value | append: '/5'
+                endunless
+              endif
+
+              if filter_group_key == 'temperature'
+                assign display_label = filter_value.label | capitalize
+              endif
+
+              if filter_group_key == 'trap_type'
+                assign trap_key = filter_value.label | downcase
+                case trap_key
+                  when 'snap'
+                    assign display_label = 'sections.main_collection_product_grid.trap_snap' | t
+                  when 'pitfall'
+                    assign display_label = 'sections.main_collection_product_grid.trap_pitfall' | t
+                  when 'flypaper'
+                    assign display_label = 'sections.main_collection_product_grid.trap_flypaper' | t
+                  when 'suction'
+                    assign display_label = 'sections.main_collection_product_grid.trap_suction' | t
+                  when 'lobster-pot'
+                    assign display_label = 'sections.main_collection_product_grid.trap_lobster_pot' | t
+                endcase
+              endif
+
+              if filter_group_key == 'genus'
+                assign display_label = filter_value.label | capitalize
+              endif
+
+              if filter_group_key == 'availability'
+                assign avail_key = filter_value.label | downcase
+                if avail_key contains 'out' or avail_key contains '0'
+                  assign display_label = 'sections.main_collection_product_grid.availability_cultivating' | t
+                else
+                  assign display_label = 'sections.main_collection_product_grid.availability_in_stock' | t
+                endif
+              endif
+            -%}
+
+            <li class="cultivation-filter__value{% if filter_group_key == 'difficulty' %} cultivation-filter__value--pill{% endif %}" role="listitem">
+              <label class="cultivation-filter__option{% if filter_group_key == 'difficulty' %} cultivation-filter__option--pill{% endif %}">
+                <input
+                  type="checkbox"
+                  name="{{ filter_value.param_name }}"
+                  value="{{ filter_value.value | escape }}"
+                  {% if filter_value.active %}
+                    checked
+                  {% endif %}
+                  data-cultivation-facet-input
+                >
+                <span class="cultivation-filter__option-label">{{ display_label | escape }}</span>
+                {%- unless filter_group_key == 'difficulty' -%}
+                  <span class="cultivation-filter__option-count" aria-hidden="true">{{ filter_value.count }}</span>
+                {%- endunless -%}
+              </label>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </fieldset>
+  {%- endif -%}
+{%- endif -%}

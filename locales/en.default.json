@@ -122,7 +122,17 @@
       "filter_difficulty": "Difficulty",
       "filter_temperature": "Temperature",
       "filter_trap_type": "Trap type",
+      "filter_latin_name": "Latin name",
+      "filter_origin": "Origin",
+      "filter_humidity": "Humidity",
+      "filter_light": "Light",
+      "filter_growth_speed": "Growth speed",
+      "filter_altitude": "Altitude",
+      "filter_substrate": "Substrate",
+      "filter_technical_specs": "Technical specs",
+      "filter_technical_hint": "Altitude, temperature, substrate, humidity, and light",
       "filter_clear": "Clear all filters",
+      "filter_reset_all": "Reset all",
       "filter_active_count": "{{ count }} filters active",
       "filter_empty": "Enable storefront filters in Search & Discovery: availability, price, genus (or product type), difficulty, temperature, and trap type.",
       "filter_preview_note": "Preview only — filters appear once products and Search & Discovery facets are configured.",
@@ -311,7 +321,28 @@
       "email": "Email",
       "password": "Password",
       "submit": "Sign in",
-      "title": "Login"
+      "title": "Login",
+      "forgot_password": "Forgot your password?",
+      "create_account": "Create account",
+      "guest_title": "Continue as guest",
+      "guest_continue": "Continue"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account",
+      "sign_in": "Already have an account? Sign in"
+    },
+    "account": {
+      "title": "Account",
+      "welcome": "Welcome back, {{ name }}",
+      "addresses": "Manage addresses",
+      "orders_heading": "Order history",
+      "no_orders": "You have not placed any orders yet.",
+      "logout": "Log out"
     }
   },
   "collections": {
@@ -331,10 +362,14 @@
   },
   "footer": {
     "quick_links": "Quick links",
+    "link_home": "Home",
     "link_shop": "Shop",
     "link_about": "About",
     "link_care": "Care guides",
     "link_contact": "Contact",
+    "link_shipping": "Shipping",
+    "link_privacy": "Privacy",
+    "link_refund": "Refund policy",
     "contact_heading": "Contact",
     "newsletter_email_label": "Email address",
     "newsletter_placeholder": "you@example.com",

@@ -11,6 +11,7 @@ shopify theme dev --store bizzare-tropicals.myshopify.com
 shopify auth logout
 shopify auth login
 shopify theme dev --store bizzare-tropicals-2.myshopify.com
+shopify theme dev
 
 
 git init

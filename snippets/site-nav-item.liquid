@@ -21,7 +21,7 @@
     assign has_children = true
   endif
 
-  if link_title_normalized == 'catalog'
+  if link_title_normalized == 'catalog' or link_title_normalized == 'shop' or link_title_normalized == 'collections'
     assign is_catalog_mega = true
   endif
 

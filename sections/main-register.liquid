@@ -1,0 +1,182 @@
+<section
+  class="customer-register full-width"
+  aria-labelledby="customer-register-title-{{ section.id }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="customer-register__inner">
+    <header class="customer-register__header">
+      <h1 id="customer-register-title-{{ section.id }}" class="customer-register__title">
+        {{ 'customers.register.title' | t }}
+      </h1>
+    </header>
+
+    {%- form 'create_customer', class: 'customer-register__form' -%}
+      {%- if form.errors -%}
+        <div class="customer-register__errors" role="alert">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="customer-register__field">
+        <label class="customer-register__label" for="RegisterFirstName-{{ section.id }}">
+          {{ 'customers.register.first_name' | t }}
+        </label>
+        <input
+          class="customer-register__input"
+          type="text"
+          id="RegisterFirstName-{{ section.id }}"
+          name="customer[first_name]"
+          value="{{ form.first_name }}"
+          autocomplete="given-name"
+        >
+      </div>
+
+      <div class="customer-register__field">
+        <label class="customer-register__label" for="RegisterLastName-{{ section.id }}">
+          {{ 'customers.register.last_name' | t }}
+        </label>
+        <input
+          class="customer-register__input"
+          type="text"
+          id="RegisterLastName-{{ section.id }}"
+          name="customer[last_name]"
+          value="{{ form.last_name }}"
+          autocomplete="family-name"
+        >
+      </div>
+
+      <div class="customer-register__field">
+        <label class="customer-register__label" for="RegisterEmail-{{ section.id }}">
+          {{ 'customers.register.email' | t }}
+        </label>
+        <input
+          class="customer-register__input"
+          type="email"
+          id="RegisterEmail-{{ section.id }}"
+          name="customer[email]"
+          value="{{ form.email }}"
+          autocomplete="email"
+          spellcheck="false"
+          autocapitalize="off"
+          required
+        >
+      </div>
+
+      <div class="customer-register__field">
+        <label class="customer-register__label" for="RegisterPassword-{{ section.id }}">
+          {{ 'customers.register.password' | t }}
+        </label>
+        <input
+          class="customer-register__input"
+          type="password"
+          id="RegisterPassword-{{ section.id }}"
+          name="customer[password]"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="customer-register__submit">
+        {{ 'customers.register.submit' | t }}
+      </button>
+    {%- endform -%}
+
+    <p class="customer-register__login">
+      <a class="customer-register__link link-underline-grow" href="{{ routes.account_login_url }}">
+        {{ 'customers.register.sign_in' | t }}
+      </a>
+    </p>
+  </div>
+</section>
+
+{% stylesheet %}
+  .customer-register {
+    padding-block: var(--space-3xl) var(--space-4xl);
+    background-color: var(--color-parchment);
+  }
+
+  .customer-register__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    max-width: 28rem;
+    margin-inline: auto;
+  }
+
+  .customer-register__title {
+    margin: 0 0 var(--space-xl);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .customer-register__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .customer-register__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .customer-register__label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .customer-register__input {
+    min-height: 2.75rem;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface-elevated);
+  }
+
+  .customer-register__errors {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    color: #8b2d2d;
+    background-color: rgb(139 45 45 / 0.08);
+    border: 1px solid rgb(139 45 45 / 0.25);
+    border-radius: var(--radius-sm);
+  }
+
+  .customer-register__submit {
+    min-height: 3rem;
+    margin-block-start: var(--space-sm);
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green-dark);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+  }
+
+  .customer-register__login {
+    margin-block-start: var(--space-xl);
+    text-align: center;
+  }
+
+  .customer-register__link {
+    color: var(--color-forest-green-dark);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_register.name",
+  "tag": "section",
+  "class": "customer-register-section",
+  "settings": []
+}
+{% endschema %}

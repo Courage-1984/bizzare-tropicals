@@ -209,6 +209,17 @@
 
   /* Cultivation filter drawer — styles live in snippets/cultivation-filter-drawer.liquid */
 
+  @media (max-width: 989px) {
+    .collection-grid-section--filters-open [data-collection-product-grid] {
+      pointer-events: none;
+    }
+
+    .collection-grid-section--filters-open .collection-grid-section__header {
+      position: relative;
+      z-index: calc(var(--z-drawer) + 6);
+    }
+  }
+
   .collection-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -349,9 +360,28 @@
       return root.closest('[data-collection-grid-section]');
     }
 
+    function mergeFacetSearchParams(form) {
+      var merged = new URLSearchParams();
+      var formParams = new URLSearchParams(new FormData(form));
+      var current = new URLSearchParams(window.location.search);
+      var preserveKeys = ['sort_by', 'view', 'q'];
+
+      preserveKeys.forEach(function (key) {
+        if (current.has(key) && !formParams.has(key)) {
+          merged.set(key, current.get(key));
+        }
+      });
+
+      formParams.forEach(function (value, key) {
+        merged.append(key, value);
+      });
+
+      return merged;
+    }
+
     function buildFacetUrl(form, sectionId) {
-      var params = new URLSearchParams(new FormData(form));
       var url = new URL(form.action, window.location.origin);
+      var params = mergeFacetSearchParams(form);
 
       params.forEach(function (value, key) {
         url.searchParams.append(key, value);
@@ -359,6 +389,14 @@
 
       url.searchParams.set('section_id', sectionId);
       return url;
+    }
+
+    function setFiltersDrawerOpen(section, open) {
+      if (!section) {
+        return;
+      }
+
+      section.classList.toggle('collection-grid-section--filters-open', open);
     }
 
     function updateFilterBadge(section, count) {
@@ -423,8 +461,8 @@
         .then(function (html) {
           renderCollectionSection(section, html);
           var nextUrl = new URL(form.action, window.location.origin);
-          var params = new URLSearchParams(new FormData(form));
-          params.delete('section_id');
+          var params = mergeFacetSearchParams(form);
+
           params.forEach(function (value, key) {
             nextUrl.searchParams.append(key, value);
           });
@@ -438,7 +476,7 @@
         });
     }
 
-    function openFilterDrawer(drawer, trigger) {
+    function openFilterDrawer(drawer, trigger, section) {
       drawer.classList.add('is-open');
       drawer.setAttribute('aria-hidden', 'false');
       var panel = drawer.querySelector('[data-cultivation-filter-panel]');
@@ -456,10 +494,11 @@
         trigger.setAttribute('aria-expanded', 'true');
       }
 
+      setFiltersDrawerOpen(section || getCollectionSection(drawer), true);
       document.documentElement.classList.add('is-scroll-locked');
     }
 
-    function closeFilterDrawer(drawer, trigger) {
+    function closeFilterDrawer(drawer, trigger, section) {
       drawer.classList.remove('is-open');
       drawer.setAttribute('aria-hidden', 'true');
       var panel = drawer.querySelector('[data-cultivation-filter-panel]');
@@ -478,6 +517,7 @@
         trigger.focus();
       }
 
+      setFiltersDrawerOpen(section || getCollectionSection(drawer), false);
       document.documentElement.classList.remove('is-scroll-locked');
     }
 
@@ -521,28 +561,28 @@
 
       var overlay = drawer.querySelector('[data-cultivation-filter-overlay]');
       var closeButtons = drawer.querySelectorAll('[data-cultivation-filter-close]');
-      var clearButton = drawer.querySelector('[data-cultivation-filter-clear]');
+      var clearButtons = drawer.querySelectorAll('[data-cultivation-filter-clear]');
       var inputs = drawer.querySelectorAll('[data-cultivation-facet-input]');
 
       if (trigger) {
         trigger.addEventListener('click', function () {
           if (drawer.classList.contains('is-open')) {
-            closeFilterDrawer(drawer, trigger);
+            closeFilterDrawer(drawer, trigger, section);
           } else {
-            openFilterDrawer(drawer, trigger);
+            openFilterDrawer(drawer, trigger, section);
           }
         });
       }
 
       closeButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-          closeFilterDrawer(drawer, trigger);
+          closeFilterDrawer(drawer, trigger, section);
         });
       });
 
       if (overlay) {
         overlay.addEventListener('click', function () {
-          closeFilterDrawer(drawer, trigger);
+          closeFilterDrawer(drawer, trigger, section);
         });
       }
 
@@ -571,7 +611,7 @@
         });
       });
 
-      if (clearButton) {
+      clearButtons.forEach(function (clearButton) {
         clearButton.addEventListener('click', function () {
           inputs.forEach(function (input) {
             if (input.type === 'checkbox') {
@@ -582,7 +622,7 @@
           });
           submitFacetForm(form, section);
         });
-      }
+      });
 
       bindLoadMore(section);
     }
@@ -676,7 +716,7 @@
 
       var section = getCollectionSection(openDrawer);
       var trigger = section ? section.querySelector('[data-cultivation-filter-open]') : null;
-      closeFilterDrawer(openDrawer, trigger);
+      closeFilterDrawer(openDrawer, trigger, section);
     });
 
     if (document.readyState === 'loading') {

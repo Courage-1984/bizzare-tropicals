@@ -7,7 +7,20 @@
   assign panel_heading = section.settings.panel_heading
   assign panel_intro = section.settings.panel_intro
   assign contact_address = section.settings.contact_address
+  if contact_address == blank
+    assign contact_address = 'Gauteng, South Africa (By Appointment Only)'
+  endif
+
   assign contact_email = section.settings.contact_email
+  if contact_email == blank
+    assign contact_email = 'sales@bizarretropicals.com'
+  endif
+
+  assign contact_hours = section.settings.contact_hours
+  if contact_hours == blank
+    assign contact_hours = 'Hours: 24/7 (Online)'
+  endif
+
   assign contact_phone = section.settings.contact_phone
   assign panel_image = section.settings.panel_image
   assign image_position = section.settings.image_position
@@ -227,6 +240,12 @@
                   <dd>
                     <a class="contact-page__details-link link-underline-grow" href="mailto:{{ contact_email }}">{{ contact_email | escape }}</a>
                   </dd>
+                </div>
+              {%- endif -%}
+              {%- if contact_hours != blank -%}
+                <div class="contact-page__details-row">
+                  <dt>{{ 'sections.contact_template.detail_hours' | t }}</dt>
+                  <dd>{{ contact_hours | escape }}</dd>
                 </div>
               {%- endif -%}
               {%- if contact_phone != blank -%}
@@ -682,7 +701,13 @@
       "type": "text",
       "id": "contact_email",
       "label": "t:sections.contact_template.settings.contact_email",
-      "default": "info@bizarretropicals.co.za"
+      "default": "sales@bizarretropicals.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_hours",
+      "label": "t:sections.contact_template.settings.contact_hours",
+      "default": "Hours: 24/7 (Online)"
     },
     {
       "type": "text",

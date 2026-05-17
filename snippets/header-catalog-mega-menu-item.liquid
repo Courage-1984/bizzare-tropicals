@@ -1,0 +1,99 @@
+{% doc %}
+  Single genus link for the catalog mega menu.
+
+  @param {collection} collection - Genus collection
+  @param {string} variant - `desktop` or `mobile`
+  @param {array} [mega_menu_blocks] - Optional header mega_menu_item blocks
+{% enddoc %}
+
+{%- liquid
+  assign item_label = collection.title
+  assign item_link = collection.url
+  assign item_image = blank
+  assign item_placeholder = blank
+  assign use_item_image = false
+  assign block_attributes = ''
+
+  if mega_menu_blocks != blank
+    for block in mega_menu_blocks
+      if block.type != 'mega_menu_item'
+        continue
+      endif
+
+      assign block_link = block.settings.link | default: ''
+      assign block_handle = block_link | split: '/collections/' | last | split: '?' | first | split: '#' | first
+
+      if block_handle == collection.handle
+        if block.settings.label != blank
+          assign item_label = block.settings.label
+        endif
+        assign item_image = block.settings.image
+        assign item_placeholder = block.settings.placeholder_image
+        assign block_attributes = block.shopify_attributes
+        break
+      endif
+    endfor
+  endif
+
+  if item_image != blank and item_image.width > 0
+    assign use_item_image = true
+  elsif collection.image != blank and collection.image.width > 0
+    assign item_image = collection.image
+    assign use_item_image = true
+  endif
+
+  if use_item_image == false
+    for product in collection.products limit: 12
+      if product.featured_image != blank and product.featured_image.width > 0
+        assign item_image = product.featured_image
+        assign use_item_image = true
+        break
+      endif
+    endfor
+  endif
+
+  if use_item_image == false
+    if item_placeholder == blank
+      capture item_placeholder
+        render 'genus-mega-menu-placeholder-url', genus_handle: collection.handle, width: 60
+      endcapture
+      assign item_placeholder = item_placeholder | strip
+    endif
+  endif
+-%}
+
+{%- if variant == 'desktop' -%}
+  <a class="site-nav__mega-link" href="{{ item_link }}" role="listitem" {{ block_attributes }}>
+{%- else -%}
+  <li class="site-nav__mega-item" role="listitem" {{ block_attributes }}>
+    <a class="site-nav__mega-link" href="{{ item_link }}">
+{%- endif -%}
+    {%- if use_item_image -%}
+      {{
+        item_image
+        | image_url: width: 60, height: 60, crop: 'center'
+        | image_tag:
+          class: 'site-nav__mega-thumb',
+          widths: '30, 60',
+          sizes: '30px',
+          loading: 'lazy',
+          alt: ''
+      }}
+    {%- elsif item_placeholder != blank -%}
+      <img
+        class="site-nav__mega-thumb"
+        src="{{ item_placeholder | escape }}"
+        alt=""
+        width="30"
+        height="30"
+        loading="lazy"
+        decoding="async"
+      >
+    {%- endif -%}
+    <span class="site-nav__mega-label">{{ item_label | escape }}</span>
+{%- if variant == 'desktop' -%}
+  </a>
+{%- else -%}
+    </a>
+  </li>
+{%- endif -%}

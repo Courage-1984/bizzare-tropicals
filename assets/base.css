@@ -40,7 +40,7 @@ html:has(dialog[scroll-lock][open], details[scroll-lock][open], .is-scroll-locke
   grid-template-columns: none;
 }
 
-.cart-drawer-section.shopify-section > * {
+.cart-drawer-section.shopify-section>* {
   grid-column: auto;
 }
 
@@ -51,8 +51,8 @@ html:has(dialog[scroll-lock][open], details[scroll-lock][open], .is-scroll-locke
   grid-template-columns: none;
 }
 
-.contact-template-section.shopify-section > *,
-.about-template-section.shopify-section > * {
+.contact-template-section.shopify-section>*,
+.about-template-section.shopify-section>* {
   grid-column: auto;
 }
 
@@ -350,7 +350,7 @@ main,
   overflow: visible;
 }
 
-.site-header-section.shopify-section > * {
+.site-header-section.shopify-section>* {
   grid-column: auto;
 }
 
@@ -469,12 +469,12 @@ p:empty {
 }
 
 :is(p, h1, h2, h3, h4, h5, h6):first-child,
-:empty:first-child + :where(p, h1, h2, h3, h4, h5, h6) {
+:empty:first-child+ :where(p, h1, h2, h3, h4, h5, h6) {
   margin-block-start: 0;
 }
 
 :is(p, h1, h2, h3, h4, h5, h6):last-child,
-:where(p, h1, h2, h3, h4, h5, h6) + :has(+ :empty:last-child) {
+:where(p, h1, h2, h3, h4, h5, h6)+ :has(+ :empty:last-child) {
   margin-block-end: 0;
 }
 
@@ -646,6 +646,7 @@ p:empty {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .product-card,
   .product-card__image {
     transition: none;
@@ -679,10 +680,8 @@ p:empty {
 }
 
 .shopify-section {
-  --content-width: min(
-    calc(var(--page-width) - var(--page-margin) * 2),
-    calc(100% - var(--page-margin) * 2)
-  );
+  --content-width: min(calc(var(--page-width) - var(--page-margin) * 2),
+      calc(100% - var(--page-margin) * 2));
   --content-margin: minmax(var(--page-margin), 1fr);
   --content-grid: var(--content-margin) var(--content-width) var(--content-margin);
 
@@ -692,11 +691,11 @@ p:empty {
   width: 100%;
 }
 
-.shopify-section > * {
+.shopify-section>* {
   grid-column: 2;
 }
 
-.shopify-section > .full-width {
+.shopify-section>.full-width {
   grid-column: 1 / -1;
 }
 
@@ -715,55 +714,55 @@ p:empty {
   transform: translateY(0);
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(1) {
+[data-reveal-stagger]>.reveal-up:nth-child(1) {
   transition-delay: 0.05s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(2) {
+[data-reveal-stagger]>.reveal-up:nth-child(2) {
   transition-delay: 0.13s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(3) {
+[data-reveal-stagger]>.reveal-up:nth-child(3) {
   transition-delay: 0.21s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(4) {
+[data-reveal-stagger]>.reveal-up:nth-child(4) {
   transition-delay: 0.29s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(5) {
+[data-reveal-stagger]>.reveal-up:nth-child(5) {
   transition-delay: 0.37s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(6) {
+[data-reveal-stagger]>.reveal-up:nth-child(6) {
   transition-delay: 0.45s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(7) {
+[data-reveal-stagger]>.reveal-up:nth-child(7) {
   transition-delay: 0.53s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(8) {
+[data-reveal-stagger]>.reveal-up:nth-child(8) {
   transition-delay: 0.61s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(9) {
+[data-reveal-stagger]>.reveal-up:nth-child(9) {
   transition-delay: 0.69s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(10) {
+[data-reveal-stagger]>.reveal-up:nth-child(10) {
   transition-delay: 0.77s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(11) {
+[data-reveal-stagger]>.reveal-up:nth-child(11) {
   transition-delay: 0.85s;
 }
 
-[data-reveal-stagger] > .reveal-up:nth-child(12) {
+[data-reveal-stagger]>.reveal-up:nth-child(12) {
   transition-delay: 0.93s;
 }
 
-[data-reveal-stagger] > .reveal-up.is-visible {
+[data-reveal-stagger]>.reveal-up.is-visible {
   transition-delay: inherit;
 }
 
@@ -786,4 +785,330 @@ p:empty {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Collection cultivation filters — guided UI polish (BT-Green theme) */
+.cultivation-filter {
+  --bt-filter-green: var(--color-accent, #2d5a45);
+  --bt-filter-green-soft: rgb(45 90 69 / 0.12);
+  --bt-filter-red-soft: rgb(139 45 45 / 0.14);
+  --bt-filter-expert: #8b2d2d;
+}
+
+/* Reset all — top of drawer; visible only when filters are active (Liquid hidden attr) */
+.cultivation-filter__toolbar {
+  flex-shrink: 0;
+  margin-block-end: var(--space-md);
+  padding-block-end: var(--space-md);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.cultivation-filter__toolbar[hidden] {
+  display: none !important;
+}
+
+.cultivation-filter__reset-all {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--color-forest-green-dark);
+  background-color: var(--color-parchment);
+  border: 1px solid var(--bt-filter-green);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.cultivation-filter__reset-all:hover {
+  color: var(--color-text-inverse);
+  background-color: var(--bt-filter-green);
+  border-color: var(--bt-filter-green);
+}
+
+/* Active / selected facet options — BT-Green left accent */
+.cultivation-filter__option:has(input[type='checkbox']:checked) {
+  border-inline-start: 3px solid var(--bt-filter-green);
+  padding-inline-start: calc(var(--space-md) - 3px);
+  background: linear-gradient(90deg, var(--bt-filter-green-soft) 0%, transparent 72%);
+  box-shadow: inset 0 0 0 1px rgb(45 90 69 / 0.08);
+}
+
+.cultivation-filter__option:has(input[type='checkbox']:checked) .cultivation-filter__option-label {
+  font-weight: 600;
+  color: var(--color-forest-green-dark);
+}
+
+.cultivation-filter__option:has(input[type='checkbox']:checked) input[type='checkbox'] {
+  outline: 2px solid var(--bt-filter-green);
+  outline-offset: 2px;
+}
+
+/* Difficulty / level — easy (green) → expert (red) gradient panel */
+.cultivation-filter__group--difficulty-highlight {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg,
+      rgb(45 90 69 / 0.22) 0%,
+      rgb(247 244 237 / 0.85) 42%,
+      rgb(200 120 80 / 0.12) 68%,
+      var(--bt-filter-red-soft) 100%);
+  box-shadow: inset 3px 0 0 var(--bt-filter-green);
+}
+
+.cultivation-filter__group--difficulty-highlight .cultivation-filter__group-label {
+  color: var(--color-forest-green-dark);
+}
+
+.cultivation-filter__group--difficulty-highlight .cultivation-filter__option:has(input:checked) {
+  border-inline-start-color: var(--bt-filter-green);
+}
+
+/* Technical specs accordion — + closed, − open */
+.cultivation-filter__technical-summary {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  min-height: 3rem;
+  padding: var(--space-md) var(--space-lg);
+  padding-inline-end: 2.75rem;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cultivation-filter__technical-summary::-webkit-details-marker {
+  display: none;
+}
+
+.cultivation-filter__technical-summary::marker {
+  content: '';
+}
+
+.cultivation-filter__technical-toggle {
+  position: absolute;
+  inset-inline-end: var(--space-lg);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--bt-filter-green);
+  pointer-events: none;
+}
+
+.cultivation-filter__technical-toggle::before {
+  content: '+';
+}
+
+.cultivation-filter__technical[open] .cultivation-filter__technical-toggle::before {
+  content: '−';
+}
+
+.cultivation-filter__option {
+  min-height: 2.75rem;
+}
+
+@media (max-width: 989px) {
+  .collection-grid-section--filters-open .cultivation-filter.is-open {
+    z-index: calc(var(--z-drawer) + 5);
+  }
+
+  .collection-grid-section--filters-open [data-collection-product-grid] {
+    isolation: isolate;
+  }
+}
+
+/* Scrollable single-column filter lists */
+.cultivation-filter__values--scroll,
+.cultivation-filter__zone--primary .cultivation-filter__values:not(.cultivation-filter__values--pills),
+.cultivation-filter__group--technical-nested .cultivation-filter__values {
+  max-height: var(--cultivation-filter-scroll-height, 10rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-inline-end: var(--space-2xs);
+  scrollbar-width: thin;
+  scrollbar-color: rgb(45 90 69 / 0.45) rgb(10 24 18 / 0.06);
+}
+
+.cultivation-filter__values--scroll::-webkit-scrollbar,
+.cultivation-filter__zone--primary .cultivation-filter__values:not(.cultivation-filter__values--pills)::-webkit-scrollbar,
+.cultivation-filter__group--technical-nested .cultivation-filter__values::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cultivation-filter__values--scroll::-webkit-scrollbar-thumb,
+.cultivation-filter__zone--primary .cultivation-filter__values:not(.cultivation-filter__values--pills)::-webkit-scrollbar-thumb,
+.cultivation-filter__group--technical-nested .cultivation-filter__values::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background-color: rgb(45 90 69 / 0.4);
+}
+
+.cultivation-filter__values--scroll::-webkit-scrollbar-track,
+.cultivation-filter__zone--primary .cultivation-filter__values:not(.cultivation-filter__values--pills)::-webkit-scrollbar-track,
+.cultivation-filter__group--technical-nested .cultivation-filter__values::-webkit-scrollbar-track {
+  background-color: rgb(10 24 18 / 0.05);
+}
+
+.cultivation-filter__zone--primary .cultivation-filter__option-label,
+.cultivation-filter__group--technical-nested .cultivation-filter__option-label {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Technical accordion — open state */
+.cultivation-filter__technical[open] {
+  border-color: var(--color-forest-green-dark);
+  background-color: rgb(247 244 237 / 0.55);
+}
+
+.cultivation-filter__technical-body {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.cultivation-filter__technical {
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+
+.cultivation-filter__technical-grid {
+  width: 100%;
+}
+
+.cultivation-filter__technical-grid > .cultivation-filter__group--technical-nested {
+  min-width: 0;
+}
+
+.cultivation-filter__group--technical-nested {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-parchment);
+}
+
+.cultivation-filter__group--technical-nested .cultivation-filter__group-label {
+  margin-block-end: var(--space-2xs);
+  padding-block-end: var(--space-2xs);
+  border-block-end: 1px solid rgb(10 24 18 / 0.08);
+}
+
+.cultivation-filter__group--technical-nested .cultivation-filter__values {
+  --cultivation-filter-scroll-height: 8.5rem;
+}
+
+@media (min-width: 990px) {
+  .cultivation-filter__technical-summary {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 0;
+    padding-block: var(--space-sm);
+  }
+
+  .cultivation-filter__technical-hint {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+
+  .cultivation-filter__technical-grid {
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  }
+
+  .cultivation-filter__zone--primary .cultivation-filter__group-label {
+    margin-block-end: var(--space-2xs);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+  }
+
+  .cultivation-filter__zone--primary .cultivation-filter__option {
+    min-height: 2rem;
+    padding: var(--space-2xs) var(--space-sm);
+  }
+
+  .cultivation-filter__toolbar {
+    flex: 1 1 100%;
+    order: -2;
+    margin-block-end: 0;
+    padding-block-end: var(--space-sm);
+  }
+}
+
+/* Difficulty — horizontal pill chips */
+.cultivation-filter__group--difficulty-pills .cultivation-filter__group-label {
+  margin-block-end: var(--space-xs);
+}
+
+.cultivation-filter__values--pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.cultivation-filter__value--pill+.cultivation-filter__value--pill {
+  margin-block-start: 0;
+}
+
+.cultivation-filter__option--pill {
+  position: relative;
+  min-height: auto;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: rgb(247 244 237 / 0.65);
+}
+
+.cultivation-filter__option--pill input[type='checkbox'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cultivation-filter__option--pill .cultivation-filter__option-label {
+  flex: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cultivation-filter__option--pill:has(input[type='checkbox']:checked) {
+  border-color: var(--bt-filter-green, var(--color-accent));
+  padding-inline-start: 0.65rem;
+  background: var(--bt-filter-green-soft, rgb(45 90 69 / 0.12));
+  box-shadow: none;
+}
+
+.cultivation-filter__option--pill:has(input[type='checkbox']:checked) {
+  border-inline-start: 1px solid var(--bt-filter-green, var(--color-accent));
+}
+
+.cultivation-filter__option--pill:hover {
+  background-color: rgb(10 24 18 / 0.05);
 }

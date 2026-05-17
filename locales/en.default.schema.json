@@ -227,8 +227,12 @@
         "currency_note": "Currency note",
         "copyright_text": "Copyright text",
         "designer_link_url": "Designer link URL",
-        "designer_link_label": "Designer link label"
+        "designer_link_label": "Designer link label",
+        "about_page": "About page (footer link)"
       }
+    },
+    "main_account": {
+      "name": "Customer account"
     },
     "collection_banner": {
       "name": "Collection banner",
@@ -302,6 +306,24 @@
         "heading_info": "Leave blank to use the collection title."
       }
     },
+    "main_login": {
+      "name": "Customer login"
+    },
+    "main_account": {
+      "name": "Customer account"
+    },
+    "main_register": {
+      "name": "Customer register"
+    },
+    "main_policy_page": {
+      "name": "Policy page",
+      "settings": {
+        "fallback_title": "Fallback title",
+        "intro": "Introduction",
+        "default_body": "Default content",
+        "default_body_info": "Shown when the page has no body content in the admin."
+      }
+    },
     "contact_template": {
       "name": "Contact page",
       "settings": {
@@ -324,6 +346,7 @@
         "image_position_bottom": "Below text",
         "contact_address": "Address",
         "contact_email": "Email",
+        "contact_hours": "Hours",
         "contact_phone": "Phone",
         "faq_header": "FAQ",
         "faq_heading": "FAQ heading",

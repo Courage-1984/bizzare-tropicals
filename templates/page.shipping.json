@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-policy-page",
+      "settings": {
+        "fallback_title": "Shipping & live plant care",
+        "intro": "How we pack and ship living carnivorous plants across South Africa.",
+        "default_body": "<p>We ship living plants nationwide using couriers experienced with temperature-sensitive freight. Orders are typically dispatched on Mondays to minimise weekend delays.</p><ul><li><strong>Packaging:</strong> Specimens are secured in laboratory-grade sphagnum and climate-appropriate insulation.</li><li><strong>Rates:</strong> Shipping is calculated at checkout based on destination and cart size.</li><li><strong>Live arrival:</strong> Report transit damage within 48 hours with photos so we can assist.</li><li><strong>Hold for weather:</strong> We may delay dispatch during extreme heat or cold — we will contact you if your order is held.</li></ul><p>Questions? <a href=\"/pages/contact\">Contact us</a> before ordering rare or high-value lines.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
