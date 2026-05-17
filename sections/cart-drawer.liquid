@@ -41,7 +41,11 @@
   >
     <header class="cart-drawer__header">
       <h2 id="cart-drawer-title-{{ section.id }}" class="cart-drawer__title">
-        {{ section.settings.drawer_title | default: 'cart.drawer.title' | t }}
+        {%- if section.settings.drawer_title != blank -%}
+          {{ section.settings.drawer_title | escape }}
+        {%- else -%}
+          {{ 'cart.drawer.title' | t }}
+        {%- endif -%}
       </h2>
       <button
         type="button"

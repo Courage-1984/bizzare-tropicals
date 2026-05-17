@@ -1,6 +1,21 @@
 {%- liquid
   assign menu_desktop = section.settings.menu_desktop
-  assign menu_mobile = section.settings.menu_mobile | default: menu_desktop
+  if menu_desktop == blank or menu_desktop.links.size == 0
+    assign menu_desktop = linklists['main-menu']
+  endif
+  if menu_desktop == blank or menu_desktop.links.size == 0
+    for linklist in linklists
+      if linklist.links.size > 0
+        assign menu_desktop = linklist
+        break
+      endif
+    endfor
+  endif
+
+  assign menu_mobile = section.settings.menu_mobile
+  if menu_mobile == blank or menu_mobile.links.size == 0
+    assign menu_mobile = menu_desktop
+  endif
 -%}
 
 <div class="header-wrapper" {{ section.shopify_attributes }}>

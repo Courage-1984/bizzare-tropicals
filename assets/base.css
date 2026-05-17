@@ -1113,12 +1113,22 @@ p:empty {
   background-color: rgb(10 24 18 / 0.05);
 }
 
-/* Performance — defer paint for below-the-fold sections (homepage / long pages) */
+/* Performance — defer paint for below-the-fold page sections only (never header/footer/overlays) */
 @media (min-width: 750px) {
-  .shopify-section:not(:first-of-type):not(.cart-drawer-section):not(.header-group-section) {
+  #main-content .shopify-section:not(:first-of-type) {
     content-visibility: auto;
     contain-intrinsic-size: auto 28rem;
   }
+}
+
+/* Fixed header shell — must always paint (zero-height section wrappers + content-visibility break nav) */
+.site-header-section.shopify-section,
+.announcement-bar-section.shopify-section,
+.search-overlay-section.shopify-section,
+.newsletter-modal-section.shopify-section,
+.cart-drawer-section.shopify-section {
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
 }
 
 .page-is-hidden [data-genus-carousel],
@@ -1128,9 +1138,15 @@ p:empty {
 }
 
 /* Responsive foundation */
-:where(img, video, svg:not(.site-nav__icon svg)) {
+:where(img, video) {
   max-width: 100%;
   height: auto;
+}
+
+.site-header__icon svg,
+.site-nav__icon svg,
+.cart-drawer__close-icon {
+  max-width: none;
 }
 
 .rte :where(img, video, iframe) {
