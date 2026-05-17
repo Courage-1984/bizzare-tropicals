@@ -184,16 +184,16 @@
   endif
 
   comment
-    Specimen technical schema — metafields with demo fallbacks (placeholder-images.md).
+    Specimen technical schema — live storefront uses metafields only; theme editor may show demo placeholders.
   endcomment
-  assign fallback_origin = 'Mount Kinabalu, Borneo'
-  assign fallback_altitude = '1,500m - 2,500m'
-  assign fallback_humidity = '75%'
-  assign fallback_temp_range = '12°C - 26°C'
-  assign fallback_substrate = 'Live Sphagnum/Perlite 50/50'
-  assign fallback_clone_id = 'BE-3672'
-  assign fallback_growth_rate = 'Slow/Moderate'
-  assign fallback_light_intensity = '10,000 - 15,000 Lux'
+  assign editor_demo_origin = 'Mount Kinabalu, Borneo'
+  assign editor_demo_altitude = '1,500m - 2,500m'
+  assign editor_demo_humidity = '75%'
+  assign editor_demo_temp_range = '12°C - 26°C'
+  assign editor_demo_substrate = 'Live Sphagnum/Perlite 50/50'
+  assign editor_demo_clone_id = 'BE-3672'
+  assign editor_demo_growth_rate = 'Slow/Moderate'
+  assign editor_demo_light_intensity = '10,000 - 15,000 Lux'
 
   assign spec_origin_raw = ''
   assign spec_altitude_raw = ''
@@ -203,6 +203,9 @@
   assign spec_clone_raw = ''
   assign spec_growth_raw = ''
   assign spec_light_raw = ''
+  assign snapshot_light = ''
+  assign snapshot_water = ''
+  assign snapshot_temp = ''
 
   if use_live_product
     assign spec_origin_raw = product.metafields.custom.origin_location.value | default: product.metafields.custom.origin_location | default: '' | strip
@@ -213,18 +216,121 @@
     assign spec_clone_raw = product.metafields.custom.clonotype_code.value | default: product.metafields.custom.clonotype_code | default: '' | strip
     assign spec_growth_raw = product.metafields.custom.growth_speed.value | default: product.metafields.custom.growth_speed | default: '' | strip
     assign spec_light_raw = product.metafields.custom.lux_requirements.value | default: product.metafields.custom.lux_requirements | default: '' | strip
+    assign snapshot_light = spec_light_raw
+    assign snapshot_water = spec_substrate_raw
+    assign snapshot_temp = spec_temp_range_raw
   endif
 
-  assign spec_origin_display = spec_origin_raw | default: fallback_origin
-  assign spec_altitude_display = spec_altitude_raw | default: fallback_altitude
-  assign spec_humidity_display = spec_humidity_raw | default: fallback_humidity
-  assign spec_temp_range_display = spec_temp_range_raw | default: fallback_temp_range
-  assign spec_substrate_display = spec_substrate_raw | default: fallback_substrate
-  assign spec_clone_display = spec_clone_raw | default: fallback_clone_id
-  assign spec_growth_display = spec_growth_raw | default: fallback_growth_rate
-  assign spec_light_display = spec_light_raw | default: fallback_light_intensity
+  assign spec_origin_display = spec_origin_raw
+  assign spec_altitude_display = spec_altitude_raw
+  assign spec_humidity_display = spec_humidity_raw
+  assign spec_temp_range_display = spec_temp_range_raw
+  assign spec_substrate_display = spec_substrate_raw
+  assign spec_clone_display = spec_clone_raw
+  assign spec_growth_display = spec_growth_raw
+  assign spec_light_display = spec_light_raw
 
-  assign show_technical_deep_dive = true
+  if request.design_mode
+    if spec_origin_display == blank
+      assign spec_origin_display = editor_demo_origin
+    endif
+    if spec_altitude_display == blank
+      assign spec_altitude_display = editor_demo_altitude
+    endif
+    if spec_humidity_display == blank
+      assign spec_humidity_display = editor_demo_humidity
+    endif
+    if spec_temp_range_display == blank
+      assign spec_temp_range_display = editor_demo_temp_range
+    endif
+    if spec_substrate_display == blank
+      assign spec_substrate_display = editor_demo_substrate
+    endif
+    if spec_clone_display == blank
+      assign spec_clone_display = editor_demo_clone_id
+    endif
+    if spec_growth_display == blank
+      assign spec_growth_display = editor_demo_growth_rate
+    endif
+    if spec_light_display == blank
+      assign spec_light_display = editor_demo_light_intensity
+    endif
+  endif
+
+  assign show_snapshot_latin = false
+  assign show_snapshot_origin = false
+  assign show_snapshot_difficulty = false
+  assign show_snapshot_light = false
+  assign show_snapshot_water = false
+  assign show_snapshot_temp = false
+
+  if latin_name != blank
+    assign show_snapshot_latin = true
+  endif
+  if difficulty > 0
+    assign show_snapshot_difficulty = true
+  endif
+
+  if use_live_product
+    if spec_origin_raw != blank
+      assign show_snapshot_origin = true
+    endif
+    if snapshot_light != blank
+      assign show_snapshot_light = true
+    endif
+    if snapshot_water != blank
+      assign show_snapshot_water = true
+    endif
+    if snapshot_temp != blank
+      assign show_snapshot_temp = true
+    endif
+  elsif force_mock or request.design_mode
+    assign show_snapshot_origin = true
+    assign show_snapshot_light = true
+    assign show_snapshot_water = true
+    assign show_snapshot_temp = true
+    if snapshot_light == blank
+      assign snapshot_light = editor_demo_light_intensity
+    endif
+    if snapshot_water == blank
+      assign snapshot_water = editor_demo_substrate
+    endif
+    if snapshot_temp == blank
+      assign snapshot_temp = editor_demo_temp_range
+    endif
+    if spec_origin_raw == blank
+      assign spec_origin_raw = editor_demo_origin
+    endif
+  endif
+
+  assign show_technical_deep_dive = false
+  if spec_origin_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_altitude_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_humidity_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_temp_range_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_substrate_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_clone_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_growth_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if spec_light_raw != blank
+    assign show_technical_deep_dive = true
+  endif
+  if request.design_mode
+    assign show_technical_deep_dive = true
+  endif
 -%}
 
 <article
@@ -239,11 +345,12 @@
 >
   <div class="main-product__layout">
     <div class="main-product__gallery product__media" data-product-gallery>
+      <div class="main-product__gallery-inner">
       {%- if use_live_product and has_gallery -%}
         {%- for media in gallery_media -%}
-          <div class="product__media-item main-product__gallery-frame">
+          <div class="product__media-item main-product__gallery-frame{% if forloop.first %} main-product__gallery-frame--featured{% else %} main-product__gallery-frame--thumb{% endif %}">
             {%- if forloop.first -%}
-              {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
+              {% render 'wax-seal-badge', product_item: product %}
             {%- endif -%}
               {%- liquid
                 assign gallery_loading = 'lazy'
@@ -313,9 +420,9 @@
       {%- elsif show_mock_gallery -%}
         {%- comment -%} Mock image engine — 3-slide gallery when live media is empty or in preview mode {%- endcomment -%}
         {%- for mock_src in mock_gallery_urls -%}
-          <div class="product__media-item main-product__gallery-frame">
+          <div class="product__media-item main-product__gallery-frame{% if forloop.first %} main-product__gallery-frame--featured{% else %} main-product__gallery-frame--thumb{% endif %}">
             {%- if forloop.first -%}
-              {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
+              {% render 'wax-seal-badge', product_item: product %}
             {%- endif -%}
             {%- if mock_src != blank -%}
               <img
@@ -352,8 +459,8 @@
           </div>
         {%- endfor -%}
       {%- else -%}
-        <div class="product__media-item main-product__gallery-frame">
-          {% render 'wax-seal-badge', product_item: product, mock_tags: mock_tags %}
+        <div class="product__media-item main-product__gallery-frame main-product__gallery-frame--featured">
+          {% render 'wax-seal-badge', product_item: product %}
           {% render 'botanical-product-image',
             fallback_url: mock_img_1,
             product_title: display_title,
@@ -365,15 +472,18 @@
           %}
         </div>
       {%- endif -%}
+      </div>
     </div>
 
     <div class="main-product__dossier" data-product-dossier>
       <header class="main-product__header">
-        {%- if latin_name != blank -%}
-          <p class="main-product__latin">
-            <em>{{ latin_name | escape }}</em>
-          </p>
-        {%- endif -%}
+        {%- unless show_snapshot_latin -%}
+          {%- if latin_name != blank -%}
+            <p class="main-product__latin">
+              <em>{{ latin_name | escape }}</em>
+            </p>
+          {%- endif -%}
+        {%- endunless -%}
         <h1 class="main-product__title">{{ display_title | escape }}</h1>
       </header>
 
@@ -407,6 +517,21 @@
         </span>
         <span class="main-product__inventory-status-bracket" aria-hidden="true">]</span>
       </p>
+
+      {% render 'specimen-snapshot',
+        latin_name: latin_name,
+        origin_value: spec_origin_raw,
+        difficulty: difficulty,
+        light_value: snapshot_light,
+        water_value: snapshot_water,
+        temp_value: snapshot_temp,
+        show_latin: show_snapshot_latin,
+        show_origin: show_snapshot_origin,
+        show_difficulty: show_snapshot_difficulty,
+        show_light: show_snapshot_light,
+        show_water: show_snapshot_water,
+        show_temp: show_snapshot_temp
+      %}
 
       {%- if use_live_product -%}
         {%- form 'product', product, class: 'main-product__form', id: form_id -%}
@@ -572,7 +697,7 @@
           assign origin_display = spec_origin_display | append: '. ' | append: origin_narrative
         endif
       -%}
-      {%- if spec_origin_raw != blank or request.design_mode or spec_origin_display != blank -%}
+      {%- if spec_origin_raw != blank -%}
         <div class="main-product__origin" aria-labelledby="main-product-origin-{{ section.id }}">
           <span class="main-product__origin-icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -605,55 +730,6 @@
         </script>
       {%- endif -%}
 
-      <section
-        class="main-product__cultivation main-product__cultivation-dossier"
-        aria-labelledby="main-product-cultivation-{{ section.id }}"
-      >
-        <h2 id="main-product-cultivation-{{ section.id }}" class="visually-hidden">
-          {{ 'products.main.cultivation_heading' | t }}
-        </h2>
-        <div class="main-product__description rte" data-product-description>
-          {{ product_description }}
-        </div>
-      </section>
-
-      <section class="main-product__field-data" aria-labelledby="main-product-field-data-{{ section.id }}">
-        <h2 id="main-product-field-data-{{ section.id }}" class="main-product__field-data-title">
-          {{ 'products.main.field_data_heading' | t }}
-        </h2>
-        <dl class="main-product__field-grid">
-          <div class="main-product__field-row">
-            <dt>{{ 'products.main.spec_difficulty' | t }}</dt>
-            <dd>
-              <span class="main-product__field-value">{{ difficulty }}/5</span>
-              <span
-                class="main-product__difficulty difficulty-pips"
-                role="img"
-                aria-label="{{ 'products.card.difficulty_label' | t: level: difficulty, max: 5 }}"
-              >
-                {%- for pip in (1..5) -%}
-                  <span
-                    class="difficulty-pip{% if pip <= difficulty %} difficulty-pip--filled{% endif %}"
-                    aria-hidden="true"
-                  ></span>
-                {%- endfor -%}
-              </span>
-            </dd>
-          </div>
-          <div class="main-product__field-row">
-            <dt>{{ 'products.main.spec_temperature' | t }}</dt>
-            <dd class="main-product__field-value">{{ temp_group_label | escape }}</dd>
-          </div>
-          <div class="main-product__field-row">
-            <dt>{{ 'products.main.spec_trap' | t }}</dt>
-            <dd class="main-product__field-value">{{ trap_type_label | escape }}</dd>
-          </div>
-          <div class="main-product__field-row">
-            <dt>{{ 'products.main.spec_dormancy' | t }}</dt>
-            <dd class="main-product__field-value">{{ dormancy_label | escape }}</dd>
-          </div>
-        </dl>
-      </section>
     </div>
   </div>
 
@@ -671,49 +747,49 @@
       </header>
 
       <dl class="main-product__tech-grid">
-        {%- if spec_origin_raw != blank or request.design_mode or spec_origin_display != blank -%}
+        {%- if spec_origin_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_origin' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_origin_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_altitude_raw != blank or request.design_mode or spec_altitude_display != blank -%}
+        {%- if spec_altitude_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_altitude' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_altitude_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_humidity_raw != blank or request.design_mode or spec_humidity_display != blank -%}
+        {%- if spec_humidity_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_humidity' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_humidity_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_temp_range_raw != blank or request.design_mode or spec_temp_range_display != blank -%}
+        {%- if spec_temp_range_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_temperature_range' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_temp_range_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_substrate_raw != blank or request.design_mode or spec_substrate_display != blank -%}
+        {%- if spec_substrate_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_substrate' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_substrate_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_clone_raw != blank or request.design_mode or spec_clone_display != blank -%}
+        {%- if spec_clone_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_clone_id' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_clone_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_growth_raw != blank or request.design_mode or spec_growth_display != blank -%}
+        {%- if spec_growth_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_growth_rate' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_growth_display | escape }}</dd>
           </div>
         {%- endif -%}
-        {%- if spec_light_raw != blank or request.design_mode or spec_light_display != blank -%}
+        {%- if spec_light_raw != blank or request.design_mode -%}
           <div class="main-product__tech-cell">
             <dt class="main-product__tech-label">{{ 'products.main.spec_light_intensity' | t }}</dt>
             <dd class="main-product__tech-value">{{ spec_light_display | escape }}</dd>
@@ -780,6 +856,83 @@
   .main-product__gallery.product__media {
     width: 100%;
     min-width: 0;
+  }
+
+  .main-product__gallery-inner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .main-product__gallery-frame--featured {
+    grid-column: 1 / -1;
+  }
+
+  .specimen-snapshot {
+    margin-block-end: var(--space-lg);
+    padding-block-end: var(--space-md);
+    border-block-end: 1px solid rgb(10 24 18 / 0.12);
+  }
+
+  .specimen-snapshot__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm) var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .specimen-snapshot__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .specimen-snapshot__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-primary);
+    opacity: 0.85;
+  }
+
+  .specimen-snapshot__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .specimen-snapshot__label {
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .specimen-snapshot__value {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--color-forest-green-dark);
+  }
+
+  .specimen-snapshot__value em {
+    font-family: var(--font-family-serif);
+    font-style: italic;
+    font-size: 0.875rem;
+  }
+
+  .specimen-snapshot__value--difficulty .difficulty-pip {
+    width: 0.45rem;
+    height: 0.45rem;
   }
 
   .main-product__dossier {
@@ -1093,15 +1246,16 @@
     }
   }
 
-  /* Technical data sheet — below-the-fold deep dive */
+  /* Technical data sheet — full-width section footer */
   .main-product__deep-dive {
-    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
-    margin: var(--space-3xl) auto 0;
-    padding: var(--space-xl) var(--space-lg);
-    background-color: var(--color-parchment);
-    border: 0.5px solid var(--color-forest-green-dark);
-    border-radius: 4px;
-    box-shadow: 1px 2px 0 rgb(10 24 18 / 0.06);
+    width: 100%;
+    max-width: none;
+    margin: var(--space-3xl) 0 0;
+    padding: var(--space-2xl) max(var(--page-margin), 1.25rem);
+    background-color: rgb(10 24 18 / 0.04);
+    border-block-start: 1px solid var(--color-forest-green-dark);
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .main-product__deep-dive-header {
@@ -1182,16 +1336,21 @@
     }
   }
 
-  /* Mobile — horizontal snap-scroll gallery */
+  /* Mobile — horizontal snap-scroll gallery + sticky purchase */
   @media (max-width: 989px) {
     .main-product__gallery.product__media {
-      display: flex;
-      flex-direction: row;
-      gap: 1rem;
       width: 100%;
       min-width: 0;
-      padding-inline: 2rem;
-      padding-bottom: 1rem;
+      margin-inline: calc(-1 * max(var(--page-margin), 1.25rem));
+      padding-inline: 0;
+    }
+
+    .main-product__gallery-inner {
+      display: flex;
+      flex-direction: row;
+      gap: 0.75rem;
+      padding-inline: max(var(--page-margin), 1.25rem);
+      padding-bottom: 0.75rem;
       overflow-x: auto;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
@@ -1201,18 +1360,40 @@
       scrollbar-width: none;
     }
 
-    .main-product__gallery.product__media::-webkit-scrollbar {
+    .main-product__gallery-inner::-webkit-scrollbar {
       display: none;
     }
 
     .product__media-item.main-product__gallery-frame {
-      flex: 0 0 85vw;
+      flex: 0 0 min(85vw, 22rem);
       width: auto;
       scroll-snap-align: center;
     }
 
+    .main-product__gallery-frame--featured,
+    .main-product__gallery-frame--thumb {
+      grid-column: auto;
+    }
+
     .main-product__gallery-frame:hover .main-product__gallery-image {
       transform: none;
+    }
+
+    .specimen-snapshot__list {
+      grid-template-columns: 1fr;
+    }
+
+    .main-product__purchase {
+      position: sticky;
+      bottom: 0.75rem;
+      z-index: 3;
+      margin-block-end: var(--space-lg);
+      padding: var(--space-md);
+      background-color: rgb(247 244 237 / 0.94);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 -4px 24px rgb(10 24 18 / 0.08);
+      backdrop-filter: blur(8px);
     }
   }
 
@@ -1226,9 +1407,6 @@
     }
 
     .main-product__gallery.product__media {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
       position: sticky;
       top: 2rem;
       height: max-content;
@@ -1237,13 +1415,24 @@
       padding-inline: 0;
       padding-bottom: 0;
       overflow: visible;
-      scroll-snap-type: none;
+    }
+
+    .main-product__gallery-inner {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .main-product__gallery-frame--featured {
+      grid-column: 1 / -1;
     }
 
     .product__media-item.main-product__gallery-frame {
-      flex: unset;
       width: 100%;
-      scroll-snap-align: none;
+    }
+
+    .specimen-snapshot__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .main-product__dossier {

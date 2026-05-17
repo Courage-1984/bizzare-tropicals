@@ -1,0 +1,14 @@
+{
+    "Taxonomy": "Apparel & Accessories > Live Plants (ID: 564)",
+    "Variant_Structure": {
+        "Seedling": "Base Price (e.g. $180)",
+        "Established": "Base * 1.45 (e.g. $261)",
+        "Specimen": "Base * 2.50 (e.g. $450)"
+    },
+    "Tags": [
+        "Collection: Tropicals",
+        "Status: Verified",
+        "Growth: Highland/Lowland"
+    ],
+    "Metafield_Category": "Custom string field 'Botanical Category' for advanced filtering"
+}

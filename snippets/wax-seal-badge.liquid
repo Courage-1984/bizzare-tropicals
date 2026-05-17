@@ -1,12 +1,10 @@
 {% doc %}
-  Renders the terracotta wax seal on product media (PDP and cards).
+  Renders the terracotta wax seal on product media when the product carries the Rare tag.
 
-  @param {product} [product_item] - Live product for tag checks
-  @param {string} [mock_tags] - Comma-separated tag fallback (e.g. `Rare`)
+  @param {product} product_item - Live product for tag checks (required for display)
 
   @example
-  {% render 'wax-seal-badge', product_item: product, mock_tags: 'Rare' %}
-  {% render 'wax-seal-badge', mock_tags: 'Rare' %}
+  {% render 'wax-seal-badge', product_item: product %}
 {% enddoc %}
 
 {%- liquid
@@ -14,14 +12,6 @@
 
   if product_item != blank
     if product_item.tags contains 'Rare'
-      assign show_rare = true
-    elsif mock_tags != blank
-      if mock_tags contains 'Rare'
-        assign show_rare = true
-      endif
-    endif
-  elsif mock_tags != blank
-    if mock_tags contains 'Rare'
       assign show_rare = true
     endif
   endif
@@ -80,7 +70,6 @@
     hyphens: none;
   }
 
-  /* Hand-pressed wax seal — 3D press, top-left light */
   .wax-seal-badge .product-card__badge--wax {
     width: var(--badge-wax-size);
     height: var(--badge-wax-size);
