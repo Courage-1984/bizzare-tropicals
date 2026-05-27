@@ -7,7 +7,10 @@
 {% enddoc %}
 
 {%- liquid
-  assign item_label = collection.title
+  capture collection_display_title
+    render 'collection-display-title', collection: collection
+  endcapture
+  assign item_label = collection_display_title | strip
   assign item_link = collection.url
   assign item_image = blank
   assign item_placeholder = blank
@@ -24,9 +27,6 @@
       assign block_handle = block_link | split: '/collections/' | last | split: '?' | first | split: '#' | first
 
       if block_handle == collection.handle
-        if block.settings.label != blank
-          assign item_label = block.settings.label
-        endif
         assign item_image = block.settings.image
         assign item_placeholder = block.settings.placeholder_image
         assign block_attributes = block.shopify_attributes

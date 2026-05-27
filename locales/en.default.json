@@ -375,7 +375,25 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "display_titles": {
+      "dionaea": "Dionaea",
+      "sarracenia": "Sarracenia",
+      "nepenthes": "Nepenthes",
+      "nepenthes_highland": "Nepenthes — Highland",
+      "nepenthes_intermediate": "Nepenthes — Intermediate",
+      "nepenthes_lowland": "Nepenthes — Lowland",
+      "drosera": "Drosera",
+      "pinguicula": "Pinguicula",
+      "cephalotus": "Cephalotus",
+      "heliamphora": "Heliamphora",
+      "utricularia": "Utricularia",
+      "darlingtonia": "Darlingtonia",
+      "byblis": "Byblis",
+      "drossophyllum": "Drosophyllum",
+      "other": "Other",
+      "growing_supplies": "Growing supplies"
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",

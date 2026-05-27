@@ -24,7 +24,10 @@
       {% endif %}
 
       <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
+        {%- capture collection_display_title -%}
+          {%- render 'collection-display-title', collection: collection -%}
+        {%- endcapture -%}
+        <p>{{ collection_display_title | strip | escape }}</p>
 
         {% if collection.description %}
           <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>

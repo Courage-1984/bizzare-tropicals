@@ -37,36 +37,57 @@
             assign card_description = block.settings.description
             assign card_link = block.settings.link
             assign card_image = block.settings.image
+            assign card_placeholder = block.settings.placeholder_image
             assign use_shopify_image = false
 
             if card_collection != blank
               if card_title == blank
-                assign card_title = card_collection.title
+                capture collection_display_title
+                  render 'collection-display-title', collection: card_collection
+                endcapture
+                assign card_title = collection_display_title | strip
               endif
               if card_link == blank
                 assign card_link = card_collection.url
               endif
             endif
 
-            if card_image == blank
+            if card_image != blank and card_image.width > 0
+              assign use_shopify_image = true
+            elsif card_placeholder != blank
+              assign use_shopify_image = false
+            else
               if card_collection != blank
-                if card_collection.image != blank
-                  if card_collection.image.width > 0
-                    assign card_image = card_collection.image
-                  endif
+                if card_collection.image != blank and card_collection.image.width > 0
+                  assign card_image = card_collection.image
+                  assign use_shopify_image = true
                 endif
-                if card_image == blank
+                if use_shopify_image == false
                   assign fallback_product = card_collection.products.first
                   if fallback_product != blank
-                    assign card_image = fallback_product.featured_media.preview_image | default: fallback_product.featured_image
+                    assign fallback_media = fallback_product.featured_media.preview_image | default: fallback_product.featured_image
+                    if fallback_media != blank and fallback_media.width > 0
+                      assign card_image = fallback_media
+                      assign use_shopify_image = true
+                    endif
                   endif
                 endif
               endif
-            endif
 
-            if card_image != blank
-              if card_image.width > 0
-                assign use_shopify_image = true
+              if use_shopify_image == false and card_collection != blank
+                assign genus_handle = card_collection.handle
+                capture card_placeholder
+                  render 'genus-placeholder-url', genus_handle: genus_handle
+                endcapture
+                assign card_placeholder = card_placeholder | strip
+              endif
+
+              if use_shopify_image == false and card_placeholder == blank
+                assign discovery_card_key = block.id | replace: 'discovery_', '' | replace: '_', '-'
+                capture card_placeholder
+                  render 'discovery-card-placeholder-url', card_key: discovery_card_key
+                endcapture
+                assign card_placeholder = card_placeholder | strip
               endif
             endif
           -%}
@@ -90,6 +111,16 @@
                         loading: 'lazy',
                         alt: ''
                     }}
+                  {%- elsif card_placeholder != blank -%}
+                    <img
+                      class="discovery-card__image"
+                      src="{{ card_placeholder | escape }}"
+                      alt=""
+                      width="1200"
+                      height="1500"
+                      loading="lazy"
+                      decoding="async"
+                    >
                   {%- else -%}
                     <span class="discovery-card__image discovery-card__image--placeholder"></span>
                   {%- endif -%}
@@ -245,7 +276,7 @@
     line-height: var(--line-height-relaxed);
     color: rgb(255 255 255 / 0.92);
     text-shadow: 0 1px 3px rgb(0 0 0 / 0.55);
-    opacity: 0;
+    opacity: 0.9;
     transition: opacity 500ms var(--discovery-transition-ease);
   }
 
@@ -494,6 +525,12 @@
           "id": "image",
           "label": "t:sections.botanical_discovery_strip.blocks.discovery_card.settings.image",
           "info": "t:sections.botanical_discovery_strip.blocks.discovery_card.settings.image_info"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_image",
+          "label": "t:sections.botanical_discovery_strip.blocks.discovery_card.settings.placeholder_image",
+          "info": "t:sections.botanical_discovery_strip.blocks.discovery_card.settings.placeholder_image_info"
         }
       ]
     }
@@ -506,28 +543,36 @@
           "type": "discovery_card",
           "settings": {
             "title": "Beginner plants",
-            "description": "Hardy carnivores for your first bench or windowsill."
+            "description": "Hardy carnivores for your first bench or windowsill.",
+            "link": "/collections/all",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1200"
           }
         },
         {
           "type": "discovery_card",
           "settings": {
-            "title": "Nepenthes",
-            "description": "Tropical pitchers from lowland to highland forms."
+            "title": "Produced in our tissue culture (TC) lab",
+            "description": "In-house propagation from sterile flask to bench-ready plants.",
+            "link": "/pages/about-us",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1200"
           }
         },
         {
           "type": "discovery_card",
           "settings": {
-            "title": "Growing supplies",
-            "description": "Substrate, trays, and tools for serious growers."
+            "title": "Accessories and supplies",
+            "description": "Substrate, pots, water, and grow-room essentials.",
+            "link": "/collections/growing-supplies",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Schultz_Sphagnum_Peat_Moss.jpg?width=1200"
           }
         },
         {
           "type": "discovery_card",
           "settings": {
-            "title": "Rare specimens",
-            "description": "Limited batches from our propagation lab."
+            "title": "New arrivals",
+            "description": "Freshly cataloged specimens from the propagation lab.",
+            "link": "/collections/all?sort_by=created-descending",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200"
           }
         }
       ]

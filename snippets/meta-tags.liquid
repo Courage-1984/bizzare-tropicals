@@ -19,6 +19,14 @@
       assign document_title = document_title | append: ' — Bizarre Tropicals'
       assign og_title = document_title
     endif
+  elsif request.page_type == 'collection'
+    if collection != blank
+      capture collection_display_title
+        render 'collection-display-title', collection: collection
+      endcapture
+      assign document_title = collection_display_title | strip | append: ' — Bizarre Tropicals'
+      assign og_title = document_title
+    endif
   elsif request.page_type == 'article'
     assign og_type = 'article'
   elsif request.page_type == 'password'
@@ -91,7 +99,7 @@
 >
 
 <title>
-  {%- if request.page_type == 'product' -%}
+  {%- if request.page_type == 'product' or request.page_type == 'collection' -%}
     {{ document_title | escape }}
   {%- else -%}
     {{ page_title }}

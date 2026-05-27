@@ -1,0 +1,21 @@
+{% doc %}
+  Default Wikimedia placeholder URLs for homepage discovery strip cards.
+
+  @param {string} card_key - One of: beginner, tissue_culture, supplies, new_arrivals
+{% enddoc %}
+
+{%- liquid
+  assign key = card_key | handleize
+  assign width = '1200'
+-%}
+
+{%- case key -%}
+  {%- when 'beginner' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width={{ width }}
+  {%- when 'tissue_culture', 'tissue-culture', 'tc' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width={{ width }}
+  {%- when 'supplies', 'accessories', 'growing-supplies' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Schultz_Sphagnum_Peat_Moss.jpg?width={{ width }}
+  {%- when 'new_arrivals', 'new-arrivals' -%}
+    https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width={{ width }}
+{%- endcase -%}

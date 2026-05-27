@@ -6,8 +6,11 @@
 {% enddoc %}
 
 {%- liquid
-  assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories' | split: ','
-  assign genus_order = 'dionaea,sarracenia,nepenthes,drosera,pinguicula,cephalotus,heliamphora,utricularia,darlingtonia,byblis,drossophyllum,other' | split: ','
+  assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories,nepenthes' | split: ','
+  capture catalog_genus_handles
+    render 'catalog-genus-handles'
+  endcapture
+  assign genus_order = catalog_genus_handles | strip | split: ','
   assign rendered_genus_handles = ''
   assign genus_count = 0
   assign common_count = 0
@@ -22,8 +25,11 @@
     {%- endif -%}
     {%- assign genus_count = genus_count | plus: 1 -%}
     {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_handle | append: ',' -%}
+    {%- capture genus_chip_label -%}
+      {%- render 'collection-display-title', collection: genus_collection -%}
+    {%- endcapture -%}
     <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
-      <span class="search-marquee__chip-label">{{ genus_collection.title | escape }}</span>
+      <span class="search-marquee__chip-label">{{ genus_chip_label | strip | escape }}</span>
     </a>
   {%- endfor -%}
 
@@ -50,8 +56,11 @@
     {%- endif -%}
     {%- assign genus_count = genus_count | plus: 1 -%}
     {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_collection.handle | append: ',' -%}
+    {%- capture genus_chip_label -%}
+      {%- render 'collection-display-title', collection: genus_collection -%}
+    {%- endcapture -%}
     <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
-      <span class="search-marquee__chip-label">{{ genus_collection.title | escape }}</span>
+      <span class="search-marquee__chip-label">{{ genus_chip_label | strip | escape }}</span>
     </a>
   {%- endfor -%}
 {%- endcapture -%}

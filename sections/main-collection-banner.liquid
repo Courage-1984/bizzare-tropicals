@@ -1,7 +1,12 @@
 {%- liquid
+  capture collection_display_title
+    render 'collection-display-title', collection: collection
+  endcapture
+  assign collection_heading = collection_display_title | strip
+
   assign illustration_image = section.settings.illustration_image
   assign hero_image = illustration_image
-  assign illustration_alt = collection.title | escape
+  assign illustration_alt = collection_heading | escape
   assign fallback_url = section.settings.fallback_illustration_url | default: 'https://i.imgur.com/8NisV2Z.jpg'
   assign use_uploaded_image = false
   assign use_hero_figure = false
@@ -9,19 +14,19 @@
   if illustration_image != blank and illustration_image.width > 0
     assign use_uploaded_image = true
     assign use_hero_figure = true
-    assign illustration_alt = illustration_image.alt | default: collection.title | escape
+    assign illustration_alt = illustration_image.alt | default: collection_heading | escape
   elsif collection.image != blank and collection.image.width > 0
     assign hero_image = collection.image
     assign use_uploaded_image = true
     assign use_hero_figure = true
-    assign illustration_alt = collection.image.alt | default: collection.title | escape
+    assign illustration_alt = collection.image.alt | default: collection_heading | escape
   elsif collection.products_count > 0
     for product in collection.products
       if product.featured_image != blank and product.featured_image.width > 0
         assign hero_image = product.featured_image
         assign use_uploaded_image = true
         assign use_hero_figure = true
-        assign illustration_alt = product.featured_image.alt | default: product.title | default: collection.title | escape
+        assign illustration_alt = product.featured_image.alt | default: product.title | default: collection_heading | escape
         break
       endif
     endfor
@@ -64,7 +69,7 @@
 
     <div class="collection-anatomy__content">
       <h1 id="collection-anatomy-title-{{ section.id }}" class="collection-anatomy__title">
-        {{ collection.title | escape }}
+        {{ collection_heading | escape }}
       </h1>
 
       <div class="collection-anatomy__figure anatomy-hero-container">

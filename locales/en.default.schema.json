@@ -157,7 +157,9 @@
             "link": "Custom link",
             "link_info": "Optional. Uses the collection URL when empty.",
             "image": "Background image",
-            "image_info": "Optional. Uses the collection image, then the first product image when empty."
+            "image_info": "Optional. Uses the collection image, then the first product image when empty.",
+            "placeholder_image": "Placeholder image URL",
+            "placeholder_image_info": "Optional. Wikimedia or CDN URL when no Shopify image is available."
           }
         }
       }

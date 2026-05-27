@@ -1,0 +1,22 @@
+{% doc %}
+  Storefront display title for a genus collection (overrides raw Shopify admin titles).
+
+  @param {collection} collection - Collection to label
+
+  @example
+  {% capture title %}{% render 'collection-display-title', collection: collection %}{% endcapture %}
+{% enddoc %}
+
+{%- liquid
+  assign handle_key = collection.handle | replace: '-', '_'
+  assign title_key = 'collections.display_titles.' | append: handle_key
+  assign display_title = title_key | t
+  assign display_title_downcase = display_title | downcase
+
+  if display_title == title_key
+    assign display_title = collection.title
+  elsif display_title_downcase contains 'translation missing'
+    assign display_title = collection.title
+  endif
+-%}
+{{- display_title -}}

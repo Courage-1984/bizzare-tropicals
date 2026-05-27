@@ -40,12 +40,28 @@
     "header": {
       "type": "header",
       "blocks": {
-        "mega_nepenthes": {
+        "mega_nepenthes_highland": {
           "type": "mega_menu_item",
           "settings": {
-            "label": "Nepenthes",
-            "link": "/collections/nepenthes",
-            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_rajah.png?width=60"
+            "label": "Nepenthes highland",
+            "link": "/collections/nepenthes-highland",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_villosa.jpg?width=60"
+          }
+        },
+        "mega_nepenthes_intermediate": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Nepenthes intermediate",
+            "link": "/collections/nepenthes-intermediate",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa4.jpg?width=60"
+          }
+        },
+        "mega_nepenthes_lowland": {
+          "type": "mega_menu_item",
+          "settings": {
+            "label": "Nepenthes lowland",
+            "link": "/collections/nepenthes-lowland",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ampullaria.jpg?width=60"
           }
         },
         "mega_drosera": {
@@ -106,7 +122,9 @@
         }
       },
       "block_order": [
-        "mega_nepenthes",
+        "mega_nepenthes_highland",
+        "mega_nepenthes_intermediate",
+        "mega_nepenthes_lowland",
         "mega_drosera",
         "mega_pinguicula",
         "mega_cephalotus",
@@ -131,11 +149,27 @@
             "collection": ""
           }
         },
-        "nepenthes": {
+        "nepenthes_highland": {
           "type": "genus_link",
           "settings": {
-            "label": "Nepenthes",
-            "url": "/collections/nepenthes",
+            "label": "Nepenthes highland",
+            "url": "/collections/nepenthes-highland",
+            "collection": ""
+          }
+        },
+        "nepenthes_intermediate": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Nepenthes intermediate",
+            "url": "/collections/nepenthes-intermediate",
+            "collection": ""
+          }
+        },
+        "nepenthes_lowland": {
+          "type": "genus_link",
+          "settings": {
+            "label": "Nepenthes lowland",
+            "url": "/collections/nepenthes-lowland",
             "collection": ""
           }
         },
@@ -174,7 +208,9 @@
       },
       "block_order": [
         "drosera",
-        "nepenthes",
+        "nepenthes_highland",
+        "nepenthes_intermediate",
+        "nepenthes_lowland",
         "dionaea",
         "sarracenia",
         "pinguicula",

@@ -10,7 +10,10 @@
 {% enddoc %}
 
 {%- liquid
-  assign card_title = card_collection.title
+  capture collection_display_title
+    render 'collection-display-title', collection: card_collection
+  endcapture
+  assign card_title = collection_display_title | strip
   assign card_link = card_collection.url
   assign card_image = blank
   assign placeholder_url = blank

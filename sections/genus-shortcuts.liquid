@@ -81,7 +81,10 @@
               if card_collection != blank
                 assign genus_handle = card_collection.handle
                 if card_title == blank
-                  assign card_title = card_collection.title
+                  capture collection_display_title
+                    render 'collection-display-title', collection: card_collection
+                  endcapture
+                  assign card_title = collection_display_title | strip
                 endif
                 if card_link == blank
                   assign card_link = card_collection.url

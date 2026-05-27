@@ -7,8 +7,11 @@
 
 {%- liquid
   assign menu_variant = variant | default: 'desktop'
-  assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories' | split: ','
-  assign genus_order = 'dionaea,sarracenia,nepenthes,drosera,pinguicula,cephalotus,heliamphora,utricularia,darlingtonia,byblis,drossophyllum,other' | split: ','
+  assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories,nepenthes' | split: ','
+  capture catalog_genus_handles
+    render 'catalog-genus-handles'
+  endcapture
+  assign genus_order = catalog_genus_handles | strip | split: ','
   assign rendered_handles = ''
 -%}
 

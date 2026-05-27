@@ -177,41 +177,45 @@
         "discovery_beginner": {
           "type": "discovery_card",
           "settings": {
-            "collection": "all",
             "title": "Beginner plants",
-            "description": "Hardy carnivores for your first bench or windowsill."
+            "description": "Hardy carnivores for your first bench or windowsill.",
+            "link": "/collections/all",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Drosera_Capensis.jpg?width=1200"
           }
         },
-        "discovery_nepenthes": {
+        "discovery_tissue_culture": {
           "type": "discovery_card",
           "settings": {
-            "collection": "nepenthes",
-            "title": "Nepenthes",
-            "description": "Tropical pitchers from lowland to highland forms."
+            "title": "Produced in our tissue culture (TC) lab",
+            "description": "In-house propagation from sterile flask to bench-ready plants.",
+            "link": "/pages/about-us",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1200"
           }
         },
-        "discovery_drosera": {
+        "discovery_supplies": {
           "type": "discovery_card",
           "settings": {
-            "collection": "drosera",
-            "title": "Drosera",
-            "description": "Sundews and sticky-leaf specialists for every setup."
+            "title": "Accessories and supplies",
+            "description": "Substrate, pots, water, and grow-room essentials.",
+            "link": "/collections/growing-supplies",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Schultz_Sphagnum_Peat_Moss.jpg?width=1200"
           }
         },
-        "discovery_sarracenia": {
+        "discovery_new_arrivals": {
           "type": "discovery_card",
           "settings": {
-            "collection": "sarracenia",
-            "title": "Sarracenia",
-            "description": "North American pitcher plants for outdoor benches."
+            "title": "New arrivals",
+            "description": "Freshly cataloged specimens from the propagation lab.",
+            "link": "/collections/all?sort_by=created-descending",
+            "placeholder_image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200"
           }
         }
       },
       "block_order": [
         "discovery_beginner",
-        "discovery_nepenthes",
-        "discovery_drosera",
-        "discovery_sarracenia"
+        "discovery_tissue_culture",
+        "discovery_supplies",
+        "discovery_new_arrivals"
       ]
     },
     "new_specimens": {

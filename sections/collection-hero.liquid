@@ -1,4 +1,9 @@
 {%- liquid
+  capture collection_display_title
+    render 'collection-display-title', collection: collection
+  endcapture
+  assign collection_heading = collection_display_title | strip
+
   assign care_heading = section.settings.care_heading
   assign placeholder_url = section.settings.placeholder_image
   assign enable_sticky_dossier = section.settings.enable_sticky_dossier
@@ -18,7 +23,7 @@
   <div class="collection-hero__layout">
     <div class="collection-hero__identity">
       <h1 id="collection-hero-title-{{ section.id }}" class="collection-hero__title">
-        {{ collection.title | escape }}
+        {{ collection_heading | escape }}
       </h1>
 
       <div class="collection-hero__frame">
@@ -33,13 +38,13 @@
               sizes: '(min-width: 990px) 38vw, 88vw',
               loading: 'eager',
               fetchpriority: 'high',
-              alt: collection.title
+              alt: collection_heading
           }}
         {%- elsif placeholder_url != blank -%}
           <img
             class="collection-hero__image collection-hero__image--fallback"
             src="{{ placeholder_url }}"
-            alt="{{ collection.title | escape }}"
+            alt="{{ collection_heading | escape }}"
             width="1200"
             height="1200"
             loading="eager"

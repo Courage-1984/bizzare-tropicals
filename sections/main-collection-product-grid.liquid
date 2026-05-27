@@ -1,7 +1,12 @@
 {%- liquid
+  capture collection_display_title
+    render 'collection-display-title', collection: collection
+  endcapture
+  assign collection_heading = collection_display_title | strip
+
   assign grid_heading = section.settings.heading
   if grid_heading == blank
-    assign grid_heading = collection.title
+    assign grid_heading = collection_heading
   endif
 
   assign active_filter_count = 0
