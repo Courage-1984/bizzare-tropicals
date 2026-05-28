@@ -5,6 +5,11 @@
       assign show_chips = true
     endif
   endif
+
+  assign chips_heading = section.settings.heading | strip
+  if chips_heading == blank
+    assign chips_heading = 'sections.growing_supplies_filter_chips.heading_default' | t
+  endif
 -%}
 
 {%- unless show_chips -%}
@@ -17,7 +22,7 @@
     {{ section.shopify_attributes }}
   >
     <p class="supply-chips__label" id="supply-chips-label-{{ section.id }}">
-      {{ section.settings.heading | default: 'sections.growing_supplies_filter_chips.heading_default' | t }}
+      {{ chips_heading | escape }}
     </p>
     <div
       class="supply-chips__list"

@@ -5,6 +5,11 @@
       assign show_hub = true
     endif
   endif
+
+  assign hub_heading = section.settings.heading | strip
+  if hub_heading == blank
+    assign hub_heading = 'sections.nepenthes_collection_hub.heading_default' | t
+  endif
 -%}
 
 {%- unless show_hub -%}
@@ -17,7 +22,7 @@
     <header class="nepenthes-hub__header">
       <p class="nepenthes-hub__overline">{{ 'sections.nepenthes_collection_hub.overline' | t }}</p>
       <h2 id="nepenthes-hub-heading-{{ section.id }}" class="nepenthes-hub__title">
-        {{ section.settings.heading | default: 'sections.nepenthes_collection_hub.heading_default' | t }}
+        {{ hub_heading | escape }}
       </h2>
       {%- assign hub_intro = section.settings.intro | strip -%}
       {%- if hub_intro == blank -%}
