@@ -1,0 +1,24 @@
+{% doc %}
+  Renders theme fallback HTML for native Shopify policy pages when Admin policy body is empty.
+
+  @param {string} policy_handle - Shopify policy handle (e.g. refund-policy, shipping-policy)
+{% enddoc %}
+
+{%- liquid
+  assign policy_handle = policy_handle | default: policy.handle | strip
+-%}
+
+{%- case policy_handle -%}
+  {%- when 'contact-information' -%}
+    {{ 'policies.contact_information_body' | t }}
+  {%- when 'refund-policy' -%}
+    {{ 'policies.refund_policy_body' | t }}
+  {%- when 'shipping-policy' -%}
+    {{ 'policies.shipping_policy_body' | t }}
+  {%- when 'privacy-policy' -%}
+    {{ 'policies.privacy_policy_body' | t }}
+  {%- when 'terms-of-service' -%}
+    {{ 'policies.terms_of_service_body' | t }}
+  {%- when 'legal-notice' -%}
+    {{ 'policies.legal_notice_body' | t }}
+{%- endcase -%}

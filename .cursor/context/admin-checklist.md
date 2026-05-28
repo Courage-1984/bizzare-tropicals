@@ -52,6 +52,8 @@ Assign each **Page** in Admin → **Online Store → Pages** to the matching tem
 | `templates/page.privacy.json` | Page | Privacy policy | `main-policy-page` |
 | `templates/page.refund.json` | Page | Refund policy | `main-policy-page` |
 | `templates/page.shipping.json` | Page | Shipping policy | `main-policy-page` |
+| `templates/page.terms.json` | Page | Terms of service | `main-policy-page` |
+| `templates/page.legal-notice.json` | Page | Legal notice | `main-policy-page` |
 | `templates/customers/login.json` | Customer | Login | `main-login` |
 | `templates/customers/register.json` | Customer | Register | `main-register` |
 | `templates/customers/account.json` | Customer | Account hub | `main-account` |
@@ -82,10 +84,10 @@ Social URLs and contact details are configured in the **Footer** section (footer
 
 - [ ] **Address** — Gauteng address (`contact_address`).
 - [ ] **Email** — `info@bizarretropicals.co.za` (`contact_email`).
-- [ ] **Phone / WhatsApp** — Live number (`contact_phone`).
+- [ ] **Phone / WhatsApp** — `+27 72 152 7446` (`contact_phone`); WhatsApp link `https://wa.me/27721527446` on contact page (`whatsapp_url`).
 - [ ] **Facebook / Instagram URLs** — Official profiles (`facebook_url`, `instagram_url`).
 - [ ] **Show social links** — Enable `show_social`.
-- [ ] **Footer quick policy links** — Shipping resolves to Shopify policy URL (`/policies/shipping-policy`) and refund resolves to Shopify refund policy URL (`/policies/refund-policy`) via footer logic, with page fallbacks when policy objects are unset.
+- [ ] **Footer quick policy links** — Footer lists shipping, refund, privacy, terms, legal notice, and contact information via `snippets/policy-url.liquid` (Admin policy → mirror page → `/policies/…` fallback).
 - [ ] **Footer hardening** (`footer.liquid`) — Brand/newsletter/contact/currency/copyright fields are blank-safe with defaults, and About/Contact quick links have safe URL fallbacks.
 
 ### Main navigation
@@ -182,6 +184,8 @@ Create pages in Admin and assign templates:
 | Privacy | `privacy-policy` | `privacy` |
 | Refund | `refund-policy` | `refund` |
 | Shipping | `shipping-policy` | `shipping` |
+| Terms of service | `terms-of-service` | `terms` |
+| Legal notice | `legal-notice` | `legal-notice` |
 | Care overview (optional) | `care-overview` | `page` (default) or custom |
 
 - [ ] **404:** Theme Editor → 404 → `main-404` (CTA default `/collections/all`).
@@ -284,8 +288,26 @@ Create pages in Admin and assign templates:
 
 ### 6.4 Policy pages
 
+**Admin:** Settings → Policies (see `content/policies/README.md` for copy and order).
+
+| Policy | Admin | Theme fallback |
+|--------|--------|----------------|
+| Contact information | **Required** — fill store name, email, address | `content/policies/01-contact-information.md` |
+| Return and refund | Paste HTML from `content/policies/` (step 2) | `page.refund.json` + `policies.refund_policy_body` |
+| Shipping | Paste HTML (step 3) | `page.shipping.json` + `policies.shipping_policy_body` |
+| Privacy | Replace automated policy or keep Shopify automated + sync copy | `page.privacy.json` + `policies.privacy_policy_body` |
+| Terms of service | Paste HTML (step 5) | `05-terms-of-service.html` · `page.terms.json` |
+| Legal notice | Paste HTML (step 6) | `06-legal-notice.html` · `page.legal-notice.json` |
+
+- [ ] **Contact information** — complete first (removes “Required” in Admin); phone `+27 72 152 7446`.
+- [ ] **Return and refund policy** — paste from `content/policies/02-return-and-refund-policy.html` (see `02-return-and-refund-policy.md`).
+- [ ] **Shipping policy** — paste from `content/policies/03-shipping-policy.html` (see `03-shipping-policy.md`); configure **Settings → Shipping and delivery** zones/rates.
+- [ ] **Privacy policy** — replace **Automated** policy with custom copy from `content/policies/04-privacy-policy.html` (see `04-privacy-policy.md`); review **Settings → Customer privacy**.
+- [ ] **Terms of service** — paste from `content/policies/05-terms-of-service.html` (see `05-terms-of-service.md`).
+- [ ] **Legal notice** — paste from `content/policies/06-legal-notice.html` (see `06-legal-notice.md`); add company/VAT numbers when available.
+- [ ] **Native policy URLs** — `templates/policy.json` styles `/policies/*` via `main-policy-page` (Admin body → page mirror → locale fallback).
 - [ ] Privacy / Refund / Shipping → `main-policy-page` with fallback body copy in template JSON.
-- [ ] **Policy page hardening** (`main-policy-page.liquid`) — Title/intro/body are blank-safe with translation defaults. Rendering order is page content first, then fallback body, then an explicit empty helper message if neither exists.
+- [ ] **Policy page hardening** (`main-policy-page.liquid`) — Supports `policy` and `page` objects. Rendering order: Admin policy body → page content → section `default_body` → locale `policies.*_body` → empty helper.
 
 ---
 

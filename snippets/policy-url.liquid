@@ -1,0 +1,52 @@
+{% doc %}
+  Resolves a storefront URL for a Shopify policy, with mirror-page and path fallbacks.
+
+  @param {string} handle - Policy handle (e.g. refund-policy, terms-of-service)
+  @param {string} [page_handle] - Optional Online Store page handle (defaults to handle)
+
+  @example
+  {% capture refund_url %}{% render 'policy-url', handle: 'refund-policy' %}{% endcapture %}
+{% enddoc %}
+
+{%- liquid
+  assign policy_handle = handle | strip
+  assign mirror_handle = page_handle | default: policy_handle | strip
+  assign resolved_url = blank
+
+  case policy_handle
+    when 'shipping-policy'
+      if shop.shipping_policy != blank
+        assign resolved_url = shop.shipping_policy.url
+      endif
+    when 'refund-policy'
+      if shop.refund_policy != blank
+        assign resolved_url = shop.refund_policy.url
+      endif
+    when 'privacy-policy'
+      if shop.privacy_policy != blank
+        assign resolved_url = shop.privacy_policy.url
+      endif
+    when 'terms-of-service'
+      if shop.terms_of_service != blank
+        assign resolved_url = shop.terms_of_service.url
+      endif
+  endcase
+
+  if resolved_url == blank
+    for policy in shop.policies
+      if policy.handle == policy_handle
+        assign resolved_url = policy.url
+        break
+      endif
+    endfor
+  endif
+
+  if resolved_url == blank
+    if pages[mirror_handle] != blank
+      assign resolved_url = pages[mirror_handle].url
+    else
+      assign resolved_url = '/policies/' | append: policy_handle
+    endif
+  endif
+-%}
+{{- resolved_url -}}

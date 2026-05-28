@@ -4,8 +4,13 @@
     assign fallback_title = 'sections.main_policy_page.fallback_title_default' | t
   endif
 
-  assign page_title = page.title | strip
-  if page_title == blank
+  assign policy_title = policy.title | strip
+  assign page_title_raw = page.title | strip
+  if policy_title != blank
+    assign page_title = policy_title
+  elsif page_title_raw != blank
+    assign page_title = page_title_raw
+  else
     assign page_title = fallback_title
   endif
 
@@ -19,14 +24,25 @@
     assign default_body_content = 'sections.main_policy_page.default_body_default' | t
   endif
 
-  assign has_page_content = false
-  if page.content != blank
-    assign has_page_content = true
+  assign policy_body = policy.body
+  assign page_body = page.content
+  assign policy_handle = policy.handle | strip
+
+  assign has_primary_content = false
+  if policy_body != blank
+    assign has_primary_content = true
+  elsif page_body != blank
+    assign has_primary_content = true
   endif
 
   assign has_default_body = false
   if default_body_content != blank
     assign has_default_body = true
+  endif
+
+  assign has_policy_fallback = false
+  if has_primary_content == false and has_default_body == false and policy_handle != blank
+    assign has_policy_fallback = true
   endif
 -%}
 
@@ -38,10 +54,14 @@
     </header>
 
     <div class="policy-page__content rte">
-      {%- if has_page_content -%}
-        {{ page.content }}
+      {%- if policy_body != blank -%}
+        {{ policy_body }}
+      {%- elsif page_body != blank -%}
+        {{ page_body }}
       {%- elsif has_default_body -%}
         {{ default_body_content }}
+      {%- elsif has_policy_fallback -%}
+        {% render 'policy-fallback-body', policy_handle: policy_handle %}
       {%- else -%}
         <p class="policy-page__empty">{{ 'sections.main_policy_page.empty' | t }}</p>
       {%- endif -%}
@@ -80,6 +100,18 @@
     margin: 0 0 var(--space-md);
     line-height: var(--line-height-relaxed);
     color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__content h2 {
+    margin: var(--space-xl) 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__content h2:first-child {
+    margin-block-start: 0;
   }
 
   .policy-page__content li + li {
