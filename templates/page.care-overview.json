@@ -3,18 +3,56 @@
     "main": {
       "type": "care-overview-template",
       "settings": {
+        "hero_heading": "Care overview",
         "fallback_title": "Care overview",
         "hero_overline": "Field guide",
-        "hero_intro": "How to grow carnivorous plants in South Africa — core principles first, then genus-specific culture on each collection page.",
+        "hero_intro": "How to grow carnivorous plants in South Africa — core principles first, then genus-specific culture on each collection and product page.",
+        "show_page_content": false,
+        "show_jump_nav": true,
         "pillars_heading": "Core principles",
+        "pillars_intro": "Every genus bends these rules — but neglecting any one is how collections fail on the bench.",
+        "climate_heading": "South African benches",
+        "climate_intro": "Match your setup to temperate outdoor culture or humid tropical benches — most losses come from choosing the wrong zone.",
+        "path_heading": "Your cultivation path",
+        "path_intro": "Four steps from first genus to a stocked, stable bench.",
+        "show_nepenthes_spotlight": true,
         "genera_heading": "Shop by genus",
-        "genera_text": "Open a genus collection for trap types, care tables, and live stock.",
+        "genera_text": "Open a genus for trap types, culture notes, and live stock — each product page includes a cultivation dossier when data is available.",
+        "resources_heading": "Bench resources",
+        "show_faq": true,
+        "faq_heading": "Common questions",
+        "cta_heading": "Still unsure?",
         "cta_text": "Questions about your bench or climate? Visit our contact page for advice before you order."
       },
       "blocks": {
+        "highlight_water": {
+          "type": "highlight",
+          "settings": {
+            "label": "Water quality",
+            "value": "Low TDS",
+            "note": "Rainwater, RO, or distilled preferred"
+          }
+        },
+        "highlight_light": {
+          "type": "highlight",
+          "settings": {
+            "label": "Light rule",
+            "value": "Genus-first",
+            "note": "Match intensity to trap type"
+          }
+        },
+        "highlight_feeding": {
+          "type": "highlight",
+          "settings": {
+            "label": "Feeding",
+            "value": "No fertiliser",
+            "note": "Let traps catch prey naturally"
+          }
+        },
         "pillar_water": {
           "type": "pillar",
           "settings": {
+            "icon": "water",
             "title": "Water",
             "text": "Rainwater, reverse osmosis, or distilled water — avoid tap water with high TDS."
           }
@@ -22,6 +60,7 @@
         "pillar_light": {
           "type": "pillar",
           "settings": {
+            "icon": "light",
             "title": "Light",
             "text": "Match intensity to genus: full sun for many Sarracenia and Dionaea; filtered light for many Nepenthes."
           }
@@ -29,6 +68,7 @@
         "pillar_substrate": {
           "type": "pillar",
           "settings": {
+            "icon": "substrate",
             "title": "Substrate",
             "text": "Low-nutrient mixes: peat, sphagnum, perlite, and sand ratios depend on the genus."
           }
@@ -36,16 +76,94 @@
         "pillar_dormancy": {
           "type": "pillar",
           "settings": {
+            "icon": "dormancy",
             "title": "Dormancy",
             "text": "Temperate species need a cool winter rest; tropical genera grow year-round with stable warmth."
+          }
+        },
+        "climate_temperate": {
+          "type": "climate_zone",
+          "settings": {
+            "tag": "Outdoor & greenhouse",
+            "title": "Temperate & Mediterranean zones",
+            "text": "Sarracenia, Dionaea, and many Drosera thrive with strong light and seasonal temperature swings. Plan a cool, bright winter for dormancy — frost-free but not warm."
+          }
+        },
+        "climate_tropical": {
+          "type": "climate_zone",
+          "settings": {
+            "tag": "Indoor & humid bench",
+            "title": "Subtropical & highland tropics",
+            "text": "Nepenthes, Heliamphora, and many Pinguicula want stable warmth, higher humidity, and filtered light. Highland Nepenthes need cooler nights; lowland types want heat."
+          }
+        },
+        "step_genus": {
+          "type": "step",
+          "settings": {
+            "title": "Start with the genus",
+            "text": "Open a genus collection below — trap type and climate zone determine light, water, and dormancy."
+          }
+        },
+        "step_dossier": {
+          "type": "step",
+          "settings": {
+            "title": "Read the product dossier",
+            "text": "Each specimen page includes a cultivation dossier with metafield care notes when available."
+          }
+        },
+        "step_supplies": {
+          "type": "step",
+          "settings": {
+            "title": "Stock your bench",
+            "text": "Pair plants with growing supplies — substrate, trays, and tools matched to carnivorous culture."
+          }
+        },
+        "step_contact": {
+          "type": "step",
+          "settings": {
+            "title": "Ask before you order",
+            "text": "Message us with photos of your setup if you are unsure about humidity, dormancy, or winter protection."
+          }
+        },
+        "faq_water": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I use tap water?",
+            "answer": "<p>Most carnivorous plants prefer rainwater, reverse osmosis, or distilled water. If your tap TDS is low, some Drosera may tolerate it — test before committing an entire collection.</p>"
+          }
+        },
+        "faq_dormancy": {
+          "type": "faq",
+          "settings": {
+            "question": "Do all carnivorous plants need dormancy?",
+            "answer": "<p>No. Temperate genera such as Sarracenia and Dionaea need a cool winter rest. Tropical Nepenthes and many Pinguicula grow year-round with stable warmth and humidity.</p>"
+          }
+        },
+        "faq_fertiliser": {
+          "type": "faq",
+          "settings": {
+            "question": "Should I fertilise my plants?",
+            "answer": "<p>Avoid conventional fertiliser — it burns roots. Let traps catch insects, or use very dilute foliar feeds only when you understand the genus.</p>"
           }
         }
       },
       "block_order": [
+        "highlight_water",
+        "highlight_light",
+        "highlight_feeding",
         "pillar_water",
         "pillar_light",
         "pillar_substrate",
-        "pillar_dormancy"
+        "pillar_dormancy",
+        "climate_temperate",
+        "climate_tropical",
+        "step_genus",
+        "step_dossier",
+        "step_supplies",
+        "step_contact",
+        "faq_water",
+        "faq_dormancy",
+        "faq_fertiliser"
       ]
     }
   },

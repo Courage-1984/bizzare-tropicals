@@ -51,6 +51,7 @@ Assign each **Page** in Admin → **Online Store → Pages** to the matching tem
 | `templates/page.json` | Page (default) | Generic rich page | `page` |
 | `templates/page.about.json` | Page | About | `about-template` |
 | `templates/page.contact.json` | Page | Contact | `contact-template` |
+| `templates/page.care-overview.json` | Page | Care overview | `care-overview-template` |
 | `templates/page.privacy.json` | Page | Privacy policy | `main-policy-page` |
 | `templates/page.refund.json` | Page | Refund policy | `main-policy-page` |
 | `templates/page.shipping.json` | Page | Shipping policy | `main-policy-page` |
@@ -85,7 +86,8 @@ Assign each **Page** in Admin → **Online Store → Pages** to the matching tem
 Social URLs and contact details are configured in the **Footer** section (footer group):
 
 - [x] **Address** — Full Pretoria street in theme defaults (`contact_address`); confirm in Theme Editor footer + contact page.
-- [ ] **Care overview page** — Create Admin page with handle `care-overview`, assign template **care-overview** (`templates/page.care-overview.json`).
+- [ ] **Care overview page** — Create Admin page with handle `care-overview`, assign template **care-overview** (`templates/page.care-overview.json`). Leave **page content** empty in Admin; edit the hero subtitle in Theme Editor (see §6.4.1).
+- [x] **Care overview in nav** — Header setting *Show Care overview in navigation* (default on). Optional duplicate: add same link in **Online Store → Navigation → Main menu**.
 - [ ] **Email** — `info@bizarretropicals.co.za` (`contact_email`).
 - [ ] **Phone / WhatsApp** — `+27 72 152 7446` (`contact_phone`); WhatsApp link `https://wa.me/27721527446` on contact page (`whatsapp_url`).
 - [ ] **Facebook / Instagram URLs** — Official profiles (`facebook_url`, `instagram_url`).
@@ -224,7 +226,7 @@ Create pages in Admin and assign templates:
 | Shipping | `shipping-policy` | `shipping` |
 | Terms of service | `terms-of-service` | `terms` |
 | Legal notice | `legal-notice` | `legal-notice` |
-| Care overview (optional) | `care-overview` | `page` (default) or custom |
+| Care overview (optional) | `care-overview` | **care-overview** (`page.care-overview.json`) |
 
 - [ ] **404:** Theme Editor → 404 → `main-404` (CTA default `/collections/all`).
 
@@ -324,7 +326,18 @@ Create pages in Admin and assign templates:
 - [ ] **FAQ block safety** — With FAQ enabled but no valid question blocks, the page now shows a helpful empty message instead of silently dropping the section.
 - [ ] **Social block safety** — With social enabled but no profile URLs configured, the page now shows a helpful empty message in the social panel.
 
-### 6.4 Policy pages
+### 6.4.1 Care overview page (`page.care-overview.json`)
+
+**Customize** → open the **Care overview** page → section **Care overview**.
+
+- [ ] **Hero title** (`hero_heading`) — Default **Care overview**; shown as H1. Subtitle appears directly underneath (not in the overline).
+- [ ] **Hero subtitle** (`hero_intro`) — Default intro about growing carnivorous plants in South Africa. This is the main page lead — do not duplicate in Shopify **Pages → Content**.
+- [ ] **Show Shopify page content** — Leave **off** unless you need extra rich text below the jump links.
+- [ ] **Hero image** — Upload in Theme Editor, or leave empty for Sarracenia Commons fallback (`hero_placeholder_url`).
+- [ ] **Blocks** — Highlights, pillars (with icons), climate zones, path steps, and FAQ items are editable; genus grid auto-pulls in-stock collections.
+- [ ] **Nepenthes spotlight** — Toggle off if elevation child collections are not created yet.
+
+### 6.5 Policy pages
 
 **Admin:** Settings → Policies (see `content/policies/README.md` for copy and order).
 

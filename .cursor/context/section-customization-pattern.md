@@ -135,6 +135,7 @@ Track progress as we go through the site (check when complete):
 | Product PDP | `sections/main-product.liquid` | ✓ |
 | Footer | `sections/footer.liquid` | ✓ |
 | About / Contact / Policy pages | `sections/about-template.liquid`, etc. | ✓ |
+| Care overview page | `sections/care-overview-template.liquid`, `templates/page.care-overview.json` | ✓ |
 | Newsletter popup | `sections/newsletter-modal.liquid` | ✓ — Customer email signup (not blog); see [admin-checklist.md](./admin-checklist.md#newsletter-signups-not-blog-posts) |
 | Cart drawer | `sections/cart-drawer.liquid` | ✓ |
 

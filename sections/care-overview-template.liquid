@@ -1,10 +1,29 @@
+{% doc %}
+  Care overview page — field guide layout with hero, pillars, climate zones, path steps, genus grid, FAQ, and CTA.
+
+  Hero heading fallback: section hero_heading → page.title → fallback_title → locale.
+  Hero subtitle fallback: section hero_intro → locale.
+  Hero image fallback: section hero_image → hero_placeholder_url → hero-slide-placeholder-url (sarracenia).
+  Genus cards: genus-shortcuts-dynamic-strip → default_placeholder_image → genus-placeholder-url.
+{% enddoc %}
+
 {%- liquid
-  assign page_title = page.title | strip
-  if page_title == blank
-    assign page_title = section.settings.fallback_title | strip
+  assign hero_heading = section.settings.hero_heading | strip
+  if hero_heading == blank
+    if page.title != blank
+      assign hero_heading = page.title | strip
+    endif
   endif
-  if page_title == blank
-    assign page_title = 'sections.care_overview.fallback_title' | t
+  if hero_heading == blank
+    assign hero_heading = section.settings.fallback_title | strip
+  endif
+  if hero_heading == blank
+    assign hero_heading = 'sections.care_overview.fallback_title' | t
+  endif
+
+  assign hero_overline = section.settings.hero_overline | strip
+  if hero_overline == blank
+    assign hero_overline = 'sections.care_overview.hero_overline_default' | t
   endif
 
   assign hero_intro = section.settings.hero_intro | strip
@@ -12,123 +31,807 @@
     assign hero_intro = 'sections.care_overview.hero_intro_default' | t
   endif
 
-  assign page_body = page.content
+  assign pillars_heading = section.settings.pillars_heading | strip
+  if pillars_heading == blank
+    assign pillars_heading = 'sections.care_overview.pillars_heading_default' | t
+  endif
+
+  assign pillars_intro = section.settings.pillars_intro | strip
+  if pillars_intro == blank
+    assign pillars_intro = 'sections.care_overview.pillars_intro_default' | t
+  endif
+
+  assign climate_heading = section.settings.climate_heading | strip
+  if climate_heading == blank
+    assign climate_heading = 'sections.care_overview.climate_heading_default' | t
+  endif
+
+  assign climate_intro = section.settings.climate_intro | strip
+  if climate_intro == blank
+    assign climate_intro = 'sections.care_overview.climate_intro_default' | t
+  endif
+
+  assign path_heading = section.settings.path_heading | strip
+  if path_heading == blank
+    assign path_heading = 'sections.care_overview.path_heading_default' | t
+  endif
+
+  assign path_intro = section.settings.path_intro | strip
+  if path_intro == blank
+    assign path_intro = 'sections.care_overview.path_intro_default' | t
+  endif
+
+  assign genera_heading = section.settings.genera_heading | strip
+  if genera_heading == blank
+    assign genera_heading = 'sections.care_overview.genera_heading_default' | t
+  endif
+
+  assign genera_text = section.settings.genera_text | strip
+  if genera_text == blank
+    assign genera_text = 'sections.care_overview.genera_text_default' | t
+  endif
+
+  assign resources_heading = section.settings.resources_heading | strip
+  if resources_heading == blank
+    assign resources_heading = 'sections.care_overview.resources_heading_default' | t
+  endif
+
+  assign faq_heading = section.settings.faq_heading | strip
+  if faq_heading == blank
+    assign faq_heading = 'sections.care_overview.faq_heading_default' | t
+  endif
+
+  assign cta_heading = section.settings.cta_heading | strip
+  if cta_heading == blank
+    assign cta_heading = 'sections.care_overview.cta_heading_default' | t
+  endif
+
+  assign cta_text = section.settings.cta_text | strip
+  if cta_text == blank
+    assign cta_text = 'sections.care_overview.cta_text_default' | t
+  endif
+
+  assign spotlight_heading = section.settings.spotlight_heading | strip
+  if spotlight_heading == blank
+    assign spotlight_heading = 'sections.care_overview.spotlight_heading_default' | t
+  endif
+
+  assign spotlight_text = section.settings.spotlight_text | strip
+  if spotlight_text == blank
+    assign spotlight_text = 'sections.care_overview.spotlight_text_default' | t
+  endif
+
+  assign spotlight_button = section.settings.spotlight_button_label | strip
+  if spotlight_button == blank
+    assign spotlight_button = 'sections.care_overview.spotlight_button_default' | t
+  endif
+
+  assign page_body = page.content | strip
+  assign show_page_content = section.settings.show_page_content
   assign default_placeholder = section.settings.default_placeholder_image
+
+  assign hero_background = section.settings.hero_image
+  assign use_hero_image = false
+  if hero_background != blank
+    if hero_background.width > 0
+      assign use_hero_image = true
+    endif
+  endif
+
+  assign hero_placeholder = section.settings.hero_placeholder_url | strip
+  if hero_placeholder == blank
+    capture hero_placeholder_capture
+      render 'hero-slide-placeholder-url', genus_handle: 'sarracenia'
+    endcapture
+    assign hero_placeholder = hero_placeholder_capture | strip
+  endif
+
+  assign show_jumps = section.settings.show_jump_nav
+  assign show_spotlight = section.settings.show_nepenthes_spotlight
+  assign show_faq = section.settings.show_faq
+
+  assign nepenthes_url = '/collections/nepenthes'
+  if collections.nepenthes != blank
+    assign nepenthes_url = collections.nepenthes.url
+  endif
+
+  assign supplies_url = '/collections/growing-supplies'
+  if collections['growing-supplies'] != blank
+    assign supplies_url = collections['growing-supplies'].url
+  endif
+
+  assign contact_url = '/pages/contact'
+  if pages.contact != blank
+    assign contact_url = pages.contact.url
+  endif
+
+  assign faq_block_count = 0
+  assign pillar_block_count = 0
+  assign step_block_count = 0
+  assign climate_block_count = 0
+  assign highlight_block_count = 0
+
+  for block in section.blocks
+    case block.type
+      when 'faq'
+        assign faq_question = block.settings.question | strip
+        if faq_question != blank
+          assign faq_block_count = faq_block_count | plus: 1
+        endif
+      when 'pillar'
+        assign pillar_block_count = pillar_block_count | plus: 1
+      when 'step'
+        assign step_block_count = step_block_count | plus: 1
+      when 'climate_zone'
+        assign climate_block_count = climate_block_count | plus: 1
+      when 'highlight'
+        assign highlight_block_count = highlight_block_count | plus: 1
+    endcase
+  endfor
 -%}
 
 <article class="care-overview full-width" {{ section.shopify_attributes }}>
-  <header class="care-overview__hero">
-    <div class="care-overview__hero-inner">
-      <p class="care-overview__overline">{{ section.settings.hero_overline | default: 'sections.care_overview.hero_overline_default' | t | escape }}</p>
-      <h1 class="care-overview__title">{{ page_title | escape }}</h1>
-      <p class="care-overview__intro">{{ hero_intro | escape }}</p>
-      {%- if page_body != blank -%}
-        <div class="care-overview__page-body rte">{{ page_body }}</div>
+  <header class="care-overview__hero reveal-up">
+    <div class="care-overview__hero-media" aria-hidden="true">
+      {%- if use_hero_image -%}
+        {{
+          hero_background
+          | image_url: width: 2200, height: 1000, crop: 'center'
+          | image_tag:
+            class: 'care-overview__hero-image organic-zoom',
+            widths: '800, 1200, 1600, 2200',
+            sizes: '100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: ''
+        }}
+      {%- elsif hero_placeholder != blank -%}
+        <img
+          class="care-overview__hero-image care-overview__hero-image--fallback"
+          src="{{ hero_placeholder | escape }}"
+          alt=""
+          width="2200"
+          height="1000"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- endif -%}
+      <span class="care-overview__hero-scrim"></span>
+      <span class="care-overview__hero-grain"></span>
+    </div>
+
+    <div class="care-overview__hero-content">
+      <p class="care-overview__hero-overline">{{ hero_overline | escape }}</p>
+
+      <div class="care-overview__hero-lead">
+        <h1 class="care-overview__hero-title">{{ hero_heading | escape }}</h1>
+        <p class="care-overview__hero-subtitle">{{ hero_intro | escape }}</p>
+      </div>
+
+      {%- if show_jumps -%}
+        <nav class="care-overview__jumps" aria-label="{{ 'sections.care_overview.jump_nav_label' | t }}">
+          <ul class="care-overview__jump-list" role="list">
+            <li role="listitem">
+              <a class="care-overview__jump-link" href="#care-pillars-{{ section.id }}">
+                {{ 'sections.care_overview.jump_pillars' | t }}
+              </a>
+            </li>
+            <li role="listitem">
+              <a class="care-overview__jump-link" href="#care-climate-{{ section.id }}">
+                {{ 'sections.care_overview.jump_climate' | t }}
+              </a>
+            </li>
+            <li role="listitem">
+              <a class="care-overview__jump-link" href="#care-path-{{ section.id }}">
+                {{ 'sections.care_overview.jump_path' | t }}
+              </a>
+            </li>
+            <li role="listitem">
+              <a class="care-overview__jump-link" href="#care-genera-{{ section.id }}">
+                {{ 'sections.care_overview.jump_genera' | t }}
+              </a>
+            </li>
+            {%- if show_faq and faq_block_count > 0 -%}
+              <li role="listitem">
+                <a class="care-overview__jump-link" href="#care-faq-{{ section.id }}">
+                  {{ 'sections.care_overview.jump_faq' | t }}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      {%- if show_page_content -%}
+        {%- if page_body != blank -%}
+          <div class="care-overview__page-body rte">{{ page_body }}</div>
+        {%- endif -%}
       {%- endif -%}
     </div>
   </header>
 
-  <section class="care-overview__pillars" aria-labelledby="care-overview-pillars-{{ section.id }}">
-    <h2 id="care-overview-pillars-{{ section.id }}" class="care-overview__section-title">
-      {{ section.settings.pillars_heading | default: 'sections.care_overview.pillars_heading_default' | t | escape }}
-    </h2>
-    <ul class="care-overview__pillar-grid" role="list">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'pillar' -%}
-          <li class="care-overview__pillar" {{ block.shopify_attributes }} role="listitem">
-            <h3 class="care-overview__pillar-title">{{ block.settings.title | escape }}</h3>
-            <p class="care-overview__pillar-text">{{ block.settings.text | escape }}</p>
+  <div class="care-overview__body">
+    {%- if highlight_block_count > 0 -%}
+      <section class="care-overview__highlights reveal-up" aria-label="{{ 'sections.care_overview.highlights_label' | t }}">
+        <ul class="care-overview__highlight-grid" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'highlight' -%}
+              {%- liquid
+                assign highlight_label = block.settings.label | strip
+                assign highlight_value = block.settings.value | strip
+                assign highlight_note = block.settings.note | strip
+              -%}
+              {%- if highlight_label != blank or highlight_value != blank -%}
+                <li class="care-overview__highlight" {{ block.shopify_attributes }} role="listitem">
+                  {%- if highlight_label != blank -%}
+                    <p class="care-overview__highlight-label">{{ highlight_label | escape }}</p>
+                  {%- endif -%}
+                  {%- if highlight_value != blank -%}
+                    <p class="care-overview__highlight-value">{{ highlight_value | escape }}</p>
+                  {%- endif -%}
+                  {%- if highlight_note != blank -%}
+                    <p class="care-overview__highlight-note">{{ highlight_note | escape }}</p>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </section>
+    {%- endif -%}
+
+    {%- if pillar_block_count > 0 -%}
+      <section
+        id="care-pillars-{{ section.id }}"
+        class="care-overview__pillars-band reveal-up"
+        aria-labelledby="care-overview-pillars-{{ section.id }}"
+      >
+        <div class="care-overview__pillars-inner">
+          <header class="care-overview__section-header care-overview__section-header--center">
+            <p class="care-overview__section-overline">{{ 'sections.care_overview.pillars_overline' | t }}</p>
+            <h2 id="care-overview-pillars-{{ section.id }}" class="care-overview__section-title">
+              {{ pillars_heading | escape }}
+            </h2>
+            <p class="care-overview__section-lead">{{ pillars_intro | escape }}</p>
+          </header>
+
+          <ul class="care-overview__pillar-grid" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'pillar' -%}
+                {%- liquid
+                  assign pillar_title = block.settings.title | strip
+                  assign pillar_text = block.settings.text | strip
+                  assign pillar_icon = block.settings.icon | default: 'default'
+                -%}
+                {%- if pillar_title != blank or pillar_text != blank -%}
+                  <li class="care-overview__pillar" {{ block.shopify_attributes }} role="listitem">
+                    {% render 'care-overview-pillar-icon', icon: pillar_icon %}
+                    {%- if pillar_title != blank -%}
+                      <h3 class="care-overview__pillar-title">{{ pillar_title | escape }}</h3>
+                    {%- endif -%}
+                    {%- if pillar_text != blank -%}
+                      <p class="care-overview__pillar-text">{{ pillar_text | escape }}</p>
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if climate_block_count > 0 -%}
+      <section
+        id="care-climate-{{ section.id }}"
+        class="care-overview__climate reveal-up"
+        aria-labelledby="care-overview-climate-{{ section.id }}"
+      >
+        <div class="care-overview__climate-inner">
+          <header class="care-overview__section-header">
+            <p class="care-overview__section-overline">{{ 'sections.care_overview.climate_overline' | t }}</p>
+            <h2 id="care-overview-climate-{{ section.id }}" class="care-overview__section-title">
+              {{ climate_heading | escape }}
+            </h2>
+            <p class="care-overview__section-lead">{{ climate_intro | escape }}</p>
+          </header>
+
+          <ul class="care-overview__climate-grid" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'climate_zone' -%}
+                {%- liquid
+                  assign zone_title = block.settings.title | strip
+                  assign zone_text = block.settings.text | strip
+                  assign zone_tag = block.settings.tag | strip
+                -%}
+                {%- if zone_title != blank or zone_text != blank -%}
+                  <li class="care-overview__climate-card" {{ block.shopify_attributes }} role="listitem">
+                    {%- if zone_tag != blank -%}
+                      <p class="care-overview__climate-tag">{{ zone_tag | escape }}</p>
+                    {%- endif -%}
+                    {%- if zone_title != blank -%}
+                      <h3 class="care-overview__climate-title">{{ zone_title | escape }}</h3>
+                    {%- endif -%}
+                    {%- if zone_text != blank -%}
+                      <p class="care-overview__climate-text">{{ zone_text | escape }}</p>
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if step_block_count > 0 -%}
+      <section
+        id="care-path-{{ section.id }}"
+        class="care-overview__path reveal-up"
+        aria-labelledby="care-overview-path-{{ section.id }}"
+      >
+        <div class="care-overview__path-inner">
+          <header class="care-overview__section-header">
+            <p class="care-overview__section-overline">{{ 'sections.care_overview.path_overline' | t }}</p>
+            <h2 id="care-overview-path-{{ section.id }}" class="care-overview__section-title">
+              {{ path_heading | escape }}
+            </h2>
+            <p class="care-overview__section-lead">{{ path_intro | escape }}</p>
+          </header>
+
+          <ol class="care-overview__steps" role="list">
+            {%- assign step_index = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'step' -%}
+                {%- liquid
+                  assign step_title = block.settings.title | strip
+                  assign step_text = block.settings.text | strip
+                -%}
+                {%- if step_title != blank or step_text != blank -%}
+                  {%- assign step_index = step_index | plus: 1 -%}
+                  <li class="care-overview__step" {{ block.shopify_attributes }} role="listitem">
+                    <span class="care-overview__step-index" aria-hidden="true">{{ step_index }}</span>
+                    <div class="care-overview__step-body">
+                      {%- if step_title != blank -%}
+                        <h3 class="care-overview__step-title">{{ step_title | escape }}</h3>
+                      {%- endif -%}
+                      {%- if step_text != blank -%}
+                        <p class="care-overview__step-text">{{ step_text | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ol>
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if show_spotlight -%}
+      <aside class="care-overview__spotlight reveal-up" aria-labelledby="care-overview-spotlight-{{ section.id }}">
+        <div class="care-overview__spotlight-inner">
+          <div class="care-overview__spotlight-copy">
+            <p class="care-overview__section-overline care-overview__section-overline--inverse">
+              {{ 'sections.care_overview.spotlight_overline' | t }}
+            </p>
+            <h2 id="care-overview-spotlight-{{ section.id }}" class="care-overview__spotlight-title">
+              {{ spotlight_heading | escape }}
+            </h2>
+            <p class="care-overview__spotlight-text">{{ spotlight_text | escape }}</p>
+            <a class="care-overview__button care-overview__button--outline" href="{{ nepenthes_url }}">
+              {{ spotlight_button | escape }}
+            </a>
+          </div>
+          <ul class="care-overview__spotlight-links" role="list">
+            <li role="listitem">
+              <a class="care-overview__spotlight-chip" href="{{ nepenthes_url }}">
+                {{ 'sections.care_overview.spotlight_link_parent' | t }}
+              </a>
+            </li>
+            {%- if collections['nepenthes-highland'] != blank -%}
+              <li role="listitem">
+                <a class="care-overview__spotlight-chip" href="{{ collections['nepenthes-highland'].url }}">
+                  {{ 'sections.care_overview.spotlight_link_highland' | t }}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if collections['nepenthes-intermediate'] != blank -%}
+              <li role="listitem">
+                <a class="care-overview__spotlight-chip" href="{{ collections['nepenthes-intermediate'].url }}">
+                  {{ 'sections.care_overview.spotlight_link_intermediate' | t }}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if collections['nepenthes-lowland'] != blank -%}
+              <li role="listitem">
+                <a class="care-overview__spotlight-chip" href="{{ collections['nepenthes-lowland'].url }}">
+                  {{ 'sections.care_overview.spotlight_link_lowland' | t }}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </aside>
+    {%- endif -%}
+
+    <section
+      id="care-genera-{{ section.id }}"
+      class="care-overview__genera reveal-up"
+      aria-labelledby="care-overview-genera-{{ section.id }}"
+    >
+      <div class="care-overview__genera-inner">
+        <header class="care-overview__section-header care-overview__section-header--center">
+          <p class="care-overview__section-overline">{{ 'sections.care_overview.genera_overline' | t }}</p>
+          <h2 id="care-overview-genera-{{ section.id }}" class="care-overview__section-title">
+            {{ genera_heading | escape }}
+          </h2>
+          <p class="care-overview__section-lead">{{ genera_text | escape }}</p>
+        </header>
+
+        <ul class="care-overview__genus-grid" role="list">
+          {%- capture genus_cards -%}
+            {%- render 'genus-shortcuts-dynamic-strip', default_placeholder: default_placeholder -%}
+          {%- endcapture -%}
+          {%- assign genus_cards = genus_cards | strip -%}
+          {%- if genus_cards != blank -%}
+            {{ genus_cards }}
+          {%- else -%}
+            <li class="care-overview__empty" role="listitem">
+              <p>{{ 'sections.care_overview.genera_empty' | t }}</p>
+            </li>
+          {%- endif -%}
+        </ul>
+      </div>
+    </section>
+
+    <section
+      id="care-resources-{{ section.id }}"
+      class="care-overview__resources reveal-up"
+      aria-labelledby="care-overview-resources-{{ section.id }}"
+    >
+      <div class="care-overview__resources-inner">
+        <header class="care-overview__section-header care-overview__section-header--center">
+          <p class="care-overview__section-overline">{{ 'sections.care_overview.resources_overline' | t }}</p>
+          <h2 id="care-overview-resources-{{ section.id }}" class="care-overview__section-title">
+            {{ resources_heading | escape }}
+          </h2>
+        </header>
+
+        <ul class="care-overview__resource-grid" role="list">
+          <li class="care-overview__resource-card" role="listitem">
+            <h3 class="care-overview__resource-title">{{ 'sections.care_overview.resource_supplies_title' | t }}</h3>
+            <p class="care-overview__resource-text">{{ 'sections.care_overview.resource_supplies_text' | t }}</p>
+            <a class="link-underline-grow" href="{{ supplies_url }}">
+              {{ 'sections.care_overview.resource_supplies_link' | t }}
+            </a>
           </li>
-        {%- endif -%}
-      {%- endfor -%}
-    </ul>
-  </section>
+          <li class="care-overview__resource-card" role="listitem">
+            <h3 class="care-overview__resource-title">{{ 'sections.care_overview.resource_pdp_title' | t }}</h3>
+            <p class="care-overview__resource-text">{{ 'sections.care_overview.resource_pdp_text' | t }}</p>
+            <a class="link-underline-grow" href="{{ routes.all_products_collection_url }}">
+              {{ 'sections.care_overview.resource_pdp_link' | t }}
+            </a>
+          </li>
+          <li class="care-overview__resource-card" role="listitem">
+            <h3 class="care-overview__resource-title">{{ 'sections.care_overview.resource_contact_title' | t }}</h3>
+            <p class="care-overview__resource-text">{{ 'sections.care_overview.resource_contact_text' | t }}</p>
+            <a class="link-underline-grow" href="{{ contact_url }}">
+              {{ 'sections.care_overview.resource_contact_link' | t }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-  <section class="care-overview__genera" aria-labelledby="care-overview-genera-{{ section.id }}">
-    <div class="care-overview__genera-header">
-      <h2 id="care-overview-genera-{{ section.id }}" class="care-overview__section-title">
-        {{ section.settings.genera_heading | default: 'sections.care_overview.genera_heading_default' | t | escape }}
-      </h2>
-      <p class="care-overview__genera-text">{{ section.settings.genera_text | default: 'sections.care_overview.genera_text_default' | t | escape }}</p>
-    </div>
-    <ul class="care-overview__genus-grid" role="list">
-      {%- capture genus_cards -%}
-        {%- render 'genus-shortcuts-dynamic-strip', default_placeholder: default_placeholder -%}
-      {%- endcapture -%}
-      {%- assign genus_cards = genus_cards | strip -%}
-      {%- if genus_cards != blank -%}
-        {{ genus_cards }}
-      {%- else -%}
-        <li class="care-overview__empty">
-          <p>{{ 'sections.care_overview.genera_empty' | t }}</p>
-        </li>
-      {%- endif -%}
-    </ul>
-  </section>
+    {%- if show_faq and faq_block_count > 0 -%}
+      <section
+        id="care-faq-{{ section.id }}"
+        class="care-overview__faq reveal-up"
+        aria-labelledby="care-overview-faq-{{ section.id }}"
+      >
+        <div class="care-overview__faq-inner">
+          <header class="care-overview__section-header care-overview__section-header--center">
+            <p class="care-overview__section-overline">{{ 'sections.care_overview.faq_overline' | t }}</p>
+            <h2 id="care-overview-faq-{{ section.id }}" class="care-overview__section-title">
+              {{ faq_heading | escape }}
+            </h2>
+          </header>
 
-  <footer class="care-overview__cta">
-    <p class="care-overview__cta-text">{{ section.settings.cta_text | default: 'sections.care_overview.cta_text_default' | t | escape }}</p>
-    <p class="care-overview__cta-actions">
-      <a class="button button--primary" href="/pages/contact">
-        {{ 'sections.care_overview.cta_button' | t }}
-      </a>
-      <a class="link-underline-grow" href="{{ routes.all_products_collection_url }}">
-        {{ 'sections.care_overview.cta_catalog' | t }}
-      </a>
-    </p>
-  </footer>
+          <div class="botanical-accordion care-overview__accordion" role="region" aria-label="{{ faq_heading | escape }}">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'faq' -%}
+                {%- assign faq_question = block.settings.question | strip -%}
+                {%- if faq_question != blank -%}
+                  <details class="botanical-accordion__item" {{ block.shopify_attributes }}>
+                    <summary class="botanical-accordion__summary">
+                      {% render 'icon-accordion-mark' %}
+                      <span class="botanical-accordion__question">{{ faq_question | escape }}</span>
+                    </summary>
+                    <div class="botanical-accordion__answer rte">
+                      {{ block.settings.answer }}
+                    </div>
+                  </details>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </section>
+    {%- endif -%}
+
+    <footer class="care-overview__cta reveal-up">
+      <div class="care-overview__cta-banner">
+        <h2 class="care-overview__cta-heading">{{ cta_heading | escape }}</h2>
+        <p class="care-overview__cta-text">{{ cta_text | escape }}</p>
+        <p class="care-overview__cta-actions">
+          <a class="care-overview__button" href="{{ contact_url }}">
+            {{ 'sections.care_overview.cta_button' | t }}
+          </a>
+          <a class="link-underline-grow care-overview__cta-link-inverse" href="{{ routes.all_products_collection_url }}">
+            {{ 'sections.care_overview.cta_catalog' | t }}
+          </a>
+        </p>
+      </div>
+    </footer>
+  </div>
 </article>
 
 {% stylesheet %}
   .care-overview {
-    padding-block: var(--space-3xl) var(--space-4xl);
+    --care-hero-min-height: clamp(20rem, 58svh, 36rem);
     background: var(--color-background);
+    color: var(--color-foreground);
   }
 
-  .care-overview__hero-inner,
-  .care-overview__pillars,
-  .care-overview__genera,
-  .care-overview__cta {
+  .care-overview__hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: var(--care-hero-min-height);
+    margin-block-end: var(--space-2xl);
+    overflow: hidden;
+    color: var(--color-text-inverse);
+  }
+
+  .care-overview__hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-color: var(--color-primary-hover);
+  }
+
+  .care-overview__hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+
+  .care-overview__hero-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 90% 80% at 50% 100%,
+        rgb(12 18 14 / 0.15) 0%,
+        rgb(12 18 14 / 0.75) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(12 18 14 / 0.35) 0%,
+        rgb(12 18 14 / 0.55) 45%,
+        rgb(12 18 14 / 0.88) 100%
+      );
+  }
+
+  .care-overview__hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .care-overview__hero-content {
+    position: relative;
+    z-index: 1;
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+    padding-block: var(--space-3xl) var(--space-2xl);
+    text-align: center;
+  }
+
+  .care-overview__hero-overline {
+    margin: 0 0 var(--space-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .care-overview__hero-lead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+  }
+
+  .care-overview__hero-title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(2.25rem, 5vw + 0.5rem, 3.35rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    text-wrap: balance;
+  }
+
+  .care-overview__hero-subtitle {
+    margin: 0;
+    max-width: 48ch;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.9);
+    text-wrap: pretty;
+  }
+
+  .care-overview__page-body {
+    margin: var(--space-lg) auto 0;
+    max-width: 52ch;
+    text-align: start;
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  .care-overview__jumps {
+    margin-top: var(--space-xl);
+  }
+
+  .care-overview__jump-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .care-overview__jump-link {
+    display: inline-flex;
+    padding: 0.45rem 0.85rem;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-text-inverse);
+    background: rgb(255 255 255 / 0.12);
+    border: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .care-overview__jump-link:hover {
+    background: rgb(255 255 255 / 0.22);
+    border-color: rgb(255 255 255 / 0.45);
+  }
+
+  .care-overview__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+    padding-block-end: var(--space-4xl);
+  }
+
+  .care-overview__highlights {
     width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
     margin-inline: auto;
   }
 
-  .care-overview__overline {
-    margin: 0 0 var(--space-xs);
-    font-size: var(--font-size-sm);
-    letter-spacing: 0.1em;
+  .care-overview__highlight-grid {
+    display: grid;
+    gap: var(--space-sm);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 750px) {
+    .care-overview__highlight-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .care-overview__highlight {
+    padding: var(--space-md) var(--space-lg);
+    text-align: center;
+    background: var(--color-parchment);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .care-overview__highlight-label {
+    margin: 0 0 var(--space-2xs);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgb(var(--color-foreground-rgb) / 0.65);
   }
 
-  .care-overview__title {
-    margin: 0 0 var(--space-md);
+  .care-overview__highlight-value {
+    margin: 0;
     font-family: var(--font-family-serif);
-    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
     color: var(--color-forest-green-dark);
   }
 
-  .care-overview__intro {
-    margin: 0;
-    max-width: 60ch;
+  .care-overview__highlight-note {
+    margin: var(--space-xs) 0 0;
+    font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
-    color: rgb(var(--color-foreground-rgb) / 0.85);
+    color: rgb(var(--color-foreground-rgb) / 0.75);
   }
 
-  .care-overview__page-body {
-    margin-top: var(--space-lg);
-    max-width: 65ch;
+  .care-overview__pillars-band {
+    background: var(--color-parchment);
+    padding-block: var(--space-3xl);
+  }
+
+  .care-overview__pillars-inner,
+  .care-overview__climate-inner,
+  .care-overview__path-inner,
+  .care-overview__genera-inner,
+  .care-overview__resources-inner,
+  .care-overview__faq-inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+  }
+
+  .care-overview__section-header {
+    margin-block-end: var(--space-xl);
+  }
+
+  .care-overview__section-header--center {
+    text-align: center;
+  }
+
+  .care-overview__section-header--center .care-overview__section-lead {
+    margin-inline: auto;
+  }
+
+  .care-overview__section-overline {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.62);
+  }
+
+  .care-overview__section-overline--inverse {
+    color: rgb(255 255 255 / 0.72);
   }
 
   .care-overview__section-title {
-    margin: 0 0 var(--space-md);
+    margin: 0 0 var(--space-sm);
     font-family: var(--font-family-serif);
-    font-size: clamp(1.35rem, 2vw + 0.5rem, 1.85rem);
+    font-size: clamp(1.65rem, 2.5vw + 0.5rem, 2.35rem);
+    font-weight: 400;
     color: var(--color-forest-green-dark);
+    text-wrap: balance;
   }
 
-  .care-overview__pillars {
-    margin-top: var(--space-3xl);
+  .care-overview__section-lead {
+    margin: 0;
+    max-width: 58ch;
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.82);
   }
 
   .care-overview__pillar-grid {
@@ -152,14 +855,38 @@
   }
 
   .care-overview__pillar {
-    padding: var(--space-md);
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
-    border-radius: var(--radius-sm, 4px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-height: 100%;
+    padding: var(--space-lg);
+    background: var(--color-background);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    transition:
+      transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+      box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .care-overview__pillar:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgb(0 0 0 / 0.06);
+  }
+
+  .care-overview__pillar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-forest-green-dark);
+    background: rgb(var(--color-foreground-rgb) / 0.06);
+    border-radius: 50%;
   }
 
   .care-overview__pillar-title {
-    margin: 0 0 var(--space-xs);
+    margin: 0;
     font-size: var(--font-size-md);
+    font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
@@ -171,33 +898,272 @@
     color: rgb(var(--color-foreground-rgb) / 0.8);
   }
 
-  .care-overview__genera {
-    margin-top: var(--space-3xl);
-  }
-
-  .care-overview__genera-text {
-    margin: 0 0 var(--space-lg);
-    max-width: 55ch;
-    color: rgb(var(--color-foreground-rgb) / 0.8);
-  }
-
-  .care-overview__genus-grid {
+  .care-overview__climate-grid {
     display: grid;
     gap: var(--space-md);
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .care-overview__cta {
-    margin-top: var(--space-3xl);
+  @media (min-width: 750px) {
+    .care-overview__climate-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .care-overview__climate-card {
+    padding: var(--space-xl);
+    background: linear-gradient(
+      145deg,
+      rgb(var(--color-foreground-rgb) / 0.04) 0%,
+      rgb(var(--color-foreground-rgb) / 0.02) 100%
+    );
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .care-overview__climate-tag {
+    margin: 0 0 var(--space-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .care-overview__climate-title {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
+    color: var(--color-forest-green-dark);
+  }
+
+  .care-overview__climate-text {
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.82);
+  }
+
+  .care-overview__steps {
+    display: grid;
+    gap: var(--space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: none;
+  }
+
+  @media (min-width: 990px) {
+    .care-overview__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .care-overview__step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-md);
+    align-items: start;
+    padding: var(--space-lg);
+    border-inline-start: 3px solid var(--color-forest-green-dark);
+    background: rgb(var(--color-foreground-rgb) / 0.03);
+  }
+
+  .care-overview__step-index {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-inverse);
+    background: var(--color-forest-green-dark);
+    border-radius: 50%;
+  }
+
+  .care-overview__step-title {
+    margin: 0 0 var(--space-2xs);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+  }
+
+  .care-overview__step-text {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+  }
+
+  .care-overview__spotlight {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+  }
+
+  .care-overview__spotlight-inner {
+    display: grid;
+    gap: var(--space-lg);
+    padding: var(--space-2xl);
+    color: var(--color-text-inverse);
+    background:
+      linear-gradient(135deg, rgb(18 32 24 / 0.95), rgb(28 48 36 / 0.92)),
+      var(--color-forest-green-dark);
+    border: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  @media (min-width: 990px) {
+    .care-overview__spotlight-inner {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+    }
+  }
+
+  .care-overview__spotlight-title {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 400;
+  }
+
+  .care-overview__spotlight-text {
+    margin: 0 0 var(--space-md);
+    max-width: 48ch;
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  .care-overview__spotlight-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .care-overview__spotlight-chip {
+    display: inline-flex;
+    padding: 0.4rem 0.75rem;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-text-inverse);
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 999px;
+    transition: background 0.25s ease;
+  }
+
+  .care-overview__spotlight-chip:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .care-overview__genus-grid {
+    display: grid;
+    gap: var(--space-lg) var(--space-md);
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 750px) {
+    .care-overview__genus-grid {
+      grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .care-overview__genus-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  .care-overview__genus-grid > .genus-shortcuts__item {
+    min-width: 0;
+  }
+
+  .care-overview__empty {
+    grid-column: 1 / -1;
     text-align: center;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .care-overview__resource-grid {
+    display: grid;
+    gap: var(--space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 750px) {
+    .care-overview__resource-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .care-overview__resource-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-height: 100%;
+    padding: var(--space-lg);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    background: var(--color-parchment);
+  }
+
+  .care-overview__resource-title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    color: var(--color-forest-green-dark);
+  }
+
+  .care-overview__resource-text {
+    margin: 0;
+    flex: 1;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+  }
+
+  .care-overview__faq {
+    padding-block: var(--space-xl);
+    background: rgb(var(--color-foreground-rgb) / 0.03);
+  }
+
+  .care-overview__accordion {
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .care-overview__cta {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+  }
+
+  .care-overview__cta-banner {
+    padding: var(--space-2xl);
+    text-align: center;
+    color: var(--color-text-inverse);
+    background:
+      radial-gradient(ellipse 80% 120% at 50% 0%, rgb(255 255 255 / 0.08), transparent 55%),
+      var(--color-forest-green-dark);
+  }
+
+  .care-overview__cta-heading {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 400;
   }
 
   .care-overview__cta-text {
-    margin: 0 0 var(--space-md);
-    font-size: var(--font-size-md);
+    margin: 0 auto var(--space-lg);
+    max-width: 42ch;
+    line-height: var(--line-height-relaxed);
+    color: rgb(255 255 255 / 0.88);
   }
 
   .care-overview__cta-actions {
@@ -208,6 +1174,91 @@
     align-items: center;
     margin: 0;
   }
+
+  .care-overview__cta-link-inverse {
+    color: var(--color-text-inverse);
+  }
+
+  .care-overview__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: var(--space-sm) var(--space-2xl);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-text-inverse);
+    background-color: var(--color-forest-green-dark);
+    border: 1px solid var(--color-forest-green-dark);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .care-overview__button:hover {
+    background-color: var(--color-primary-hover);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .care-overview__button--outline {
+    color: var(--color-text-inverse);
+    background-color: transparent;
+    border-color: rgb(255 255 255 / 0.55);
+  }
+
+  .care-overview__button--outline:hover {
+    background-color: rgb(255 255 255 / 0.12);
+    border-color: rgb(255 255 255 / 0.75);
+  }
+
+  .care-overview__cta-banner .care-overview__button {
+    background-color: var(--color-parchment);
+    color: var(--color-forest-green-dark);
+    border-color: var(--color-parchment);
+  }
+
+  .care-overview__cta-banner .care-overview__button:hover {
+    background-color: var(--color-background);
+    border-color: var(--color-background);
+  }
+
+  @media (min-width: 990px) {
+    .care-overview__hero-content {
+      text-align: start;
+      padding-inline: max(var(--page-margin), calc((100vw - var(--page-width)) / 2 + var(--page-margin)));
+    }
+
+    .care-overview__hero-lead {
+      align-items: flex-start;
+    }
+
+    .care-overview__hero-subtitle {
+      margin-inline: 0;
+    }
+
+    .care-overview__jump-list {
+      justify-content: flex-start;
+    }
+
+    .care-overview__page-body {
+      margin-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .care-overview__pillar:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .care-overview__hero-image.organic-zoom {
+      animation: none;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -217,10 +1268,33 @@
   "class": "care-overview-section",
   "settings": [
     {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.hero_header"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "t:sections.care_overview.settings.hero_heading",
+      "default": "Care overview",
+      "info": "t:sections.care_overview.settings.hero_heading_info"
+    },
+    {
       "type": "text",
       "id": "fallback_title",
       "label": "t:sections.care_overview.settings.fallback_title",
-      "default": "Care overview"
+      "default": "Care overview",
+      "info": "t:sections.care_overview.settings.fallback_title_info"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "t:sections.care_overview.settings.hero_image"
+    },
+    {
+      "type": "text",
+      "id": "hero_placeholder_url",
+      "label": "t:sections.care_overview.settings.hero_placeholder_url",
+      "info": "t:sections.care_overview.settings.hero_placeholder_url_info"
     },
     {
       "type": "text",
@@ -231,13 +1305,102 @@
     {
       "type": "textarea",
       "id": "hero_intro",
-      "label": "t:sections.care_overview.settings.hero_intro"
+      "label": "t:sections.care_overview.settings.hero_intro",
+      "default": "How to grow carnivorous plants in South Africa — core principles first, then genus-specific culture on each collection and product page.",
+      "info": "t:sections.care_overview.settings.hero_intro_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_page_content",
+      "label": "t:sections.care_overview.settings.show_page_content",
+      "info": "t:sections.care_overview.settings.show_page_content_info",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_jump_nav",
+      "label": "t:sections.care_overview.settings.show_jump_nav",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.pillars_header"
     },
     {
       "type": "text",
       "id": "pillars_heading",
       "label": "t:sections.care_overview.settings.pillars_heading",
       "default": "Core principles"
+    },
+    {
+      "type": "textarea",
+      "id": "pillars_intro",
+      "label": "t:sections.care_overview.settings.pillars_intro",
+      "default": "Every genus bends these rules — but neglecting any one is how collections fail on the bench."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.climate_header"
+    },
+    {
+      "type": "text",
+      "id": "climate_heading",
+      "label": "t:sections.care_overview.settings.climate_heading",
+      "default": "South African benches"
+    },
+    {
+      "type": "textarea",
+      "id": "climate_intro",
+      "label": "t:sections.care_overview.settings.climate_intro",
+      "default": "Match your setup to temperate outdoor culture or humid tropical benches — most losses come from choosing the wrong zone."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.path_header"
+    },
+    {
+      "type": "text",
+      "id": "path_heading",
+      "label": "t:sections.care_overview.settings.path_heading",
+      "default": "Your cultivation path"
+    },
+    {
+      "type": "textarea",
+      "id": "path_intro",
+      "label": "t:sections.care_overview.settings.path_intro",
+      "default": "Four steps from first genus to a stocked, stable bench."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.spotlight_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nepenthes_spotlight",
+      "label": "t:sections.care_overview.settings.show_nepenthes_spotlight",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "spotlight_heading",
+      "label": "t:sections.care_overview.settings.spotlight_heading",
+      "default": "Nepenthes need the right elevation"
+    },
+    {
+      "type": "textarea",
+      "id": "spotlight_text",
+      "label": "t:sections.care_overview.settings.spotlight_text",
+      "default": "Highland, intermediate, and lowland collections need different night temperatures and humidity. Start at the parent Nepenthes hub, then narrow by elevation."
+    },
+    {
+      "type": "text",
+      "id": "spotlight_button_label",
+      "label": "t:sections.care_overview.settings.spotlight_button_label",
+      "default": "Explore Nepenthes"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.genera_header"
     },
     {
       "type": "text",
@@ -248,25 +1411,100 @@
     {
       "type": "textarea",
       "id": "genera_text",
-      "label": "t:sections.care_overview.settings.genera_text"
-    },
-    {
-      "type": "textarea",
-      "id": "cta_text",
-      "label": "t:sections.care_overview.settings.cta_text"
+      "label": "t:sections.care_overview.settings.genera_text",
+      "default": "Open a genus for trap types, culture notes, and live stock — each product page includes a cultivation dossier when data is available."
     },
     {
       "type": "text",
       "id": "default_placeholder_image",
       "label": "t:sections.care_overview.settings.default_placeholder_image",
       "info": "t:sections.care_overview.settings.default_placeholder_image_info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.resources_header"
+    },
+    {
+      "type": "text",
+      "id": "resources_heading",
+      "label": "t:sections.care_overview.settings.resources_heading",
+      "default": "Bench resources"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.faq_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "t:sections.care_overview.settings.show_faq",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "t:sections.care_overview.settings.faq_heading",
+      "default": "Common questions"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.care_overview.settings.cta_header"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "t:sections.care_overview.settings.cta_heading",
+      "default": "Still unsure?"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "t:sections.care_overview.settings.cta_text",
+      "default": "Questions about your bench or climate? We are happy to advise before you order."
     }
   ],
   "blocks": [
     {
+      "type": "highlight",
+      "name": "t:sections.care_overview.blocks.highlight.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.care_overview.blocks.highlight.settings.label"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "t:sections.care_overview.blocks.highlight.settings.value"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "t:sections.care_overview.blocks.highlight.settings.note"
+        }
+      ]
+    },
+    {
       "type": "pillar",
       "name": "t:sections.care_overview.blocks.pillar.name",
       "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:sections.care_overview.blocks.pillar.settings.icon",
+          "default": "default",
+          "options": [
+            { "value": "water", "label": "t:sections.care_overview.blocks.pillar.settings.icon_water" },
+            { "value": "light", "label": "t:sections.care_overview.blocks.pillar.settings.icon_light" },
+            { "value": "substrate", "label": "t:sections.care_overview.blocks.pillar.settings.icon_substrate" },
+            { "value": "dormancy", "label": "t:sections.care_overview.blocks.pillar.settings.icon_dormancy" },
+            { "value": "humidity", "label": "t:sections.care_overview.blocks.pillar.settings.icon_humidity" },
+            { "value": "feeding", "label": "t:sections.care_overview.blocks.pillar.settings.icon_feeding" },
+            { "value": "default", "label": "t:sections.care_overview.blocks.pillar.settings.icon_default" }
+          ]
+        },
         {
           "type": "text",
           "id": "title",
@@ -280,6 +1518,64 @@
           "default": "Use low-mineral water and tray or top-water methods suited to the genus."
         }
       ]
+    },
+    {
+      "type": "climate_zone",
+      "name": "t:sections.care_overview.blocks.climate_zone.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "t:sections.care_overview.blocks.climate_zone.settings.tag"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.care_overview.blocks.climate_zone.settings.title",
+          "default": "Temperate bench"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:sections.care_overview.blocks.climate_zone.settings.text"
+        }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "t:sections.care_overview.blocks.step.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.care_overview.blocks.step.settings.title",
+          "default": "Choose your genus"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:sections.care_overview.blocks.step.settings.text"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "t:sections.care_overview.blocks.faq.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:sections.care_overview.blocks.faq.settings.question",
+          "default": "Can I use tap water?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:sections.care_overview.blocks.faq.settings.answer",
+          "default": "<p>Most carnivorous plants prefer rainwater, reverse osmosis, or distilled water. If your tap TDS is low, some Drosera may tolerate it — test before committing an entire collection.</p>"
+        }
+      ]
     }
   ],
   "presets": [
@@ -287,8 +1583,33 @@
       "name": "t:sections.care_overview.name",
       "blocks": [
         {
+          "type": "highlight",
+          "settings": {
+            "label": "Water quality",
+            "value": "Low TDS",
+            "note": "Rainwater, RO, or distilled preferred"
+          }
+        },
+        {
+          "type": "highlight",
+          "settings": {
+            "label": "Light rule",
+            "value": "Genus-first",
+            "note": "Match intensity to trap type"
+          }
+        },
+        {
+          "type": "highlight",
+          "settings": {
+            "label": "Feeding",
+            "value": "No fertiliser",
+            "note": "Let traps catch prey naturally"
+          }
+        },
+        {
           "type": "pillar",
           "settings": {
+            "icon": "water",
             "title": "Water",
             "text": "Rainwater, reverse osmosis, or distilled water — avoid tap water with high TDS."
           }
@@ -296,6 +1617,7 @@
         {
           "type": "pillar",
           "settings": {
+            "icon": "light",
             "title": "Light",
             "text": "Match intensity to genus: full sun for many Sarracenia and Dionaea; filtered light for many Nepenthes."
           }
@@ -303,6 +1625,7 @@
         {
           "type": "pillar",
           "settings": {
+            "icon": "substrate",
             "title": "Substrate",
             "text": "Low-nutrient mixes: peat, sphagnum, perlite, and sand ratios depend on the genus."
           }
@@ -310,8 +1633,74 @@
         {
           "type": "pillar",
           "settings": {
+            "icon": "dormancy",
             "title": "Dormancy",
             "text": "Temperate species need a cool winter rest; tropical genera grow year-round with stable warmth."
+          }
+        },
+        {
+          "type": "climate_zone",
+          "settings": {
+            "tag": "Outdoor & greenhouse",
+            "title": "Temperate & Mediterranean zones",
+            "text": "Sarracenia, Dionaea, and many Drosera thrive with strong light and seasonal temperature swings. Plan a cool, bright winter for dormancy — frost-free but not warm."
+          }
+        },
+        {
+          "type": "climate_zone",
+          "settings": {
+            "tag": "Indoor & humid bench",
+            "title": "Subtropical & highland tropics",
+            "text": "Nepenthes, Heliamphora, and many Pinguicula want stable warmth, higher humidity, and filtered light. Highland Nepenthes need cooler nights; lowland types want heat."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Start with the genus",
+            "text": "Open a genus collection below — trap type and climate zone determine light, water, and dormancy."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Read the product dossier",
+            "text": "Each specimen page includes a cultivation dossier with metafield care notes when available."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Stock your bench",
+            "text": "Pair plants with growing supplies — substrate, trays, and tools matched to carnivorous culture."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Ask before you order",
+            "text": "Message us with photos of your setup if you are unsure about humidity, dormancy, or winter protection."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I use tap water?",
+            "answer": "<p>Most carnivorous plants prefer rainwater, reverse osmosis, or distilled water. If your tap TDS is low, some Drosera may tolerate it — test before committing an entire collection.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do all carnivorous plants need dormancy?",
+            "answer": "<p>No. Temperate genera such as Sarracenia and Dionaea need a cool winter rest. Tropical Nepenthes and many Pinguicula grow year-round with stable warmth and humidity.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Should I fertilise my plants?",
+            "answer": "<p>Avoid conventional fertiliser — it burns roots. Let traps catch insects, or use very dilute foliar feeds only when you understand the genus.</p>"
           }
         }
       ]

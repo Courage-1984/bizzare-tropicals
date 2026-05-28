@@ -63,6 +63,11 @@
     assign quick_contact_url = '/pages/contact'
   endif
 
+  assign quick_care_overview_url = '/pages/care-overview'
+  if pages['care-overview'] != blank
+    assign quick_care_overview_url = pages['care-overview'].url
+  endif
+
   capture quick_shipping_url
     render 'policy-url', handle: 'shipping-policy', page_handle: 'shipping-policy'
   endcapture

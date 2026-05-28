@@ -321,22 +321,92 @@
     "care_overview": {
       "name": "Care overview",
       "settings": {
+        "hero_header": "Hero",
+        "hero_heading": "Hero title",
+        "hero_heading_info": "Shown as the main H1. Leave blank to use the Shopify page title.",
         "fallback_title": "Fallback page title",
+        "fallback_title_info": "Used when hero title and page title are both empty (theme preview).",
+        "hero_image": "Hero background image",
+        "hero_placeholder_url": "Hero fallback image URL",
+        "hero_placeholder_url_info": "Used when no hero image is uploaded. Leave blank for a Sarracenia Commons default.",
         "hero_overline": "Hero overline",
-        "hero_intro": "Hero introduction",
+        "hero_intro": "Hero subtitle",
+        "hero_intro_info": "Shown directly under the hero title. Prefer this over Shopify page content.",
+        "show_page_content": "Show Shopify page content in hero",
+        "show_page_content_info": "When off, edit copy in Hero subtitle only — avoids duplicate intro text.",
+        "show_jump_nav": "Show section jump links in hero",
+        "pillars_header": "Core principles",
         "pillars_heading": "Pillars heading",
+        "pillars_intro": "Pillars introduction",
+        "climate_header": "Climate zones",
+        "climate_heading": "Climate heading",
+        "climate_intro": "Climate introduction",
+        "path_header": "Cultivation path",
+        "path_heading": "Path heading",
+        "path_intro": "Path introduction",
+        "spotlight_header": "Nepenthes spotlight",
+        "show_nepenthes_spotlight": "Show Nepenthes elevation spotlight",
+        "spotlight_heading": "Spotlight heading",
+        "spotlight_text": "Spotlight text",
+        "spotlight_button_label": "Spotlight button label",
+        "genera_header": "Genus grid",
         "genera_heading": "Genera heading",
         "genera_text": "Genera introduction",
-        "cta_text": "Call to action text",
         "default_placeholder_image": "Default genus placeholder URL",
-        "default_placeholder_image_info": "Fallback when a genus collection has no image."
+        "default_placeholder_image_info": "Fallback when a genus collection has no image.",
+        "resources_header": "Resources",
+        "resources_heading": "Resources heading",
+        "faq_header": "FAQ",
+        "show_faq": "Show FAQ accordion",
+        "faq_heading": "FAQ heading",
+        "cta_header": "Call to action",
+        "cta_heading": "CTA heading",
+        "cta_text": "CTA text"
       },
       "blocks": {
+        "highlight": {
+          "name": "Highlight stat",
+          "settings": {
+            "label": "Label",
+            "value": "Value",
+            "note": "Supporting note"
+          }
+        },
         "pillar": {
           "name": "Care pillar",
           "settings": {
+            "icon": "Icon",
+            "icon_water": "Water",
+            "icon_light": "Light",
+            "icon_substrate": "Substrate",
+            "icon_dormancy": "Dormancy",
+            "icon_humidity": "Humidity",
+            "icon_feeding": "Feeding",
+            "icon_default": "Leaf (default)",
             "title": "Title",
             "text": "Description"
+          }
+        },
+        "climate_zone": {
+          "name": "Climate zone",
+          "settings": {
+            "tag": "Tag",
+            "title": "Title",
+            "text": "Description"
+          }
+        },
+        "step": {
+          "name": "Path step",
+          "settings": {
+            "title": "Title",
+            "text": "Description"
+          }
+        },
+        "faq": {
+          "name": "FAQ item",
+          "settings": {
+            "question": "Question",
+            "answer": "Answer"
           }
         }
       }
@@ -593,6 +663,9 @@
       "menu_desktop": "Desktop menu",
       "menu_mobile": "Mobile menu",
       "menu_mobile_info": "Optional. Uses the desktop menu when empty.",
+      "show_care_overview_link": "Show Care overview in navigation",
+      "care_overview_link_label": "Care overview link label",
+      "care_overview_link_label_info": "Leave blank to use the default label.",
       "mega_menu_header": "Catalog mega menu"
     },
     "blocks": {

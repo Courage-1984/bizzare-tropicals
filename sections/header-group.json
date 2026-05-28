@@ -135,7 +135,9 @@
       ],
       "settings": {
         "menu_desktop": "main-menu",
-        "menu_mobile": ""
+        "menu_mobile": "",
+        "show_care_overview_link": true,
+        "care_overview_link_label": ""
       }
     },
     "search-overlay": {

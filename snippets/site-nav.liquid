@@ -13,9 +13,15 @@
 {%- liquid
   assign nav_variant = variant | default: 'desktop'
   assign nav_links = menu.links
+  assign show_care_overview_link = false
+  if header_section != blank
+    if header_section.settings.show_care_overview_link
+      assign show_care_overview_link = true
+    endif
+  endif
 -%}
 
-{%- if nav_links != blank -%}
+{%- if nav_links != blank or show_care_overview_link -%}
   <ul
     class="site-nav__list site-nav__list--depth-0 site-nav__list--{{ nav_variant }}"
     role="list"
@@ -30,5 +36,30 @@
         header_section: header_section
       -%}
     {%- endfor -%}
+    {%- if show_care_overview_link -%}
+        {%- liquid
+          assign care_overview_url = '/pages/care-overview'
+          if pages['care-overview'] != blank
+            assign care_overview_url = pages['care-overview'].url
+          endif
+          assign care_overview_label = header_section.settings.care_overview_link_label | strip
+          if care_overview_label == blank
+            assign care_overview_label = 'header.link_care_overview' | t
+          endif
+          assign care_path = care_overview_url | split: '?' | first
+          assign care_active = false
+          if request.path == care_path
+            assign care_active = true
+          endif
+        -%}
+        <li
+          class="site-nav__item site-nav__item--care-overview{% if care_active %} site-nav__item--active{% endif %}"
+          role="listitem"
+        >
+          <a class="site-nav__link" href="{{ care_overview_url }}"{% if care_active %} aria-current="page"{% endif %}>
+            {{- care_overview_label | escape -}}
+          </a>
+        </li>
+    {%- endif -%}
   </ul>
 {%- endif -%}
