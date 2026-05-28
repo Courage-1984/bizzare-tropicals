@@ -1,12 +1,33 @@
 {%- liquid
   assign ledger_collection = section.settings.collection
+  if ledger_collection == blank
+    assign ledger_collection = collections.all
+  endif
+
   assign products_limit = section.settings.products_to_show | default: 12
-  assign section_heading = section.settings.heading | default: 'NEWLY CATALOGED'
-  assign section_subheading = section.settings.subheading | default: 'Fresh arrivals from the propagation lab.'
+  if products_limit < 1
+    assign products_limit = 12
+  endif
+
+  assign section_heading = section.settings.heading | strip
+  if section_heading == blank
+    assign section_heading = 'sections.new_specimens.heading_default' | t
+  endif
+
+  assign section_subheading = section.settings.subheading | strip
+  if section_subheading == blank
+    assign section_subheading = 'sections.new_specimens.subheading_default' | t
+  endif
+
+  assign view_all_label = section.settings.view_all_label | strip
+  if view_all_label == blank
+    assign view_all_label = 'sections.new_specimens.view_all_label_default' | t
+  endif
+
   assign show_real_products = false
 
   if ledger_collection != blank
-    if ledger_collection.products.size > 0
+    if ledger_collection.products_count > 0
       assign show_real_products = true
     endif
   endif
@@ -62,7 +83,7 @@
 
     {%- if show_real_products and ledger_collection.url != blank -%}
       <a class="new-specimens__view-all link-underline-grow" href="{{ ledger_collection.url }}?sort_by=created-descending">
-        {{ section.settings.view_all_label | default: 'View ledger' | escape }}
+        {{ view_all_label | escape }}
       </a>
     {%- endif -%}
   </header>
@@ -224,7 +245,8 @@
     padding: var(--space-xs) var(--page-margin) var(--space-md);
     list-style: none;
     overflow-x: auto;
-    overscroll-behavior-x: none;
+    overscroll-behavior-x: contain;
+    touch-action: pan-y pinch-zoom;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
@@ -398,6 +420,10 @@
         state.listeners.forEach(function (entry) {
           entry.target.removeEventListener(entry.type, entry.handler, entry.options);
         });
+
+        if (typeof state.inViewDisconnect === 'function') {
+          state.inViewDisconnect();
+        }
       } catch (error) {
         console.error('New specimens: teardown failed.', error);
       }
@@ -459,10 +485,12 @@
       }
 
       var autoplayPaused = false;
+      var inView = true;
       var state = {
         listeners: [],
         autoplayTimer: null,
-        resumeTimer: null
+        resumeTimer: null,
+        inViewDisconnect: null
       };
 
       function trackListener(target, type, handler, options) {
@@ -512,8 +540,15 @@
       function startAutoplay() {
         stopAutoplay();
 
+        var isDesktop = false;
+        try {
+          isDesktop = window.matchMedia('(min-width: 750px)').matches;
+        } catch (error) {
+          isDesktop = false;
+        }
+
         var overflow = tray.scrollWidth > tray.clientWidth + 2;
-        if (!overflow || autoplayPaused || prefersReducedMotion() || document.hidden) {
+        if (!overflow || !inView || autoplayPaused || prefersReducedMotion() || document.hidden || isDesktop) {
           return;
         }
 
@@ -583,6 +618,27 @@
       trackListener(tray, 'pointerup', scheduleAutoplayResume);
       trackListener(tray, 'pointerleave', scheduleAutoplayResume);
       trackListener(tray, 'focusout', scheduleAutoplayResume);
+
+      if (window.BT) {
+        if (window.BT.bindCarouselWheelGuard) {
+          window.BT.bindCarouselWheelGuard(tray);
+        }
+
+        if (window.BT.bindCarouselInView) {
+          state.inViewDisconnect = window.BT.bindCarouselInView(section, {
+            onLeave: function () {
+              inView = false;
+              stopAutoplay();
+            },
+            onEnter: function () {
+              inView = true;
+              if (!autoplayPaused) {
+                startAutoplay();
+              }
+            }
+          });
+        }
+      }
 
       section._newSpecimensState = state;
       section.dataset.newSpecimensInitialized = 'true';

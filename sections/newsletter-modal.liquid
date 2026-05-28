@@ -1,3 +1,18 @@
+{%- liquid
+  assign modal_heading = section.settings.heading | strip
+  if modal_heading == blank
+    assign modal_heading = 'sections.newsletter_modal.title' | t
+  endif
+
+  assign modal_subtext = section.settings.subtext | strip
+  assign modal_button_label = section.settings.button_label | strip
+  if modal_button_label == blank
+    assign modal_button_label = 'Join'
+  endif
+
+  assign illustration_placeholder = section.settings.illustration_placeholder | strip
+-%}
+
 {%- unless section.settings.enable_modal == false -%}
   <div
     class="newsletter-modal{% if request.design_mode %} newsletter-modal--design-mode is-open{% endif %}"
@@ -50,6 +65,16 @@
                 loading: 'lazy',
                 alt: ''
             }}
+          {%- elsif illustration_placeholder != blank -%}
+            <img
+              class="newsletter-modal__art-image"
+              src="{{ illustration_placeholder | escape }}"
+              alt=""
+              width="600"
+              height="600"
+              loading="lazy"
+              decoding="async"
+            >
           {%- else -%}
             <span class="newsletter-modal__art-svg">
               {{- 'icon-sundew-lineart.svg' | inline_asset_content -}}
@@ -59,11 +84,11 @@
 
         <div class="newsletter-modal__content">
           <h2 id="newsletter-modal-title-{{ section.id }}" class="newsletter-modal__heading">
-            {{ section.settings.heading | escape }}
+            {{ modal_heading | escape }}
           </h2>
 
-          {%- if section.settings.subtext != blank -%}
-            <p class="newsletter-modal__subtext">{{ section.settings.subtext | escape }}</p>
+          {%- if modal_subtext != blank -%}
+            <p class="newsletter-modal__subtext">{{ modal_subtext | escape }}</p>
           {%- endif -%}
 
           {%- form 'customer', class: 'newsletter-modal__form', id: 'newsletter-modal-form' -%}
@@ -91,7 +116,7 @@
                 {% endif %}
               >
               <button class="newsletter-modal__submit" type="submit" name="commit">
-                {{ section.settings.button_label | escape }}
+                {{ modal_button_label | escape }}
               </button>
             </div>
 
@@ -772,6 +797,12 @@
       "id": "illustration",
       "label": "t:sections.newsletter_modal.settings.illustration",
       "info": "t:sections.newsletter_modal.settings.illustration_info"
+    },
+    {
+      "type": "text",
+      "id": "illustration_placeholder",
+      "label": "t:sections.newsletter_modal.settings.illustration_placeholder",
+      "info": "t:sections.newsletter_modal.settings.illustration_placeholder_info"
     }
   ],
   "presets": [

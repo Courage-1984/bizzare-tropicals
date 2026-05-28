@@ -7,6 +7,7 @@
   @param {product} [product_item] - The product to display
   @param {string} [sizes] - Optional sizes attribute for responsive images
   @param {number} [card_index] - Zero-based index for cycling mock preview data
+  @param {boolean} [show_specimen_id] - Show the specimen tag line when true (default)
 
   @example
   {% render 'product-card', product_item: product %}
@@ -22,6 +23,10 @@
   endif
 
   assign image_sizes = sizes | default: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
+  assign show_specimen_id_resolved = show_specimen_id
+  if show_specimen_id_resolved == blank
+    assign show_specimen_id_resolved = true
+  endif
 
   if use_live_product
     assign card_url = product_item.url
@@ -147,6 +152,11 @@
     assign specimen_id_suffix = id_string | slice: id_start, 4
     assign specimen_id = '#BT-LOG-' | append: specimen_id_suffix
   endif
+
+  assign specimen_id_for_media = specimen_id
+  if show_specimen_id_resolved == false
+    assign specimen_id_for_media = blank
+  endif
 -%}
 
 <article
@@ -155,10 +165,12 @@
     data-product-id="{{ card_product.id }}"
   {% endif %}
 >
-  <p class="product-card__specimen-id">
-    <span class="visually-hidden">{{ 'products.card.specimen_id' | t }}</span>
-    {{- specimen_id | escape -}}
-  </p>
+  {%- if show_specimen_id_resolved -%}
+    <p class="product-card__specimen-id">
+      <span class="visually-hidden">{{ 'products.card.specimen_id' | t }}</span>
+      {{- specimen_id | escape -}}
+    </p>
+  {%- endif -%}
   {%- if use_live_product -%}
     {%- render 'product-card-badges', product_item: product_item -%}
   {%- else -%}
@@ -175,7 +187,7 @@
         product_image: product_image,
         fallback_url: placeholder_url,
         product_title: card_title,
-        specimen_id: specimen_id,
+        specimen_id: specimen_id_for_media,
         sizes: image_sizes,
         css_class: 'product-card__image'
       %}

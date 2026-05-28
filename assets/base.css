@@ -1122,7 +1122,7 @@ p:empty {
 
 /* Performance — defer paint for below-the-fold page sections only (never header/footer/overlays) */
 @media (min-width: 750px) {
-  #main-content .shopify-section:not(:first-of-type) {
+  #main-content .shopify-section:not(:first-of-type):not(:has([data-new-specimens], [data-featured-carousel], [data-genus-carousel])) {
     content-visibility: auto;
     contain-intrinsic-size: auto 28rem;
   }

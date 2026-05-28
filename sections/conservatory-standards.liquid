@@ -1,3 +1,17 @@
+{%- liquid
+  assign section_subheading = section.settings.subheading | strip
+  if section_subheading == blank
+    assign section_subheading = 'sections.conservatory_standards.subheading_default' | t
+  endif
+
+  assign section_heading = section.settings.heading | strip
+  if section_heading == blank
+    assign section_heading = 'sections.conservatory_standards.heading_default' | t
+  endif
+
+  assign has_valid_pillars = false
+-%}
+
 <section
   class="conservatory-standards full-width reveal-up"
   aria-labelledby="conservatory-standards-heading-{{ section.id }}"
@@ -6,10 +20,10 @@
   <div class="conservatory-standards__container">
     <header class="conservatory-standards__header">
       <p class="conservatory-standards__subheading">
-        {{ section.settings.subheading | default: 'Our philosophy' | escape }}
+        {{ section_subheading | escape }}
       </p>
       <h2 id="conservatory-standards-heading-{{ section.id }}" class="conservatory-standards__title">
-        {{ section.settings.heading | default: 'The Conservatory Standards' | escape }}
+        {{ section_heading | escape }}
       </h2>
     </header>
 
@@ -19,9 +33,17 @@
           {%- if block.type == 'pillar' -%}
             {%- liquid
               assign pillar_image = block.settings.image
-              assign pillar_heading = block.settings.heading | default: 'Pillar heading'
-              assign pillar_body = block.settings.body
-              assign pillar_placeholder = block.settings.placeholder_image
+              assign pillar_heading = block.settings.heading | strip
+              if pillar_heading == blank
+                assign pillar_heading = 'sections.conservatory_standards.pillar_heading_default' | t
+              endif
+
+              assign pillar_body = block.settings.body | strip
+              if pillar_body == blank
+                assign pillar_body = 'sections.conservatory_standards.pillar_body_default' | t
+              endif
+
+              assign pillar_placeholder = block.settings.placeholder_image | strip
               assign use_shopify_image = false
 
               if pillar_image != blank and pillar_image.width > 0
@@ -42,6 +64,7 @@
               endif
             -%}
 
+            {%- assign has_valid_pillars = true -%}
             <article
               class="conservatory-standards__pillar"
               role="listitem"
@@ -63,7 +86,7 @@
                 {%- elsif pillar_placeholder != blank -%}
                   <img
                     class="conservatory-standards__thumb-image conservatory-standards__thumb-image--fallback"
-                    src="{{ pillar_placeholder }}"
+                    src="{{ pillar_placeholder | escape }}"
                     alt=""
                     width="50"
                     height="50"
@@ -82,6 +105,10 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+    {%- endif -%}
+
+    {%- if has_valid_pillars == false -%}
+      <p class="conservatory-standards__empty">{{ 'sections.conservatory_standards.empty' | t }}</p>
     {%- endif -%}
   </div>
 </section>
@@ -188,6 +215,13 @@
     line-height: 1.6;
     color: var(--color-forest-green-dark);
     opacity: 0.88;
+  }
+
+  .conservatory-standards__empty {
+    margin: 0;
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: rgb(10 24 18 / 0.72);
   }
 
   @media (min-width: 750px) {

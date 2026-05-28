@@ -27,6 +27,9 @@
       assign block_handle = block_link | split: '/collections/' | last | split: '?' | first | split: '#' | first
 
       if block_handle == collection.handle
+        if block.settings.label != blank
+          assign item_label = block.settings.label
+        endif
         assign item_image = block.settings.image
         assign item_placeholder = block.settings.placeholder_image
         assign block_attributes = block.shopify_attributes

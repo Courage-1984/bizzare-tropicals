@@ -1,32 +1,119 @@
 {%- liquid
   assign featured_collection = section.settings.collection
+  assign related_collection_url = blank
 
-  if featured_collection == blank
-    assign featured_collection = collections.all
+  if featured_collection != blank
+    assign related_collection_url = featured_collection.url
   endif
 
   if featured_collection == blank
     if product != blank
+      assign product_related_collection = blank
       for coll in product.collections
-        if coll.products_count > 0
-          assign featured_collection = coll
+        if coll.handle != 'all' and coll.products_count > 1
+          assign product_related_collection = coll
           break
         endif
       endfor
+
+      if product_related_collection == blank
+        for coll in product.collections
+          if coll.products_count > 1
+            assign product_related_collection = coll
+            break
+          endif
+        endfor
+      endif
+
+      if product_related_collection != blank
+        assign featured_collection = product_related_collection
+        assign related_collection_url = product_related_collection.url
+      endif
     endif
   endif
 
-  assign show_real_products = false
-  if featured_collection != blank
-    if featured_collection.products.size > 0
-      assign show_real_products = true
+  if featured_collection == blank
+    assign featured_collection = collections.all
+    if collections.all != blank
+      assign related_collection_url = collections.all.url
     endif
   endif
 
   assign products_limit = section.settings.products_to_show | default: 8
-  assign section_heading = section.settings.heading
-  assign section_subheading = section.settings.subheading
-  assign view_all_label = section.settings.view_all_label
+  if products_limit < 1
+    assign products_limit = 8
+  endif
+
+  assign current_product_id = blank
+  assign current_product_genus = blank
+  if product != blank
+    assign current_product_id = product.id
+    assign current_product_genus = product.metafields.custom.genus.value | default: product.metafields.custom.genus | strip | handleize
+  endif
+
+  assign rendered_related_ids = '|'
+  assign rendered_related_count = 0
+
+  if featured_collection != blank
+    for related_product in featured_collection.products
+      if current_product_id != blank and related_product.id == current_product_id
+        continue
+      endif
+
+      assign related_marker = '|' | append: related_product.id | append: '|'
+      unless rendered_related_ids contains related_marker
+        assign rendered_related_ids = rendered_related_ids | append: related_product.id | append: '|'
+        assign rendered_related_count = rendered_related_count | plus: 1
+      endunless
+
+      if rendered_related_count >= products_limit
+          break
+      endif
+    endfor
+  endif
+
+  if rendered_related_count < products_limit
+    for related_product in collections.all.products limit: 60
+      if current_product_id != blank and related_product.id == current_product_id
+        continue
+      endif
+
+      assign related_marker = '|' | append: related_product.id | append: '|'
+      unless rendered_related_ids contains related_marker
+        assign rendered_related_ids = rendered_related_ids | append: related_product.id | append: '|'
+        assign rendered_related_count = rendered_related_count | plus: 1
+      endunless
+
+      if rendered_related_count >= products_limit
+        break
+      endif
+    endfor
+  endif
+
+  assign show_real_products = false
+  if rendered_related_count > 0
+    assign show_real_products = true
+  endif
+
+  assign section_heading = section.settings.heading | strip
+  if section_heading == blank
+    assign section_heading = 'sections.featured_collection.heading_default' | t
+  endif
+
+  assign section_subheading = section.settings.subheading | strip
+  if section_subheading == blank
+    assign section_subheading = 'sections.featured_collection.subheading_default' | t
+  endif
+
+  assign view_all_label = section.settings.view_all_label | strip
+  if view_all_label == blank
+    assign view_all_label = 'sections.featured_collection.view_all_label_default' | t
+  endif
+
+  if related_collection_url == blank
+    assign related_collection_url = routes.all_products_collection_url
+  endif
+
   assign background_color_start = section.settings.background_color_start | default: '#1e3320'
   assign background_color_end = section.settings.background_color_end | default: '#0a140b'
 -%}
@@ -54,7 +141,7 @@
 
     <div class="featured-collection__actions">
       {%- if show_real_products and view_all_label != blank -%}
-        <a class="featured-collection__view-all link-underline-grow" href="{{ featured_collection.url }}">
+        <a class="featured-collection__view-all link-underline-grow" href="{{ related_collection_url }}">
           {{ view_all_label | escape }}
         </a>
       {%- endif -%}
@@ -96,14 +183,87 @@
         tabindex="0"
         aria-label="{{ 'sections.featured_collection.carousel_label' | t }}"
       >
-        {%- for product in featured_collection.products limit: products_limit -%}
-          <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
-            {% render 'product-card',
-              product_item: product,
-              sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
-            %}
-          </li>
+        {%- liquid
+          assign rendered_markup_count = 0
+          assign rendered_markup_ids = '|'
+          assign related_seed = 0
+          if current_product_id != blank
+            assign related_seed = current_product_id | modulo: 11
+          endif
+        -%}
+        {%- for pass in (1..2) -%}
+          {%- for offset in (0..10) -%}
+            {%- assign seed_bucket = related_seed | plus: offset | modulo: 11 -%}
+            {%- for related_product in featured_collection.products -%}
+              {%- if current_product_id != blank and related_product.id == current_product_id -%}
+                {%- continue -%}
+              {%- endif -%}
+
+              {%- assign related_marker = '|' | append: related_product.id | append: '|' -%}
+              {%- if rendered_markup_ids contains related_marker -%}
+                {%- continue -%}
+              {%- endif -%}
+
+              {%- assign related_genus = related_product.metafields.custom.genus.value | default: related_product.metafields.custom.genus | strip | handleize -%}
+              {%- assign related_bucket = related_product.id | plus: related_seed | modulo: 11 -%}
+              {%- assign genus_match = false -%}
+              {%- if current_product_genus != blank and related_genus == current_product_genus -%}
+                {%- assign genus_match = true -%}
+              {%- endif -%}
+
+              {%- if pass == 1 and genus_match == false -%}
+                {%- continue -%}
+              {%- endif -%}
+              {%- if pass == 2 and genus_match -%}
+                {%- continue -%}
+              {%- endif -%}
+              {%- if related_bucket != seed_bucket -%}
+                {%- continue -%}
+              {%- endif -%}
+
+              {%- assign rendered_markup_ids = rendered_markup_ids | append: related_product.id | append: '|' -%}
+              {%- assign rendered_markup_count = rendered_markup_count | plus: 1 -%}
+              <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
+                {% render 'product-card',
+                  product_item: related_product,
+                  show_specimen_id: false,
+                  sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
+                %}
+              </li>
+              {%- if rendered_markup_count >= products_limit -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if rendered_markup_count >= products_limit -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if rendered_markup_count >= products_limit -%}
+            {%- break -%}
+          {%- endif -%}
         {%- endfor -%}
+        {%- if rendered_markup_count < products_limit -%}
+          {%- for related_product in collections.all.products limit: 80 -%}
+            {%- if current_product_id != blank and related_product.id == current_product_id -%}
+              {%- continue -%}
+            {%- endif -%}
+            {%- assign related_marker = '|' | append: related_product.id | append: '|' -%}
+            {%- unless rendered_markup_ids contains related_marker -%}
+              {%- assign rendered_markup_ids = rendered_markup_ids | append: related_product.id | append: '|' -%}
+              {%- assign rendered_markup_count = rendered_markup_count | plus: 1 -%}
+              <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
+                {% render 'product-card',
+                  product_item: related_product,
+                  show_specimen_id: false,
+                  sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
+                %}
+              </li>
+              {%- if rendered_markup_count >= products_limit -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
       </ul>
     </div>
   {%- else -%}
@@ -124,6 +284,7 @@
           <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
             {% render 'product-card',
               card_index: forloop.index0,
+              show_specimen_id: false,
               sizes: '(min-width: 990px) 24vw, (min-width: 750px) 32vw, 78vw'
             %}
           </li>
@@ -231,6 +392,14 @@
     color: var(--color-text-muted);
   }
 
+  .featured-collection .product-card__specimen-id {
+    display: none;
+  }
+
+  .featured-collection .product-card__price {
+    padding-block-start: 0;
+  }
+
   .featured-collection .product-card__link:hover .product-card__title {
     color: var(--color-primary);
   }
@@ -265,21 +434,29 @@
 
   .featured-collection__viewport {
     position: relative;
-    margin-inline: calc(var(--page-margin) * -1);
-    padding-inline: var(--page-margin);
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: max(var(--page-margin), env(safe-area-inset-left, 0px));
+    padding-inline-end: max(var(--page-margin), env(safe-area-inset-right, 0px));
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 
   .featured-collection__track {
     display: flex;
     gap: var(--space-lg);
     margin: 0;
-    padding: var(--space-sm) var(--page-margin) var(--space-md);
-    padding-inline: var(--page-margin);
+    padding: var(--space-sm) 0 var(--space-md);
     list-style: none;
     overflow-x: auto;
-    overscroll-behavior-x: none;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
+    touch-action: pan-y pinch-zoom;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    scroll-padding-inline-start: max(var(--page-margin), env(safe-area-inset-left, 0px));
+    scroll-padding-inline-end: max(var(--page-margin), env(safe-area-inset-right, 0px));
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -316,13 +493,7 @@
   }
 
   @media (min-width: 750px) {
-    .featured-collection__viewport {
-      margin-inline: 0;
-      padding-inline: 0;
-    }
-
     .featured-collection__track {
-      padding-inline: 0;
       overflow-x: hidden;
       scroll-snap-type: none;
     }
@@ -385,6 +556,10 @@
         state.listeners.forEach(function (entry) {
           entry.target.removeEventListener(entry.type, entry.handler);
         });
+
+        if (typeof state.inViewDisconnect === 'function') {
+          state.inViewDisconnect();
+        }
       } catch (error) {
         console.error('Featured collection: teardown failed.', error);
       }
@@ -432,10 +607,12 @@
 
       var desktopQuery = window.matchMedia('(min-width: 750px)');
       var autoplayPaused = false;
+      var inView = true;
       var state = {
         listeners: [],
         autoplayTimer: null,
-        resumeTimer: null
+        resumeTimer: null,
+        inViewDisconnect: null
       };
 
       function trackListener(target, type, handler, options) {
@@ -485,8 +662,15 @@
       function startAutoplay() {
         stopAutoplay();
 
+        var isDesktop = false;
+        try {
+          isDesktop = window.matchMedia('(min-width: 750px)').matches;
+        } catch (error) {
+          isDesktop = false;
+        }
+
         var overflow = track.scrollWidth > track.clientWidth + 2;
-        if (!overflow || autoplayPaused || prefersReducedMotion() || document.hidden) {
+        if (!overflow || !inView || autoplayPaused || prefersReducedMotion() || document.hidden || isDesktop) {
           return;
         }
 
@@ -557,6 +741,27 @@
       trackListener(track, 'pointerup', scheduleAutoplayResume);
       trackListener(track, 'pointerleave', scheduleAutoplayResume);
       trackListener(track, 'focusout', scheduleAutoplayResume);
+
+      if (window.BT) {
+        if (window.BT.bindCarouselWheelGuard) {
+          window.BT.bindCarouselWheelGuard(track);
+        }
+
+        if (window.BT.bindCarouselInView) {
+          state.inViewDisconnect = window.BT.bindCarouselInView(root, {
+            onLeave: function () {
+              inView = false;
+              stopAutoplay();
+            },
+            onEnter: function () {
+              inView = true;
+              if (!autoplayPaused) {
+                startAutoplay();
+              }
+            }
+          });
+        }
+      }
 
       trackListener(window, 'resize', function () {
         syncNavVisibility();

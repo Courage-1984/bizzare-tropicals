@@ -3,6 +3,9 @@
   Refreshed via the Sections Rendering API when the cart changes.
 
   @param {section} [section] - Cart drawer section for theme editor strings
+  @param {string} [empty_title] - Empty state heading text fallback
+  @param {string} [empty_button_label] - Empty state CTA fallback
+  @param {string} [empty_illustration_placeholder] - Optional empty state image URL
 
   @example
   {% render 'cart-drawer-contents', section: section %}
@@ -116,31 +119,37 @@
       </a>
     </footer>
   {%- else -%}
+    {%- liquid
+      assign cart_empty_title = empty_title
+      if cart_empty_title == blank
+        assign cart_empty_title = 'cart.drawer.empty_title' | t
+      endif
+
+      assign cart_empty_button_label = empty_button_label
+      if cart_empty_button_label == blank
+        assign cart_empty_button_label = 'cart.drawer.continue_exploring' | t
+      endif
+
+      assign empty_illustration_src = empty_illustration_placeholder | strip
+    -%}
     <div class="cart-drawer__empty">
       <div class="cart-drawer__empty-art" aria-hidden="true">
-        {{ 'icon-botanical-watermark.svg' | inline_asset_content }}
+        {%- if empty_illustration_src != blank -%}
+          <img
+            src="{{ empty_illustration_src | escape }}"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          >
+        {%- else -%}
+          {{ 'icon-botanical-watermark.svg' | inline_asset_content }}
+        {%- endif -%}
       </div>
       <p class="cart-drawer__empty-title">
-        {%- if section != blank -%}
-          {%- if section.settings.empty_title != blank -%}
-            {{ section.settings.empty_title | escape }}
-          {%- else -%}
-            {{ 'cart.drawer.empty_title' | t }}
-          {%- endif -%}
-        {%- else -%}
-          {{ 'cart.drawer.empty_title' | t }}
-        {%- endif -%}
+        {{ cart_empty_title | escape }}
       </p>
       <button type="button" class="cart-drawer__empty-cta" data-cart-drawer-close>
-        {%- if section != blank -%}
-          {%- if section.settings.empty_button_label != blank -%}
-            {{ section.settings.empty_button_label | escape }}
-          {%- else -%}
-            {{ 'cart.drawer.continue_exploring' | t }}
-          {%- endif -%}
-        {%- else -%}
-          {{ 'cart.drawer.continue_exploring' | t }}
-        {%- endif -%}
+        {{ cart_empty_button_label | escape }}
       </button>
     </div>
   {%- endif -%}

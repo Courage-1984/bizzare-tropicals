@@ -1,6 +1,20 @@
 {%- liquid
   assign cart_add_js = routes.cart_add_url | append: '.js'
   assign cart_change_js = routes.cart_change_url | append: '.js'
+  assign drawer_title = section.settings.drawer_title | strip
+  if drawer_title == blank
+    assign drawer_title = 'cart.drawer.title' | t
+  endif
+
+  assign empty_title = section.settings.empty_title | strip
+  if empty_title == blank
+    assign empty_title = 'cart.drawer.empty_title' | t
+  endif
+
+  assign empty_button_label = section.settings.empty_button_label | strip
+  if empty_button_label == blank
+    assign empty_button_label = 'cart.drawer.continue_exploring' | t
+  endif
 -%}
 
 <div
@@ -41,11 +55,7 @@
   >
     <header class="cart-drawer__header">
       <h2 id="cart-drawer-title-{{ section.id }}" class="cart-drawer__title">
-        {%- if section.settings.drawer_title != blank -%}
-          {{ section.settings.drawer_title | escape }}
-        {%- else -%}
-          {{ 'cart.drawer.title' | t }}
-        {%- endif -%}
+        {{ drawer_title | escape }}
       </h2>
       <button
         type="button"
@@ -58,7 +68,12 @@
     </header>
 
     <div class="cart-drawer__body" data-cart-drawer-body>
-      {% render 'cart-drawer-contents', section: section %}
+      {% render 'cart-drawer-contents',
+        section: section,
+        empty_title: empty_title,
+        empty_button_label: empty_button_label,
+        empty_illustration_placeholder: section.settings.empty_illustration_placeholder
+      %}
     </div>
   </aside>
 </div>
@@ -459,6 +474,13 @@
     height: auto;
   }
 
+  .cart-drawer__empty-art img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
   .cart-drawer__empty-title {
     margin: 0;
     max-width: 16rem;
@@ -536,6 +558,12 @@
       "id": "empty_button_label",
       "label": "t:sections.cart_drawer.settings.empty_button_label",
       "default": "Continue exploring"
+    },
+    {
+      "type": "text",
+      "id": "empty_illustration_placeholder",
+      "label": "t:sections.cart_drawer.settings.empty_illustration_placeholder",
+      "info": "t:sections.cart_drawer.settings.empty_illustration_placeholder_info"
     },
     {
       "type": "checkbox",

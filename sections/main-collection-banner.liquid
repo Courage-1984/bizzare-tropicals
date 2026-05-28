@@ -3,11 +3,47 @@
     render 'collection-display-title', collection: collection
   endcapture
   assign collection_heading = collection_display_title | strip
+  if collection_heading == blank
+    assign collection_heading = collection.title | strip
+  endif
+  if collection_heading == blank
+    assign collection_heading = 'sections.collection_banner.collection_label' | t
+  endif
 
   assign illustration_image = section.settings.illustration_image
   assign hero_image = illustration_image
   assign illustration_alt = collection_heading | escape
-  assign fallback_url = section.settings.fallback_illustration_url | default: 'https://i.imgur.com/8NisV2Z.jpg'
+  assign fallback_url = section.settings.fallback_illustration_url | strip
+  if fallback_url == blank
+    assign fallback_url = 'https://i.imgur.com/8NisV2Z.jpg'
+  endif
+
+  assign callout_rim = section.settings.callout_rim | strip
+  if callout_rim == blank
+    assign callout_rim = 'sections.collection_banner.callout_rim' | t
+  endif
+
+  assign callout_wax = section.settings.callout_wax | strip
+  if callout_wax == blank
+    assign callout_wax = 'sections.collection_banner.callout_wax' | t
+  endif
+
+  assign callout_pool = section.settings.callout_pool | strip
+  if callout_pool == blank
+    assign callout_pool = 'sections.collection_banner.callout_pool' | t
+  endif
+
+  assign placeholder_upload_text = section.settings.placeholder_upload_text | strip
+  if placeholder_upload_text == blank
+    assign placeholder_upload_text = 'sections.collection_banner.placeholder_upload' | t
+  endif
+
+  assign collection_description = collection.description
+  assign has_collection_description = false
+  if collection_description != blank
+    assign has_collection_description = true
+  endif
+
   assign use_uploaded_image = false
   assign use_hero_figure = false
 
@@ -85,24 +121,28 @@
               alt: illustration_alt
           }}
         {%- else -%}
-          <p class="anatomy-placeholder__text">{{ section.settings.placeholder_upload_text | default: 'Upload transparent PNG' }}</p>
+          <p class="anatomy-placeholder__text">{{ placeholder_upload_text | escape }}</p>
         {%- endif -%}
 
         <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--rim">
-          {{ section.settings.callout_rim | default: 'Nectar-rich rim to lure prey.' }}
+          {{ callout_rim | escape }}
         </p>
         <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--wax">
-          {{ section.settings.callout_wax | default: 'Slippery waxy zone for capture.' }}
+          {{ callout_wax | escape }}
         </p>
         <p class="collection-anatomy__callout anatomy-callout collection-anatomy__callout--pool">
-          {{ section.settings.callout_pool | default: 'Digestive enzyme pool at base.' }}
+          {{ callout_pool | escape }}
         </p>
       </div>
 
-      {%- if collection.description != blank -%}
+      {%- if has_collection_description -%}
         <div class="collection-anatomy__description rte">
-          {{ collection.description }}
+          {{ collection_description }}
         </div>
+      {%- else -%}
+        <p class="collection-anatomy__description collection-anatomy__description--empty">
+          {{ 'sections.collection_banner.description_empty' | t }}
+        </p>
       {%- endif -%}
     </div>
   </div>
@@ -287,6 +327,15 @@
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     color: rgb(247 244 237 / 0.82);
+  }
+
+  .collection-anatomy__description--empty {
+    margin: 0;
+    padding: var(--space-sm) var(--space-md);
+    color: rgb(247 244 237 / 0.68);
+    border: 1px solid rgb(247 244 237 / 0.2);
+    border-radius: var(--radius-sm);
+    background-color: rgb(10 24 18 / 0.22);
   }
 
   .collection-anatomy__description :is(p, ul, ol) {

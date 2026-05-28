@@ -1,43 +1,82 @@
 {%- liquid
-  assign form_heading = section.settings.form_heading
+  assign form_heading = section.settings.form_heading | strip
   if form_heading == blank and page.title != blank
     assign form_heading = page.title
   endif
+  if form_heading == blank
+    assign form_heading = 'sections.contact_template.form_heading_default' | t
+  endif
 
-  assign hero_overline = section.settings.hero_overline
-  assign panel_heading = section.settings.panel_heading
-  assign panel_intro = section.settings.panel_intro
-  assign contact_address = section.settings.contact_address
+  assign hero_overline = section.settings.hero_overline | strip
+  if hero_overline == blank
+    assign hero_overline = 'sections.contact_template.hero_overline_default' | t
+  endif
+
+  assign form_intro = section.settings.form_intro | strip
+  if form_intro == blank
+    assign form_intro = 'sections.contact_template.form_intro_default' | t
+  endif
+
+  assign form_subheading = section.settings.form_subheading | strip
+  if form_subheading == blank
+    assign form_subheading = 'sections.contact_template.form_subheading_default' | t
+  endif
+
+  assign form_card_note = section.settings.form_card_note | strip
+  if form_card_note == blank
+    assign form_card_note = 'sections.contact_template.form_card_note_default' | t
+  endif
+
+  assign panel_heading = section.settings.panel_heading | strip
+  if panel_heading == blank
+    assign panel_heading = 'sections.contact_template.panel_heading_default' | t
+  endif
+
+  assign panel_intro = section.settings.panel_intro | strip
+  if panel_intro == blank
+    assign panel_intro = 'sections.contact_template.panel_intro_default' | t
+  endif
+
+  assign contact_address = section.settings.contact_address | strip
   if contact_address == blank
-    assign contact_address = 'Gauteng, South Africa (By Appointment Only)'
+    assign contact_address = 'sections.contact_template.contact_address_default' | t
   endif
 
-  assign contact_email = section.settings.contact_email
+  assign contact_email = section.settings.contact_email | strip
   if contact_email == blank
-    assign contact_email = 'sales@bizarretropicals.com'
+    assign contact_email = 'sections.contact_template.contact_email_default' | t
   endif
 
-  assign contact_hours = section.settings.contact_hours
+  assign contact_hours = section.settings.contact_hours | strip
   if contact_hours == blank
-    assign contact_hours = 'Hours: 24/7 (Online)'
+    assign contact_hours = 'sections.contact_template.contact_hours_default' | t
   endif
 
-  assign contact_phone = section.settings.contact_phone
-  assign whatsapp_url = section.settings.whatsapp_url
+  assign contact_phone = section.settings.contact_phone | strip
+  if contact_phone == blank
+    assign contact_phone = 'sections.contact_template.contact_phone_default' | t
+  endif
+  assign whatsapp_url = section.settings.whatsapp_url | strip
   assign panel_image = section.settings.panel_image
   assign hero_background = section.settings.hero_background_image
-  assign hero_placeholder = section.settings.hero_placeholder_image
-  assign placeholder_panel_image = section.settings.placeholder_panel_image
+  assign hero_placeholder = section.settings.hero_placeholder_image | strip
+  assign placeholder_panel_image = section.settings.placeholder_panel_image | strip
   assign show_faq = section.settings.show_faq
   assign show_social_links = section.settings.show_social_links
   assign show_quick_links = section.settings.show_quick_links
   assign enable_sticky_sidebar = section.settings.enable_sticky_sidebar
-  assign faq_heading = section.settings.faq_heading
-  assign social_heading = section.settings.social_heading
-  assign facebook_url = section.settings.facebook_url
-  assign instagram_url = section.settings.instagram_url
-  assign facebook_handle = section.settings.facebook_handle
-  assign instagram_handle = section.settings.instagram_handle
+  assign faq_heading = section.settings.faq_heading | strip
+  if faq_heading == blank
+    assign faq_heading = 'sections.contact_template.faq_heading_default' | t
+  endif
+  assign social_heading = section.settings.social_heading | strip
+  if social_heading == blank
+    assign social_heading = 'sections.contact_template.social_heading_default' | t
+  endif
+  assign facebook_url = section.settings.facebook_url | strip
+  assign instagram_url = section.settings.instagram_url | strip
+  assign facebook_handle = section.settings.facebook_handle | strip
+  assign instagram_handle = section.settings.instagram_handle | strip
 
   assign use_panel_image = false
   if panel_image != blank
@@ -64,11 +103,17 @@
   assign faq_block_count = 0
   for block in section.blocks
     if block.type == 'faq'
-      if block.settings.question != blank
+      assign faq_question = block.settings.question | strip
+      if faq_question != blank
         assign faq_block_count = faq_block_count | plus: 1
       endif
     endif
   endfor
+
+  assign has_social_links = false
+  if facebook_url != blank or instagram_url != blank
+    assign has_social_links = true
+  endif
 -%}
 
 <article class="contact-page full-width" {{ section.shopify_attributes }}>
@@ -89,7 +134,7 @@
       {%- else -%}
         <img
           class="contact-page__hero-image contact-page__hero-image--fallback"
-          src="{{ hero_placeholder }}"
+          src="{{ hero_placeholder | escape }}"
           alt=""
           width="2000"
           height="900"
@@ -103,15 +148,9 @@
     </div>
 
     <div class="contact-page__hero-content">
-      {%- if hero_overline != blank -%}
-        <p class="contact-page__hero-overline">{{ hero_overline | escape }}</p>
-      {%- endif -%}
-      {%- if form_heading != blank -%}
-        <h1 class="contact-page__hero-title">{{ form_heading | escape }}</h1>
-      {%- endif -%}
-      {%- if section.settings.form_intro != blank -%}
-        <p class="contact-page__hero-intro">{{ section.settings.form_intro | escape }}</p>
-      {%- endif -%}
+      <p class="contact-page__hero-overline">{{ hero_overline | escape }}</p>
+      <h1 class="contact-page__hero-title">{{ form_heading | escape }}</h1>
+      <p class="contact-page__hero-intro">{{ form_intro | escape }}</p>
     </div>
   </header>
 
@@ -193,12 +232,8 @@
     <div class="contact-page__split reveal-up">
       <div class="contact-page__form-column">
         <div class="contact-page__form-card">
-          {%- if section.settings.form_subheading != blank -%}
-            <h2 class="contact-page__form-heading">{{ section.settings.form_subheading | escape }}</h2>
-          {%- endif -%}
-          {%- if section.settings.form_card_note != blank -%}
-            <p class="contact-page__form-note">{{ section.settings.form_card_note | escape }}</p>
-          {%- endif -%}
+          <h2 class="contact-page__form-heading">{{ form_subheading | escape }}</h2>
+          <p class="contact-page__form-note">{{ form_card_note | escape }}</p>
 
           {%- form 'contact', class: 'contact-form contact-form--card' -%}
             {%- if form.posted_successfully? -%}
@@ -335,7 +370,7 @@
             {%- elsif placeholder_panel_image != blank -%}
               <img
                 class="contact-page__arch-image contact-page__arch-image--fallback"
-                src="{{ placeholder_panel_image }}"
+                src="{{ placeholder_panel_image | escape }}"
                 alt="{{ panel_heading | default: shop.name | escape }}"
                 width="1400"
                 height="1750"
@@ -347,15 +382,10 @@
           </div>
 
           <div class="contact-page__conservatory-copy">
-            {%- if panel_heading != blank -%}
-              <h2 id="contact-panel-heading-{{ section.id }}" class="contact-page__panel-title">
-                {{ panel_heading | escape }}
-              </h2>
-            {%- endif -%}
-
-            {%- if panel_intro != blank -%}
-              <p class="contact-page__panel-intro">{{ panel_intro | escape }}</p>
-            {%- endif -%}
+            <h2 id="contact-panel-heading-{{ section.id }}" class="contact-page__panel-title">
+              {{ panel_heading | escape }}
+            </h2>
+            <p class="contact-page__panel-intro">{{ panel_intro | escape }}</p>
 
             <ul class="contact-page__details-list" role="list">
               {%- if contact_address != blank -%}
@@ -427,11 +457,12 @@
           <div class="botanical-accordion contact-page__accordion" role="region" aria-label="{{ faq_heading | default: 'FAQ' | escape }}">
             {%- for block in section.blocks -%}
               {%- if block.type == 'faq' -%}
-                {%- if block.settings.question != blank -%}
+                {%- assign faq_question = block.settings.question | strip -%}
+                {%- if faq_question != blank -%}
                   <details class="botanical-accordion__item" {{ block.shopify_attributes }}>
                     <summary class="botanical-accordion__summary">
                       {% render 'icon-accordion-mark' %}
-                      <span class="botanical-accordion__question">{{ block.settings.question | escape }}</span>
+                      <span class="botanical-accordion__question">{{ faq_question | escape }}</span>
                     </summary>
                     <div class="botanical-accordion__answer rte">
                       {{ block.settings.answer }}
@@ -441,6 +472,20 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if show_faq and faq_block_count == 0 -%}
+      <section class="contact-page__faq reveal-up" aria-labelledby="contact-faq-heading-{{ section.id }}">
+        <div class="contact-page__faq-inner">
+          <header class="contact-page__faq-header">
+            <p class="contact-page__section-overline">{{ 'sections.contact_template.faq_overline' | t }}</p>
+            <h2 id="contact-faq-heading-{{ section.id }}" class="contact-page__faq-title">
+              {{ faq_heading | escape }}
+            </h2>
+          </header>
+          <p class="contact-page__empty">{{ 'sections.contact_template.empty_faq' | t }}</p>
         </div>
       </section>
     {%- endif -%}
@@ -499,6 +544,17 @@
           </div>
         </section>
       {%- endif -%}
+    {%- endif -%}
+
+    {%- if show_social_links and has_social_links == false -%}
+      <section class="contact-page__social reveal-up" aria-labelledby="contact-social-heading-{{ section.id }}">
+        <div class="contact-page__social-inner">
+          <h2 id="contact-social-heading-{{ section.id }}" class="contact-page__social-title">
+            {{ social_heading | escape }}
+          </h2>
+          <p class="contact-page__empty contact-page__empty--social">{{ 'sections.contact_template.empty_social' | t }}</p>
+        </div>
+      </section>
     {%- endif -%}
   </div>
 </article>
@@ -960,6 +1016,22 @@
     font-family: var(--font-family-serif);
     font-size: var(--font-size-lg);
     font-style: italic;
+  }
+
+  .contact-page__empty {
+    margin: 0;
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: rgb(255 255 255 / 0.45);
+  }
+
+  .contact-page__empty--social {
+    color: rgb(247 244 237 / 0.78);
+    border-color: rgb(247 244 237 / 0.22);
+    background-color: rgb(5 13 10 / 0.28);
   }
 
   @media (min-width: 750px) {

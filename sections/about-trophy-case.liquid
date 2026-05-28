@@ -1,17 +1,37 @@
 {%- liquid
-  assign hall_overline = section.settings.overline
-  assign hall_heading = section.settings.heading
-  assign hall_subheading = section.settings.subheading
-  assign trophy_count = 0
+  assign hall_overline = section.settings.overline | strip
+  if hall_overline == blank
+    assign hall_overline = 'sections.about_trophy_case.overline_default' | t
+  endif
+
+  assign hall_heading = section.settings.heading | strip
+  if hall_heading == blank
+    assign hall_heading = 'sections.about_trophy_case.heading_default' | t
+  endif
+
+  assign hall_subheading = section.settings.subheading | strip
+  if hall_subheading == blank
+    assign hall_subheading = 'sections.about_trophy_case.subheading_default' | t
+  endif
+
+  assign hall_footnote = section.settings.footnote | strip
+  assign has_valid_trophies = false
 
   for block in section.blocks
     if block.type == 'trophy'
-      assign trophy_count = trophy_count | plus: 1
+      assign specimen_name_candidate = block.settings.specimen_name | strip
+      assign award_class_candidate = block.settings.award_class | strip
+      assign show_name_candidate = block.settings.show_name | strip
+      assign trophy_year_candidate = block.settings.year | strip
+
+      if specimen_name_candidate != blank or award_class_candidate != blank or show_name_candidate != blank or trophy_year_candidate != blank
+        assign has_valid_trophies = true
+      endif
     endif
   endfor
 -%}
 
-{%- if trophy_count > 0 -%}
+{%- if has_valid_trophies -%}
   <section
     class="trophy-hall full-width"
     data-trophy-hall
@@ -27,15 +47,11 @@
 
     <div class="trophy-hall__inner">
       <header class="trophy-hall__header reveal-up">
-        {%- if hall_overline != blank -%}
-          <p class="trophy-hall__overline">{{ hall_overline | escape }}</p>
-        {%- endif -%}
+        <p class="trophy-hall__overline">{{ hall_overline | escape }}</p>
         <h2 id="trophy-hall-heading-{{ section.id }}" class="trophy-hall__title">
-          {{ hall_heading | default: 'Show bench champions' | escape }}
+          {{ hall_heading | escape }}
         </h2>
-        {%- if hall_subheading != blank -%}
-          <p class="trophy-hall__lede">{{ hall_subheading | escape }}</p>
-        {%- endif -%}
+        <p class="trophy-hall__lede">{{ hall_subheading | escape }}</p>
       </header>
 
       <div class="trophy-hall__stage reveal-up" data-trophy-stage>
@@ -57,19 +73,34 @@
             {%- endunless -%}
 
             {%- liquid
-              assign specimen_name = block.settings.specimen_name | default: block.settings.title
-              assign botanical_name = block.settings.botanical_name
-              assign award_class = block.settings.award_class | default: block.settings.subtitle
-              assign show_name = block.settings.show_name
+              assign specimen_name = block.settings.specimen_name | strip
+              assign botanical_name = block.settings.botanical_name | strip
+              assign award_class = block.settings.award_class | strip
+              assign show_name = block.settings.show_name | strip
               assign trophy_year = block.settings.year
               assign trophy_tier = block.settings.tier | default: 'gold'
               assign trophy_genus = block.settings.genus | default: 'other'
               assign trophy_link = block.settings.link
               assign trophy_image = block.settings.image
-              assign trophy_placeholder = block.settings.placeholder_image
+              assign trophy_placeholder = block.settings.placeholder_image | strip
               assign trophy_monogram = block.settings.monogram
               assign use_trophy_image = false
               assign medal_label_key = 'sections.about_trophy_case.medal_' | append: trophy_tier
+              assign trophy_year = trophy_year | strip
+              assign trophy_monogram = trophy_monogram | strip
+
+              if specimen_name == blank
+                assign specimen_name = 'sections.about_trophy_case.specimen_name_default' | t
+              endif
+              if award_class == blank
+                assign award_class = 'sections.about_trophy_case.award_class_default' | t
+              endif
+              if show_name == blank
+                assign show_name = 'sections.about_trophy_case.show_name_default' | t
+              endif
+              if trophy_year == blank
+                assign trophy_year = 'sections.about_trophy_case.show_year_default' | t
+              endif
 
               if trophy_image != blank and trophy_image.width > 0
                 assign use_trophy_image = true
@@ -128,7 +159,7 @@
                     {%- elsif trophy_placeholder != blank -%}
                       <img
                         class="trophy-hall__seal-image trophy-hall__seal-image--fallback"
-                        src="{{ trophy_placeholder }}"
+                        src="{{ trophy_placeholder | escape }}"
                         alt="{{ specimen_name | escape }}"
                         width="320"
                         height="320"
@@ -143,24 +174,16 @@
                   <span class="trophy-hall__tier-badge">{{ medal_label_key | t }}</span>
 
                   <div class="trophy-hall__caption">
-                    {%- if specimen_name != blank -%}
-                      <h3 class="trophy-hall__item-title">{{ specimen_name | escape }}</h3>
-                    {%- endif -%}
+                    <h3 class="trophy-hall__item-title">{{ specimen_name | escape }}</h3>
                     {%- if botanical_name != blank -%}
                       <p class="trophy-hall__item-latin">{{ botanical_name | escape }}</p>
                     {%- endif -%}
-                    {%- if award_class != blank -%}
-                      <p class="trophy-hall__item-award">{{ award_class | escape }}</p>
-                    {%- endif -%}
-                    {%- if show_name != blank -%}
-                      <p class="trophy-hall__item-show">{{ show_name | escape }}</p>
-                    {%- endif -%}
-                    {%- if trophy_year != blank -%}
-                      <p class="trophy-hall__item-year">
-                        <span class="trophy-hall__item-year-label">{{ 'sections.about_trophy_case.show_year_label' | t }}</span>
-                        {{ trophy_year | escape }}
-                      </p>
-                    {%- endif -%}
+                    <p class="trophy-hall__item-award">{{ award_class | escape }}</p>
+                    <p class="trophy-hall__item-show">{{ show_name | escape }}</p>
+                    <p class="trophy-hall__item-year">
+                      <span class="trophy-hall__item-year-label">{{ 'sections.about_trophy_case.show_year_label' | t }}</span>
+                      {{ trophy_year | escape }}
+                    </p>
                   </div>
                 </div>
               {%- endcapture -%}
@@ -181,9 +204,15 @@
         <span class="trophy-hall__sweep" aria-hidden="true"></span>
       </div>
 
-      {%- if section.settings.footnote != blank -%}
-        <p class="trophy-hall__footnote reveal-up">{{ section.settings.footnote | escape }}</p>
+      {%- if hall_footnote != blank -%}
+        <p class="trophy-hall__footnote reveal-up">{{ hall_footnote | escape }}</p>
       {%- endif -%}
+    </div>
+  </section>
+{%- else -%}
+  <section class="trophy-hall trophy-hall--empty full-width" {{ section.shopify_attributes }}>
+    <div class="trophy-hall__inner">
+      <p class="trophy-hall__empty">{{ 'sections.about_trophy_case.empty' | t }}</p>
     </div>
   </section>
 {%- endif -%}
@@ -202,6 +231,20 @@
     padding-block: clamp(4rem, 10vw, 7rem);
     color: var(--trophy-gold-soft);
     isolation: isolate;
+  }
+
+  .trophy-hall--empty {
+    padding-block: var(--space-3xl);
+  }
+
+  .trophy-hall__empty {
+    margin: 0;
+    padding: var(--space-xl);
+    text-align: center;
+    color: rgb(240 230 200 / 0.75);
+    border: 1px solid rgb(212 175 55 / 0.22);
+    border-radius: var(--radius-md);
+    background-color: rgb(5 13 10 / 0.35);
   }
 
   .trophy-hall__atmosphere {

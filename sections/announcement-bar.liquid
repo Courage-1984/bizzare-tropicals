@@ -1,4 +1,17 @@
-{%- if section.blocks.size > 0 -%}
+{%- liquid
+  assign visible_message_count = 0
+  for block in section.blocks
+    if block.type != 'message'
+      continue
+    endif
+    assign message_text = block.settings.text | strip
+    if message_text != blank
+      assign visible_message_count = visible_message_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if visible_message_count > 0 -%}
   <script>
     (function () {
       try {
@@ -15,6 +28,7 @@
     class="announcement-bar"
     data-announcement-bar
     data-announcement-id="{{ section.id }}"
+    data-rotate-enabled="{% if section.settings.enable_rotation %}true{% else %}false{% endif %}"
     data-rotate-interval="{{ section.settings.rotate_interval | times: 1000 }}"
     role="region"
     aria-label="{{ 'sections.announcement_bar.label' | t }}"
@@ -22,37 +36,45 @@
   >
     <div class="announcement-bar__viewport">
       <div class="announcement-bar__track" data-announcement-track>
+        {%- assign visible_message_index = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'message' -%}
+            {%- assign message_text = block.settings.text | strip -%}
+            {%- if message_text == blank -%}
+              {%- continue -%}
+            {%- endif -%}
             <div
-              class="announcement-bar__slide{% if forloop.first %} is-active{% endif %}"
+              class="announcement-bar__slide{% if visible_message_index == 0 %} is-active{% endif %}"
               data-announcement-slide
               {{ block.shopify_attributes }}
-              {% unless forloop.first %}
+              {% unless visible_message_index == 0 %}
                 hidden
               {% endunless %}
             >
               {%- if block.settings.link != blank -%}
                 <a class="announcement-bar__message" href="{{ block.settings.link }}">
-                  {{- block.settings.text | escape -}}
+                  {{- message_text | escape -}}
                 </a>
               {%- else -%}
-                <p class="announcement-bar__message">{{ block.settings.text | escape }}</p>
+                <p class="announcement-bar__message">{{ message_text | escape }}</p>
               {%- endif -%}
             </div>
+            {%- assign visible_message_index = visible_message_index | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
     </div>
 
-    <button
-      type="button"
-      class="announcement-bar__close"
-      data-announcement-close
-      aria-label="{{ 'sections.announcement_bar.close' | t }}"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    {%- if section.settings.show_close_button -%}
+      <button
+        type="button"
+        class="announcement-bar__close"
+        data-announcement-close
+        aria-label="{{ 'sections.announcement_bar.close' | t }}"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    {%- endif -%}
   </div>
 {%- endif -%}
 
@@ -198,6 +220,7 @@
 
       var sectionId = bar.getAttribute('data-announcement-id');
       var storageKey = 'bt-announcement-' + sectionId;
+      var rotationEnabled = bar.getAttribute('data-rotate-enabled') !== 'false';
       var timerId = null;
 
       function isDismissed() {
@@ -323,7 +346,7 @@
       }
 
       function startRotation() {
-        if (prefersReducedMotion()) {
+        if (!rotationEnabled || prefersReducedMotion()) {
           return;
         }
 
@@ -375,6 +398,12 @@
   "max_blocks": 8,
   "settings": [
     {
+      "type": "checkbox",
+      "id": "enable_rotation",
+      "label": "t:sections.announcement_bar.settings.enable_rotation",
+      "default": true
+    },
+    {
       "type": "range",
       "id": "rotate_interval",
       "label": "t:sections.announcement_bar.settings.rotate_interval",
@@ -383,6 +412,12 @@
       "step": 1,
       "unit": "s",
       "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close_button",
+      "label": "t:sections.announcement_bar.settings.show_close_button",
+      "default": true
     }
   ],
   "blocks": [

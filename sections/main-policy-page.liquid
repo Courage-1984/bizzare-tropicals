@@ -1,8 +1,32 @@
 {%- liquid
-  assign page_title = page.title | default: section.settings.fallback_title
-  assign show_default = false
-  if page.content == blank
-    assign show_default = true
+  assign fallback_title = section.settings.fallback_title | strip
+  if fallback_title == blank
+    assign fallback_title = 'sections.main_policy_page.fallback_title_default' | t
+  endif
+
+  assign page_title = page.title | strip
+  if page_title == blank
+    assign page_title = fallback_title
+  endif
+
+  assign intro_text = section.settings.intro | strip
+  if intro_text == blank
+    assign intro_text = 'sections.main_policy_page.intro_default' | t
+  endif
+
+  assign default_body_content = section.settings.default_body
+  if default_body_content == blank
+    assign default_body_content = 'sections.main_policy_page.default_body_default' | t
+  endif
+
+  assign has_page_content = false
+  if page.content != blank
+    assign has_page_content = true
+  endif
+
+  assign has_default_body = false
+  if default_body_content != blank
+    assign has_default_body = true
   endif
 -%}
 
@@ -10,16 +34,16 @@
   <div class="policy-page__inner">
     <header class="policy-page__header">
       <h1 class="policy-page__title">{{ page_title | escape }}</h1>
-      {%- if section.settings.intro != blank -%}
-        <p class="policy-page__intro">{{ section.settings.intro | escape }}</p>
-      {%- endif -%}
+      <p class="policy-page__intro">{{ intro_text | escape }}</p>
     </header>
 
     <div class="policy-page__content rte">
-      {%- if page.content != blank -%}
+      {%- if has_page_content -%}
         {{ page.content }}
-      {%- elsif show_default and section.settings.default_body != blank -%}
-        {{ section.settings.default_body }}
+      {%- elsif has_default_body -%}
+        {{ default_body_content }}
+      {%- else -%}
+        <p class="policy-page__empty">{{ 'sections.main_policy_page.empty' | t }}</p>
       {%- endif -%}
     </div>
   </div>
@@ -60,6 +84,16 @@
 
   .policy-page__content li + li {
     margin-block-start: var(--space-xs);
+  }
+
+  .policy-page__empty {
+    margin: 0;
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: rgb(255 255 255 / 0.45);
   }
 {% endstylesheet %}
 

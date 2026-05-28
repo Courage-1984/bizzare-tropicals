@@ -1,24 +1,80 @@
 {%- liquid
-  assign hero_heading = section.settings.hero_heading
-  assign hero_subheading = section.settings.hero_subheading
+  assign hero_overline = section.settings.hero_overline | strip
+  if hero_overline == blank
+    assign hero_overline = 'sections.about_template.hero_overline_default' | t
+  endif
+
+  assign hero_heading = section.settings.hero_heading | strip
   assign split_image = section.settings.split_image
-  assign split_heading = section.settings.split_heading
+  assign split_overline = section.settings.split_overline | strip
+  if split_overline == blank
+    assign split_overline = 'sections.about_template.split_overline_default' | t
+  endif
+
+  assign split_heading = section.settings.split_heading | strip
+  if split_heading == blank
+    assign split_heading = 'sections.about_template.split_heading_default' | t
+  endif
+
   assign split_text = section.settings.split_text
-  assign image_position = section.settings.image_position
-  assign lab_heading = section.settings.lab_heading
+  if split_text == blank
+    assign split_text = 'sections.about_template.split_text_default' | t
+  endif
+
+  assign image_position = section.settings.image_position | strip
+  if image_position != 'left' and image_position != 'right'
+    assign image_position = 'left'
+  endif
+
+  assign lab_overline = section.settings.lab_overline | strip
+  if lab_overline == blank
+    assign lab_overline = 'sections.about_template.lab_overline_default' | t
+  endif
+
+  assign lab_heading = section.settings.lab_heading | strip
+  if lab_heading == blank
+    assign lab_heading = 'sections.about_template.lab_heading_default' | t
+  endif
+
   assign lab_text = section.settings.lab_text
+  if lab_text == blank
+    assign lab_text = 'sections.about_template.lab_text_default' | t
+  endif
+
   assign lab_image = section.settings.lab_image
-  assign lab_image_position = section.settings.lab_image_position | default: 'right'
-  assign curator_heading = section.settings.curator_heading
+  assign lab_image_position = section.settings.lab_image_position | strip
+  if lab_image_position != 'left' and lab_image_position != 'right'
+    assign lab_image_position = 'right'
+  endif
+  assign curator_heading = section.settings.curator_heading | strip
+  if curator_heading == blank
+    assign curator_heading = 'sections.about_template.curator_heading_default' | t
+  endif
+
   assign curator_text = section.settings.curator_text
+  if curator_text == blank
+    assign curator_text = 'sections.about_template.curator_text_default' | t
+  endif
+
   assign curator_image = section.settings.curator_image
-  assign hero_overline = section.settings.hero_overline
-  assign split_overline = section.settings.split_overline
-  assign lab_overline = section.settings.lab_overline
-  assign curator_signature = section.settings.curator_signature
-  assign placeholder_split = section.settings.split_placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600'
-  assign placeholder_lab = section.settings.lab_placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1600'
-  assign placeholder_curator = section.settings.curator_placeholder_image | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200'
+  assign curator_signature = section.settings.curator_signature | strip
+  if curator_signature == blank
+    assign curator_signature = 'sections.about_template.curator_signature_default' | t
+  endif
+  assign placeholder_split = section.settings.split_placeholder_image | strip
+  if placeholder_split == blank
+    assign placeholder_split = 'https://commons.wikimedia.org/wiki/Special:FilePath/Sarracenia_Judith_Hindle_(5964475729).jpg?width=1600'
+  endif
+
+  assign placeholder_lab = section.settings.lab_placeholder_image | strip
+  if placeholder_lab == blank
+    assign placeholder_lab = 'https://commons.wikimedia.org/wiki/Special:FilePath/Perlite_as_a_medium_for_rooting_of_cuttings.jpg?width=1600'
+  endif
+
+  assign placeholder_curator = section.settings.curator_placeholder_image | strip
+  if placeholder_curator == blank
+    assign placeholder_curator = 'https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200'
+  endif
   if placeholder_curator contains 'Luther_Burbank'
     assign placeholder_curator = 'https://commons.wikimedia.org/wiki/Special:FilePath/George_Washington_Carver_1942.jpg?width=1200'
   endif
@@ -47,16 +103,25 @@
   if hero_heading == blank and page.title != blank
     assign hero_heading = page.title
   endif
+
+  if hero_heading == blank
+    assign hero_heading = 'sections.about_template.hero_heading_default' | t
+  endif
+
+  assign hero_subheading = section.settings.hero_subheading | strip
+  if hero_subheading == blank
+    assign hero_subheading = 'sections.about_template.hero_subheading_default' | t
+  endif
 -%}
 
 <article class="about-page full-width" {{ section.shopify_attributes }}>
   <header class="about-page__hero reveal-up">
-    <p class="about-page__hero-overline">{{ section.settings.hero_overline | default: 'Our story' | escape }}</p>
+    <p class="about-page__hero-overline">{{ hero_overline | escape }}</p>
     <h1 class="about-page__hero-title">
-      {{ hero_heading | default: 'Cultivating the extraordinary.' | escape }}
+      {{ hero_heading | escape }}
     </h1>
     <p class="about-page__hero-subtitle">
-      {{ section.settings.hero_subheading | default: "South Africa's premier carnivorous plant and tissue culture nursery — field-tested protocols for collectors nationwide." | escape }}
+      {{ hero_subheading | escape }}
     </p>
   </header>
 
@@ -77,7 +142,7 @@
       {%- elsif placeholder_split != blank -%}
         <img
           class="about-page__split-image about-page__split-image--fallback"
-          src="{{ placeholder_split }}"
+          src="{{ placeholder_split | escape }}"
           alt="{{ split_heading | default: hero_heading | escape }}"
           width="1400"
           height="1050"
@@ -88,11 +153,11 @@
     </div>
 
     <div class="about-page__split-content">
-      <p class="about-page__section-overline">{{ section.settings.split_overline | default: 'A scientific history' | escape }}</p>
+      <p class="about-page__section-overline">{{ split_overline | escape }}</p>
       <h2 id="about-split-heading-{{ section.id }}" class="about-page__split-heading">
-        {{ section.settings.split_heading | default: 'A scientific history of care' | escape }}
+        {{ split_heading | escape }}
       </h2>
-      <div class="about-page__split-text rte">{{ section.settings.split_text }}</div>
+      <div class="about-page__split-text rte">{{ split_text }}</div>
     </div>
   </section>
 
@@ -103,11 +168,11 @@
     <div class="about-page__laboratory-inner">
       <div class="about-page__laboratory-grid about-page__laboratory-grid--image-{{ lab_image_position }}">
         <div class="about-page__laboratory-content">
-          <p class="about-page__section-overline">{{ section.settings.lab_overline | default: 'The laboratory' | escape }}</p>
+          <p class="about-page__section-overline">{{ lab_overline | escape }}</p>
           <h2 id="about-laboratory-heading-{{ section.id }}" class="about-page__laboratory-title">
-            {{ section.settings.lab_heading | default: 'Science in service of nature.' | escape }}
+            {{ lab_heading | escape }}
           </h2>
-          <div class="about-page__laboratory-text rte">{{ section.settings.lab_text }}</div>
+          <div class="about-page__laboratory-text rte">{{ lab_text }}</div>
         </div>
 
         <div class="about-page__laboratory-media about-page__frame about-page__frame--organic">
@@ -126,7 +191,7 @@
           {%- elsif placeholder_lab != blank -%}
             <img
               class="about-page__laboratory-image about-page__laboratory-image--fallback"
-              src="{{ placeholder_lab }}"
+              src="{{ placeholder_lab | escape }}"
               alt="{{ lab_heading | escape }}"
               width="1400"
               height="1050"
@@ -157,7 +222,7 @@
         {%- elsif placeholder_curator != blank -%}
           <img
             class="about-page__curator-image about-page__curator-image--fallback"
-            src="{{ placeholder_curator }}"
+            src="{{ placeholder_curator | escape }}"
             alt="{{ curator_heading | escape }}"
             width="800"
             height="1000"
@@ -169,11 +234,11 @@
 
       <div class="about-page__curator-copy">
         <h2 id="about-curator-heading-{{ section.id }}" class="about-page__curator-title">
-          {{ section.settings.curator_heading | default: 'A message from Jaco Van Den Berg.' | escape }}
+          {{ curator_heading | escape }}
         </h2>
-        <div class="about-page__curator-text rte">{{ section.settings.curator_text }}</div>
+        <div class="about-page__curator-text rte">{{ curator_text }}</div>
         <p class="about-page__curator-signature" aria-hidden="true">
-          {{ section.settings.curator_signature | default: 'Jaco Van Den Berg' | escape }}
+          {{ curator_signature | escape }}
         </p>
       </div>
     </div>

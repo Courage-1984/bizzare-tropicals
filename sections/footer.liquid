@@ -1,17 +1,47 @@
 {%- liquid
-  assign footer_address = section.settings.contact_address
+  assign footer_address = section.settings.contact_address | strip
   if footer_address == blank
-    assign footer_address = 'Gauteng, South Africa (By Appointment Only)'
+    assign footer_address = 'footer.contact_address_default' | t
   endif
 
-  assign footer_email = section.settings.contact_email
+  assign footer_email = section.settings.contact_email | strip
   if footer_email == blank
-    assign footer_email = 'info@bizarretropicals.co.za'
+    assign footer_email = 'footer.contact_email_default' | t
   endif
 
-  assign footer_phone = section.settings.contact_phone
+  assign footer_phone = section.settings.contact_phone | strip
   if footer_phone == blank
-    assign footer_phone = '+27 (WhatsApp Preferred)'
+    assign footer_phone = 'footer.contact_phone_default' | t
+  endif
+
+  assign brand_heading = section.settings.brand_heading | strip
+  if brand_heading == blank
+    assign brand_heading = 'footer.brand_heading_default' | t
+  endif
+
+  assign newsletter_heading = section.settings.newsletter_heading | strip
+  if newsletter_heading == blank
+    assign newsletter_heading = 'footer.newsletter_heading_default' | t
+  endif
+
+  assign newsletter_text = section.settings.newsletter_text | strip
+  if newsletter_text == blank
+    assign newsletter_text = 'footer.newsletter_text_default' | t
+  endif
+
+  assign newsletter_button_label = section.settings.newsletter_button_label | strip
+  if newsletter_button_label == blank
+    assign newsletter_button_label = 'footer.newsletter_button_default' | t
+  endif
+
+  assign currency_note = section.settings.currency_note | strip
+  if currency_note == blank
+    assign currency_note = 'footer.currency_note_default' | t
+  endif
+
+  assign copyright_text = section.settings.copyright_text | strip
+  if copyright_text == blank
+    assign copyright_text = 'footer.copyright_default' | t
   endif
 
   assign quick_home_url = routes.root_url
@@ -22,18 +52,26 @@
     assign quick_about_url = pages.about.url
   elsif pages['about-us'] != blank
     assign quick_about_url = pages['about-us'].url
+  else
+    assign quick_about_url = '/pages/about-us'
   endif
 
   assign quick_contact_url = blank
   if pages.contact != blank
     assign quick_contact_url = pages.contact.url
+  else
+    assign quick_contact_url = '/pages/contact'
   endif
 
   assign quick_shipping_url = blank
-  if pages.shipping != blank
-    assign quick_shipping_url = pages.shipping.url
-  elsif shop.shipping_policy != blank
+  if shop.shipping_policy != blank
     assign quick_shipping_url = shop.shipping_policy.url
+  elsif pages.shipping != blank
+    assign quick_shipping_url = pages.shipping.url
+  elsif pages['shipping-policy'] != blank
+    assign quick_shipping_url = pages['shipping-policy'].url
+  else
+    assign quick_shipping_url = '/policies/shipping-policy'
   endif
 
   assign quick_privacy_url = blank
@@ -46,12 +84,14 @@
   endif
 
   assign quick_refund_url = blank
-  if pages.refund != blank
+  if shop.refund_policy != blank
+    assign quick_refund_url = shop.refund_policy.url
+  elsif pages.refund != blank
     assign quick_refund_url = pages.refund.url
   elsif pages['refund-policy'] != blank
     assign quick_refund_url = pages['refund-policy'].url
-  elsif shop.refund_policy != blank
-    assign quick_refund_url = shop.refund_policy.url
+  else
+    assign quick_refund_url = '/policies/refund-policy'
   endif
 -%}
 
@@ -66,9 +106,7 @@
   <div class="site-footer__inner">
     <div class="site-footer__columns">
       <div class="site-footer__column site-footer__column--brand">
-        {%- if section.settings.brand_heading != blank -%}
-          <h2 class="site-footer__heading site-footer__heading--brand">{{ section.settings.brand_heading | escape }}</h2>
-        {%- endif -%}
+        <h2 class="site-footer__heading site-footer__heading--brand">{{ brand_heading | escape }}</h2>
         {%- if section.settings.brand_story != blank -%}
           {%- liquid
             assign brand_story_html = section.settings.brand_story
@@ -81,8 +119,8 @@
 
         {%- if section.settings.show_social -%}
           {%- liquid
-            assign footer_facebook_url = section.settings.facebook_url
-            assign footer_instagram_url = section.settings.instagram_url
+            assign footer_facebook_url = section.settings.facebook_url | strip
+            assign footer_instagram_url = section.settings.instagram_url | strip
           -%}
           {%- if footer_facebook_url != blank or footer_instagram_url != blank -%}
             <div class="site-footer__social">
@@ -174,10 +212,8 @@
       </div>
 
       <div class="site-footer__column">
-        <h2 class="site-footer__heading">{{ section.settings.newsletter_heading | escape }}</h2>
-        {%- if section.settings.newsletter_text != blank -%}
-          <p class="site-footer__newsletter-text">{{ section.settings.newsletter_text | escape }}</p>
-        {%- endif -%}
+        <h2 class="site-footer__heading">{{ newsletter_heading | escape }}</h2>
+        <p class="site-footer__newsletter-text">{{ newsletter_text | escape }}</p>
 
         {%- form 'customer', class: 'site-footer__newsletter-form', id: 'footer-newsletter' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
@@ -204,7 +240,7 @@
               {% endif %}
             >
             <button class="site-footer__newsletter-button" type="submit" name="commit">
-              {{ section.settings.newsletter_button_label | escape }}
+              {{ newsletter_button_label | escape }}
             </button>
           </div>
 
@@ -238,13 +274,11 @@
 
     <div class="site-footer__bar">
       <div class="site-footer__bar-start">
-        <p class="site-footer__currency">{{ section.settings.currency_note | escape }}</p>
+        <p class="site-footer__currency">{{ currency_note | escape }}</p>
         <p class="site-footer__copyright">
-          {%- if section.settings.copyright_text != blank -%}
-            {{ section.settings.copyright_text | escape }}
-          {%- endif -%}
+          {{ copyright_text | escape }}
           {%- if section.settings.designer_link_url != blank and section.settings.designer_link_label != blank -%}
-            {%- if section.settings.copyright_text != blank -%}
+            {%- if copyright_text != blank -%}
               {{ ' ' }}
             {%- endif -%}
             <a

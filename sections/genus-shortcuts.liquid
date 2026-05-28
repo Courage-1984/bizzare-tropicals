@@ -1,12 +1,100 @@
 {%- liquid
-  assign section_heading = section.settings.heading
+  assign section_heading = section.settings.heading | strip
+  if section_heading == blank
+    assign section_heading = 'sections.genus_shortcuts.strip_label' | t
+  endif
   assign default_placeholder = section.settings.default_placeholder_image
   assign use_dynamic_genera = section.settings.use_dynamic_genera
-  assign has_genus_cards = false
+  capture genus_cards_markup
+    if use_dynamic_genera
+      render 'genus-shortcuts-dynamic-strip', default_placeholder: default_placeholder
+    else
+      for block in section.blocks
+        if block.type == 'genus'
+          liquid
+            assign card_collection = block.settings.collection
+            assign card_title = block.settings.title
+            assign card_link = block.settings.link
+            assign card_image = block.settings.image
+            assign placeholder_url = block.settings.placeholder_image
+            if placeholder_url contains 'Venus_Flytrap_(Dionaea_muscipula)'
+              assign placeholder_url = blank
+            endif
+            assign genus_handle = card_title | handleize
+            assign use_shopify_image = false
 
-  if use_dynamic_genera
-    assign has_genus_cards = true
-  elsif section.blocks.size > 0
+            if card_collection != blank
+              assign genus_handle = card_collection.handle
+              if card_title == blank
+                capture collection_display_title
+                  render 'collection-display-title', collection: card_collection
+                endcapture
+                assign card_title = collection_display_title | strip
+              endif
+              if card_link == blank
+                assign card_link = card_collection.url
+              endif
+              if card_image == blank
+                if card_collection.image != blank
+                  if card_collection.image.width > 0
+                    assign card_image = card_collection.image
+                  endif
+                endif
+                if card_image == blank
+                  assign fallback_product = card_collection.products.first
+                  if fallback_product != blank
+                    assign card_image = fallback_product.featured_media.preview_image | default: fallback_product.featured_image
+                  endif
+                endif
+              endif
+            endif
+
+            if section.settings.hide_empty_collections
+              if card_collection != blank
+                if card_collection.products_count == 0
+                  assign card_title = blank
+                endif
+              endif
+            endif
+
+            if card_link == blank
+              if card_title != blank
+                assign card_link = card_title | handleize | prepend: '/collections/'
+              endif
+            endif
+
+            if card_image != blank
+              if card_image.width > 0
+                assign use_shopify_image = true
+              endif
+            endif
+
+            unless use_shopify_image
+              if placeholder_url == blank
+                capture genus_placeholder
+                  render 'genus-placeholder-url', genus_handle: genus_handle
+                endcapture
+                assign placeholder_url = genus_placeholder | strip
+              endif
+              if placeholder_url == blank
+                assign placeholder_url = default_placeholder
+              endif
+            endunless
+
+          if card_title != blank and card_link != blank
+            echo '<li class="genus-shortcuts__item reveal-up" data-carousel-item role="listitem" '
+            echo block.shopify_attributes
+            echo '>'
+            render 'genus-arch-card', card_title: card_title, card_link: card_link, placeholder_url: placeholder_url, card_image: card_image, use_shopify_image: use_shopify_image
+            echo '</li>'
+          endif
+        endif
+      endfor
+    endif
+  endcapture
+  assign genus_cards_markup = genus_cards_markup | strip
+  assign has_genus_cards = false
+  if genus_cards_markup != blank
     assign has_genus_cards = true
   endif
 -%}
@@ -61,98 +149,7 @@
         tabindex="0"
         aria-label="{{ 'sections.genus_shortcuts.strip_label' | t }}"
       >
-        {%- if use_dynamic_genera -%}
-          {% render 'genus-shortcuts-dynamic-strip', default_placeholder: default_placeholder %}
-        {%- else -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'genus' -%}
-            {%- liquid
-              assign card_collection = block.settings.collection
-              assign card_title = block.settings.title
-              assign card_link = block.settings.link
-              assign card_image = block.settings.image
-              assign placeholder_url = block.settings.placeholder_image
-              if placeholder_url contains 'Venus_Flytrap_(Dionaea_muscipula)'
-                assign placeholder_url = blank
-              endif
-              assign genus_handle = card_title | handleize
-              assign use_shopify_image = false
-
-              if card_collection != blank
-                assign genus_handle = card_collection.handle
-                if card_title == blank
-                  capture collection_display_title
-                    render 'collection-display-title', collection: card_collection
-                  endcapture
-                  assign card_title = collection_display_title | strip
-                endif
-                if card_link == blank
-                  assign card_link = card_collection.url
-                endif
-                if card_image == blank
-                  if card_collection.image != blank
-                    if card_collection.image.width > 0
-                      assign card_image = card_collection.image
-                    endif
-                  endif
-                  if card_image == blank
-                    assign fallback_product = card_collection.products.first
-                    if fallback_product != blank
-                      assign card_image = fallback_product.featured_media.preview_image | default: fallback_product.featured_image
-                    endif
-                  endif
-                endif
-              endif
-
-              if section.settings.hide_empty_collections
-                if card_collection != blank
-                  if card_collection.products_count == 0
-                    assign card_title = blank
-                  endif
-                endif
-              endif
-
-              if card_link == blank
-                if card_title != blank
-                  assign card_link = card_title | handleize | prepend: '/collections/'
-                endif
-              endif
-
-              if card_image != blank
-                if card_image.width > 0
-                  assign use_shopify_image = true
-                endif
-              endif
-
-              unless use_shopify_image
-                if placeholder_url == blank
-                  capture genus_placeholder
-                    render 'genus-placeholder-url', genus_handle: genus_handle
-                  endcapture
-                  assign placeholder_url = genus_placeholder | strip
-                endif
-                if placeholder_url == blank
-                  assign placeholder_url = default_placeholder
-                endif
-              endunless
-            -%}
-
-            {%- if card_title != blank -%}
-              {%- if card_link != blank -%}
-                <li class="genus-shortcuts__item reveal-up" data-carousel-item {{ block.shopify_attributes }} role="listitem">
-                  {% render 'genus-arch-card',
-                    card_title: card_title,
-                    card_link: card_link,
-                    placeholder_url: placeholder_url,
-                    card_image: card_image,
-                    use_shopify_image: use_shopify_image
-                  %}
-                </li>
-              {%- endif -%}
-            {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- endif -%}
+        {{- genus_cards_markup -}}
       </ul>
     </div>
   {%- else -%}
@@ -234,9 +231,12 @@
   }
 
   .genus-shortcuts__viewport {
-    margin-inline: calc(var(--page-margin) * -1);
-    padding-inline: var(--page-margin);
-    overflow: hidden;
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: max(var(--page-margin), env(safe-area-inset-left, 0px));
+    padding-inline-end: max(var(--page-margin), env(safe-area-inset-right, 0px));
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 
   .genus-shortcuts__strip:focus-visible {
@@ -248,12 +248,17 @@
     display: flex;
     gap: 2rem;
     margin: 0;
-    padding: var(--space-xs) var(--page-margin) var(--space-md);
+    padding: var(--space-sm) 0 var(--space-lg);
     list-style: none;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
+    touch-action: pan-y pinch-zoom;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    scroll-padding-inline-start: max(var(--page-margin), env(safe-area-inset-left, 0px));
+    scroll-padding-inline-end: max(var(--page-margin), env(safe-area-inset-right, 0px));
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -264,7 +269,7 @@
 
   .genus-shortcuts__item {
     flex: 0 0 auto;
-    width: 60vw;
+    width: clamp(14rem, 72vw, 22rem);
     scroll-snap-align: start;
     min-width: 0;
   }
@@ -275,17 +280,8 @@
       text-align: start;
     }
 
-    .genus-shortcuts__viewport {
-      margin-inline: 0;
-      padding-inline: 0;
-    }
-
-    .genus-shortcuts__strip {
-      padding-inline: 0;
-    }
-
     .genus-shortcuts__item {
-      width: 20vw;
+      width: clamp(14rem, 18vw, 19rem);
     }
   }
 
@@ -336,6 +332,10 @@
         state.listeners.forEach(function (entry) {
           entry.target.removeEventListener(entry.type, entry.handler);
         });
+
+        if (typeof state.inViewDisconnect === 'function') {
+          state.inViewDisconnect();
+        }
       } catch (error) {
         console.error('Genus shortcuts: teardown failed.', error);
       }
@@ -383,10 +383,12 @@
 
       var desktopQuery = window.matchMedia('(min-width: 990px)');
       var autoplayPaused = false;
+      var inView = true;
       var state = {
         listeners: [],
         autoplayTimer: null,
-        resumeTimer: null
+        resumeTimer: null,
+        inViewDisconnect: null
       };
 
       function trackListener(target, type, handler, options) {
@@ -436,8 +438,15 @@
       function startAutoplay() {
         stopAutoplay();
 
+        var isDesktop = false;
+        try {
+          isDesktop = window.matchMedia('(min-width: 990px)').matches;
+        } catch (error) {
+          isDesktop = false;
+        }
+
         var overflow = track.scrollWidth > track.clientWidth + 2;
-        if (!overflow || autoplayPaused || prefersReducedMotion() || document.hidden) {
+        if (!overflow || !inView || autoplayPaused || prefersReducedMotion() || document.hidden || isDesktop) {
           return;
         }
 
@@ -508,6 +517,27 @@
       trackListener(track, 'pointerup', scheduleAutoplayResume);
       trackListener(track, 'pointerleave', scheduleAutoplayResume);
       trackListener(track, 'focusout', scheduleAutoplayResume);
+
+      if (window.BT) {
+        if (window.BT.bindCarouselWheelGuard) {
+          window.BT.bindCarouselWheelGuard(track);
+        }
+
+        if (window.BT.bindCarouselInView) {
+          state.inViewDisconnect = window.BT.bindCarouselInView(root, {
+            onLeave: function () {
+              inView = false;
+              stopAutoplay();
+            },
+            onEnter: function () {
+              inView = true;
+              if (!autoplayPaused) {
+                startAutoplay();
+              }
+            }
+          });
+        }
+      }
 
       trackListener(window, 'resize', function () {
         syncNavVisibility();

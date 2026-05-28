@@ -41,7 +41,7 @@ A South African e-commerce store specializing in **carnivorous plants** and **gr
 - `/` — **Home**
 - `/pages/about` — **About**
 - `/pages/contact` — **Contact**
-- `/pages/shipping` — Shipping & live-plant care policy
+- `/policies/shipping-policy` — Shipping & live-plant care policy
 - `/pages/care-overview` — High-level "How to grow carnivorous plants" landing page (links into the in-collection care sections)
 
 ### 3.2 Collection Structure (Catalogue Taxonomy)

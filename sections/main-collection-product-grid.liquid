@@ -3,8 +3,14 @@
     render 'collection-display-title', collection: collection
   endcapture
   assign collection_heading = collection_display_title | strip
+  if collection_heading == blank
+    assign collection_heading = collection.title | strip
+  endif
+  if collection_heading == blank
+    assign collection_heading = 'general.collection' | t
+  endif
 
-  assign grid_heading = section.settings.heading
+  assign grid_heading = section.settings.heading | strip
   if grid_heading == blank
     assign grid_heading = collection_heading
   endif
@@ -77,15 +83,44 @@
     {%- paginate collection.products by 24 -%}
       {%- if collection.products.size > 0 -%}
         <ul class="collection-grid collection-grid--bento" role="list" data-collection-grid-list data-reveal-stagger>
+          {%- assign page_offset = paginate.current_page | minus: 1 | times: paginate.page_size -%}
           {%- assign rendered_product_ids = '' -%}
           {%- for product in collection.products -%}
             {%- assign product_id_marker = product.id | append: '|' -%}
             {%- unless rendered_product_ids contains product_id_marker -%}
               {%- assign rendered_product_ids = rendered_product_ids | append: product_id_marker -%}
-              <li class="collection-grid__item reveal-up" role="listitem" data-product-id="{{ product.id }}">
+              {%- liquid
+                assign absolute_index = page_offset | plus: forloop.index0
+                assign variant_seed = product.id | plus: absolute_index | modulo: 17
+                assign items_remaining = paginate.page_size | minus: forloop.index
+                assign bento_variant = 'collection-grid__item--base'
+
+                if items_remaining > 4
+                  if variant_seed == 0 or variant_seed == 8 or variant_seed == 13
+                    assign bento_variant = 'collection-grid__item--wide'
+                  elsif variant_seed == 2 or variant_seed == 10
+                    assign bento_variant = 'collection-grid__item--tall'
+                  elsif variant_seed == 6
+                    assign bento_variant = 'collection-grid__item--compact'
+                  elsif variant_seed == 5
+                    assign hero_gate = absolute_index | modulo: 24
+                    if hero_gate == 0
+                      assign bento_variant = 'collection-grid__item--hero'
+                    else
+                      assign bento_variant = 'collection-grid__item--wide'
+                    endif
+                  endif
+                endif
+              -%}
+              <li
+                class="collection-grid__item {{ bento_variant }} reveal-up"
+                role="listitem"
+                data-product-id="{{ product.id }}"
+              >
                 {% render 'product-card',
                   product_item: product,
-                  card_index: forloop.index0,
+                  card_index: absolute_index,
+                  show_specimen_id: false,
                   sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
                 %}
               </li>
@@ -108,11 +143,9 @@
           <div class="collection-load-more" data-collection-load-more-wrap hidden></div>
         {%- endif -%}
       {%- else -%}
-        {%- unless request.design_mode -%}
-          <p class="collection-grid-section__empty">
-            {{ 'sections.main_collection_product_grid.empty' | t }}
-          </p>
-        {%- endunless -%}
+        <p class="collection-grid-section__empty">
+          {{ 'sections.main_collection_product_grid.empty' | t }}
+        </p>
         <ul
           class="collection-grid collection-grid--bento collection-grid--preview"
           role="list"
@@ -122,9 +155,10 @@
           {% endunless %}
         >
           {%- for i in (1..12) -%}
-            <li class="collection-grid__item reveal-up" role="listitem">
+            <li class="collection-grid__item collection-grid__item--base reveal-up" role="listitem">
               {% render 'product-card',
                 card_index: forloop.index0,
+                show_specimen_id: false,
                 sizes: '(min-width: 990px) 22vw, (min-width: 750px) 24vw, 46vw'
               %}
             </li>
@@ -286,20 +320,24 @@
   .collection-grid__item {
     min-width: 0;
     overflow: visible;
+    align-self: start;
   }
 
-  .collection-grid--bento .product-card__media {
+  .collection-grid--bento .collection-grid__item--base .product-card__media {
     aspect-ratio: 1 / 1;
   }
 
-  .collection-grid--bento .collection-grid__item:nth-child(1) .product-card__media,
-  .collection-grid--bento .collection-grid__item:nth-child(10) .product-card__media {
+  .collection-grid--bento .collection-grid__item--wide .product-card__media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .collection-grid--bento .collection-grid__item--tall .product-card__media,
+  .collection-grid--bento .collection-grid__item--hero .product-card__media {
     aspect-ratio: 4 / 5;
   }
 
-  .collection-grid--bento .collection-grid__item:nth-child(4) .product-card__media,
-  .collection-grid--bento .collection-grid__item:nth-child(12) .product-card__media {
-    aspect-ratio: 16 / 9;
+  .collection-grid--bento .collection-grid__item--compact .product-card__media {
+    aspect-ratio: 1 / 1;
   }
 
   .collection-load-more {
@@ -358,22 +396,32 @@
     .collection-grid--bento {
       grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: minmax(12rem, auto);
+      grid-auto-flow: dense;
+      align-items: start;
       gap: var(--space-lg);
     }
 
-    .collection-grid--bento .collection-grid__item:nth-child(1),
-    .collection-grid--bento .collection-grid__item:nth-child(10) {
+    .collection-grid--bento .collection-grid__item--hero {
       grid-column: span 2;
       grid-row: span 2;
     }
 
-    .collection-grid--bento .collection-grid__item:nth-child(4),
-    .collection-grid--bento .collection-grid__item:nth-child(12) {
+    .collection-grid--bento .collection-grid__item--wide {
       grid-column: span 2;
       grid-row: span 1;
     }
 
-    .collection-grid--bento .collection-grid__item:not(:nth-child(1)):not(:nth-child(4)):not(:nth-child(10)):not(:nth-child(12)) {
+    .collection-grid--bento .collection-grid__item--tall {
+      grid-column: span 1;
+      grid-row: span 2;
+    }
+
+    .collection-grid--bento .collection-grid__item--compact {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+
+    .collection-grid--bento .collection-grid__item--base {
       grid-column: span 1;
       grid-row: span 1;
     }

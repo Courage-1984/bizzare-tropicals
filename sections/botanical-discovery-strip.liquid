@@ -1,8 +1,12 @@
 {%- liquid
-  assign anchor_heading = section.settings.anchor_heading
+  assign anchor_heading = section.settings.anchor_heading | strip
+  if anchor_heading == blank
+    assign anchor_heading = 'Shop plants and accessories below!'
+  endif
   assign anchor_color = section.settings.anchor_color | default: '#c41e3a'
   assign transition_ease = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
   assign card_min_height = section.settings.card_min_height | default: 320
+  assign has_valid_cards = false
 -%}
 
 <section
@@ -29,15 +33,17 @@
       data-reveal-stagger
       role="list"
     >
+      {%- assign discovery_card_index = 0 -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'discovery_card' -%}
+          {%- assign discovery_card_index = discovery_card_index | plus: 1 -%}
           {%- liquid
             assign card_collection = block.settings.collection
-            assign card_title = block.settings.title
-            assign card_description = block.settings.description
-            assign card_link = block.settings.link
+            assign card_title = block.settings.title | strip
+            assign card_description = block.settings.description | strip
+            assign card_link = block.settings.link | strip
             assign card_image = block.settings.image
-            assign card_placeholder = block.settings.placeholder_image
+            assign card_placeholder = block.settings.placeholder_image | strip
             assign use_shopify_image = false
 
             if card_collection != blank
@@ -83,7 +89,22 @@
               endif
 
               if use_shopify_image == false and card_placeholder == blank
-                assign discovery_card_key = block.id | replace: 'discovery_', '' | replace: '_', '-'
+                assign discovery_card_key = blank
+                if card_link contains '/pages/about-us'
+                  assign discovery_card_key = 'tissue_culture'
+                elsif card_link contains '/collections/growing-supplies'
+                  assign discovery_card_key = 'supplies'
+                elsif card_link contains 'sort_by=created-descending'
+                  assign discovery_card_key = 'new_arrivals'
+                elsif discovery_card_index == 1
+                  assign discovery_card_key = 'beginner'
+                elsif discovery_card_index == 2
+                  assign discovery_card_key = 'tissue_culture'
+                elsif discovery_card_index == 3
+                  assign discovery_card_key = 'supplies'
+                elsif discovery_card_index == 4
+                  assign discovery_card_key = 'new_arrivals'
+                endif
                 capture card_placeholder
                   render 'discovery-card-placeholder-url', card_key: discovery_card_key
                 endcapture
@@ -93,6 +114,7 @@
           -%}
 
           {%- if card_title != blank and card_link != blank -%}
+            {%- assign has_valid_cards = true -%}
             <div class="botanical-discovery-strip__cell reveal-up" role="listitem" {{ block.shopify_attributes }}>
               <a
                 class="discovery-card"
@@ -144,7 +166,9 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
-  {%- else -%}
+  {%- endif -%}
+
+  {%- if has_valid_cards == false -%}
     <p class="botanical-discovery-strip__empty">{{ 'sections.botanical_discovery_strip.empty' | t }}</p>
   {%- endif -%}
 </section>

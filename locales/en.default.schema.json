@@ -49,20 +49,27 @@
       "name": "Home slider",
       "settings": {
         "overlay_opacity": "Overlay opacity",
+        "enable_autoplay": "Autoplay slides",
+        "autoplay_seconds": "Seconds per slide",
         "default_placeholder_image": "Default placeholder image URL",
-        "default_placeholder_image_info": "Used when a slide has no image. Wikimedia Commons URLs from placeholder-images.md are fine for development."
+        "default_placeholder_image_info": "Fallback when a slide has no uploaded image, collection image, or per-slide placeholder URL."
       },
       "blocks": {
         "slide": {
           "name": "Slide",
           "settings": {
-            "image": "Image",
+            "image": "Hero image",
+            "image_info": "Recommended. Upload a wide macro photo (about 2400px wide).",
+            "collection": "Collection (optional)",
+            "collection_info": "Uses collection URL when button link is empty. Fallback image: collection image, then first product photo.",
             "placeholder_image": "Placeholder image URL",
-            "placeholder_image_info": "Overrides the section default for this slide only.",
+            "placeholder_image_info": "Development fallback only. Overrides section default for this slide.",
             "heading": "Heading",
+            "heading_info": "Leave blank to use the collection display name when a collection is selected.",
             "subheading": "Subheading",
             "button_label": "Button label",
-            "button_link": "Button link"
+            "button_link": "Button link",
+            "button_link_info": "Optional if a collection is selected."
           }
         }
       }
@@ -92,7 +99,9 @@
     "announcement_bar": {
       "name": "Announcement bar",
       "settings": {
-        "rotate_interval": "Rotation interval"
+        "enable_rotation": "Rotate messages",
+        "rotate_interval": "Rotation interval",
+        "show_close_button": "Show close button"
       },
       "blocks": {
         "message": {
@@ -107,6 +116,8 @@
     "search_overlay": {
       "name": "Search overlay",
       "settings": {
+        "use_dynamic_genus_links": "Use live genus links",
+        "use_dynamic_genus_links_info": "When enabled, browse links use live in-stock genus collections. Turn off to use manual Genus quick link blocks.",
         "suggested_collection": "Suggested products collection",
         "suggested_pool_size": "Suggested products pool size",
         "suggested_rotate_seconds": "Seconds between suggested rotations"
@@ -137,7 +148,9 @@
         "subtext": "Subtext",
         "button_label": "Button label",
         "illustration": "Illustration image",
-        "illustration_info": "Optional. Replaces the default sundew line art."
+        "illustration_info": "Optional. Replaces the default sundew line art.",
+        "illustration_placeholder": "Fallback illustration image URL",
+        "illustration_placeholder_info": "Optional. Used when no illustration upload is set. Good for temporary CDN or Wikimedia assets."
       }
     },
     "botanical_discovery_strip": {
@@ -337,6 +350,8 @@
         "drawer_title": "Drawer title",
         "empty_title": "Empty cart message",
         "empty_button_label": "Empty cart button label",
+        "empty_illustration_placeholder": "Empty state illustration URL",
+        "empty_illustration_placeholder_info": "Optional. Used when no empty-state SVG icon should be shown.",
         "show_dispatch_note": "Show botanical dispatch note"
       }
     },

@@ -1,11 +1,20 @@
 {% doc %}
   Search overlay browse rows — genus collections + product common names in opposing infinite marquees.
 
+  @param {section} [section] - search-overlay section (optional for block-based links)
+
   @example
-  {% render 'search-overlay-browse-marquees' %}
+  {% render 'search-overlay-browse-marquees', section: section %}
 {% enddoc %}
 
 {%- liquid
+  assign use_dynamic_genus_links = true
+  if section != blank
+    if section.settings.use_dynamic_genus_links == false
+      assign use_dynamic_genus_links = false
+    endif
+  endif
+
   assign excluded_handles = 'all,frontpage,growing-supplies,growing_supplies,supplies,accessories,nepenthes' | split: ','
   capture catalog_genus_handles
     render 'catalog-genus-handles'
@@ -18,51 +27,108 @@
 -%}
 
 {%- capture genus_marquee_items -%}
-  {%- for genus_handle in genus_order -%}
-    {%- assign genus_collection = collections[genus_handle] -%}
-    {%- if genus_collection == blank or genus_collection.products_count == 0 -%}
-      {%- continue -%}
-    {%- endif -%}
-    {%- assign genus_count = genus_count | plus: 1 -%}
-    {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_handle | append: ',' -%}
-    {%- capture genus_chip_label -%}
-      {%- render 'collection-display-title', collection: genus_collection -%}
-    {%- endcapture -%}
-    <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
-      <span class="search-marquee__chip-label">{{ genus_chip_label | strip | escape }}</span>
-    </a>
-  {%- endfor -%}
+  {%- if use_dynamic_genus_links == false and section != blank and section.blocks.size > 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type != 'genus_link' -%}
+        {%- continue -%}
+      {%- endif -%}
+      {%- liquid
+        assign genus_collection = block.settings.collection
+        assign genus_label = block.settings.label | strip
+        assign genus_url = block.settings.url
+        assign genus_handle = ''
 
-  {%- for genus_collection in collections -%}
-    {%- liquid
-      assign skip_genus = false
-      assign genus_needle = ',' | append: genus_collection.handle | append: ','
-      assign genus_haystack = ',' | append: rendered_genus_handles
-      if genus_haystack contains genus_needle
-        assign skip_genus = true
-      endif
-      for excluded_handle in excluded_handles
-        if genus_collection.handle == excluded_handle
-          assign skip_genus = true
-          break
+        if genus_collection != blank
+          if genus_url == blank
+            assign genus_url = genus_collection.url
+          endif
+          assign genus_handle = genus_collection.handle
+          if genus_label == blank
+            capture genus_label
+              render 'collection-display-title', collection: genus_collection
+            endcapture
+            assign genus_label = genus_label | strip
+          endif
+        elsif genus_url contains '/collections/'
+          assign genus_handle = genus_url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+          if genus_label == blank
+            assign fallback_collection = collections[genus_handle]
+            if fallback_collection != blank
+              capture genus_label
+                render 'collection-display-title', collection: fallback_collection
+              endcapture
+              assign genus_label = genus_label | strip
+            endif
+          endif
         endif
-      endfor
-      if genus_collection.handle contains '-'
-        assign skip_genus = true
-      endif
-    -%}
-    {%- if skip_genus or genus_collection.products_count == 0 -%}
-      {%- continue -%}
-    {%- endif -%}
-    {%- assign genus_count = genus_count | plus: 1 -%}
-    {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_collection.handle | append: ',' -%}
-    {%- capture genus_chip_label -%}
-      {%- render 'collection-display-title', collection: genus_collection -%}
-    {%- endcapture -%}
-    <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
-      <span class="search-marquee__chip-label">{{ genus_chip_label | strip | escape }}</span>
-    </a>
-  {%- endfor -%}
+
+        if genus_url == blank
+          continue
+        endif
+        if genus_label == blank
+          assign genus_label = genus_handle | replace: '-', ' ' | capitalize
+        endif
+        if genus_label == blank
+          assign genus_label = 'Collection'
+        endif
+      -%}
+      <a class="search-marquee__chip link-underline-grow" href="{{ genus_url }}" {{ block.shopify_attributes }}>
+        <span class="search-marquee__chip-label">{{ genus_label | escape }}</span>
+      </a>
+      {%- assign genus_count = genus_count | plus: 1 -%}
+      {%- if genus_handle != blank -%}
+        {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_handle | append: ',' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- if genus_count == 0 -%}
+    {%- for genus_handle in genus_order -%}
+      {%- assign genus_collection = collections[genus_handle] -%}
+      {%- if genus_collection == blank or genus_collection.products_count == 0 -%}
+        {%- continue -%}
+      {%- endif -%}
+      {%- assign genus_count = genus_count | plus: 1 -%}
+      {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_handle | append: ',' -%}
+      {%- capture genus_chip_label -%}
+        {%- render 'collection-display-title', collection: genus_collection -%}
+      {%- endcapture -%}
+      <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
+        <span class="search-marquee__chip-label">{{ genus_chip_label | strip | escape }}</span>
+      </a>
+    {%- endfor -%}
+
+    {%- for genus_collection in collections -%}
+      {%- liquid
+        assign skip_genus = false
+        assign genus_needle = ',' | append: genus_collection.handle | append: ','
+        assign genus_haystack = ',' | append: rendered_genus_handles
+        if genus_haystack contains genus_needle
+          assign skip_genus = true
+        endif
+        for excluded_handle in excluded_handles
+          if genus_collection.handle == excluded_handle
+            assign skip_genus = true
+            break
+          endif
+        endfor
+        if genus_collection.handle contains '-'
+          assign skip_genus = true
+        endif
+      -%}
+      {%- if skip_genus or genus_collection.products_count == 0 -%}
+        {%- continue -%}
+      {%- endif -%}
+      {%- assign genus_count = genus_count | plus: 1 -%}
+      {%- assign rendered_genus_handles = rendered_genus_handles | append: genus_collection.handle | append: ',' -%}
+      {%- capture genus_chip_label -%}
+        {%- render 'collection-display-title', collection: genus_collection -%}
+      {%- endcapture -%}
+      <a class="search-marquee__chip link-underline-grow" href="{{ genus_collection.url }}">
+        <span class="search-marquee__chip-label">{{ genus_chip_label | strip | escape }}</span>
+      </a>
+    {%- endfor -%}
+  {%- endif -%}
 {%- endcapture -%}
 
 {%- capture common_marquee_items -%}

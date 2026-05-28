@@ -1,16 +1,32 @@
 {%- liquid
-  assign conservatory_heading = section.settings.heading
-  assign default_pillar_placeholder = section.settings.default_pillar_placeholder | default: 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200'
-  assign plate_count = 0
+  assign conservatory_heading = section.settings.heading | strip
+  if conservatory_heading == blank
+    assign conservatory_heading = 'sections.about_conservatory.heading_default' | t
+  endif
+
+  assign default_pillar_placeholder = section.settings.default_pillar_placeholder | strip
+  if default_pillar_placeholder == blank
+    assign default_pillar_placeholder = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nepenthes_ventricosa0.jpg?width=1200'
+  endif
+
+  assign has_valid_plates = false
 
   for block in section.blocks
     if block.type == 'scientific_plate'
-      assign plate_count = plate_count | plus: 1
+      assign plate_heading_candidate = block.settings.heading | strip
+      assign plate_text_candidate = block.settings.text | strip
+      assign plate_ref_candidate = block.settings.ref_id | strip
+      assign plate_placeholder_candidate = block.settings.placeholder_image | strip
+      assign plate_image_candidate = block.settings.image
+
+      if plate_image_candidate != blank or plate_placeholder_candidate != blank or plate_heading_candidate != blank or plate_text_candidate != blank or plate_ref_candidate != blank
+        assign has_valid_plates = true
+      endif
     endif
   endfor
 -%}
 
-{%- if plate_count > 0 -%}
+{%- if has_valid_plates -%}
   <section
     class="about-conservatory full-width"
     aria-labelledby="about-conservatory-heading-{{ section.id }}"
@@ -29,10 +45,21 @@
 
           {%- liquid
             assign plate_image = block.settings.image
-            assign plate_heading = block.settings.heading | default: 'Scientific plate'
-            assign plate_text = block.settings.text
-            assign plate_ref = block.settings.ref_id
-            assign plate_placeholder = block.settings.placeholder_image | default: default_pillar_placeholder
+            assign plate_heading = block.settings.heading | strip
+            if plate_heading == blank
+              assign plate_heading = 'sections.about_conservatory.plate_heading_default' | t
+            endif
+
+            assign plate_text = block.settings.text | strip
+            if plate_text == blank
+              assign plate_text = 'sections.about_conservatory.plate_text_default' | t
+            endif
+
+            assign plate_ref = block.settings.ref_id | strip
+            assign plate_placeholder = block.settings.placeholder_image | strip
+            if plate_placeholder == blank
+              assign plate_placeholder = default_pillar_placeholder
+            endif
             assign use_plate_image = false
 
             if plate_image != blank and plate_image.width > 0
@@ -69,7 +96,7 @@
                 {%- elsif plate_placeholder != blank -%}
                   <img
                     class="about-conservatory__plate__image about-conservatory__plate__image--fallback"
-                    src="{{ plate_placeholder }}"
+                    src="{{ plate_placeholder | escape }}"
                     alt="{{ plate_heading | escape }}"
                     width="600"
                     height="750"
@@ -81,10 +108,7 @@
 
               <div class="about-conservatory__plate__body">
                 <h3 class="about-conservatory__plate__title">{{ plate_heading | escape }}</h3>
-
-                {%- if plate_text != blank -%}
-                  <p class="about-conservatory__plate__text">{{ plate_text | escape }}</p>
-                {%- endif -%}
+                <p class="about-conservatory__plate__text">{{ plate_text | escape }}</p>
               </div>
             </article>
           </li>
@@ -92,14 +116,24 @@
       </ul>
     </div>
   </section>
+{%- else -%}
+  <section class="about-conservatory about-conservatory--empty full-width" {{ section.shopify_attributes }}>
+    <div class="about-conservatory__inner">
+      <p class="about-conservatory__empty">{{ 'sections.about_conservatory.empty' | t }}</p>
+    </div>
+  </section>
 {%- endif -%}
 
 {% stylesheet %}
   .about-conservatory {
-    margin-block: var(--space-3xl) var(--space-4xl);
-    padding-block: var(--space-2xl);
+    margin-block: 0;
+    padding-block: var(--space-xl);
     background-color: var(--color-parchment);
     border-block: 1px solid var(--color-border);
+  }
+
+  .about-conservatory--empty {
+    padding-block: var(--space-lg);
   }
 
   .about-conservatory__inner {
@@ -109,7 +143,7 @@
   }
 
   .about-conservatory__title {
-    margin: 0 0 var(--space-3xl);
+    margin: 0 0 var(--space-2xl);
     font-family: var(--font-family-serif);
     font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
     font-style: italic;
@@ -131,6 +165,16 @@
     border: 1px solid var(--color-forest-green-dark);
     border-radius: var(--radius-lg);
     box-shadow: 2px 2px 10px rgb(0 0 0 / 0.05);
+  }
+
+  .about-conservatory__empty {
+    margin: 0;
+    padding: var(--space-xl);
+    text-align: center;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: rgb(255 255 255 / 0.45);
   }
 
   .about-conservatory__plate {

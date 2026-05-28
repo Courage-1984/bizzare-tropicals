@@ -57,7 +57,8 @@
       "placeholder_upload": "Upload transparent PNG",
       "callout_rim": "Nectar-rich rim to lure prey.",
       "callout_wax": "Slippery waxy zone for capture.",
-      "callout_pool": "Digestive enzyme pool at base."
+      "callout_pool": "Digestive enzyme pool at base.",
+      "description_empty": "Add a collection description in Shopify Admin to show genus notes here."
     },
     "collection_hero": {
       "dossier_overline": "Cultivation dossier",
@@ -83,13 +84,34 @@
       "date_logged": "Date logged",
       "specimen_id": "Specimen ID",
       "special_seal": "Special specimen",
+      "heading_default": "Newly cataloged",
+      "subheading_default": "Fresh arrivals from the propagation lab.",
+      "view_all_label_default": "View full ledger",
       "nav_prev": "Previous Specimen",
       "nav_next": "Next Specimen"
+    },
+    "featured_specimen": {
+      "heading_default": "Nepenthes bicalcarata",
+      "subheading_default": "A rare pitcher plant with distinctive fang-like appendages.",
+      "button_label_default": "View specimen"
+    },
+    "conservatory_standards": {
+      "subheading_default": "Our philosophy",
+      "heading_default": "The Conservatory Standards",
+      "pillar_heading_default": "Pillar heading",
+      "pillar_body_default": "Describe this standard.",
+      "empty": "Add conservatory standard pillars in the theme editor."
     },
     "main_404": {
       "heading_default": "404 — PAGE NOT FOUND",
       "subtext_default": "Abandoned Greenhouse",
       "cta_default": "Return to conservatory"
+    },
+    "main_policy_page": {
+      "fallback_title_default": "Policy",
+      "intro_default": "Review our store policies below.",
+      "default_body_default": "<p>Please add this policy content in Shopify Admin &gt; Online Store &gt; Pages, or set fallback content in the theme editor.</p>",
+      "empty": "Add policy content in the page editor or set fallback content in the theme editor."
     },
     "order_status": {
       "overline": "Conservatory dispatch ledger",
@@ -155,11 +177,27 @@
       "prev": "Previous products",
       "next": "Next products",
       "empty": "No products in this collection yet.",
-      "preview_label": "Preview featured products"
+      "preview_label": "Preview featured products",
+      "heading_default": "Featured plants",
+      "subheading_default": "Hand-picked specimens from our living collection.",
+      "view_all_label_default": "View all"
     },
     "contact_template": {
       "form_success": "Thank you for your message. We will respond as soon as possible.",
       "form_error_heading": "Please correct the following:",
+      "hero_overline_default": "Get in touch",
+      "form_heading_default": "Contact",
+      "form_intro_default": "Questions about availability, shipping live plants, or custom tissue culture - we read every message.",
+      "form_subheading_default": "Send a message",
+      "form_card_note_default": "Include your genus of interest and whether you need shipping or a bench appointment.",
+      "panel_heading_default": "Visit the conservatory",
+      "panel_intro_default": "Visits are by appointment so we can give your collection the attention it deserves. Reach out to plan a bench tour or discuss a custom order.",
+      "contact_address_default": "Gauteng, South Africa (By Appointment Only)",
+      "contact_email_default": "sales@bizarretropicals.com",
+      "contact_hours_default": "Hours: 24/7 (Online)",
+      "contact_phone_default": "+27 (WhatsApp Preferred)",
+      "faq_heading_default": "Frequently asked questions",
+      "social_heading_default": "Follow the growth",
       "field_name": "Name",
       "field_email": "Email",
       "field_phone": "Phone",
@@ -176,11 +214,25 @@
       "specimen_tag": "Living collection",
       "faq_overline": "Before you write",
       "social_facebook": "Facebook",
-      "social_instagram": "Instagram"
+      "social_instagram": "Instagram",
+      "empty_faq": "Add at least one FAQ block in the theme editor.",
+      "empty_social": "Add at least one social profile URL in the theme editor."
     },
     "about_template": {
       "hero_overline": "Our story",
-      "lab_overline": "The laboratory"
+      "lab_overline": "The laboratory",
+      "hero_overline_default": "Our story",
+      "hero_heading_default": "Cultivating the extraordinary.",
+      "hero_subheading_default": "South Africa's premier carnivorous plant and tissue culture nursery - field-tested protocols for collectors nationwide.",
+      "split_overline_default": "A scientific history",
+      "split_heading_default": "A scientific history of care",
+      "split_text_default": "<p><strong>Bizarre Tropicals</strong> is South Africa's premier carnivorous plant and tissue culture nursery, meticulously curated by Jaco Van Den Berg. From tissue-cultured sundews to show-stopping Nepenthes, we grow and ship living specimens for collectors across the country.</p><p>Macro photography meets Southern Hemisphere culture notes on every genus page - light, water, substrate, humidity, dormancy, and feeding written for real benches and terrariums, not generic houseplant advice.</p><p>We propagate in-house, acclimate stock before shipping, and prioritize plants that arrive ready for your collection.</p>",
+      "lab_overline_default": "The laboratory",
+      "lab_heading_default": "Science in service of nature.",
+      "lab_text_default": "<p>Tissue culture lets us multiply rare carnivorous plants under sterile conditions - preserving genetics without wild collection or poaching. Every flask in our lab is a living archive of species that might otherwise vanish from cultivation.</p><p>From initiation to weaning, we track each line for vigor, trueness to name, and pathogen-free growth before plants ever reach the bench. That is how Bizarre Tropicals supplies collectors with ethically propagated stock you can grow with confidence.</p>",
+      "curator_heading_default": "A message from Jaco Van Den Berg.",
+      "curator_text_default": "<p>I have spent years studying and growing carnivorous genera across South Africa - from windowsill Drosera to climate-controlled Nepenthes. What began as a collector's obsession became a nursery built on science, patience, and respect for these plants in the wild.</p><p>At Bizarre Tropicals, every species we list reflects hands-on culture: the humidity, the dormancy timing, the substrate that actually works on a Gauteng bench. If you are building a collection, I want you to succeed - not just make a purchase.</p>",
+      "curator_signature_default": "Jaco Van Den Berg"
     },
     "about_trophy_case": {
       "row_label": "Award-winning carnivorous plant specimens",
@@ -189,7 +241,21 @@
       "medal_gold": "Gold",
       "medal_silver": "Silver",
       "medal_bronze": "Bronze",
-      "medal_laurel": "Judges' choice"
+      "medal_laurel": "Judges' choice",
+      "overline_default": "Show bench",
+      "heading_default": "Award-winning specimens",
+      "subheading_default": "Living trophies from carnivorous plant shows - specimens we have exhibited and the classes they won on the bench.",
+      "specimen_name_default": "Show specimen",
+      "award_class_default": "Award class",
+      "show_name_default": "Show event",
+      "show_year_default": "Year",
+      "empty": "Add at least one show bench trophy block in the theme editor."
+    },
+    "about_conservatory": {
+      "heading_default": "The conservatory",
+      "plate_heading_default": "Scientific plate",
+      "plate_text_default": "Describe this conservatory standard.",
+      "empty": "Add at least one conservatory plate block in the theme editor."
     },
     "newsletter_modal": {
       "close": "Close newsletter signup",
@@ -409,6 +475,7 @@
   },
   "footer": {
     "quick_links": "Quick links",
+    "brand_heading_default": "Bizarre Tropicals",
     "link_home": "Home",
     "link_shop": "Shop",
     "link_about": "About",
@@ -418,9 +485,17 @@
     "link_privacy": "Privacy",
     "link_refund": "Refund policy",
     "contact_heading": "Contact",
+    "contact_address_default": "Gauteng, South Africa (By Appointment Only)",
+    "contact_email_default": "info@bizarretropicals.co.za",
+    "contact_phone_default": "+27 (WhatsApp Preferred)",
+    "newsletter_heading_default": "Join the growth",
+    "newsletter_text_default": "Seasonal drops, care notes, and new stock alerts - no spam.",
+    "newsletter_button_default": "Subscribe",
     "newsletter_email_label": "Email address",
     "newsletter_placeholder": "you@example.com",
     "newsletter_success": "Thank you for subscribing.",
+    "currency_note_default": "All prices in South African Rand (ZAR - R)",
+    "copyright_default": "© 2026 Bizarre Tropicals | Designed and hosted by",
     "payment_methods": "Accepted payment methods",
     "payment_yoco": "Yoco",
     "social_heading": "Social media",

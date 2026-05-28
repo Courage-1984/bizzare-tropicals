@@ -69,7 +69,7 @@
       aria-atomic="true"
     ></div>
 
-    {% render 'search-overlay-browse-marquees' %}
+    {% render 'search-overlay-browse-marquees', section: section %}
 
     <div
       class="search-overlay__suggested search-overlay__reveal"
@@ -101,11 +101,8 @@
     justify-content: center;
     padding: var(--space-xl) var(--page-margin);
     padding-block-start: calc(var(--header-height) + var(--announcement-bar-height, 0px) + var(--space-2xl));
-    opacity: 0;
     visibility: hidden;
-    transition:
-      opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
-      visibility 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: visibility 0.2s linear;
   }
 
   .search-overlay:not([hidden]) {
@@ -113,9 +110,8 @@
   }
 
   .search-overlay.is-open {
-    opacity: 1;
     align-items: flex-start;
-    overflow-y: auto;
+    overflow-y: hidden;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     padding-block-end: var(--space-lg);
@@ -149,8 +145,12 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     pointer-events: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(10 24 18 / 0.22) transparent;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .search-overlay__dialog::-webkit-scrollbar {
+    display: none;
   }
 
   .search-overlay__close {
@@ -245,8 +245,12 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     list-style: none;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(10 24 18 / 0.28) transparent;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .search-overlay__results-list::-webkit-scrollbar {
+    display: none;
   }
 
   .search-overlay__results-item + .search-overlay__results-item {
@@ -455,7 +459,7 @@
   }
 
   .search-overlay__suggested-track.is-advancing {
-    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
   .search-overlay__suggested-row.search-overlay__trending {
@@ -593,6 +597,7 @@
     var suggested = overlay.querySelector('[data-search-suggested]');
     var liveMatchLabel = overlay.getAttribute('data-live-match-label') || 'Live match';
     var suggestedRotatorState = null;
+    var SUGGESTED_ADVANCE_DURATION_MS = 700;
 
     function prefersReducedMotion() {
       try {
@@ -609,6 +614,10 @@
 
       if (suggestedRotatorState.waitTimer) {
         window.clearTimeout(suggestedRotatorState.waitTimer);
+      }
+
+      if (suggestedRotatorState.finishTimer) {
+        window.clearTimeout(suggestedRotatorState.finishTimer);
       }
 
       if (suggestedRotatorState.transitionHandler && suggestedRotatorState.track) {
@@ -779,7 +788,23 @@
         animating = true;
         syncViewportHeight();
         track.classList.add('is-advancing');
-        track.style.transform = 'translate3d(0, -50%, 0)';
+        var travelDistance = rowA.offsetHeight || 0;
+        window.requestAnimationFrame(function () {
+          track.style.transform = 'translate3d(0, -' + travelDistance + 'px, 0)';
+        });
+
+        function completeAdvance() {
+          if (!animating) {
+            return;
+          }
+
+          if (suggestedRotatorState && suggestedRotatorState.finishTimer) {
+            window.clearTimeout(suggestedRotatorState.finishTimer);
+            suggestedRotatorState.finishTimer = null;
+          }
+
+          finishAdvance();
+        }
 
         suggestedRotatorState.transitionHandler = function (event) {
           if (event.propertyName !== 'transform') {
@@ -788,10 +813,18 @@
 
           track.removeEventListener('transitionend', suggestedRotatorState.transitionHandler);
           suggestedRotatorState.transitionHandler = null;
-          finishAdvance();
+          completeAdvance();
         };
 
         track.addEventListener('transitionend', suggestedRotatorState.transitionHandler);
+
+        suggestedRotatorState.finishTimer = window.setTimeout(function () {
+          if (suggestedRotatorState && suggestedRotatorState.transitionHandler) {
+            track.removeEventListener('transitionend', suggestedRotatorState.transitionHandler);
+            suggestedRotatorState.transitionHandler = null;
+          }
+          completeAdvance();
+        }, SUGGESTED_ADVANCE_DURATION_MS + 120);
       }
 
       function scheduleHold() {
@@ -813,6 +846,7 @@
       suggestedRotatorState = {
         track: track,
         waitTimer: null,
+        finishTimer: null,
         transitionHandler: null,
         resizeHandler: syncViewportHeight
       };
@@ -1128,6 +1162,13 @@
   "class": "search-overlay-section",
   "max_blocks": 16,
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_dynamic_genus_links",
+      "label": "t:sections.search_overlay.settings.use_dynamic_genus_links",
+      "info": "t:sections.search_overlay.settings.use_dynamic_genus_links_info",
+      "default": true
+    },
     {
       "type": "collection",
       "id": "suggested_collection",
