@@ -1,0 +1,200 @@
+{% doc %}
+  Product-page cultivation dossier — metafields, care_guide, description, or fallback grid.
+
+  @param {product} [product] - Live product
+  @param {boolean} use_live_product - Whether product data is available
+  @param {boolean} has_care_guide - custom.care_guide is set
+  @param {string} product_description - Product body HTML or text
+  @param {string} care_fallback - Section fallback HTML or text
+  @param {string} light_value - Light / lux note
+  @param {string} water_value - Watering note
+  @param {string} substrate_value - Substrate note
+  @param {string} humidity_value - Humidity note
+  @param {string} temp_value - Temperature range note
+  @param {boolean} dormancy_required - Dormancy flag
+  @param {string} genus_handle - Genus collection handle for optional link
+  @param {string} section_id - Section id for heading anchors
+{% enddoc %}
+
+{%- liquid
+  assign care_heading = 'products.main.cultivation_heading' | t
+  assign care_overline = 'products.main.care_dossier_overline' | t
+
+  assign care_body_html = ''
+  assign care_mode = 'grid'
+  assign show_genus_link = false
+  assign genus_collection = blank
+
+  if has_care_guide and product != blank
+    assign care_mode = 'metafield'
+  endif
+
+  assign grid_row_count = 0
+  if light_value != blank
+    assign grid_row_count = grid_row_count | plus: 1
+  endif
+  if water_value != blank
+    assign grid_row_count = grid_row_count | plus: 1
+  endif
+  if substrate_value != blank
+    assign grid_row_count = grid_row_count | plus: 1
+  endif
+  if humidity_value != blank
+    assign grid_row_count = grid_row_count | plus: 1
+  endif
+  if temp_value != blank
+    assign grid_row_count = grid_row_count | plus: 1
+  endif
+  if use_live_product
+    assign grid_row_count = grid_row_count | plus: 1
+  endif
+
+  if care_mode == 'grid'
+    if grid_row_count > 0
+      assign care_mode = 'grid'
+    elsif product_description != blank
+      assign desc_stripped = product_description | strip_html | strip
+      if desc_stripped != blank
+        assign care_mode = 'description'
+      endif
+    endif
+  endif
+
+  if care_mode == 'grid' and grid_row_count == 0
+    if care_fallback != blank
+      assign care_mode = 'fallback'
+    else
+      assign care_mode = 'defaults'
+    endif
+  endif
+
+  if genus_handle != blank
+    assign genus_collection = collections[genus_handle]
+    if genus_collection != blank
+      assign show_genus_link = true
+    endif
+  endif
+-%}
+
+<section
+  class="main-product__care-dossier"
+  aria-labelledby="main-product-care-dossier-{{ section_id }}"
+>
+  <header class="main-product__care-dossier-header">
+    <p class="main-product__care-dossier-overline">{{ care_overline | escape }}</p>
+    <h2 id="main-product-care-dossier-{{ section_id }}" class="main-product__care-dossier-title">
+      {{ care_heading | escape }}
+    </h2>
+  </header>
+
+  <div class="main-product__care-dossier-body">
+    {%- case care_mode -%}
+      {%- when 'metafield' -%}
+        <div class="main-product__care-dossier-rich rte">
+          {{ product.metafields.custom.care_guide | metafield_tag }}
+        </div>
+
+      {%- when 'description' -%}
+        <div class="main-product__care-dossier-rich rte main-product__care-dossier-rich--description">
+          {{ product_description }}
+        </div>
+
+      {%- when 'fallback' -%}
+        <div class="main-product__care-dossier-rich rte">
+          {{ care_fallback }}
+        </div>
+
+      {%- else -%}
+        <ul class="main-product__care-dossier-grid" role="list">
+          {%- if light_value != blank -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.light_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ light_value | escape }}</p>
+            </li>
+          {%- elsif care_mode == 'defaults' -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.light_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.light' | t }}</p>
+            </li>
+          {%- endif -%}
+
+          {%- if water_value != blank -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.water_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ water_value | escape }}</p>
+            </li>
+          {%- elsif care_mode == 'defaults' -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.water_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.water' | t }}</p>
+            </li>
+          {%- endif -%}
+
+          {%- if substrate_value != blank -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.substrate_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ substrate_value | escape }}</p>
+            </li>
+          {%- elsif care_mode == 'defaults' -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.substrate_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.substrate' | t }}</p>
+            </li>
+          {%- endif -%}
+
+          {%- if humidity_value != blank -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.humidity_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ humidity_value | escape }}</p>
+            </li>
+          {%- elsif care_mode == 'defaults' -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.humidity_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.humidity' | t }}</p>
+            </li>
+          {%- endif -%}
+
+          {%- if temp_value != blank -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'products.main.snapshot_temp' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ temp_value | escape }}</p>
+            </li>
+          {%- endif -%}
+
+          {%- if use_live_product -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.dormancy_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">
+                {%- if dormancy_required -%}
+                  {{ 'products.main.dormancy_yes' | t }}
+                {%- else -%}
+                  {{ 'products.main.dormancy_no' | t }}
+                {%- endif -%}
+              </p>
+            </li>
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.feeding_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.feeding' | t }}</p>
+            </li>
+          {%- elsif care_mode == 'defaults' -%}
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.dormancy_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.dormancy' | t }}</p>
+            </li>
+            <li class="main-product__care-dossier-row">
+              <p class="main-product__care-dossier-label">{{ 'sections.collection_hero.care_fallback.feeding_heading' | t }}</p>
+              <p class="main-product__care-dossier-value">{{ 'sections.collection_hero.care_fallback.feeding' | t }}</p>
+            </li>
+          {%- endif -%}
+        </ul>
+    {%- endcase -%}
+  </div>
+
+  {%- if show_genus_link -%}
+    <p class="main-product__care-dossier-footer">
+      <a class="link-underline-grow" href="{{ genus_collection.url }}">
+        {{ 'products.main.care_genus_link' | t: genus: genus_collection.title }}
+      </a>
+    </p>
+  {%- endif -%}
+</section>

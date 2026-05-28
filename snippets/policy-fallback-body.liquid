@@ -1,24 +1,16 @@
 {% doc %}
-  Renders theme fallback HTML for native Shopify policy pages when Admin policy body is empty.
+  Shown when a native policy has no Admin body yet. Full HTML is in content/policies/ for paste into Admin.
 
-  @param {string} policy_handle - Shopify policy handle (e.g. refund-policy, shipping-policy)
+  @param {string} policy_handle - Shopify policy handle (e.g. refund-policy)
 {% enddoc %}
 
 {%- liquid
   assign policy_handle = policy_handle | default: policy.handle | strip
 -%}
 
-{%- case policy_handle -%}
-  {%- when 'contact-information' -%}
-    {{ 'policies.contact_information_body' | t }}
-  {%- when 'refund-policy' -%}
-    {{ 'policies.refund_policy_body' | t }}
-  {%- when 'shipping-policy' -%}
-    {{ 'policies.shipping_policy_body' | t }}
-  {%- when 'privacy-policy' -%}
-    {{ 'policies.privacy_policy_body' | t }}
-  {%- when 'terms-of-service' -%}
-    {{ 'policies.terms_of_service_body' | t }}
-  {%- when 'legal-notice' -%}
-    {{ 'policies.legal_notice_body' | t }}
-{%- endcase -%}
+<p class="policy-page__empty">
+  {{ 'sections.main_policy_page.admin_fallback_hint' | t }}
+  {%- if policy_handle != blank -%}
+    <span class="visually-hidden"> ({{ policy_handle | escape }})</span>
+  {%- endif -%}
+</p>

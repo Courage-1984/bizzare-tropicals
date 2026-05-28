@@ -42,6 +42,16 @@
     assign difficulty_raw = card_product.metafields.custom.difficulty.value | default: card_product.metafields.custom.difficulty
     assign difficulty = difficulty_raw | plus: 0
 
+    assign supply_category = card_product.metafields.custom.supply_category.value | default: card_product.metafields.custom.supply_category | strip | downcase
+    if supply_category == blank
+      for tag in card_product.tags
+        if tag contains 'supply:'
+          assign supply_category = tag | remove_first: 'supply:' | strip | downcase
+          break
+        endif
+      endfor
+    endif
+
     case genus_handle
       when 'dionaea'
         assign placeholder_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Venus_flytrap_-_Dionaea_muscipula_-_panoramio_(3).jpg?width=1200'
@@ -163,6 +173,9 @@
   class="product-card{% unless use_live_product %} product-card--mock{% endunless %}"
   {% if use_live_product %}
     data-product-id="{{ card_product.id }}"
+    {% if supply_category != blank %}
+      data-supply-category="{{ supply_category | escape }}"
+    {% endif %}
   {% endif %}
 >
   {%- if show_specimen_id_resolved -%}

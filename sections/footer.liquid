@@ -188,42 +188,42 @@
             {%- if quick_shipping_url != blank -%}
               <li>
                 <a class="site-footer__link link-underline-grow" href="{{ quick_shipping_url }}">
-                  {{- 'footer.link_shipping' | t -}}
+                  {{- 'footer.link_shipping' | t: default: 'Shipping policy' -}}
                 </a>
               </li>
             {%- endif -%}
             {%- if quick_privacy_url != blank -%}
               <li>
                 <a class="site-footer__link link-underline-grow" href="{{ quick_privacy_url }}">
-                  {{- 'footer.link_privacy' | t -}}
+                  {{- 'footer.link_privacy' | t: default: 'Privacy policy' -}}
                 </a>
               </li>
             {%- endif -%}
             {%- if quick_refund_url != blank -%}
               <li>
                 <a class="site-footer__link link-underline-grow" href="{{ quick_refund_url }}">
-                  {{- 'footer.link_refund' | t -}}
+                  {{- 'footer.link_refund' | t: default: 'Refund policy' -}}
                 </a>
               </li>
             {%- endif -%}
             {%- if quick_terms_url != blank -%}
               <li>
                 <a class="site-footer__link link-underline-grow" href="{{ quick_terms_url }}">
-                  {{- 'footer.link_terms' | t -}}
+                  {{- 'footer.link_terms' | t: default: 'Terms of service' -}}
                 </a>
               </li>
             {%- endif -%}
             {%- if quick_legal_notice_url != blank -%}
               <li>
                 <a class="site-footer__link link-underline-grow" href="{{ quick_legal_notice_url }}">
-                  {{- 'footer.link_legal_notice' | t -}}
+                  {{- 'footer.link_legal_notice' | t: default: 'Legal notice' -}}
                 </a>
               </li>
             {%- endif -%}
             {%- if quick_contact_information_url != blank -%}
               <li>
                 <a class="site-footer__link link-underline-grow" href="{{ quick_contact_information_url }}">
-                  {{- 'footer.link_contact_information' | t -}}
+                  {{- 'footer.link_contact_information' | t: default: 'Contact information' -}}
                 </a>
               </li>
             {%- endif -%}
@@ -713,7 +713,7 @@
       "type": "text",
       "id": "contact_address",
       "label": "t:sections.footer.settings.contact_address",
-      "default": "Gauteng, South Africa (By Appointment Only)"
+      "default": "533 Andries Strydom Street, Pretoria, GP, 0010, South Africa (bench visits by appointment)"
     },
     {
       "type": "text",

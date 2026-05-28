@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "main": {
+      "type": "care-overview-template",
+      "settings": {
+        "fallback_title": "Care overview",
+        "hero_overline": "Field guide",
+        "hero_intro": "How to grow carnivorous plants in South Africa — core principles first, then genus-specific culture on each collection page.",
+        "pillars_heading": "Core principles",
+        "genera_heading": "Shop by genus",
+        "genera_text": "Open a genus collection for trap types, care tables, and live stock.",
+        "cta_text": "Questions about your bench or climate? Visit our contact page for advice before you order."
+      },
+      "blocks": {
+        "pillar_water": {
+          "type": "pillar",
+          "settings": {
+            "title": "Water",
+            "text": "Rainwater, reverse osmosis, or distilled water — avoid tap water with high TDS."
+          }
+        },
+        "pillar_light": {
+          "type": "pillar",
+          "settings": {
+            "title": "Light",
+            "text": "Match intensity to genus: full sun for many Sarracenia and Dionaea; filtered light for many Nepenthes."
+          }
+        },
+        "pillar_substrate": {
+          "type": "pillar",
+          "settings": {
+            "title": "Substrate",
+            "text": "Low-nutrient mixes: peat, sphagnum, perlite, and sand ratios depend on the genus."
+          }
+        },
+        "pillar_dormancy": {
+          "type": "pillar",
+          "settings": {
+            "title": "Dormancy",
+            "text": "Temperate species need a cool winter rest; tropical genera grow year-round with stable warmth."
+          }
+        }
+      },
+      "block_order": [
+        "pillar_water",
+        "pillar_light",
+        "pillar_substrate",
+        "pillar_dormancy"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -28,106 +28,26 @@
   assign page_body = page.content
   assign policy_handle = policy.handle | strip
 
-  assign has_primary_content = false
-  if policy_body != blank
-    assign has_primary_content = true
-  elsif page_body != blank
-    assign has_primary_content = true
-  endif
-
-  assign has_default_body = false
-  if default_body_content != blank
-    assign has_default_body = true
-  endif
-
-  assign has_policy_fallback = false
-  if has_primary_content == false and has_default_body == false and policy_handle != blank
-    assign has_policy_fallback = true
-  endif
+  capture body_html
+    if policy_body != blank
+      echo policy_body
+    elsif page_body != blank
+      echo page_body
+    elsif default_body_content != blank
+      echo default_body_content
+    elsif policy_handle != blank
+      render 'policy-fallback-body', policy_handle: policy_handle
+    else
+      echo '<p class="policy-page__empty">'
+      echo 'sections.main_policy_page.empty' | t
+      echo '</p>'
+    endif
+  endcapture
 -%}
 
-<article class="policy-page full-width" {{ section.shopify_attributes }}>
-  <div class="policy-page__inner">
-    <header class="policy-page__header">
-      <h1 class="policy-page__title">{{ page_title | escape }}</h1>
-      <p class="policy-page__intro">{{ intro_text | escape }}</p>
-    </header>
-
-    <div class="policy-page__content rte">
-      {%- if policy_body != blank -%}
-        {{ policy_body }}
-      {%- elsif page_body != blank -%}
-        {{ page_body }}
-      {%- elsif has_default_body -%}
-        {{ default_body_content }}
-      {%- elsif has_policy_fallback -%}
-        {% render 'policy-fallback-body', policy_handle: policy_handle %}
-      {%- else -%}
-        <p class="policy-page__empty">{{ 'sections.main_policy_page.empty' | t }}</p>
-      {%- endif -%}
-    </div>
-  </div>
-</article>
-
-{% stylesheet %}
-  .policy-page {
-    padding-block: var(--space-3xl) var(--space-4xl);
-    background-color: var(--color-parchment);
-  }
-
-  .policy-page__inner {
-    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
-    max-width: 42rem;
-    margin-inline: auto;
-  }
-
-  .policy-page__title {
-    margin: 0 0 var(--space-md);
-    font-family: var(--font-family-serif);
-    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
-    font-weight: 400;
-    color: var(--color-forest-green-dark);
-  }
-
-  .policy-page__intro {
-    margin: 0 0 var(--space-xl);
-    font-size: var(--font-size-md);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-text-muted);
-  }
-
-  .policy-page__content :is(p, ul, ol) {
-    margin: 0 0 var(--space-md);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-forest-green-dark);
-  }
-
-  .policy-page__content h2 {
-    margin: var(--space-xl) 0 var(--space-md);
-    font-family: var(--font-family-serif);
-    font-size: var(--font-size-lg);
-    font-weight: 400;
-    color: var(--color-forest-green-dark);
-  }
-
-  .policy-page__content h2:first-child {
-    margin-block-start: 0;
-  }
-
-  .policy-page__content li + li {
-    margin-block-start: var(--space-xs);
-  }
-
-  .policy-page__empty {
-    margin: 0;
-    padding: var(--space-lg);
-    text-align: center;
-    color: var(--color-text-muted);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background-color: rgb(255 255 255 / 0.45);
-  }
-{% endstylesheet %}
+<div class="policy-page-section" {{ section.shopify_attributes }}>
+  {% render 'policy-page-shell', page_title: page_title, intro_text: intro_text, body_html: body_html %}
+</div>
 
 {% schema %}
 {

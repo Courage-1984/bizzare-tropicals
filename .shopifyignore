@@ -1,13 +1,16 @@
-# This file contains a list of files that will be excluded from Shopify CLI
-# operations such as push, pull, dev, etc.
-#
-# Examples:
-#
-# Ignore a specific file:
-#   templates/product.json
-#
-# Ignore templates with a wildcard pattern:
-#   templates/*.json
-#
-# Ignore templates and sections with a regular expression:
-#   /(templates|sections)/.*\.json/
+# Dev-only / duplicate sections (see .cursor/context/theme-stubs.md)
+sections/homepage-hero.liquid
+sections/collection.liquid
+sections/product.liquid
+sections/404.liquid
+sections/cart.liquid
+sections/hello-world.liquid
+sections/custom-section.liquid
+
+# Repo tooling (not theme assets)
+csv_products/
+test_botanical_links.py
+botanical_links_report.json
+verified_images.json
+master_links_export.json
+.cursor/

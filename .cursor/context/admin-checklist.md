@@ -8,6 +8,8 @@ Manual configuration required in the Shopify Admin and Theme Editor for the **Bi
 **Theme path:** Online Store → Themes → Customize  
 **Codebase root:** Shopify Online Store 2.0 theme (`sections/`, `templates/`, `snippets/`, `layout/theme.liquid`)
 
+**Related guides:** [LAUNCH-TODO.md](./LAUNCH-TODO.md) · [collections-setup-guide.md](./collections-setup-guide.md) · [genus-care-on-collections.md](./genus-care-on-collections.md) · [feature-roadmap-advice.md](./feature-roadmap-advice.md) · [theme-stubs.md](./theme-stubs.md)
+
 ---
 
 ## How data flows (dynamic vs manual)
@@ -82,13 +84,15 @@ Assign each **Page** in Admin → **Online Store → Pages** to the matching tem
 
 Social URLs and contact details are configured in the **Footer** section (footer group):
 
-- [ ] **Address** — Gauteng address (`contact_address`).
+- [x] **Address** — Full Pretoria street in theme defaults (`contact_address`); confirm in Theme Editor footer + contact page.
+- [ ] **Care overview page** — Create Admin page with handle `care-overview`, assign template **care-overview** (`templates/page.care-overview.json`).
 - [ ] **Email** — `info@bizarretropicals.co.za` (`contact_email`).
 - [ ] **Phone / WhatsApp** — `+27 72 152 7446` (`contact_phone`); WhatsApp link `https://wa.me/27721527446` on contact page (`whatsapp_url`).
 - [ ] **Facebook / Instagram URLs** — Official profiles (`facebook_url`, `instagram_url`).
 - [ ] **Show social links** — Enable `show_social`.
 - [ ] **Footer quick policy links** — Footer lists shipping, refund, privacy, terms, legal notice, and contact information via `snippets/policy-url.liquid` (Admin policy → mirror page → `/policies/…` fallback).
 - [ ] **Footer hardening** (`footer.liquid`) — Brand/newsletter/contact/currency/copyright fields are blank-safe with defaults, and About/Contact quick links have safe URL fallbacks.
+- [ ] **Footer newsletter** — “Join the growth” column; see [Newsletter signups](#newsletter-signups-not-blog-posts) below.
 
 ### Main navigation
 
@@ -160,7 +164,41 @@ Report slow loads to your developer if these are not done:
 - [ ] **Favicon:** Theme settings → Brand (`layout/theme.liquid`).
 - [ ] **Currency:** ZAR default.
 - [ ] **Checkout:** Shipping zones, live-plant policies.
-- [ ] **Newsletter:** Shopify Email + **Field Notes** modal (`newsletter-modal.liquid`) with trigger + delay/cookie settings reviewed.
+
+### Newsletter signups (not blog posts)
+
+The theme has **two email signup forms**. Both use Shopify’s `{% form 'customer' %}` — they add/update a **Customer** with marketing consent. They do **not** create **Content → Blog posts** entries and do not publish articles.
+
+| Signup UI | Theme file | Customer tag(s) | Where signups appear in Admin |
+|-----------|------------|-------------------|-------------------------------|
+| Footer column (“Join the growth”) | `sections/footer.liquid` | `newsletter` | **Customers** (filter by tag) |
+| **Field Notes** popup modal | `sections/newsletter-modal.liquid` (`layout/theme.liquid`) | `newsletter`, `field-notes` | **Customers** (filter by `field-notes`) |
+
+**How it works**
+
+1. Visitor submits an email → Shopify stores a customer record with `accepts marketing` and the tags above.
+2. **Sending** campaigns (drops, care notes, stock alerts) is done in **Marketing → Shopify Email** (or a connected app like Klaviyo) using that customer list — not from the theme and not from the blog.
+
+**Blog vs newsletter**
+
+| | **Newsletter signup** | **Blog** |
+|---|----------------------|----------|
+| Admin | **Customers**, **Marketing → Shopify Email** | **Content → Blog posts** |
+| Theme | `footer.liquid`, `newsletter-modal.liquid` | `templates/blog.json`, `templates/article.json` |
+| Purpose | Email marketing list | Published articles on the storefront |
+
+**Setup checklist**
+
+- [ ] **Settings → Customer privacy** — Marketing/consent settings match the [Privacy policy](content/policies/04-privacy-policy.html).
+- [ ] **Marketing → Shopify Email** (or chosen email app) — Connected and ready to email customers who accept marketing.
+- [ ] **Theme Editor → Field Notes newsletter modal** — Enable modal; review heading/subtext, trigger (delay / exit intent), delay seconds, cookie re-show days, illustration.
+- [ ] **Theme Editor → Footer** — Review newsletter heading, description, and button label (`footer-group.json`).
+- [ ] **Test on live store** — Submit a test email from footer and from popup; confirm the customer appears in **Customers** with tags `newsletter` and/or `field-notes` and marketing enabled.
+
+**Popup behaviour notes**
+
+- Modal is suppressed for visitors who closed it (cookie `bt-field-notes-modal`, default 7 days) — use a private/incognito window to re-test.
+- In Theme Editor, selecting the newsletter section opens a preview of the modal.
 
 ---
 
@@ -293,9 +331,9 @@ Create pages in Admin and assign templates:
 | Policy | Admin | Theme fallback |
 |--------|--------|----------------|
 | Contact information | **Required** — fill store name, email, address | `content/policies/01-contact-information.md` |
-| Return and refund | Paste HTML from `content/policies/` (step 2) | `page.refund.json` + `policies.refund_policy_body` |
-| Shipping | Paste HTML (step 3) | `page.shipping.json` + `policies.shipping_policy_body` |
-| Privacy | Replace automated policy or keep Shopify automated + sync copy | `page.privacy.json` + `policies.privacy_policy_body` |
+| Return and refund | Paste HTML from `content/policies/` (step 2) | `page.refund.json` (`default_body` fallback) |
+| Shipping | Paste HTML (step 3) | `page.shipping.json` (`default_body` fallback) |
+| Privacy | Replace automated policy or keep Shopify automated + sync copy | `page.privacy.json` (`default_body` fallback) |
 | Terms of service | Paste HTML (step 5) | `05-terms-of-service.html` · `page.terms.json` |
 | Legal notice | Paste HTML (step 6) | `06-legal-notice.html` · `page.legal-notice.json` |
 
@@ -305,9 +343,9 @@ Create pages in Admin and assign templates:
 - [ ] **Privacy policy** — replace **Automated** policy with custom copy from `content/policies/04-privacy-policy.html` (see `04-privacy-policy.md`); review **Settings → Customer privacy**.
 - [ ] **Terms of service** — paste from `content/policies/05-terms-of-service.html` (see `05-terms-of-service.md`).
 - [ ] **Legal notice** — paste from `content/policies/06-legal-notice.html` (see `06-legal-notice.md`); add company/VAT numbers when available.
-- [ ] **Native policy URLs** — `templates/policy.json` styles `/policies/*` via `main-policy-page` (Admin body → page mirror → locale fallback).
+- [ ] **Native policy URLs** — `templates/policy.liquid` styles `/policies/*` (Admin body required; empty state hints to paste from `content/policies/`).
 - [ ] Privacy / Refund / Shipping → `main-policy-page` with fallback body copy in template JSON.
-- [ ] **Policy page hardening** (`main-policy-page.liquid`) — Supports `policy` and `page` objects. Rendering order: Admin policy body → page content → section `default_body` → locale `policies.*_body` → empty helper.
+- [ ] **Policy page hardening** (`main-policy-page.liquid`) — Supports `policy` and `page` objects. Rendering order: Admin policy body → page content → section `default_body` → short locale hint (`admin_fallback_hint`) on native policies only.
 
 ---
 
@@ -370,6 +408,7 @@ These sections are included in `layout/theme.liquid` (not on `index.json`). In *
 | Section | What the client can edit |
 |---------|-------------------------|
 | **Field Notes newsletter modal** | Heading, subtext, button, illustration upload, fallback illustration URL, trigger, delay, re-show days — preview opens when the section is selected |
+| **Footer** (footer group) | Brand story, newsletter heading/text/button, contact fields, policy quick links, social URLs — see [Newsletter signups](#newsletter-signups-not-blog-posts) |
 | **Cart drawer** | Drawer title, empty-cart copy, empty-state illustration URL fallback, dispatch note toggle |
 
 All homepage sections (`home-slider`, `genus-shortcuts`, `botanical-discovery-strip`, etc.) expose text, images, and collection pickers when clicked.

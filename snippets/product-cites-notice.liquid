@@ -1,0 +1,27 @@
+{% doc %}
+  Regulatory notice for CITES-listed or tagged products.
+
+  @param {product} product - The product being viewed
+{% enddoc %}
+
+{%- liquid
+  assign cites_listed = product.metafields.custom.cites_listed.value | default: product.metafields.custom.cites_listed
+  assign show_cites = false
+  if cites_listed == true
+    assign show_cites = true
+  endif
+  if product.tags contains 'cites:yes'
+    assign show_cites = true
+  endif
+-%}
+
+{%- if show_cites -%}
+  <aside class="main-product__cites-notice" role="note" aria-labelledby="cites-notice-title-{{ product.id }}">
+    <p id="cites-notice-title-{{ product.id }}" class="main-product__cites-notice-title">
+      {{ 'products.main.cites_title' | t }}
+    </p>
+    <p class="main-product__cites-notice-text">
+      {{ 'products.main.cites_body' | t }}
+    </p>
+  </aside>
+{%- endif -%}

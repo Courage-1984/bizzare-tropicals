@@ -20,6 +20,14 @@
         "placeholder_upload_text": "Upload transparent PNG"
       }
     },
+    "nepenthes_hub": {
+      "type": "nepenthes-collection-hub",
+      "settings": {}
+    },
+    "supply_chips": {
+      "type": "growing-supplies-filter-chips",
+      "settings": {}
+    },
     "main": {
       "type": "main-collection-product-grid",
       "settings": {
@@ -29,6 +37,8 @@
   },
   "order": [
     "collection_banner",
+    "nepenthes_hub",
+    "supply_chips",
     "main"
   ]
 }

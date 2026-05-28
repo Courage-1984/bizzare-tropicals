@@ -57,6 +57,9 @@
     assign contact_phone = 'sections.contact_template.contact_phone_default' | t
   endif
   assign whatsapp_url = section.settings.whatsapp_url | strip
+  if whatsapp_url == blank
+    assign whatsapp_url = 'https://wa.me/27721527446'
+  endif
   assign panel_image = section.settings.panel_image
   assign hero_background = section.settings.hero_background_image
   assign hero_placeholder = section.settings.hero_placeholder_image | strip
@@ -1195,7 +1198,7 @@
       "type": "text",
       "id": "contact_address",
       "label": "t:sections.contact_template.settings.contact_address",
-      "default": "Gauteng, South Africa (By Appointment Only)"
+      "default": "533 Andries Strydom Street, Pretoria, GP, 0010, South Africa (bench visits by appointment)"
     },
     {
       "type": "text",
@@ -1219,8 +1222,7 @@
       "type": "url",
       "id": "whatsapp_url",
       "label": "t:sections.contact_template.settings.whatsapp_url",
-      "info": "t:sections.contact_template.settings.whatsapp_url_info",
-      "default": "https://wa.me/27721527446"
+      "info": "t:sections.contact_template.settings.whatsapp_url_info"
     },
     {
       "type": "header",

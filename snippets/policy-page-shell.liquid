@@ -1,0 +1,82 @@
+{% doc %}
+  Shared policy page layout and styles for native policy.liquid and main-policy-page.
+
+  @param {string} page_title - Heading text
+  @param {string} intro_text - Intro paragraph (plain text, escaped)
+  @param {string} body_html - Policy body HTML (unescaped rte content)
+{% enddoc %}
+
+<article class="policy-page full-width">
+  <div class="policy-page__inner">
+    <header class="policy-page__header">
+      <h1 class="policy-page__title">{{ page_title | escape }}</h1>
+      {%- if intro_text != blank -%}
+        <p class="policy-page__intro">{{ intro_text | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="policy-page__content rte">
+      {{ body_html }}
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .policy-page {
+    padding-block: var(--space-3xl) var(--space-4xl);
+    background-color: var(--color-parchment);
+  }
+
+  .policy-page__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    max-width: 42rem;
+    margin-inline: auto;
+  }
+
+  .policy-page__title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__intro {
+    margin: 0 0 var(--space-xl);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  .policy-page__content :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__content h2 {
+    margin: var(--space-xl) 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-forest-green-dark);
+  }
+
+  .policy-page__content h2:first-child {
+    margin-block-start: 0;
+  }
+
+  .policy-page__content li + li {
+    margin-block-start: var(--space-xs);
+  }
+
+  .policy-page__empty {
+    margin: 0;
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: rgb(255 255 255 / 0.45);
+  }
+{% endstylesheet %}

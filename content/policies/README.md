@@ -1,8 +1,10 @@
 # Store policies — setup guide
 
-Policies are configured in **Shopify Admin → Settings → Policies** (checkout footer + `/policies/…` URLs). This folder holds **source copy** to paste into Admin. The theme mirrors the same copy as fallbacks in `templates/page.*.json` and `templates/policy.json`.
+Policies are configured in **Shopify Admin → Settings → Policies** (checkout footer + `/policies/…` URLs). This folder holds **source copy** to paste into Admin. The theme mirrors copy on `templates/page.*.json` (section `default_body`); native `/policies/*` pages use `templates/policy.liquid`.
 
-Work through policies **in order** below. After each one, open the live URL and confirm styling via `templates/policy.json` → `main-policy-page`.
+Work through policies **in order** below. After each one, open the live URL and confirm styling via `templates/policy.liquid` (native policies) or `page.*.json` mirror pages.
+
+**Note:** Full policy HTML is **not** stored in `locales/en.default.json` (Shopify string length limit). Paste from `content/policies/*.html` into Admin, or use theme `default_body` on mirror page templates.
 
 | # | Policy (Admin) | Admin path | Storefront URL | Theme fallback |
 |---|----------------|------------|----------------|----------------|

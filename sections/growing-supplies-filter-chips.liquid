@@ -1,0 +1,171 @@
+{%- liquid
+  assign show_chips = false
+  if collection != blank
+    if collection.handle == 'growing-supplies' or collection.handle == 'growing_supplies'
+      assign show_chips = true
+    endif
+  endif
+-%}
+
+{%- unless show_chips -%}
+  {%- comment -%}Only renders on the growing supplies collection.{%- endcomment -%}
+{%- else -%}
+  <div
+    class="supply-chips"
+    data-supply-chips
+    data-section-id="{{ section.id }}"
+    {{ section.shopify_attributes }}
+  >
+    <p class="supply-chips__label" id="supply-chips-label-{{ section.id }}">
+      {{ section.settings.heading | default: 'sections.growing_supplies_filter_chips.heading_default' | t }}
+    </p>
+    <div
+      class="supply-chips__list"
+      role="group"
+      aria-labelledby="supply-chips-label-{{ section.id }}"
+    >
+      <button type="button" class="supply-chips__chip is-active" data-supply-filter="all" aria-pressed="true">
+        {{ 'sections.growing_supplies_filter_chips.filter_all' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="soil" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_soil' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="pot" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_pot' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="water" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_water' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="lighting" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_lighting' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="climate" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_climate' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="tool" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_tool' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="seed" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_seed' | t }}
+      </button>
+      <button type="button" class="supply-chips__chip" data-supply-filter="book-gift" aria-pressed="false">
+        {{ 'sections.growing_supplies_filter_chips.filter_book_gift' | t }}
+      </button>
+    </div>
+    <p class="supply-chips__empty" data-supply-filter-empty hidden>
+      {{ 'sections.growing_supplies_filter_chips.empty' | t }}
+    </p>
+  </div>
+{%- endunless -%}
+
+{% stylesheet %}
+  .supply-chips {
+    padding-block: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .supply-chips__label {
+    margin: 0 0 var(--space-sm);
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .supply-chips__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .supply-chips__chip {
+    padding: 0.45rem 0.85rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .supply-chips__chip:hover,
+  .supply-chips__chip.is-active {
+    border-color: rgb(var(--color-foreground-rgb) / 0.55);
+    background: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .supply-chips__empty {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-sm);
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var root = document.querySelector('[data-supply-chips]');
+    if (!root) return;
+
+    var gridSection = document.querySelector('[data-collection-grid-section]');
+    if (!gridSection) return;
+
+    var grid = gridSection.querySelector('.collection-grid');
+    if (!grid) return;
+
+    var items = Array.prototype.slice.call(grid.querySelectorAll('.collection-grid__item'));
+    var emptyNote = root.querySelector('[data-supply-filter-empty]');
+    var chips = root.querySelectorAll('[data-supply-filter]');
+    var activeFilter = 'all';
+
+    function getCategory(item) {
+      var card = item.querySelector('.product-card[data-supply-category]');
+      if (!card) return '';
+      return (card.getAttribute('data-supply-category') || '').trim().toLowerCase();
+    }
+
+    function applyFilter() {
+      var visible = 0;
+      items.forEach(function (item) {
+        var category = getCategory(item);
+        var show = activeFilter === 'all' || category === activeFilter;
+        item.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (emptyNote) {
+        emptyNote.hidden = visible > 0;
+      }
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        activeFilter = chip.getAttribute('data-supply-filter') || 'all';
+        chips.forEach(function (c) {
+          var isActive = c === chip;
+          c.classList.toggle('is-active', isActive);
+          c.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        applyFilter();
+      });
+    });
+
+    applyFilter();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.growing_supplies_filter_chips.name",
+  "tag": "section",
+  "class": "supply-chips-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.growing_supplies_filter_chips.settings.heading",
+      "default": "Filter by type"
+    }
+  ]
+}
+{% endschema %}

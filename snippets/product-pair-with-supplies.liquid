@@ -1,0 +1,53 @@
+{% doc %}
+  Cross-sell growing supplies on the product page.
+
+  @param {product} product - Current product (excluded from results)
+  @param {number} [limit] - Max products to show (default 4)
+{% enddoc %}
+
+{%- liquid
+  assign pair_limit = limit | default: 4 | plus: 0
+  assign supplies_collection = collections['growing-supplies']
+  if supplies_collection == blank
+    assign supplies_collection = collections['growing_supplies']
+  endif
+-%}
+
+{%- if supplies_collection != blank and supplies_collection.products_count > 0 -%}
+  {%- liquid
+    assign pair_count = 0
+    capture pair_items
+      for supply_product in supplies_collection.products
+        if supply_product.id == product.id
+          continue
+        endif
+        if pair_count >= pair_limit
+          break
+        endif
+        assign pair_count = pair_count | plus: 1
+        echo '<li class="main-product__pair-item" role="listitem">'
+        render 'product-card', product_item: supply_product, show_specimen_id: false, sizes: '(min-width: 990px) 14vw, 40vw'
+        echo '</li>'
+      endfor
+    endcapture
+    assign pair_items = pair_items | strip
+  -%}
+  {%- if pair_items != blank -%}
+    <section class="main-product__pair-with" aria-labelledby="main-product-pair-heading">
+      <header class="main-product__pair-with-header">
+        <h2 id="main-product-pair-heading" class="main-product__pair-with-title">
+          {{ 'products.main.pair_with_heading' | t }}
+        </h2>
+        <p class="main-product__pair-with-text">{{ 'products.main.pair_with_text' | t }}</p>
+      </header>
+      <ul class="main-product__pair-grid" role="list">
+        {{ pair_items }}
+      </ul>
+      <p class="main-product__pair-with-footer">
+        <a class="link-underline-grow" href="{{ supplies_collection.url }}">
+          {{ 'products.main.pair_with_collection_link' | t }}
+        </a>
+      </p>
+    </section>
+  {%- endif -%}
+{%- endif -%}

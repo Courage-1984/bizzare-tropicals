@@ -269,9 +269,20 @@
     assign spec_growth_raw = product.metafields.custom.growth_speed.value | default: product.metafields.custom.growth_speed | default: '' | strip
     assign spec_light_raw = product.metafields.custom.lux_requirements.value | default: product.metafields.custom.lux_requirements | default: '' | strip
     assign snapshot_light = spec_light_raw
-    assign snapshot_water = spec_substrate_raw
+    assign care_water_raw = product.metafields.custom.water_requirements.value | default: product.metafields.custom.water_requirements | default: '' | strip
+    if care_water_raw == blank
+      assign care_water_raw = product.metafields.custom.water.value | default: product.metafields.custom.water | default: '' | strip
+    endif
+    assign snapshot_water = care_water_raw
+    if snapshot_water == blank
+      assign snapshot_water = spec_substrate_raw
+    endif
     assign snapshot_temp = spec_temp_range_raw
+    assign genus_handle = product.metafields.custom.genus.value | default: product.metafields.custom.genus | default: '' | strip
   endif
+
+  assign genus_handle = genus_handle | default: '' | strip
+  assign care_water_raw = care_water_raw | default: '' | strip
 
   assign spec_origin_display = spec_origin_raw
   assign spec_altitude_display = spec_altitude_raw
@@ -391,15 +402,26 @@
     endif
   endif
 
-  assign show_care_instructions = false
+  assign show_care_dossier = false
   if has_care_guide
-    assign show_care_instructions = true
+    assign show_care_dossier = true
+  endif
+  if product_description contains '<ul' or product_description contains '<li'
+    assign show_care_dossier = true
+  endif
+  if spec_light_raw != blank or care_water_raw != blank or spec_substrate_raw != blank or spec_humidity_raw != blank or spec_temp_range_raw != blank
+    assign show_care_dossier = true
   endif
   if section.settings.care_fallback != blank
-    assign show_care_instructions = true
+    assign show_care_dossier = true
   endif
   if request.design_mode
-    assign show_care_instructions = true
+    assign show_care_dossier = true
+  endif
+
+  assign care_fallback_rendered = section.settings.care_fallback | strip
+  if care_fallback_rendered == blank
+    assign care_fallback_rendered = 'products.main.accordion_care_fallback' | t
   endif
 -%}
 
@@ -487,6 +509,24 @@
         show_temp: show_snapshot_temp
       %}
 
+      {%- if show_care_dossier -%}
+        {% render 'product-care-dossier',
+          product: product,
+          use_live_product: use_live_product,
+          has_care_guide: has_care_guide,
+          product_description: product_description,
+          care_fallback: care_fallback_rendered,
+          light_value: spec_light_raw,
+          water_value: care_water_raw,
+          substrate_value: spec_substrate_raw,
+          humidity_value: spec_humidity_raw,
+          temp_value: spec_temp_range_raw,
+          dormancy_required: dormancy_required,
+          genus_handle: genus_handle,
+          section_id: section.id
+        %}
+      {%- endif -%}
+
       {%- if use_live_product -%}
         {%- form 'product', product, class: 'main-product__form', id: form_id -%}
           {%- if product.variants.size > 1 -%}
@@ -518,6 +558,10 @@
             </div>
           {%- else -%}
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+          {%- endif -%}
+
+          {%- if section.settings.show_cites_notice -%}
+            {% render 'product-cites-notice', product: product %}
           {%- endif -%}
 
           <div class="main-product__purchase">
@@ -640,6 +684,10 @@
         </details>
       </div>
 
+      {%- if section.settings.show_pair_with_supplies and use_live_product -%}
+        {% render 'product-pair-with-supplies', product: product, limit: section.settings.pair_with_limit %}
+      {%- endif -%}
+
       {%- liquid
         assign origin_narrative = section.settings.origin_text | strip
         if origin_narrative == blank
@@ -757,33 +805,6 @@
           </div>
         {%- endif -%}
       </dl>
-    </section>
-  {%- endif -%}
-
-  {%- if show_care_instructions -%}
-    <section
-      class="main-product__deep-dive main-product__care-instructions"
-      aria-labelledby="main-product-care-{{ section.id }}"
-    >
-      <header class="main-product__deep-dive-header">
-        <p class="main-product__deep-dive-eyebrow">{{ 'products.main.care_instructions_heading' | t }}</p>
-        <h2 id="main-product-care-{{ section.id }}" class="main-product__deep-dive-title">
-          {{ display_title | escape }}
-        </h2>
-        <p class="main-product__deep-dive-subtitle">{{ 'products.main.care_instructions_subheading' | t }}</p>
-      </header>
-
-      <div class="main-product__care-body rte">
-        {%- if has_care_guide -%}
-          {{ product.metafields.custom.care_guide | metafield_tag }}
-        {%- else -%}
-          {%- assign care_fallback_text = section.settings.care_fallback | strip -%}
-          {%- if care_fallback_text == blank -%}
-            {%- assign care_fallback_text = 'products.main.accordion_care_fallback' | t -%}
-          {%- endif -%}
-          {{ care_fallback_text }}
-        {%- endif -%}
-      </div>
     </section>
   {%- endif -%}
 
@@ -1324,6 +1345,67 @@
     text-overflow: ellipsis;
   }
 
+  .main-product__cites-notice {
+    margin-block: var(--space-md);
+    padding: var(--space-md);
+    border: 1px solid rgb(180 120 40 / 0.45);
+    border-radius: var(--radius-sm);
+    background: rgb(180 120 40 / 0.08);
+  }
+
+  .main-product__cites-notice-title {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .main-product__cites-notice-text {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.85);
+  }
+
+  .main-product__pair-with {
+    margin-block: var(--space-xl) var(--space-md);
+    padding-block-start: var(--space-lg);
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .main-product__pair-with-title {
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-family-serif);
+    font-size: 1.125rem;
+  }
+
+  .main-product__pair-with-text {
+    margin: 0 0 var(--space-md);
+    font-size: var(--font-size-sm);
+    color: rgb(var(--color-foreground-rgb) / 0.75);
+  }
+
+  .main-product__pair-grid {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .main-product__pair-with-footer {
+    margin: var(--space-md) 0 0;
+    font-size: var(--font-size-sm);
+  }
+
+  @media (min-width: 750px) {
+    .main-product__pair-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   .main-product__purchase {
     display: flex;
     flex-direction: column;
@@ -1412,45 +1494,139 @@
     color: var(--color-text-muted);
   }
 
-  .main-product__cultivation {
-    margin-block: var(--space-xl);
-    padding-block-start: var(--space-lg);
-    border-block-start: 1px solid var(--color-border);
+  .main-product__care-dossier {
+    margin-block: var(--space-lg);
+    padding: var(--space-lg);
+    background-color: rgb(247 244 237 / 0.65);
+    border: 1px solid rgb(10 24 18 / 0.14);
+    border-radius: var(--radius-md);
   }
 
-  .main-product__cultivation-dossier .main-product__description ul {
+  .main-product__care-dossier-header {
+    margin-block-end: var(--space-md);
+    padding-block-end: var(--space-sm);
+    border-block-end: 1px solid rgb(10 24 18 / 0.12);
+  }
+
+  .main-product__care-dossier-overline {
+    margin: 0 0 var(--space-xs);
+    font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .main-product__care-dossier-title {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.15rem, 1.5vw + 0.5rem, 1.4rem);
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__care-dossier-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 0;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .main-product__cultivation-dossier .main-product__description ul > li {
+  .main-product__care-dossier-row {
     margin: 0;
-    padding-block-start: 0.5rem;
-    border-block-start: 1px solid rgb(0 0 0 / 0.1);
+    padding-block: var(--space-md);
+    border-block-start: 1px solid rgb(10 24 18 / 0.1);
   }
 
-  .main-product__cultivation-dossier .main-product__description ul li > :is(strong, b):first-child {
+  .main-product__care-dossier-row:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
+  }
+
+  .main-product__care-dossier-label {
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-family-base);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__care-dossier-value {
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__care-dossier-rich {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-forest-green-dark);
+  }
+
+  .main-product__care-dossier-rich :is(p, ul, ol) {
+    margin: 0 0 var(--space-md);
+  }
+
+  .main-product__care-dossier-rich--description ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .main-product__care-dossier-rich--description ul > li {
+    margin: 0;
+    padding-block: var(--space-md);
+    border-block-start: 1px solid rgb(10 24 18 / 0.1);
+  }
+
+  .main-product__care-dossier-rich--description ul li > :is(strong, b):first-child {
     display: block;
     margin: 0 0 var(--space-xs);
     font-family: var(--font-family-base);
     font-size: 0.75rem;
     font-style: normal;
     font-weight: 700;
-    line-height: var(--line-height-tight);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--color-forest-green-dark);
   }
 
-  .main-product__cultivation-dossier .main-product__description ul > li {
-    font-family: var(--font-family-serif);
-    font-size: var(--font-size-md);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-forest-green-dark);
+  .main-product__care-dossier-footer {
+    margin: var(--space-md) 0 0;
+    padding-block-start: var(--space-sm);
+    border-block-start: 1px solid rgb(10 24 18 / 0.1);
+    font-size: var(--font-size-sm);
+  }
+
+  @media (min-width: 750px) {
+    .main-product__care-dossier-grid,
+    .main-product__care-dossier-rich--description ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-lg);
+    }
+
+    .main-product__care-dossier-row:nth-child(-n + 2),
+    .main-product__care-dossier-rich--description ul > li:nth-child(-n + 2) {
+      border-block-start: none;
+      padding-block-start: 0;
+    }
+
+    .main-product__care-dossier-row:nth-child(odd),
+    .main-product__care-dossier-rich--description ul > li:nth-child(odd) {
+      padding-inline-end: var(--space-md);
+      border-inline-end: 1px solid rgb(10 24 18 / 0.08);
+    }
   }
 
   .main-product__field-data {
@@ -1526,12 +1702,6 @@
     margin: 0 0 var(--space-md);
   }
 
-  @media (min-width: 750px) {
-    .main-product__cultivation-dossier .main-product__description ul {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
   /* Technical data sheet — full-width section footer */
   .main-product__deep-dive {
     width: 100%;
@@ -1575,21 +1745,6 @@
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     color: var(--color-text-muted);
-  }
-
-  .main-product__care-instructions .main-product__care-body {
-    max-width: 72ch;
-    font-size: var(--font-size-md);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-forest-green-dark);
-  }
-
-  .main-product__care-instructions .main-product__care-body :is(p, ul, ol) {
-    margin: 0 0 var(--space-md);
-  }
-
-  .main-product__care-instructions .main-product__care-body :is(ul, ol) {
-    padding-inline-start: 1.25rem;
   }
 
   .main-product__tech-grid {
@@ -2514,6 +2669,31 @@
       "label": "t:sections.main_product.settings.mock_image_3",
       "info": "t:sections.main_product.settings.mock_image_info",
       "default": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80&auto=format&fit=crop"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main_product.settings.compliance_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cites_notice",
+      "label": "t:sections.main_product.settings.show_cites_notice",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pair_with_supplies",
+      "label": "t:sections.main_product.settings.show_pair_with_supplies",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "pair_with_limit",
+      "label": "t:sections.main_product.settings.pair_with_limit",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
     },
     {
       "type": "header",

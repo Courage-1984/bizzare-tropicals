@@ -29,6 +29,29 @@ body {
   background-color: var(--color-background);
 }
 
+.skip-link {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  margin: var(--space-sm);
+  padding: 0.65rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-parchment);
+  text-decoration: none;
+  background-color: var(--color-forest-green-dark);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--color-parchment);
+  outline-offset: 2px;
+}
+
 html:has(dialog[scroll-lock][open], details[scroll-lock][open], .is-scroll-locked) {
   overflow: hidden;
 }
@@ -45,6 +68,7 @@ html:has(dialog[scroll-lock][open], details[scroll-lock][open], .is-scroll-locke
 }
 
 /* Informational page sections — full-bleed layouts */
+.cart-page-section.shopify-section,
 .contact-template-section.shopify-section,
 .about-template-section.shopify-section {
   display: block;

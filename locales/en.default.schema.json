@@ -305,6 +305,42 @@
         "enable_sticky_dossier": "Sticky care dossier on desktop"
       }
     },
+    "growing_supplies_filter_chips": {
+      "name": "Supply filter chips",
+      "settings": {
+        "heading": "Filter label"
+      }
+    },
+    "nepenthes_collection_hub": {
+      "name": "Nepenthes elevation hub",
+      "settings": {
+        "heading": "Heading",
+        "intro": "Introduction"
+      }
+    },
+    "care_overview": {
+      "name": "Care overview",
+      "settings": {
+        "fallback_title": "Fallback page title",
+        "hero_overline": "Hero overline",
+        "hero_intro": "Hero introduction",
+        "pillars_heading": "Pillars heading",
+        "genera_heading": "Genera heading",
+        "genera_text": "Genera introduction",
+        "cta_text": "Call to action text",
+        "default_placeholder_image": "Default genus placeholder URL",
+        "default_placeholder_image_info": "Fallback when a genus collection has no image."
+      },
+      "blocks": {
+        "pillar": {
+          "name": "Care pillar",
+          "settings": {
+            "title": "Title",
+            "text": "Description"
+          }
+        }
+      }
+    },
     "main_product": {
       "name": "Product information",
       "settings": {
@@ -316,13 +352,20 @@
         "mock_image_2": "Mock gallery image 2 URL",
         "mock_image_3": "Mock gallery image 3 URL",
         "mock_image_info": "Used when the product has no media. Unsplash or Shopify CDN URLs recommended.",
+        "compliance_header": "Compliance and cross-sell",
+        "show_cites_notice": "Show CITES notice when applicable",
+        "show_pair_with_supplies": "Show pair with growing supplies",
+        "pair_with_limit": "Maximum supply products to show",
         "accordions_header": "Accordions and copy",
-        "care_fallback": "Botanical husbandry fallback",
-        "care_fallback_info": "Shown when the custom.care_guide metafield is empty.",
+        "care_fallback": "Care guide fallback",
+        "care_fallback_info": "Shown in the PDP care dossier when care_guide, description bullets, and product metafields are empty.",
         "accordion_lineage_body": "Lineage accordion body",
         "accordion_arrival_body": "Live arrival accordion body",
         "origin_text": "Specimen origin text"
       }
+    },
+    "main_cart_page": {
+      "name": "Cart page (drawer)"
     },
     "main_404": {
       "name": "404 page",

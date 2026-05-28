@@ -20,6 +20,7 @@
   </head>
 
   <body class="template-{{ template.name | handle }}">
+    <a class="skip-link" href="#main-content">{{ 'general.skip_to_content' | t: default: 'Skip to content' }}</a>
     {%- sections 'header-group' -%}
 
     {% section 'cart-drawer' %}

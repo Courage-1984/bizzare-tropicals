@@ -23,7 +23,7 @@
         "show_quick_links": true,
         "panel_heading": "Visit the conservatory",
         "panel_intro": "Visits are by appointment so we can give your collection the attention it deserves. Reach out to plan a bench tour or discuss a custom order.",
-        "contact_address": "Gauteng, South Africa (By Appointment Only)",
+        "contact_address": "533 Andries Strydom Street, Pretoria, GP, 0010, South Africa (bench visits by appointment)",
         "contact_email": "info@bizarretropicals.co.za",
         "contact_hours": "Hours: 24/7 (Online)",
         "contact_phone": "+27 72 152 7446",
@@ -63,13 +63,45 @@
             "question": "What water should I use?",
             "answer": "<p>Always use distilled water, reverse-osmosis (RO) water, or clean rainwater. Tap water minerals accumulate in the substrate and will eventually kill carnivorous plants. The tray method works well for most genera we stock.</p>"
           }
+        },
+        "faq_returns": {
+          "type": "faq",
+          "settings": {
+            "question": "What if my plant arrives damaged?",
+            "answer": "<p>Contact us within <strong>48 hours</strong> of delivery with photos of the plant and packaging. See our <a href=\"/policies/refund-policy\">return and refund policy</a> for how we handle transit damage, wrong items, and replacements.</p>"
+          }
+        },
+        "faq_appointments": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I visit the conservatory?",
+            "answer": "<p>Bench visits are <strong>by appointment only</strong> so we can give your collection proper attention. Message us via the form, email <a href=\"mailto:info@bizarretropicals.co.za\">info@bizarretropicals.co.za</a>, or WhatsApp <a href=\"https://wa.me/27721527446\">+27 72 152 7446</a> to plan a visit or discuss a custom order.</p>"
+          }
+        },
+        "faq_dormancy": {
+          "type": "faq",
+          "settings": {
+            "question": "Do carnivorous plants need winter dormancy?",
+            "answer": "<p>Many temperate genera (such as <em>Sarracenia</em>, <em>Dionaea</em>, and some <em>Drosera</em>) need a cool winter rest in South Africa. Tropical and Mexican species usually grow year-round. Check the genus care notes on each collection page and the product listing before ordering.</p>"
+          }
+        },
+        "faq_beginners": {
+          "type": "faq",
+          "settings": {
+            "question": "Which plants are best for beginners?",
+            "answer": "<p>Look for specimens tagged <strong>Easy care</strong> (difficulty 1) such as <em>Drosera capensis</em>, <em>Sarracenia</em> hybrids, and hardy <em>Pinguicula</em>. Use the difficulty filter on catalog pages and start with our beginner-friendly collections before ordering rare highland <em>Nepenthes</em>.</p>"
+          }
         }
       },
       "block_order": [
         "faq_shipping",
         "faq_pets",
         "faq_feeding",
-        "faq_water"
+        "faq_water",
+        "faq_returns",
+        "faq_appointments",
+        "faq_dormancy",
+        "faq_beginners"
       ]
     }
   },

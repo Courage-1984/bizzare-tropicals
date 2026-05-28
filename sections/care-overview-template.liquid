@@ -1,0 +1,321 @@
+{%- liquid
+  assign page_title = page.title | strip
+  if page_title == blank
+    assign page_title = section.settings.fallback_title | strip
+  endif
+  if page_title == blank
+    assign page_title = 'sections.care_overview.fallback_title' | t
+  endif
+
+  assign hero_intro = section.settings.hero_intro | strip
+  if hero_intro == blank
+    assign hero_intro = 'sections.care_overview.hero_intro_default' | t
+  endif
+
+  assign page_body = page.content
+  assign default_placeholder = section.settings.default_placeholder_image
+-%}
+
+<article class="care-overview full-width" {{ section.shopify_attributes }}>
+  <header class="care-overview__hero">
+    <div class="care-overview__hero-inner">
+      <p class="care-overview__overline">{{ section.settings.hero_overline | default: 'sections.care_overview.hero_overline_default' | t | escape }}</p>
+      <h1 class="care-overview__title">{{ page_title | escape }}</h1>
+      <p class="care-overview__intro">{{ hero_intro | escape }}</p>
+      {%- if page_body != blank -%}
+        <div class="care-overview__page-body rte">{{ page_body }}</div>
+      {%- endif -%}
+    </div>
+  </header>
+
+  <section class="care-overview__pillars" aria-labelledby="care-overview-pillars-{{ section.id }}">
+    <h2 id="care-overview-pillars-{{ section.id }}" class="care-overview__section-title">
+      {{ section.settings.pillars_heading | default: 'sections.care_overview.pillars_heading_default' | t | escape }}
+    </h2>
+    <ul class="care-overview__pillar-grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'pillar' -%}
+          <li class="care-overview__pillar" {{ block.shopify_attributes }} role="listitem">
+            <h3 class="care-overview__pillar-title">{{ block.settings.title | escape }}</h3>
+            <p class="care-overview__pillar-text">{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </section>
+
+  <section class="care-overview__genera" aria-labelledby="care-overview-genera-{{ section.id }}">
+    <div class="care-overview__genera-header">
+      <h2 id="care-overview-genera-{{ section.id }}" class="care-overview__section-title">
+        {{ section.settings.genera_heading | default: 'sections.care_overview.genera_heading_default' | t | escape }}
+      </h2>
+      <p class="care-overview__genera-text">{{ section.settings.genera_text | default: 'sections.care_overview.genera_text_default' | t | escape }}</p>
+    </div>
+    <ul class="care-overview__genus-grid" role="list">
+      {%- capture genus_cards -%}
+        {%- render 'genus-shortcuts-dynamic-strip', default_placeholder: default_placeholder -%}
+      {%- endcapture -%}
+      {%- assign genus_cards = genus_cards | strip -%}
+      {%- if genus_cards != blank -%}
+        {{ genus_cards }}
+      {%- else -%}
+        <li class="care-overview__empty">
+          <p>{{ 'sections.care_overview.genera_empty' | t }}</p>
+        </li>
+      {%- endif -%}
+    </ul>
+  </section>
+
+  <footer class="care-overview__cta">
+    <p class="care-overview__cta-text">{{ section.settings.cta_text | default: 'sections.care_overview.cta_text_default' | t | escape }}</p>
+    <p class="care-overview__cta-actions">
+      <a class="button button--primary" href="/pages/contact">
+        {{ 'sections.care_overview.cta_button' | t }}
+      </a>
+      <a class="link-underline-grow" href="{{ routes.all_products_collection_url }}">
+        {{ 'sections.care_overview.cta_catalog' | t }}
+      </a>
+    </p>
+  </footer>
+</article>
+
+{% stylesheet %}
+  .care-overview {
+    padding-block: var(--space-3xl) var(--space-4xl);
+    background: var(--color-background);
+  }
+
+  .care-overview__hero-inner,
+  .care-overview__pillars,
+  .care-overview__genera,
+  .care-overview__cta {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin-inline: auto;
+  }
+
+  .care-overview__overline {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.65);
+  }
+
+  .care-overview__title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
+    color: var(--color-forest-green-dark);
+  }
+
+  .care-overview__intro {
+    margin: 0;
+    max-width: 60ch;
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.85);
+  }
+
+  .care-overview__page-body {
+    margin-top: var(--space-lg);
+    max-width: 65ch;
+  }
+
+  .care-overview__section-title {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.35rem, 2vw + 0.5rem, 1.85rem);
+    color: var(--color-forest-green-dark);
+  }
+
+  .care-overview__pillars {
+    margin-top: var(--space-3xl);
+  }
+
+  .care-overview__pillar-grid {
+    display: grid;
+    gap: var(--space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 750px) {
+    .care-overview__pillar-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 990px) {
+    .care-overview__pillar-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .care-overview__pillar {
+    padding: var(--space-md);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    border-radius: var(--radius-sm, 4px);
+  }
+
+  .care-overview__pillar-title {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-md);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .care-overview__pillar-text {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+  }
+
+  .care-overview__genera {
+    margin-top: var(--space-3xl);
+  }
+
+  .care-overview__genera-text {
+    margin: 0 0 var(--space-lg);
+    max-width: 55ch;
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+  }
+
+  .care-overview__genus-grid {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .care-overview__cta {
+    margin-top: var(--space-3xl);
+    text-align: center;
+  }
+
+  .care-overview__cta-text {
+    margin: 0 0 var(--space-md);
+    font-size: var(--font-size-md);
+  }
+
+  .care-overview__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.care_overview.name",
+  "tag": "section",
+  "class": "care-overview-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "t:sections.care_overview.settings.fallback_title",
+      "default": "Care overview"
+    },
+    {
+      "type": "text",
+      "id": "hero_overline",
+      "label": "t:sections.care_overview.settings.hero_overline",
+      "default": "Field guide"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_intro",
+      "label": "t:sections.care_overview.settings.hero_intro"
+    },
+    {
+      "type": "text",
+      "id": "pillars_heading",
+      "label": "t:sections.care_overview.settings.pillars_heading",
+      "default": "Core principles"
+    },
+    {
+      "type": "text",
+      "id": "genera_heading",
+      "label": "t:sections.care_overview.settings.genera_heading",
+      "default": "Shop by genus"
+    },
+    {
+      "type": "textarea",
+      "id": "genera_text",
+      "label": "t:sections.care_overview.settings.genera_text"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "t:sections.care_overview.settings.cta_text"
+    },
+    {
+      "type": "text",
+      "id": "default_placeholder_image",
+      "label": "t:sections.care_overview.settings.default_placeholder_image",
+      "info": "t:sections.care_overview.settings.default_placeholder_image_info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "t:sections.care_overview.blocks.pillar.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.care_overview.blocks.pillar.settings.title",
+          "default": "Water"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:sections.care_overview.blocks.pillar.settings.text",
+          "default": "Use low-mineral water and tray or top-water methods suited to the genus."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.care_overview.name",
+      "blocks": [
+        {
+          "type": "pillar",
+          "settings": {
+            "title": "Water",
+            "text": "Rainwater, reverse osmosis, or distilled water — avoid tap water with high TDS."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "title": "Light",
+            "text": "Match intensity to genus: full sun for many Sarracenia and Dionaea; filtered light for many Nepenthes."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "title": "Substrate",
+            "text": "Low-nutrient mixes: peat, sphagnum, perlite, and sand ratios depend on the genus."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "title": "Dormancy",
+            "text": "Temperate species need a cool winter rest; tropical genera grow year-round with stable warmth."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

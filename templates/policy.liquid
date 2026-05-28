@@ -1,0 +1,32 @@
+{% comment %}
+  Native Shopify policy pages (/policies/*). JSON templates are not supported for policy.
+  Full fallback copy lives in content/policies/*.html and page.*.json section settings — not locales (size limit).
+{% endcomment %}
+
+{%- liquid
+  assign page_title = policy.title | strip
+  if page_title == blank
+    assign page_title = 'sections.main_policy_page.fallback_title_default' | t
+  endif
+
+  assign intro_text = 'sections.main_policy_page.intro_default' | t
+  assign policy_handle = policy.handle | strip
+  assign body_html = policy.body
+
+  if body_html == blank and policy_handle != blank
+    capture body_html
+      render 'policy-fallback-body', policy_handle: policy_handle
+    endcapture
+    assign body_html = body_html | strip
+  endif
+
+  if body_html == blank
+    capture body_html
+      echo '<p class="policy-page__empty">'
+      echo 'sections.main_policy_page.empty' | t
+      echo '</p>'
+    endcapture
+  endif
+-%}
+
+{% render 'policy-page-shell', page_title: page_title, intro_text: intro_text, body_html: body_html %}
