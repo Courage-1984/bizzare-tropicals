@@ -300,17 +300,22 @@
 
 {% stylesheet %}
   .cultivation-filter {
-    position: fixed;
-    inset: 0;
-    z-index: calc(var(--z-drawer) + 5);
-    pointer-events: none;
-    visibility: hidden;
     isolation: isolate;
   }
 
-  .cultivation-filter.is-open {
-    pointer-events: auto;
-    visibility: visible;
+  @media (max-width: 989px) {
+    .cultivation-filter {
+      display: none;
+    }
+
+    .cultivation-filter.is-open {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: calc(var(--z-drawer) + 5);
+      pointer-events: auto;
+      visibility: visible;
+    }
   }
 
   .cultivation-filter__overlay {

@@ -18,6 +18,25 @@
     syncPageVisibility();
     document.addEventListener('visibilitychange', syncPageVisibility);
 
+    function resetTransientUiLocks() {
+      document.documentElement.classList.remove('is-scroll-locked');
+
+      document.querySelectorAll('[data-collection-grid-section]').forEach(function (section) {
+        section.classList.remove('collection-grid-section--filters-open', 'collection-grid-section--busy');
+      });
+
+      document.querySelectorAll('.cultivation-filter.is-open').forEach(function (drawer) {
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+      });
+    }
+
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) {
+        resetTransientUiLocks();
+      }
+    });
+
     window.BT = window.BT || {};
 
     /**

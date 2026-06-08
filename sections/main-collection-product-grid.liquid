@@ -450,11 +450,53 @@
     'use strict';
 
     function initCollectionReveal(scope) {
-      if (window.ThemeReveal) {
-        if (scope) {
-          window.ThemeReveal.reset(scope);
+      if (!window.ThemeReveal) {
+        return false;
+      }
+
+      if (scope) {
+        window.ThemeReveal.reset(scope);
+      }
+
+      window.ThemeReveal.init(scope || document);
+      return true;
+    }
+
+    function ensureCollectionReveal(scope) {
+      if (initCollectionReveal(scope)) {
+        return;
+      }
+
+      var attempts = 0;
+
+      function retry() {
+        attempts += 1;
+
+        if (initCollectionReveal(scope) || attempts >= 40) {
+          return;
         }
-        window.ThemeReveal.init(scope || document);
+
+        window.setTimeout(retry, 50);
+      }
+
+      retry();
+    }
+
+    function resetCollectionInteractionState(section) {
+      if (!section) {
+        return;
+      }
+
+      section.classList.remove('collection-grid-section--filters-open', 'collection-grid-section--busy');
+
+      var drawer = section.querySelector('[data-cultivation-filter]');
+      if (drawer) {
+        drawer.classList.remove('is-open', 'cultivation-filter--busy');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+
+      if (!document.querySelector('.cultivation-filter.is-open, .site-header.is-menu-open, .search-overlay.is-open')) {
+        document.documentElement.classList.remove('is-scroll-locked');
       }
     }
 
@@ -528,9 +570,10 @@
         return;
       }
 
+      resetCollectionInteractionState(section);
       section.innerHTML = incomingSection.innerHTML;
       bindCultivationFilter(section);
-      initCollectionReveal(section);
+      ensureCollectionReveal(section);
     }
 
     function setFilterBusy(section, busy) {
@@ -815,11 +858,24 @@
 
     function initAll(scope) {
       var root = scope || document;
-      initCollectionReveal(root);
       root.querySelectorAll('[data-collection-grid-section]').forEach(function (section) {
+        resetCollectionInteractionState(section);
         bindCultivationFilter(section);
       });
+      ensureCollectionReveal(root);
     }
+
+    window.addEventListener('pageshow', function (event) {
+      if (!event.persisted) {
+        return;
+      }
+
+      document.querySelectorAll('[data-collection-grid-section]').forEach(function (section) {
+        resetCollectionInteractionState(section);
+        bindCultivationFilter(section);
+      });
+      ensureCollectionReveal(document);
+    });
 
     document.addEventListener('keydown', function (event) {
       if (event.key !== 'Escape') {
