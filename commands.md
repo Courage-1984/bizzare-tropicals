@@ -1,4 +1,3 @@
-
 npm install -g @shopify/cli@latest
 
 shopify theme init carnivorous-plants-theme

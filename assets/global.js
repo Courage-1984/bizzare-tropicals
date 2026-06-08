@@ -21,27 +21,10 @@
     window.BT = window.BT || {};
 
     /**
-     * Prevents horizontal carousels from capturing vertical wheel / trackpad scroll.
+     * @deprecated Use carousel.js bindCarouselWheelScroll via BT.initScrollCarousel.
+     * Kept for backward compatibility — no longer blocks vertical page scroll.
      */
-    window.BT.bindCarouselWheelGuard = function (scrollable) {
-      if (!scrollable || scrollable.dataset.wheelGuard === 'true') {
-        return;
-      }
-
-      scrollable.dataset.wheelGuard = 'true';
-
-      scrollable.addEventListener(
-        'wheel',
-        function (event) {
-          if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
-            return;
-          }
-
-          event.preventDefault();
-        },
-        { passive: false }
-      );
-    };
+    window.BT.bindCarouselWheelGuard = function () {};
 
     /**
      * Pauses carousel autoplay while the section is off-screen.

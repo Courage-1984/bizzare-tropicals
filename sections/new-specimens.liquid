@@ -88,13 +88,16 @@
     {%- endif -%}
   </header>
 
-  <div class="new-specimens__viewport">
+  <div
+    class="new-specimens__viewport"
+    data-new-specimens-tray
+    data-carousel-track
+    aria-label="{{ 'sections.new_specimens.tray_label' | t }}"
+  >
     <ul
       class="new-specimens__tray"
       role="list"
-      data-new-specimens-tray
       data-reveal-stagger
-      aria-label="{{ 'sections.new_specimens.tray_label' | t }}"
     >
       {%- if show_real_products -%}
         {%- for product in catalog_products limit: products_limit -%}
@@ -234,8 +237,18 @@
   }
 
   .new-specimens__viewport {
-    overflow: hidden;
     border-block: 0.5px solid var(--new-specimens-border);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-inline: var(--page-margin);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .new-specimens__viewport::-webkit-scrollbar {
+    display: none;
   }
 
   .new-specimens__tray {
@@ -244,21 +257,10 @@
     margin: 0;
     padding: var(--space-xs) var(--page-margin) var(--space-md);
     list-style: none;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    touch-action: pan-y pinch-zoom;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .new-specimens__tray::-webkit-scrollbar {
-    display: none;
   }
 
   .new-specimens__item {
-    flex: 0 0 calc((100% - var(--space-lg)) / 1.5);
+    flex: 0 0 calc((100vw - var(--page-margin) * 2 - var(--space-lg)) / 1.5);
     min-width: 0;
     scroll-snap-align: start;
   }
@@ -352,24 +354,27 @@
 
 
   @media (min-width: 750px) {
-    /* Prevent wheel scroll from hijacking vertical page scroll on desktop */
-    .new-specimens__tray {
+    .new-specimens__viewport {
       overflow-x: hidden;
       scroll-snap-type: none;
+    }
+
+    .new-specimens__nav {
+      display: inline-flex;
     }
   }
 
   @media (min-width: 990px) {
-    .new-specimens__nav {
-      display: inline-flex;
-    }
-
     .new-specimens__item {
-      flex: 0 0 calc((100% - (var(--space-lg) * 3)) / 4);
+      flex: 0 0 calc((min(var(--page-width), 100vw) - var(--page-margin) * 2 - var(--space-lg) * 3) / 4);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .new-specimens__viewport {
+      scroll-behavior: auto;
+    }
+
     .new-specimens .specimen-ledger-card:hover {
       transform: none;
     }
@@ -390,270 +395,36 @@
     'use strict';
 
     var SECTION_SELECTOR = '[data-new-specimens]';
-    var AUTOPLAY_MS = 6000;
-    var RESUME_DELAY_MS = 8000;
 
-    function prefersReducedMotion() {
-      try {
-        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function destroyNewSpecimens(section) {
-      if (!section || !section._newSpecimensState) {
+    function updateTrayProgress(track, section) {
+      var fill = section.querySelector('[data-new-specimens-progress]');
+      if (!fill) {
         return;
       }
 
-      try {
-        var state = section._newSpecimensState;
-
-        if (state.autoplayTimer) {
-          clearInterval(state.autoplayTimer);
-        }
-
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-        }
-
-        state.listeners.forEach(function (entry) {
-          entry.target.removeEventListener(entry.type, entry.handler, entry.options);
-        });
-
-        if (typeof state.inViewDisconnect === 'function') {
-          state.inViewDisconnect();
-        }
-      } catch (error) {
-        console.error('New specimens: teardown failed.', error);
-      }
-
-      delete section._newSpecimensState;
-      section.dataset.newSpecimensInitialized = 'false';
-    }
-
-    function updateTrayProgress(tray, section) {
-      var fill = section.querySelector('[data-new-specimens-progress]');
-      if (fill) {
-        var maxScroll = tray.scrollWidth - tray.clientWidth;
-        var progress = maxScroll > 0 ? tray.scrollLeft / maxScroll : 0;
-        fill.style.setProperty('--scroll-progress', String(progress));
-      }
-
-      var prevBtn = section.querySelector('[data-new-specimens-prev]');
-      var nextBtn = section.querySelector('[data-new-specimens-next]');
-      var overflow = tray.scrollWidth > tray.clientWidth + 2;
-
-      if (prevBtn) {
-        prevBtn.disabled = !overflow;
-      }
-
-      if (nextBtn) {
-        nextBtn.disabled = !overflow;
-      }
-    }
-
-    function getTrayScrollStep(tray) {
-      var firstItem = tray.querySelector('.new-specimens__item');
-      if (!firstItem) {
-        return tray.clientWidth;
-      }
-
-      var gap = 0;
-      try {
-        gap = parseFloat(window.getComputedStyle(tray).columnGap || window.getComputedStyle(tray).gap) || 0;
-      } catch (error) {
-        gap = 0;
-      }
-
-      return firstItem.offsetWidth + gap;
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      var progress = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+      fill.style.setProperty('--scroll-progress', String(progress));
     }
 
     function initNewSpecimens(section) {
-      if (!section) {
+      if (!section || !window.BT || !window.BT.initScrollCarousel) {
         return;
       }
 
-      destroyNewSpecimens(section);
-
-      var tray = section.querySelector('[data-new-specimens-tray]');
-      var prevBtn = section.querySelector('[data-new-specimens-prev]');
-      var nextBtn = section.querySelector('[data-new-specimens-next]');
-
-      if (!tray) {
-        return;
-      }
-
-      var autoplayPaused = false;
-      var inView = true;
-      var state = {
-        listeners: [],
-        autoplayTimer: null,
-        resumeTimer: null,
-        inViewDisconnect: null
-      };
-
-      function trackListener(target, type, handler, options) {
-        target.addEventListener(type, handler, options);
-        state.listeners.push({ target: target, type: type, handler: handler, options: options });
-      }
-
-      function scrollTrayByCard(direction) {
-        var step = getTrayScrollStep(tray) * direction;
-        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-        tray.scrollBy({ left: step, behavior: behavior });
-      }
-
-      function scrollTrayNextWithLoop() {
-        var maxScroll = tray.scrollWidth - tray.clientWidth;
-        var atEnd = tray.scrollLeft >= maxScroll - 2;
-        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-
-        if (atEnd) {
-          tray.scrollTo({ left: 0, behavior: behavior });
-          return;
-        }
-
-        scrollTrayByCard(1);
-      }
-
-      function scrollTrayPrevWithLoop() {
-        var atStart = tray.scrollLeft <= 2;
-        var maxScroll = tray.scrollWidth - tray.clientWidth;
-        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-
-        if (atStart) {
-          tray.scrollTo({ left: maxScroll, behavior: behavior });
-          return;
-        }
-
-        scrollTrayByCard(-1);
-      }
-
-      function stopAutoplay() {
-        if (state.autoplayTimer) {
-          clearInterval(state.autoplayTimer);
-          state.autoplayTimer = null;
-        }
-      }
-
-      function startAutoplay() {
-        stopAutoplay();
-
-        var isDesktop = false;
-        try {
-          isDesktop = window.matchMedia('(min-width: 750px)').matches;
-        } catch (error) {
-          isDesktop = false;
-        }
-
-        var overflow = tray.scrollWidth > tray.clientWidth + 2;
-        if (!overflow || !inView || autoplayPaused || prefersReducedMotion() || document.hidden || isDesktop) {
-          return;
-        }
-
-        state.autoplayTimer = setInterval(function () {
-          if (document.hidden) {
-            return;
-          }
-          try {
-            scrollTrayNextWithLoop();
-          } catch (error) {
-            console.error('New specimens: autoplay tick failed.', error);
-          }
-        }, AUTOPLAY_MS);
-      }
-
-      function pauseAutoplay() {
-        autoplayPaused = true;
-        stopAutoplay();
-
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-          state.resumeTimer = null;
-        }
-      }
-
-      function scheduleAutoplayResume() {
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-        }
-
-        state.resumeTimer = setTimeout(function () {
-          try {
-            autoplayPaused = false;
-            startAutoplay();
-          } catch (error) {
-            console.error('New specimens: autoplay resume failed.', error);
-          }
-        }, RESUME_DELAY_MS);
-      }
-
-      var onScroll = function () {
-        updateTrayProgress(tray, section);
-      };
-
-      trackListener(tray, 'scroll', onScroll, { passive: true });
-      trackListener(window, 'resize', onScroll);
-
-      if (prevBtn) {
-        trackListener(prevBtn, 'click', function () {
-          pauseAutoplay();
-          scrollTrayPrevWithLoop();
-          scheduleAutoplayResume();
-        });
-      }
-
-      if (nextBtn) {
-        trackListener(nextBtn, 'click', function () {
-          pauseAutoplay();
-          scrollTrayNextWithLoop();
-          scheduleAutoplayResume();
-        });
-      }
-
-      trackListener(tray, 'pointerdown', pauseAutoplay);
-      trackListener(tray, 'pointerenter', pauseAutoplay);
-      trackListener(tray, 'focusin', pauseAutoplay);
-      trackListener(tray, 'pointerup', scheduleAutoplayResume);
-      trackListener(tray, 'pointerleave', scheduleAutoplayResume);
-      trackListener(tray, 'focusout', scheduleAutoplayResume);
-
-      if (window.BT) {
-        if (window.BT.bindCarouselWheelGuard) {
-          window.BT.bindCarouselWheelGuard(tray);
-        }
-
-        if (window.BT.bindCarouselInView) {
-          state.inViewDisconnect = window.BT.bindCarouselInView(section, {
-            onLeave: function () {
-              inView = false;
-              stopAutoplay();
-            },
-            onEnter: function () {
-              inView = true;
-              if (!autoplayPaused) {
-                startAutoplay();
-              }
-            }
-          });
-        }
-      }
-
-      section._newSpecimensState = state;
-      section.dataset.newSpecimensInitialized = 'true';
-      updateTrayProgress(tray, section);
-      startAutoplay();
+      window.BT.initScrollCarousel(section, {
+        track: '[data-new-specimens-tray]',
+        prev: '[data-new-specimens-prev]',
+        next: '[data-new-specimens-next]',
+        item: '.new-specimens__item',
+        navMinWidth: 750,
+        autoplayDisableMinWidth: 750,
+        onScroll: updateTrayProgress
+      });
     }
 
     function initAll(scope) {
-      var context = scope || document;
-      context.querySelectorAll(SECTION_SELECTOR).forEach(function (section) {
-        if (section.dataset.newSpecimensInitialized === 'true') {
-          return;
-        }
-        initNewSpecimens(section);
-      });
+      (scope || document).querySelectorAll(SECTION_SELECTOR).forEach(initNewSpecimens);
     }
 
     if (document.readyState === 'loading') {
@@ -670,8 +441,8 @@
 
     document.addEventListener('shopify:section:unload', function (event) {
       var section = event.target.querySelector(SECTION_SELECTOR);
-      if (section) {
-        destroyNewSpecimens(section);
+      if (section && window.BT && window.BT.destroyScrollCarousel) {
+        window.BT.destroyScrollCarousel(section);
       }
     });
   })();

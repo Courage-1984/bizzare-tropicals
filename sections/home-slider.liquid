@@ -385,6 +385,7 @@
     width: 100%;
     min-height: clamp(22rem, 72svh, 42rem);
     overflow: hidden;
+    touch-action: manipulation;
     color: var(--color-text-inverse);
   }
 
@@ -517,7 +518,7 @@
   }
 
   .home-slider__slide.is-active .home-slider__content {
-    pointer-events: auto;
+    pointer-events: none;
   }
 
   .home-slider__heading,
@@ -611,7 +612,7 @@
     position: absolute;
     inset-inline: 0;
     bottom: var(--space-lg);
-    z-index: 3;
+    z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -622,7 +623,10 @@
 
   .home-slider__arrow,
   .home-slider__dot {
+    position: relative;
+    z-index: 1;
     pointer-events: auto;
+    touch-action: manipulation;
   }
 
   .home-slider__arrow {
@@ -633,6 +637,8 @@
     height: 2.75rem;
     padding: 0;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
     color: var(--color-text-inverse);
     background: rgb(12 18 14 / 0.35);
     border: 1px solid rgb(255 255 255 / 0.25);
@@ -691,6 +697,15 @@
       min-height: clamp(20rem, 65svh, 34rem);
     }
 
+    .home-slider__slide {
+      filter: none;
+      transition: opacity var(--home-slider-crossfade) var(--ease-out), visibility 0s linear var(--home-slider-crossfade);
+    }
+
+    .home-slider__slide.is-active {
+      transition: opacity var(--home-slider-crossfade) var(--ease-out), visibility 0s linear 0s;
+    }
+
     .home-slider__content {
       gap: var(--space-md);
       padding-block: var(--space-2xl);
@@ -705,8 +720,13 @@
     }
 
     .home-slider__arrow {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    .home-slider__dot {
+      width: 0.75rem;
+      height: 0.75rem;
     }
   }
 
@@ -744,311 +764,52 @@
     'use strict';
 
     var SECTION_SELECTOR = '[data-home-slider]';
-    var RESUME_DELAY_MS = 8000;
 
-    function prefersReducedMotion() {
-      try {
-        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function destroyHomeSlider(root) {
-      if (!root || !root._homeSliderState) {
+    function ensureHomeSlider(root) {
+      if (!root || !window.BT || !window.BT.initCrossfadeSlider) {
         return;
       }
 
-      try {
-        var state = root._homeSliderState;
-
-        if (state.autoplayTimer) {
-          clearInterval(state.autoplayTimer);
-        }
-
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-        }
-
-        state.listeners.forEach(function (entry) {
-          entry.target.removeEventListener(entry.type, entry.handler);
-        });
-      } catch (error) {
-        console.error('Home slider: teardown failed.', error);
+      if (root.dataset.btCrossfadeInit !== 'true') {
+        window.BT.initCrossfadeSlider(root);
       }
-
-      delete root._homeSliderState;
-      root.dataset.homeSliderInitialized = 'false';
     }
 
-    function initHomeSlider(root) {
-      if (!root) {
+    function boot(scope) {
+      if (!window.BT || !window.BT.whenCarouselReady) {
         return;
       }
 
-      destroyHomeSlider(root);
+      window.BT.whenCarouselReady(function () {
+        var context = scope || document;
+        context.querySelectorAll(SECTION_SELECTOR).forEach(ensureHomeSlider);
+      });
+    }
 
-      var slides = Array.prototype.slice.call(root.querySelectorAll('[data-home-slide]'));
-      if (slides.length === 0) {
+    boot();
+
+    document.addEventListener('shopify:section:load', function (event) {
+      boot(event.target);
+    });
+
+    document.addEventListener('shopify:block:select', function (event) {
+      if (!event.target || !event.detail || !event.detail.blockId) {
         return;
       }
 
-      var autoplayEnabled = root.getAttribute('data-autoplay-enabled') !== 'false';
-      var autoplayMs = parseInt(root.getAttribute('data-autoplay-ms'), 10);
-      if (isNaN(autoplayMs) || autoplayMs < 3000) {
-        autoplayMs = 7000;
+      var slider = event.target.querySelector(SECTION_SELECTOR);
+      if (!slider) {
+        return;
       }
 
-      var prevButton = root.querySelector('[data-home-prev]');
-      var nextButton = root.querySelector('[data-home-next]');
-      var controls = root.querySelector('[data-home-controls]');
-      var dots = Array.prototype.slice.call(root.querySelectorAll('[data-home-dot]'));
-      var currentIndex = 0;
-      var slidesLength = slides.length;
-      var autoplayPaused = false;
-      var state = {
-        autoplayTimer: null,
-        resumeTimer: null,
-        listeners: []
-      };
+      window.BT.whenCarouselReady(function () {
+        ensureHomeSlider(slider);
 
-      function trackListener(target, type, handler) {
-        target.addEventListener(type, handler);
-        state.listeners.push({ target: target, type: type, handler: handler });
-      }
-
-      slides.forEach(function (slide, index) {
-        if (slide.classList.contains('is-active')) {
-          currentIndex = index;
+        if (typeof slider.goToHomeSlideByBlockId === 'function') {
+          slider.goToHomeSlideByBlockId(event.detail.blockId);
         }
       });
-
-      function stopAutoplay() {
-        if (state.autoplayTimer) {
-          clearInterval(state.autoplayTimer);
-          state.autoplayTimer = null;
-        }
-      }
-
-      function startAutoplay() {
-        stopAutoplay();
-
-        if (!autoplayEnabled || slidesLength <= 1 || autoplayPaused || prefersReducedMotion() || document.hidden) {
-          return;
-        }
-
-        state.autoplayTimer = setInterval(function () {
-          if (document.hidden) {
-            return;
-          }
-          try {
-            setActiveSlide(currentIndex + 1, { fromAutoplay: true });
-          } catch (error) {
-            console.error('Home slider: autoplay tick failed.', error);
-          }
-        }, autoplayMs);
-      }
-
-      function pauseAutoplay() {
-        autoplayPaused = true;
-        stopAutoplay();
-
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-          state.resumeTimer = null;
-        }
-      }
-
-      function scheduleAutoplayResume() {
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-        }
-
-        state.resumeTimer = setTimeout(function () {
-          try {
-            autoplayPaused = false;
-            startAutoplay();
-          } catch (error) {
-            console.error('Home slider: autoplay resume failed.', error);
-          }
-        }, RESUME_DELAY_MS);
-      }
-
-      function setActiveSlide(index, options) {
-        var opts = options || {};
-        var nextIndex = index;
-
-        if (nextIndex < 0) {
-          nextIndex = slidesLength - 1;
-        }
-
-        if (nextIndex >= slidesLength) {
-          nextIndex = 0;
-        }
-
-        if (nextIndex === currentIndex && !opts.force) {
-          return;
-        }
-
-        if (!opts.fromAutoplay) {
-          pauseAutoplay();
-          scheduleAutoplayResume();
-        }
-
-        try {
-          slides.forEach(function (slide, slideIndex) {
-            var isActive = slideIndex === nextIndex;
-            slide.classList.toggle('is-active', isActive);
-            slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-          });
-
-          dots.forEach(function (dot, dotIndex) {
-            var isActive = dotIndex === nextIndex;
-            dot.classList.toggle('is-active', isActive);
-            dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          });
-
-          currentIndex = nextIndex;
-        } catch (error) {
-          console.error('Home slider: failed to change slide.', error);
-        }
-      }
-
-      function goToNext() {
-        setActiveSlide(currentIndex + 1, { force: true });
-      }
-
-      function goToPrev() {
-        setActiveSlide(currentIndex - 1, { force: true });
-      }
-
-      function bindControl(element, handler) {
-        if (!element) {
-          return;
-        }
-
-        trackListener(element, 'click', function (event) {
-          try {
-            event.preventDefault();
-            handler();
-          } catch (error) {
-            console.error('Home slider: control handler failed.', error);
-          }
-        });
-      }
-
-      bindControl(prevButton, goToPrev);
-      bindControl(nextButton, goToNext);
-
-      dots.forEach(function (dot) {
-        trackListener(dot, 'click', function (event) {
-          try {
-            event.preventDefault();
-            var index = parseInt(dot.getAttribute('data-slide-index'), 10);
-            if (!isNaN(index)) {
-              setActiveSlide(index, { force: true });
-            }
-          } catch (error) {
-            console.error('Home slider: dot navigation failed.', error);
-          }
-        });
-      });
-
-      if (controls) {
-        trackListener(controls, 'pointerdown', pauseAutoplay);
-        trackListener(controls, 'pointerenter', pauseAutoplay);
-        trackListener(controls, 'focusin', pauseAutoplay);
-        trackListener(controls, 'pointerup', scheduleAutoplayResume);
-        trackListener(controls, 'pointerleave', scheduleAutoplayResume);
-        trackListener(controls, 'focusout', scheduleAutoplayResume);
-      }
-
-      root.goToHomeSlide = function (index) {
-        setActiveSlide(index, { force: true });
-      };
-
-      root.goToHomeSlideByBlockId = function (blockId) {
-        pauseAutoplay();
-
-        var targetIndex = slides.findIndex(function (slide) {
-          return slide.getAttribute('data-block-id') === blockId;
-        });
-
-        if (targetIndex >= 0) {
-          setActiveSlide(targetIndex, { force: true });
-        }
-      };
-
-      root._homeSliderState = state;
-      root.dataset.homeSliderInitialized = 'true';
-      startAutoplay();
-    }
-
-    function initAllHomeSliders(scope) {
-      var context = scope || document;
-      var sliders = context.querySelectorAll(SECTION_SELECTOR);
-
-      sliders.forEach(function (slider) {
-        initHomeSlider(slider);
-      });
-    }
-
-    try {
-      initAllHomeSliders(document);
-
-      document.addEventListener('shopify:section:load', function (event) {
-        try {
-          if (!event.target) {
-            return;
-          }
-
-          initAllHomeSliders(event.target);
-        } catch (error) {
-          console.error('Home slider: section load handler failed.', error);
-        }
-      });
-
-      document.addEventListener('shopify:section:unload', function (event) {
-        try {
-          if (!event.target) {
-            return;
-          }
-
-          var slider = event.target.querySelector(SECTION_SELECTOR);
-          if (slider) {
-            destroyHomeSlider(slider);
-          }
-        } catch (error) {
-          console.error('Home slider: section unload handler failed.', error);
-        }
-      });
-
-      document.addEventListener('shopify:block:select', function (event) {
-        try {
-          if (!event.target || !event.detail || !event.detail.blockId) {
-            return;
-          }
-
-          var slider = event.target.querySelector(SECTION_SELECTOR);
-          if (!slider) {
-            return;
-          }
-
-          if (typeof slider.goToHomeSlideByBlockId === 'function') {
-            slider.goToHomeSlideByBlockId(event.detail.blockId);
-          } else {
-            initHomeSlider(slider);
-            if (typeof slider.goToHomeSlideByBlockId === 'function') {
-              slider.goToHomeSlideByBlockId(event.detail.blockId);
-            }
-          }
-        } catch (error) {
-          console.error('Home slider: block select handler failed.', error);
-        }
-      });
-    } catch (error) {
-      console.error('Home slider: slider failed to initialize.', error);
-    }
+    });
   })();
 {% endjavascript %}
 

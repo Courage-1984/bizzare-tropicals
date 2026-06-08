@@ -374,20 +374,15 @@
 
   @media (max-width: 479px) {
     .botanical-discovery-strip__grid {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: var(--space-sm);
-      overflow-x: auto;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--page-margin);
-      padding-block-end: var(--space-xs);
-      -webkit-overflow-scrolling: touch;
+      gap: var(--space-xs);
     }
 
-    .botanical-discovery-strip__cell {
-      flex: 0 0 min(85vw, 18rem);
-      scroll-snap-align: start;
+    .discovery-card {
+      min-height: max(16rem, var(--discovery-card-min-height));
+    }
+
+    .discovery-card__content {
+      padding: var(--space-md);
     }
   }
 

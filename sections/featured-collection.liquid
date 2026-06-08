@@ -172,16 +172,15 @@
   {%- if show_real_products -%}
     <div
       class="featured-collection__viewport"
+      id="featured-carousel-track-{{ section.id }}"
       data-carousel-viewport
+      data-carousel-track
+      aria-label="{{ 'sections.featured_collection.carousel_label' | t }}"
     >
       <ul
-        id="featured-carousel-track-{{ section.id }}"
         class="featured-collection__track"
-        data-carousel-track
         data-reveal-stagger
         role="list"
-        tabindex="0"
-        aria-label="{{ 'sections.featured_collection.carousel_label' | t }}"
       >
         {%- liquid
           assign rendered_markup_count = 0
@@ -269,16 +268,15 @@
   {%- else -%}
     <div
       class="featured-collection__viewport featured-collection__viewport--preview"
+      id="featured-carousel-track-{{ section.id }}"
       data-carousel-viewport
+      data-carousel-track
+      aria-label="{{ 'sections.featured_collection.preview_label' | t }}"
     >
       <ul
-        id="featured-carousel-track-{{ section.id }}"
         class="featured-collection__track"
-        data-carousel-track
         data-reveal-stagger
         role="list"
-        tabindex="0"
-        aria-label="{{ 'sections.featured_collection.preview_label' | t }}"
       >
         {%- for i in (1..8) -%}
           <li class="featured-collection__item reveal-up" data-carousel-item role="listitem">
@@ -434,12 +432,28 @@
 
   .featured-collection__viewport {
     position: relative;
-    width: 100vw;
     margin-inline: calc(50% - 50vw);
+    width: 100vw;
+    max-width: 100vw;
     padding-inline: max(var(--page-margin), env(safe-area-inset-left, 0px));
     padding-inline-end: max(var(--page-margin), env(safe-area-inset-right, 0px));
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: visible;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-inline: max(var(--page-margin), env(safe-area-inset-left, 0px));
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .featured-collection__viewport:focus-visible {
+    outline: 2px solid var(--featured-collection-ink);
+    outline-offset: 4px;
+  }
+
+  .featured-collection__viewport::-webkit-scrollbar {
+    display: none;
   }
 
   .featured-collection__track {
@@ -448,30 +462,10 @@
     margin: 0;
     padding: var(--space-sm) 0 var(--space-md);
     list-style: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    overscroll-behavior-y: none;
-    touch-action: pan-y pinch-zoom;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scroll-padding-inline-start: max(var(--page-margin), env(safe-area-inset-left, 0px));
-    scroll-padding-inline-end: max(var(--page-margin), env(safe-area-inset-right, 0px));
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .featured-collection__track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .featured-collection__track:focus-visible {
-    outline: 2px solid var(--featured-collection-ink);
-    outline-offset: 4px;
   }
 
   .featured-collection__item {
-    flex: 0 0 min(78vw, 18rem);
+    flex: 0 0 min(calc(100vw - var(--page-margin) * 2 - var(--space-lg)), 18rem);
     overflow: visible;
     scroll-snap-align: start;
     min-width: 0;
@@ -493,7 +487,7 @@
   }
 
   @media (min-width: 750px) {
-    .featured-collection__track {
+    .featured-collection__viewport {
       overflow-x: hidden;
       scroll-snap-type: none;
     }
@@ -510,7 +504,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .featured-collection__track {
+    .featured-collection__viewport {
       scroll-behavior: auto;
     }
 
@@ -526,290 +520,39 @@
     'use strict';
 
     var SECTION_SELECTOR = '[data-featured-carousel]';
-    var AUTOPLAY_MS = 6000;
-    var RESUME_DELAY_MS = 8000;
-
-    function prefersReducedMotion() {
-      try {
-        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function destroyCarousel(root) {
-      if (!root || !root._featuredCarouselState) {
-        return;
-      }
-
-      try {
-        var state = root._featuredCarouselState;
-
-        if (state.autoplayTimer) {
-          clearInterval(state.autoplayTimer);
-        }
-
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-        }
-
-        state.listeners.forEach(function (entry) {
-          entry.target.removeEventListener(entry.type, entry.handler);
-        });
-
-        if (typeof state.inViewDisconnect === 'function') {
-          state.inViewDisconnect();
-        }
-      } catch (error) {
-        console.error('Featured collection: teardown failed.', error);
-      }
-
-      delete root._featuredCarouselState;
-      root.dataset.featuredCarouselInitialized = 'false';
-    }
-
-    function updateNavState(track, prevButton, nextButton) {
-      if (!track || !prevButton || !nextButton) {
-        return;
-      }
-
-      var overflow = track.scrollWidth > track.clientWidth + 2;
-      prevButton.disabled = !overflow;
-      nextButton.disabled = !overflow;
-    }
-
-    function getScrollStep(track) {
-      var firstItem = track.querySelector('[data-carousel-item]');
-      if (!firstItem) {
-        return track.clientWidth * 0.85;
-      }
-
-      var trackStyles = window.getComputedStyle(track);
-      var gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '0') || 0;
-      return firstItem.offsetWidth + gap;
-    }
 
     function initCarousel(root) {
-      if (!root) {
+      if (!root || !window.BT || !window.BT.initScrollCarousel) {
         return;
       }
 
-      destroyCarousel(root);
-
-      var track = root.querySelector('[data-carousel-track]');
-      var nav = root.querySelector('[data-carousel-nav]');
-      var prevButton = root.querySelector('[data-carousel-prev]');
-      var nextButton = root.querySelector('[data-carousel-next]');
-
-      if (!track || !prevButton || !nextButton || !nav) {
-        return;
-      }
-
-      var desktopQuery = window.matchMedia('(min-width: 750px)');
-      var autoplayPaused = false;
-      var inView = true;
-      var state = {
-        listeners: [],
-        autoplayTimer: null,
-        resumeTimer: null,
-        inViewDisconnect: null
-      };
-
-      function trackListener(target, type, handler, options) {
-        target.addEventListener(type, handler, options);
-        state.listeners.push({ target: target, type: type, handler: handler });
-      }
-
-      function scrollByStep(direction) {
-        var step = getScrollStep(track) * direction;
-        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-        track.scrollBy({ left: step, behavior: behavior });
-      }
-
-      function scrollNextWithLoop() {
-        var maxScroll = track.scrollWidth - track.clientWidth;
-        var atEnd = track.scrollLeft >= maxScroll - 2;
-        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-
-        if (atEnd) {
-          track.scrollTo({ left: 0, behavior: behavior });
-          return;
-        }
-
-        scrollByStep(1);
-      }
-
-      function scrollPrevWithLoop() {
-        var atStart = track.scrollLeft <= 2;
-        var maxScroll = track.scrollWidth - track.clientWidth;
-        var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-
-        if (atStart) {
-          track.scrollTo({ left: maxScroll, behavior: behavior });
-          return;
-        }
-
-        scrollByStep(-1);
-      }
-
-      function stopAutoplay() {
-        if (state.autoplayTimer) {
-          clearInterval(state.autoplayTimer);
-          state.autoplayTimer = null;
-        }
-      }
-
-      function startAutoplay() {
-        stopAutoplay();
-
-        var isDesktop = false;
-        try {
-          isDesktop = window.matchMedia('(min-width: 750px)').matches;
-        } catch (error) {
-          isDesktop = false;
-        }
-
-        var overflow = track.scrollWidth > track.clientWidth + 2;
-        if (!overflow || !inView || autoplayPaused || prefersReducedMotion() || document.hidden || isDesktop) {
-          return;
-        }
-
-        state.autoplayTimer = setInterval(function () {
-          if (document.hidden) {
-            return;
-          }
-          try {
-            scrollNextWithLoop();
-          } catch (error) {
-            console.error('Featured collection: autoplay tick failed.', error);
-          }
-        }, AUTOPLAY_MS);
-      }
-
-      function pauseAutoplay() {
-        autoplayPaused = true;
-        stopAutoplay();
-
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-          state.resumeTimer = null;
-        }
-      }
-
-      function scheduleAutoplayResume() {
-        if (state.resumeTimer) {
-          clearTimeout(state.resumeTimer);
-        }
-
-        state.resumeTimer = setTimeout(function () {
-          try {
-            autoplayPaused = false;
-            startAutoplay();
-          } catch (error) {
-            console.error('Featured collection: autoplay resume failed.', error);
-          }
-        }, RESUME_DELAY_MS);
-      }
-
-      function syncNavVisibility() {
-        var isDesktop = desktopQuery.matches;
-        var overflow = track.scrollWidth > track.clientWidth + 2;
-        nav.hidden = !isDesktop;
-        nav.classList.toggle('is-visible', isDesktop && overflow);
-        updateNavState(track, prevButton, nextButton);
-      }
-
-      trackListener(prevButton, 'click', function () {
-        pauseAutoplay();
-        scrollPrevWithLoop();
-        scheduleAutoplayResume();
+      window.BT.initScrollCarousel(root, {
+        track: '[data-carousel-track]',
+        navMinWidth: 750,
+        autoplayDisableMinWidth: 750
       });
-
-      trackListener(nextButton, 'click', function () {
-        pauseAutoplay();
-        scrollNextWithLoop();
-        scheduleAutoplayResume();
-      });
-
-      trackListener(track, 'scroll', function () {
-        updateNavState(track, prevButton, nextButton);
-      }, { passive: true });
-
-      trackListener(track, 'pointerdown', pauseAutoplay);
-      trackListener(track, 'pointerenter', pauseAutoplay);
-      trackListener(track, 'focusin', pauseAutoplay);
-      trackListener(track, 'pointerup', scheduleAutoplayResume);
-      trackListener(track, 'pointerleave', scheduleAutoplayResume);
-      trackListener(track, 'focusout', scheduleAutoplayResume);
-
-      if (window.BT) {
-        if (window.BT.bindCarouselWheelGuard) {
-          window.BT.bindCarouselWheelGuard(track);
-        }
-
-        if (window.BT.bindCarouselInView) {
-          state.inViewDisconnect = window.BT.bindCarouselInView(root, {
-            onLeave: function () {
-              inView = false;
-              stopAutoplay();
-            },
-            onEnter: function () {
-              inView = true;
-              if (!autoplayPaused) {
-                startAutoplay();
-              }
-            }
-          });
-        }
-      }
-
-      trackListener(window, 'resize', function () {
-        syncNavVisibility();
-        startAutoplay();
-      });
-
-      if (typeof desktopQuery.addEventListener === 'function') {
-        trackListener(desktopQuery, 'change', function () {
-          syncNavVisibility();
-        });
-      } else if (typeof desktopQuery.addListener === 'function') {
-        desktopQuery.addListener(syncNavVisibility);
-      }
-
-      syncNavVisibility();
-      root._featuredCarouselState = state;
-      root.dataset.featuredCarouselInitialized = 'true';
-      startAutoplay();
     }
 
-    function initAllCarousels(scope) {
-      var context = scope || document;
-      var sections = context.querySelectorAll(SECTION_SELECTOR);
-
-      sections.forEach(function (section) {
-        if (section.dataset.featuredCarouselInitialized === 'true') {
-          return;
-        }
-        initCarousel(section);
-      });
+    function initAll(scope) {
+      (scope || document).querySelectorAll(SECTION_SELECTOR).forEach(initCarousel);
     }
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
-        initAllCarousels();
+        initAll();
       });
     } else {
-      initAllCarousels();
+      initAll();
     }
 
     document.addEventListener('shopify:section:load', function (event) {
-      initAllCarousels(event.target);
+      initAll(event.target);
     });
 
     document.addEventListener('shopify:section:unload', function (event) {
       var section = event.target.querySelector(SECTION_SELECTOR);
-      if (section) {
-        destroyCarousel(section);
+      if (section && window.BT && window.BT.destroyScrollCarousel) {
+        window.BT.destroyScrollCarousel(section);
       }
     });
   })();
